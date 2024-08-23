@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # Variable de location de la database
-DATA_DIR="/var/lib/postgres/data"
+DATA_DIR="var/lib/postgres/data"
 
 # Variables de création de base de données pour l'utilisation de django
 NEW_USER="django_user"
