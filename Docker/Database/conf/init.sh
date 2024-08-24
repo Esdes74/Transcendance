@@ -55,10 +55,13 @@ fi
 # Mais sur linux classic c'est sudo service start postgresql
 #service postgresql start
 
-# Démarrer PostgreSQL avec pg_ctl
-pg_ctl -D "$DATA_DIR" -l logfile start
+# Démarre postgresql avec exec afin de le garder actif a la fin du script
+exec postgres -D "$DATA_DIR"
 
-sleep 5  # Attendre que PostgreSQL démarre
+# Démarrer PostgreSQL avec pg_ctl
+# pg_ctl -D "$DATA_DIR" -l logfile start
+
+# sleep 5  # Attendre que PostgreSQL démarre
 
 # Création de l'utlisateur de django pour pouvoir utiliser sa base de donnée
 # Le nom d'utilisateur est le meme que le nom de sa base de donnée de base, c'est pourquoi je peux
@@ -89,3 +92,6 @@ psql -U "$USER" -d "$USER" -c "GRANT USAGE ON SCHEMA public TO $NEW_USER;"
 # psql -U "$USER" -d "$USER" -c "GRANT CREATE ON SCHEMA public TO $NEW_USER;"
 # psql -U "$USER" -d "$NAME" -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $NEW_USER;"
 # psql -U "$USER" -d "$NAME" -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $NEW_USER;"
+
+# Commande pour lancer postgresql en mode foreground et donc qu'elle reste actif
+# tail -f logfile
