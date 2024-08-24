@@ -1,7 +1,7 @@
-#! /bin/sh
+#!/bin/sh
 
 # Variable de location de la database
-DATA_DIR="var/lib/postgres/data"
+DATA_DIR="/var/lib/postgresql/data"
 
 # Variables de création de base de données pour l'utilisation de django
 NEW_USER="django_user"
@@ -19,9 +19,19 @@ PORT="5432"
 # S'il n'existe pas alors il est créé
 if ! (id "$USER" &>/dev/null); then
 	echo "création de l'utilsateur $USER"
-	sudo useradd -m -s /bin/bash $USER
-	sudo passwd $USER
+	useradd -m -s /bin/bash $USER
+	passwd $USER
 fi
+
+# Tests depuis chatgpt
+# Configurer l'authentification pour utiliser md5 au lieu de peer
+# echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/13/main/pg_hba.conf
+
+# su - "$USER" -c "pg_ctl -D $DATA_DIR -l logfile start"
+# # /usr/lib/postgresql/13/bin/pg_ctl -D $DATA_DIR -l logfile start
+
+# sleep 5
+# Fin du test
 
 # Vérifier si le répertoire de données existe et s'il contient un fichier `PG_VERSION`
 # $DATA_DIR : emplacement des fichiers et répertoires de la base de donnée
@@ -36,13 +46,19 @@ if ! ([ -d "$DATA_DIR" ] && [ -f "$DATA_DIR/PG_VERSION" ]); then
 	# --locale : définit les parametres regionnaux pour la base de donnée (comment elle réagit a certains trucs)
 	# $LANG : variable d'environnement contanant certaines infos pour l'option --locale
 	# -D : indique l'emplacement ou doivent etre créés les fichier et dossiers relatif a la database
-    sudo -iu $USER initdb --locale $LANG -D $DATA_DIR
+    	# sudo -iu $USER initdb --locale $LANG -D $DATA_DIR
+	initdb --locale=$LANG -D $DATA_DIR
 fi
 
 # Il n'y a plus qu'a lancer le system :
 # Sur manjao c'est sudo systemctl start postgresql
 # Mais sur linux classic c'est sudo service start postgresql
-sudo systemctl start postgresql
+#service postgresql start
+
+# Démarrer PostgreSQL avec pg_ctl
+pg_ctl -D "$DATA_DIR" -l logfile start
+
+sleep 5  # Attendre que PostgreSQL démarre
 
 # Création de l'utlisateur de django pour pouvoir utiliser sa base de donnée
 # Le nom d'utilisateur est le meme que le nom de sa base de donnée de base, c'est pourquoi je peux
