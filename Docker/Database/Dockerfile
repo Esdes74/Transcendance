@@ -1,4 +1,16 @@
-# Ceci fonctionne mais n'est pas optimal car install tout un debian
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Dockerfile                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/08/25 12:22:47 by eslamber          #+#    #+#              #
+#    Updated: 2024/08/25 12:23:08 by eslamber         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Installation depuis le debian slim, qui est une version plus légère de debian
 FROM debian:bullseye-slim
 
 # RUN apt-get install apt-utils -y
@@ -10,30 +22,20 @@ RUN apt-get install -y --no-install-recommends \
 	postgresql-contrib
 
 # Définir le chemin pour les binaires PostgreSQL
+# Cette ligne sert surtout pour que l'utilisateur postgres reconnaisse les commandes utilisées dnas le script
 ENV PATH="/usr/lib/postgresql/13/bin:/usr/lib/postgresql/bin:/usr/local/bin:/usr/bin:/bin"
-# ENV PSQL_PWD=123soleil
 
+# Création du répertoire de travaille de postgresql
 RUN mkdir -p /var/lib/postgresql/data && \
 	chown -R postgres:postgres /var/lib/postgresql
 WORKDIR /var/lib/postgresql
 
+# Copie du script d'initialisation
 COPY conf/init.sh .
 RUN chmod +x init.sh
 
+# Passage sur le user e postgresql
 USER postgres
-# Ajout du path de l'applis de postgresql au path du conteneur
-# ENV PATH="/usr/lib/postgresql/13/bin/:$PATH"
 
-# CMD ["bash", "init.sh"]
+# Le script d'initilisation en point d'entrée
 ENTRYPOINT ["bash", "init.sh"]
-
-# Celui ci est plus optimal car n'installe que le minimum pour la base de donnée
-# Mais je ne sais pas comment faire pour avoir la permission pour créer les
-# Répertoire a l'étape 2
-# FROM bitnami/postgresql:latest
-
-# RUN mkdir -p var/lib/postgres/data
-# WORKDIR var/lib/postgres
-
-# COPY conf/init.sh .
-# ENTRYPOINT ["bash", "init.sh"]

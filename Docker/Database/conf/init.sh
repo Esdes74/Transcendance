@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    init.sh                                            :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/08/25 12:22:43 by eslamber          #+#    #+#              #
+#    Updated: 2024/08/25 12:22:45 by eslamber         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 #!/bin/sh
 
 # Variable de location de la database
@@ -23,16 +35,6 @@ if ! (id "$USER" &>/dev/null); then
 	passwd $USER
 fi
 
-# Tests depuis chatgpt
-# Configurer l'authentification pour utiliser md5 au lieu de peer
-# echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/13/main/pg_hba.conf
-
-# su - "$USER" -c "pg_ctl -D $DATA_DIR -l logfile start"
-# # /usr/lib/postgresql/13/bin/pg_ctl -D $DATA_DIR -l logfile start
-
-# sleep 5
-# Fin du test
-
 # Vérifier si le répertoire de données existe et s'il contient un fichier `PG_VERSION`
 # $DATA_DIR : emplacement des fichiers et répertoires de la base de donnée
 if ! ([ -d "$DATA_DIR" ] && [ -f "$DATA_DIR/PG_VERSION" ]); then
@@ -50,18 +52,11 @@ if ! ([ -d "$DATA_DIR" ] && [ -f "$DATA_DIR/PG_VERSION" ]); then
 	initdb --locale=$LANG -D $DATA_DIR
 fi
 
-# Il n'y a plus qu'a lancer le system :
-# Sur manjao c'est sudo systemctl start postgresql
-# Mais sur linux classic c'est sudo service start postgresql
-#service postgresql start
+# Il n'y a plus qu'a lancer le system avec pg_ctl :
+pg_ctl -D "$DATA_DIR" -l logfile start
 
-# Démarre postgresql avec exec afin de le garder actif a la fin du script
-exec postgres -D "$DATA_DIR"
-
-# Démarrer PostgreSQL avec pg_ctl
-# pg_ctl -D "$DATA_DIR" -l logfile start
-
-# sleep 5  # Attendre que PostgreSQL démarre
+# Attendre que PostgreSQL démarre
+sleep 5
 
 # Création de l'utlisateur de django pour pouvoir utiliser sa base de donnée
 # Le nom d'utilisateur est le meme que le nom de sa base de donnée de base, c'est pourquoi je peux
@@ -93,5 +88,5 @@ psql -U "$USER" -d "$USER" -c "GRANT USAGE ON SCHEMA public TO $NEW_USER;"
 # psql -U "$USER" -d "$NAME" -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $NEW_USER;"
 # psql -U "$USER" -d "$NAME" -c "GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $NEW_USER;"
 
-# Commande pour lancer postgresql en mode foreground et donc qu'elle reste actif
-# tail -f logfile
+# Commande pour arreter postgresql afin de pouvoir le relancer dans le microservice dans lequel il sera
+pg_ctl -D "$DATA_DIR" -l logfile stop
