@@ -1,0 +1,8 @@
+# Version de django
+Django>=4.2,<5.0
+
+# Ce qui sert a django pour travailler avec postgresql
+psycopg2-binary>=2.9,<3.0
+
+# Améliore les capacitées et la réactivitée du site
+gunicorn>=20.0,<21.0
