@@ -6,17 +6,17 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/08/25 12:23:45 by eslamber         ###   ########.fr        #
+#    Updated: 2024/08/27 11:53:51 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # V_MARIA := /home/eslamber/data/mariadb
 # V_WORD := /home/eslamber/data/wordpress
 
-# DOCKER := ./srcs/docker-compose.yml
+DOCKER := docker-compose.yml
 
-# all: dir
-# 	sudo docker-compose -f $(DOCKER) up -d --build
+all:
+	sudo docker-compose -f $(DOCKER) up --build
 	
 # rm_dir:
 # 	sudo rm -rf /home/eslamber/data
@@ -31,16 +31,16 @@ stop:
 	sudo docker stop $$(sudo docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
 	sudo docker-compose -f $(DOCKER) down
 
-# down:
-# 	sudo docker-compose -f $(DOCKER) down
+down:
+	sudo docker-compose -f $(DOCKER) down
 
 rm:
-	sudo docker rm $$(sudo docker ps -aq)										# Supprimer tous les conteneurs
+	sudo docker rm -f $$(sudo docker ps -aq)										# Supprimer tous les conteneurs
 rmi:
-	sudo docker rmi $$(sudo docker images -q)									# Supprimer toutes les images
+	sudo docker rmi -f $$(sudo docker images -q)									# Supprimer toutes les images
 
 volume_rm:
-	sudo docker volume rm $$(sudo docker volume ls -q)								# Supprimer tous les volumes
+	sudo docker volume rm -f $$(sudo docker volume ls -q)								# Supprimer tous les volumes
 
 builder_rm:
 	sudo docker builder prune -a -f											# Nettoyer le cache de Docker (build cache)
