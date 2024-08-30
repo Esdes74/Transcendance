@@ -1,44 +1,54 @@
 services:
-  db:
-    image: esdes/postgresql:alive_latest
-    ports:
-      - "5432:5432"
-    # volumes:
-    #   - microservice:/var/lib/postgresql/data     # c'est peut etre la caus ede mes problèmes car ca efface peut etre tous ce qui est fait dans ce conteneur ? (comme l'erreure juste avant)
-    environment:
-      POSTGRES_DB: test_django
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123soleil
-
   web:
     build:
-      context: ./test_django
-      dockerfile: Dockerfile
-    command: /run/app/launch.sh
-    depends_on:
-      - db
+      context: ./django
+      args:
+        - VOLUME:${DJANGO_WORKDIR}
+        - LAUNCH:${DJANGO_LAUNCH_REPO}
+    container_name: django_app
+    #    command: gunicorn configFiles.wsgi:application --bind 0.0.0.0:8000 --reload
+    command: python manage.py runserver 0.0.0.0:8000          # <-- Add this line for hot reload
     ports:
       - "8000:8000"
-    environment:
-      DJANGO_SUPERUSER_USERNAME: "moi"
-      DJANGO_SUPERUSER_PASSWORD: "moi123moi"
-      DJANGO_SUPERUSER_EMAIL: "eslmaber@student.42lyon.fr"
-      DATABASE_URL: postgres://django_user:123soleil@db:5432/test_django
-      USER: "postgres"
-      DATA_DIR: "/var/lib/postgresql/data"
     volumes:
-      - microservice:/var/lib/postgresql/data
+      - ../test_django/app:${DJANGO_WORKDIR} # TODO : mettre l'endroit ou il est sensé repiocher le code dans le conteneur
+    environment:
+      - POSTGRES_USER=${SQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
+      - POSTGRES_DB=${SQL_DATABASE:-default_db}
+    #   - DATABASE_URL=postgres://$SQL_USER:SQL_PASSWORD@SQL_HOST:SQL_PORT/SQL_DATABASE
+    env_file:
+      - ./.env
+    depends_on:
+      # - db
+      db:
+        condition: "service_healthy"
+    restart: always
+    # healthcheck:
+    #   test: ["CMD", "curl", "-k", "http://localhost:8000/test"] # Je pense pas utils pour l'instant
 
-volumes:
-  microservice:
-    driver: local
-    name: micro
-    driver_opts:
-      type: none
-      o: bind
-      device: /home/eslamber/data/micro
-
-networks:
-  test:
-    name: test_micro
-    driver: bridge
+  db:
+    container_name: postgreSQL
+    build:
+      context: ./postgresql
+      args:
+        - POSTGRES_USER=${SQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
+        - POSTGRES_DB=${SQL_DATABASE:-default_db}
+        # - USER=${PSQL_USER:-postgres}
+        # - PASS=${PSQL_PASS:-moi123moi}
+        # - HOST=${PSQL_HOST:-localhost}
+        # - DATA=${PSQL_DATA_REPO:-/var/lib/postgresql/data/}
+    volumes:
+      - /home/eslamber/data:${PSQL_DATA_REPO}
+    env_file:
+      - ./.env
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $USER"]
+      start_period: 5s
+      retries: 10
+      interval: 15s
+      timeout: 10s
+    restart: on-failure

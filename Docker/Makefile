@@ -6,24 +6,34 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/08/27 11:53:51 by eslamber         ###   ########.fr        #
+#    Updated: 2024/08/30 13:12:59 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# V_MARIA := /home/eslamber/data/mariadb
-# V_WORD := /home/eslamber/data/wordpress
+V_DB := /home/eslamber/data/
 
 DOCKER := docker-compose.yml
 
-all:
-	sudo docker-compose -f $(DOCKER) up --build
-	
-# rm_dir:
-# 	sudo rm -rf /home/eslamber/data
+# Definitions of differents printed colors
+LIGHTBLUE := '\e[0;32m'
+RED := '\e[0;31m'
+NEUTRAL := '\e[0m'
 
-# dir:
-# 	sudo mkdir -p $(V_MARIA)
-# 	sudo mkdir -p $(V_WORD)
+all: dir
+	sudo docker-compose -f $(DOCKER) up --build
+
+restart:
+	sudo docker-compose -f $(DOCKER) restart
+
+rm_dir:
+	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)
+	sudo rm -rf $(V_DB)
+	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
+
+dir:
+	@echo -e $(LIGHTBLUE)Making $(RED)Data directorie$(NEUTRAL)
+	sudo mkdir -p $(V_DB)
+	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 fclean: rmi volume_rm builder_rm system_rm rm_dir network_rm
 

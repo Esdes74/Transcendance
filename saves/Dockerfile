@@ -6,24 +6,27 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 15:36:36 by eslamber          #+#    #+#              #
-#    Updated: 2024/08/27 17:50:05 by eslamber         ###   ########.fr        #
+#    Updated: 2024/08/28 13:08:21 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # FROM debian:bullseye-slim
-FROM esdes/postgresql:alive_latest
+FROM esdes/postgresql:done_latest
 
 # Mettre à jour les paquets et installer les dépendances nécessaires
 RUN apt-get update && apt-get upgrade && apt-get install -y \
+	apt-utils \
     python3 \
     python3-pip \
     build-essential \
     libpq-dev \
+	postgresql \
+	postgresql-contrib \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Création du répertoire du code de l'application et copiage de l'applis a cet emplacement
-RUN mkdir /run/app && chown -R root:root /run
+RUN mkdir /run/app /var/database && chown -R root:root /run
 COPY ./app/ /run/app
 RUN chmod +x /run/app/manage.py
 
