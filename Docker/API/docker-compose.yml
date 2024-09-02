@@ -6,26 +6,21 @@ services:
         - VOLUME:${DJANGO_WORKDIR}
         - LAUNCH:${DJANGO_LAUNCH_REPO}
     container_name: django_app
-    #    command: gunicorn configFiles.wsgi:application --bind 0.0.0.0:8000 --reload
-    command: python manage.py runserver 0.0.0.0:8000          # <-- Add this line for hot reload
+    command: python manage.py runserver 0.0.0.0:8000 
     ports:
       - "8000:8000"
     volumes:
-      - ../test_django/app:${DJANGO_WORKDIR} # TODO : mettre l'endroit ou il est sensé repiocher le code dans le conteneur
+      - ../../API:${DJANGO_WORKDIR}
     environment:
       - POSTGRES_USER=${SQL_USER:-default_us}
       - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
       - POSTGRES_DB=${SQL_DATABASE:-default_db}
-    #   - DATABASE_URL=postgres://$SQL_USER:SQL_PASSWORD@SQL_HOST:SQL_PORT/SQL_DATABASE
     env_file:
-      - ./.env
+      - ../.env
     depends_on:
-      # - db
       db:
         condition: "service_healthy"
     restart: always
-    # healthcheck:
-    #   test: ["CMD", "curl", "-k", "http://localhost:8000/test"] # Je pense pas utils pour l'instant
 
   db:
     container_name: postgreSQL
@@ -35,10 +30,6 @@ services:
         - POSTGRES_USER=${SQL_USER:-default_us}
         - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
-        # - USER=${PSQL_USER:-postgres}
-        # - PASS=${PSQL_PASS:-moi123moi}
-        # - HOST=${PSQL_HOST:-localhost}
-        # - DATA=${PSQL_DATA_REPO:-/var/lib/postgresql/data/}
     volumes:
       - /home/eslamber/data:${PSQL_DATA_REPO}
     env_file:

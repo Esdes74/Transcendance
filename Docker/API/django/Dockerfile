@@ -1,7 +1,7 @@
 FROM python:3.12
 
 # Réception des variables VOLUME et LAUNCH données en argument du build
-ARG VOLUME=/home/Pong/web LAUNCH=/run/launch
+ARG VOLUME=/home/API LAUNCH=/run/launch
 
 # Création de la variable d'environnement LAUNCH pour l'entrypoint ensuite
 ENV LAUNCH=$LAUNCH VOLUME=$VOLUME
