@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/08/26 16:19:16 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/03 12:42:28 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,3 +18,6 @@ psycopg2-binary>=2.9,<3.0
 
 # Améliore les capacitées et la réactivitée du site
 gunicorn>=20.0,<21.0
+
+# Framework pour la créatoin d'api
+djangorestframework>=3.12,<4.0
