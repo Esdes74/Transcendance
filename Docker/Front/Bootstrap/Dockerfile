@@ -2,10 +2,10 @@
 FROM node:18
 
 # Récupération du volume où est envoyé le code
-ARG VOLUME
+ARG VOLUME PORT
 
 # Création et sauvegarde de la variable pour la suite de l'éxécution
-ENV VOLUME=$VOLUME
+ENV VOLUME=$VOLUME PORT=$PORT
 
 # Me mettre au bon endroit pour le reste du conteneur
 RUN mkdir -p $VOLUME
@@ -22,6 +22,9 @@ RUN npm install
 
 # Construit l'application
 RUN npm run build
+
+# Exposition du port
+EXPOSE $PORT
 
 # démarre l'application
 CMD ["npm", "start"]

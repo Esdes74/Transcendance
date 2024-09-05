@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/04 18:45:57 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/05 14:22:22 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,15 +52,15 @@ restart:
 # Supprime les repos des bases de données des sarvices sur la machine
 rm_dir:
 	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)
-	rm -rf $(PONG_DB)
-	rm -rf $(API_DB)
+	sudo rm -rf $(PONG_DB)
+	sudo rm -rf $(API_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Créer les répos des bases de données sur la machine pour les différents services
 dir:
 	@echo -e $(LIGHTBLUE)Making $(RED)Data directorie$(NEUTRAL)
-	mkdir -p $(PONG_DB)
-	mkdir -p $(API_DB)
+	sudo mkdir -p $(PONG_DB)
+	sudo mkdir -p $(API_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Commandes de clean du docker

@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // Créer le serveur
 const server = http.createServer((req, res) => {
     // Définir le répertoire où se trouvent les fichiers statiques
-    const staticDir = path.join(__dirname, 'public');
+    const staticDir = path.join(__dirname, 'files');
 
     // Construire le chemin du fichier demandé
     let filePath = path.join(staticDir, req.url === '/' ? 'index.html' : req.url);
@@ -64,17 +64,3 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
     console.log(`Le serveur écoute sur le port ${PORT}`);
 });
-
-// const express = require('express');
-// const app = express();
-
-// app.use(express.static('public'));
-
-// app.get('/', (req, res) => {
-//     res.sendFile(__dirname + '/public/index.html');
-// });
-
-// const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-// });
