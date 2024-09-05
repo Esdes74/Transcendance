@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/05 14:22:22 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/05 17:06:37 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,26 +28,26 @@ LIGHTBLUE := '\e[0;32m'
 RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
+# Build les images et seulement les images
+build:
+	docker-compose -f $(API_DOCKER) up -d --build
+	docker-compose -f $(PONG_DOCKER) up -d --build
+	docker-compose -f $(FRONT_DOCKER) up -d --build
+
 # Lancement du serveur
 all: dir $(NETWK)
 	docker-compose -f $(API_DOCKER) up -d --build
 	docker-compose -f $(PONG_DOCKER) up -d --build
 	docker-compose -f $(FRONT_DOCKER) up -d --build
 
-# Build des images a l'aide d'un seul docker-compose
-# puis rebascule sur la regle all qui le stop et relance tous les services
-# build: $(NETWK)
-# 	docker-compose -f $(API_DOCKER) up -d --build
-# 	docker-compose -f $(FRONT_DOCKER) up -d --build
-
 $(NETWK):
 	docker network create $@
 
 # Lance le restart des services
 restart:
-	docker-compose -f $(API_DOCKER) restart -d
-	docker-compose -f $(PONG_DOCKER) restart -d
-	docker-compose -f $(FRONT_DOCKER) restart -d
+	docker-compose -f $(API_DOCKER) restart
+	docker-compose -f $(PONG_DOCKER) restart
+	docker-compose -f $(FRONT_DOCKER) restart
 
 # Supprime les repos des bases de données des sarvices sur la machine
 rm_dir:

@@ -12,7 +12,11 @@ const server = http.createServer((req, res) => {
     const staticDir = path.join(__dirname, 'files');
 
     // Construire le chemin du fichier demandé
-    let filePath = path.join(staticDir, req.url === '/' ? 'index.html' : req.url);
+    let filePath;
+	if (req.url === '/')
+		filePath = path.join(staticDir, 'html', 'index.html');
+	else
+		filePath = path.join(staticDir, 'html', req.url);
 
     // Obtenir l'extension du fichier pour déterminer le type de contenu
     const extname = path.extname(filePath);
@@ -21,21 +25,27 @@ const server = http.createServer((req, res) => {
     switch (extname) {
         case '.js':
             contentType = 'text/javascript';
+			filePath = path.join(staticDir, 'js', req.url);
             break;
         case '.css':
             contentType = 'text/css';
+			filePath = path.join(staticDir, 'css', req.url);
             break;
         case '.json':
             contentType = 'application/json';
+			filePath = path.join(staticDir, 'json', req.url);
             break;
         case '.png':
             contentType = 'image/png';
+			filePath = path.join(staticDir, 'images', req.url);
             break;
         case '.jpg':
             contentType = 'image/jpeg';
+			filePath = path.join(staticDir, 'images', req.url);
             break;
         case '.gif':
             contentType = 'image/gif';
+			filePath = path.join(staticDir, 'images', req.url);
             break;
     }
 
