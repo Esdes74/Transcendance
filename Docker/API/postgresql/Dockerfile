@@ -5,9 +5,9 @@ FROM postgres:13
 EXPOSE $USER_STATS_DB_PORT
 
 # Récupération des variables pour crée la base de donnée
-ARG POSTGRES_USER=default_us \
-	POSTGRES_PASSWORD=default_ps \
-	POSTGRES_DB=default_db
+ARG POSTGRES_USER \
+	POSTGRES_PASSWORD \
+	POSTGRES_DB
 
 ENV POSTGRES_USER=$POSTGRES_USER \
 	POSTGRES_PASSWORD=$POSTGRES_PASSWORD \

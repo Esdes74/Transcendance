@@ -3,14 +3,14 @@ services:
     build:
       context: ./django
       args:
-        - VOLUME:${DJANGO_WORKDIR}
-        - LAUNCH:${DJANGO_LAUNCH_REPO}
+        - VOLUME=${DJANGO_WORKDIR:-/home/API}
+        - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django_API
     command: python manage.py runserver 0.0.0.0:8000 
     ports:
       - "8000:8000"
     volumes:
-      - ../../API:${DJANGO_WORKDIR}
+      - ../../API:${DJANGO_WORKDIR:-/home/API}
     environment:
       - POSTGRES_USER=${SQL_USER:-default_us}
       - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
@@ -22,6 +22,7 @@ services:
         condition: "service_healthy"
     networks:
       - backend
+      - frontend
     restart: always
 
   db:
@@ -50,4 +51,6 @@ services:
 
 networks:
   backend:
+    external: true
+  frontend:
     external: true

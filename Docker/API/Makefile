@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/03 12:32:06 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/04 15:14:34 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,4 +63,4 @@ network_rm:
 
 re: rmi volume_rm builder_rm system_rm rm_dir all
 
-.PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re
+.PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re restart

@@ -3,14 +3,14 @@ services:
     build:
       context: ./django
       args:
-        - VOLUME:${DJANGO_WORKDIR}
-        - LAUNCH:${DJANGO_LAUNCH_REPO}
+        - VOLUME=${DJANGO_WORKDIR:-/home/Pong}
+        - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django_Pong
     command: python manage.py runserver 0.0.0.0:8000 
     ports:
       - "8001:8000"
     volumes:
-      - ../../Pong:${DJANGO_WORKDIR}
+      - ../../Pong:${DJANGO_WORKDIR:-/home/Pong}
     environment:
       - POSTGRES_USER=${SQL_USER:-default_us}
       - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}

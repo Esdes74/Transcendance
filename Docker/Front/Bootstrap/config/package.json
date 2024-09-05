@@ -1,0 +1,13 @@
+{
+	"name": "frontend",
+	"version": "1.0.0",
+	"description": "la partie frontend du projet transcendance",
+	"main": "index.js",
+	"scripts": {
+	  "start": "node $VOLUME/index.js",
+	  "build": "echo \"Construire l'application...\""
+	},
+	"dependencies": {
+	  "bootstrap": "^5.3.2"
+	}
+  }

@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/03 12:31:56 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/04 18:45:57 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,13 @@ PONG_DB := /home/eslamber/data/Pong
 API_DB := /home/eslamber/data/API
 
 # Les networks a créer et gérer
-NETWK := backend
+NETWK := backend \
+		 frontend
 
 # Les diférents composes qu'on a
 API_DOCKER := Docker/API/docker-compose.yml
 PONG_DOCKER := Docker/Pong/docker-compose.yml
+FRONT_DOCKER := Docker/Front/docker-compose.yml
 
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
@@ -27,20 +29,25 @@ RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
 # Lancement du serveur
-all: dir build stop
+all: dir $(NETWK)
 	docker-compose -f $(API_DOCKER) up -d --build
 	docker-compose -f $(PONG_DOCKER) up -d --build
+	docker-compose -f $(FRONT_DOCKER) up -d --build
 
 # Build des images a l'aide d'un seul docker-compose
 # puis rebascule sur la regle all qui le stop et relance tous les services
-build:
-	docker network create $(NETWK)
-	docker-compose -f $(API_DOCKER) up -d --build
+# build: $(NETWK)
+# 	docker-compose -f $(API_DOCKER) up -d --build
+# 	docker-compose -f $(FRONT_DOCKER) up -d --build
+
+$(NETWK):
+	docker network create $@
 
 # Lance le restart des services
 restart:
 	docker-compose -f $(API_DOCKER) restart -d
 	docker-compose -f $(PONG_DOCKER) restart -d
+	docker-compose -f $(FRONT_DOCKER) restart -d
 
 # Supprime les repos des bases de données des sarvices sur la machine
 rm_dir:
@@ -63,10 +70,12 @@ stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
 	docker-compose -f $(API_DOCKER) down
 	docker-compose -f $(PONG_DOCKER) down
+	docker-compose -f $(FRONT_DOCKER) down
 
 down:
 	docker-compose -f $(API_DOCKER) down
 	docker-compose -f $(PONG_DOCKER) down
+	docker-compose -f $(FRONT_DOCKER) down
 
 rm:
 	docker rm -f $$(docker ps -aq)										# Supprimer tous les conteneurs
