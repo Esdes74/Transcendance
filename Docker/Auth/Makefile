@@ -6,11 +6,11 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/05 14:22:38 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/05 17:34:56 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-V_DB := /home/eslamber/data/Pong
+V_DB := /home/eslamber/data/Auth
 
 DOCKER := docker-compose.yml
 

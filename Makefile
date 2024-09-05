@@ -6,12 +6,12 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/05 17:06:37 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/05 17:58:44 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Les volumes des bases de données sur la machine
-PONG_DB := /home/eslamber/data/Pong
+PONG_DB := /home/eslamber/data/Auth
 API_DB := /home/eslamber/data/API
 
 # Les networks a créer et gérer
@@ -20,7 +20,7 @@ NETWK := backend \
 
 # Les diférents composes qu'on a
 API_DOCKER := Docker/API/docker-compose.yml
-PONG_DOCKER := Docker/Pong/docker-compose.yml
+PONG_DOCKER := Docker/Auth/docker-compose.yml
 FRONT_DOCKER := Docker/Front/docker-compose.yml
 
 # Definitions of differents printed colors

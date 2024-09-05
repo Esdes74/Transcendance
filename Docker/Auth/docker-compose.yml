@@ -3,14 +3,14 @@ services:
     build:
       context: ./django
       args:
-        - VOLUME=${DJANGO_WORKDIR:-/home/Pong}
+        - VOLUME=${DJANGO_WORKDIR:-/home/Auth}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
-    container_name: django_Pong
+    container_name: django_Auth
     command: python manage.py runserver 0.0.0.0:8000 
     ports:
       - "8001:8000"
     volumes:
-      - ../../Pong:${DJANGO_WORKDIR:-/home/Pong}
+      - ../../Auth:${DJANGO_WORKDIR:-/home/Auth}
     environment:
       - POSTGRES_USER=${SQL_USER:-default_us}
       - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
@@ -25,7 +25,7 @@ services:
     restart: always
 
   db:
-    container_name: postgreSQL_Pong
+    container_name: postgreSQL_Auth
     build:
       context: ./postgresql
       args:
@@ -33,7 +33,7 @@ services:
         - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
     volumes:
-      - /home/eslamber/data/Pong:${PSQL_DATA_REPO}
+      - /home/eslamber/data/Auth:${PSQL_DATA_REPO}
     env_file:
       - .env
     ports:
