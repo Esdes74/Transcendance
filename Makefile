@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/05 17:58:44 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/06 15:38:12 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NETWK := backend \
 
 # Les diférents composes qu'on a
 API_DOCKER := Docker/API/docker-compose.yml
-PONG_DOCKER := Docker/Auth/docker-compose.yml
+AUTH_DOCKER := Docker/Auth/docker-compose.yml
 FRONT_DOCKER := Docker/Front/docker-compose.yml
 
 # Definitions of differents printed colors
@@ -31,13 +31,13 @@ NEUTRAL := '\e[0m'
 # Build les images et seulement les images
 build:
 	docker-compose -f $(API_DOCKER) up -d --build
-	docker-compose -f $(PONG_DOCKER) up -d --build
+	docker-compose -f $(AUTH_DOCKER) up -d --build
 	docker-compose -f $(FRONT_DOCKER) up -d --build
 
 # Lancement du serveur
 all: dir $(NETWK)
 	docker-compose -f $(API_DOCKER) up -d --build
-	docker-compose -f $(PONG_DOCKER) up -d --build
+	docker-compose -f $(AUTH_DOCKER) up -d --build
 	docker-compose -f $(FRONT_DOCKER) up -d --build
 
 $(NETWK):
@@ -46,7 +46,7 @@ $(NETWK):
 # Lance le restart des services
 restart:
 	docker-compose -f $(API_DOCKER) restart
-	docker-compose -f $(PONG_DOCKER) restart
+	docker-compose -f $(AUTH_DOCKER) restart
 	docker-compose -f $(FRONT_DOCKER) restart
 
 # Supprime les repos des bases de données des sarvices sur la machine
@@ -69,12 +69,12 @@ fclean: rmi builder_rm system_rm rm_dir network_rm volume_rm
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
 	docker-compose -f $(API_DOCKER) down
-	docker-compose -f $(PONG_DOCKER) down
+	docker-compose -f $(AUTH_DOCKER) down
 	docker-compose -f $(FRONT_DOCKER) down
 
 down:
 	docker-compose -f $(API_DOCKER) down
-	docker-compose -f $(PONG_DOCKER) down
+	docker-compose -f $(AUTH_DOCKER) down
 	docker-compose -f $(FRONT_DOCKER) down
 
 rm:

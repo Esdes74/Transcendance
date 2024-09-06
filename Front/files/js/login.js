@@ -15,15 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Envoie les données à l'API
+			// Envoie les données à l'API
             const response = await fetch('http://localhost:8000/api/auth/login/', {
-                method: 'POST',
+				method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+					'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data)
             });
-
+			
             // Vérifie la réponse de l'API
             if (response.ok) {
                 const result = await response.json();
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Affiche un message d'erreur si la connexion échoue
                 const error = await response.json();
-                console.error('Erreur :', error);
+                console.error('Erreureeee :', error);
                 alert('Échec de la connexion : ' + error.detail);
             }
         } catch (error) {

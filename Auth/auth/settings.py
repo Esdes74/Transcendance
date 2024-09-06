@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-_^x_f^5e$xdxogi7z5-f=yq-q&74(t&*z3bxprfiaq6cbbl3wv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django_auth', '0.0.0.0']
 
 
 # Application definition
@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'test.urls'
+ROOT_URLCONF = 'auth.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'test.wsgi.application'
+WSGI_APPLICATION = 'auth.wsgi.application'
 
 
 # Database
