@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 // Affiche un message d'erreur si la connexion échoue
                 const error = await response.json();
-                console.error('Erreureeee :', error);
+                console.error('Erreur :', error);
                 alert('Échec de la connexion : ' + error.detail);
             }
         } catch (error) {
