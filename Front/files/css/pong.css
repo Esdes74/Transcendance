@@ -1,0 +1,27 @@
+/* Styles globaux */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+	color: white;
+}
+body {
+	background-color :rgb(153, 208, 238);
+    text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	flex-direction: column;
+	position: fixed;
+	width: 100%;
+}
+
+#pongCanvas {
+	background-color: rgb(115, 171, 201);
+	border: 20px solid white;
+}
+
