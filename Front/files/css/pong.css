@@ -1,8 +1,8 @@
 /* Styles globaux */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 h1 {
@@ -10,7 +10,7 @@ h1 {
 }
 body {
 	background-color :rgb(153, 208, 238);
-    text-align: center;
+	text-align: center;
 	display: flex;
 	justify-content: center;
 	align-items: center;
