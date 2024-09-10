@@ -26,8 +26,31 @@ SECRET_KEY = 'django-insecure-_^x_f^5e$xdxogi7z5-f=yq-q&74(t&*z3bxprfiaq6cbbl3wv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django_auth', '0.0.0.0']
+ALLOWED_HOSTS = ['django-Auth', '127.0.0.1', 'localhost', '0.0.0.0']
+# ALLOWED_HOSTS = ['*']
 
+CORS_ALLOWED_ORIGINS = [
+    "http://django-Auth:8000",
+]
+
+# Pour accepter la requetes preflight (OPTION)
+# C'est la requete qui vérifie que le cookie sera correctement géré etc...
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_NAME = 'csrftoken'
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'x-csrftoken',
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+    'PATCH',
+]
 
 # Application definition
 
@@ -39,9 +62,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'app',
+	'corsheaders',
 ]
 
 MIDDLEWARE = [
+	'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +77,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'auth.urls'
+
+CSRF_COOKIE_SECURE = False # True si https
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
 
 TEMPLATES = [
     {

@@ -1,3 +1,18 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('loginForm');
 
@@ -14,13 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
             password: password
         };
 
+		cookie = getCookie('csrftoken');
+
         try {
+			// envois des donées en log pour le debuggage
+			console.log(cookie);
 			// Envoie les données à l'API
-            const response = await fetch('http://localhost:8000/api/auth/login/', {
+			const response = await fetch('http://localhost:8000/api/auth/login/', {
 				method: 'POST',
                 headers: {
 					'Content-Type': 'application/json',
+					'X-CSRFToken': cookie
                 },
+				credentials: 'include',
                 body: JSON.stringify(data)
             });
 			
@@ -38,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Affiche un message d'erreur si la connexion échoue
                 const error = await response.json();
                 console.error('Erreur :', error);
-                alert('Échec de la connexion : ' + error.detail);
+                alert('Échec de la connexion : ' + JSON.stringify(error));
             }
         } catch (error) {
             console.error('Erreur lors de la connexion :', error);

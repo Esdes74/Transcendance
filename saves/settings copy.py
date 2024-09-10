@@ -26,29 +26,10 @@ SECRET_KEY = 'django-insecure-22i&!c(g+femmd=dy=e6krq7*qab#vvesd1aneu&dl#b=(v$(m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django-API']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django_auth', 'django_auth:8000', 'django_API', 'django_API:8000']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-]
-
-# Pour accepter la requetes preflight (OPTION)
-# C'est la requete qui vérifie que le cookie sera correctement géré etc...
-CORS_ALLOW_CREDENTIALS = True
-CSRF_COOKIE_NAME = 'csrftoken'
-
-CORS_ALLOW_HEADERS = [
-    'content-type',
-    'x-csrftoken',
-]
-
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'OPTIONS',
-    'PATCH',
 ]
 
 # Application definition

@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/06 15:38:12 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/10 13:26:44 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,7 @@ $(NETWK):
 	docker network create $@
 
 # Lance le restart des services
-restart:
-	docker-compose -f $(API_DOCKER) restart
-	docker-compose -f $(AUTH_DOCKER) restart
-	docker-compose -f $(FRONT_DOCKER) restart
+restart: stop build
 
 # Supprime les repos des bases de données des sarvices sur la machine
 rm_dir:

@@ -5,8 +5,8 @@ services:
       args:
         - VOLUME=${DJANGO_WORKDIR:-/home/Auth}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
-    container_name: django_auth
-    command: python manage.py runserver 0.0.0.0:8000 
+    container_name: django-Auth
+    # command: python $VOLUME/manage.py runserver 0.0.0.0:8000 
     ports:
       - "8001:8000"
     volumes:

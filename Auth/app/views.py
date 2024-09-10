@@ -3,6 +3,8 @@ from django.http import HttpResponse
 
 
 def login(request):
+	print("bonjour") # Ajout pour debuggage
+	print(request.method) # Ajout pour debuggage
 	if (request.method == 'POST') :
 		username = request.POST.get('username')
 		password = request.POST.get('password')
