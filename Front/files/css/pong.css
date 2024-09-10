@@ -8,6 +8,7 @@
 h1 {
 	color: white;
 }
+
 body {
 	background-color :rgb(153, 208, 238);
 	text-align: center;
@@ -20,8 +21,21 @@ body {
 	width: 100%;
 }
 
+.mb-4 {
+	font-size: 80px;
+}
 #pongCanvas {
 	background-color: rgb(115, 171, 201);
 	border: 20px solid white;
 }
 
+/* Style de la bordure arrondie des paddles */
+canvas, .score-board {
+	margin-top: 20px;
+  }
+  
+  .score-board div {
+	  font-weight: bold;
+	  font-size: 60px !important;
+	  color: white;
+	}
