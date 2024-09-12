@@ -56,7 +56,7 @@ function draw()
 // Déplacer les players
 function updatePlayers()
 {
-	if (keys['w'] && player1Y > 0) player1Y -= playerSpeed + 1;
+	if (keys['w'] && player1Y > 0) player1Y -= playerSpeed;
 	if (keys['s'] && player1Y < canvas.height - playerHeight) player1Y += playerSpeed;
 	if (keys['ArrowUp'] && player2Y > 0) player2Y -= playerSpeed;
 	if (keys['ArrowDown'] && player2Y < canvas.height - playerHeight) player2Y += playerSpeed;
@@ -86,13 +86,19 @@ function updateBall()
 	{
 		scorePlayer1++;
 		scorePlayer1Elem.textContent = scorePlayer1;
-		resetBall(-1);						// Renvoyer la balle vers la gauche
+		if (scorePlayer1 < 5)
+			resetBall(-1);					// Renvoyer la balle vers la gauche
+		else
+			gameOver();
 	}
 	if	(ballX - ballRadius < 0)			// Joueur 2 marque
 	{
 		scorePlayer2++;
 		scorePlayer2Elem.textContent = scorePlayer2;
-		resetBall(1);						// Renvoyer la balle vers la gauche
+		if (scorePlayer2 < 5)
+			resetBall(1);						// Renvoyer la balle vers la gauche
+		else
+			gameOver();
 	}
 }
 
@@ -114,6 +120,28 @@ function resetBall(direction)		// Direction = 1 ou -1
 		ballSpeedX = direction * ballSpeed;
 		ballSpeedY = ballSpeed;
 	}, 1000);
+}
+
+function gameOver()
+{
+	ballX = canvas.width / 2;		// Remettre la ball au centre
+	ballY = canvas.height / 2;
+	ballSpeedX = 0;					// Arrêter la balle
+	ballSpeedY = 0;
+	printBall = false;
+
+	const winMessageElem = document.getElementById('winMessage');
+	if (scorePlayer1 > scorePlayer2) {
+		winMessageElem.textContent = 'Player 1 wins!';
+	} else {
+		winMessageElem.textContent = 'Player 2 wins!';
+	}
+	winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+
+	const replayBlockElem = document.getElementById('replayBlock');
+	replayBlockElem.style.display = 'block';
+
+
 }
 
 // Boucle du jeu
