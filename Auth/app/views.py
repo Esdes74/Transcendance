@@ -6,7 +6,7 @@
 #    By: este <este@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 10:52:53 by este              #+#    #+#              #
-#    Updated: 2024/09/13 11:00:04 by este             ###   ########.fr        #
+#    Updated: 2024/09/13 14:25:42 by este             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,4 +25,5 @@ def login(request):
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		res = "Login Complete with " + username + " and " + password
+		print("complete")
 		return JsonResponse({"message": res}, status = 200)

@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
 				credentials: 'include',
 				body: JSON.stringify(data)
 			});
-			
+
 			// Vérifie la réponse de l'API
 			if (response.ok) {
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result);
-				
+
 				// Sauvegarde le token ou redirige l'utilisateur
 				localStorage.setItem('token', result.token); // Sauvegarde le token dans le stockage local
 
