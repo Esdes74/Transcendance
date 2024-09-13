@@ -46,6 +46,14 @@ $(NETWK):
 # Lance le restart des services
 restart: stop build
 
+# Regle pour activer docker
+start:
+	sudo systemctl start docker
+
+sys: start build
+
+sysall: start all
+
 # Supprime les repos des bases de données des sarvices sur la machine
 rm_dir:
 	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)
@@ -93,4 +101,4 @@ network_rm:
 
 re: rmi volume_rm builder_rm system_rm rm_dir all
 
-.PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re build restart
+.PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re build restart start sys sysall
