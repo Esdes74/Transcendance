@@ -4,7 +4,6 @@ const	ctx = canvas.getContext('2d');
 const	playerWidth = 10;			// Epaisseur players
 const	playerHeight = 100;			// Hauteur players
 const	ballRadius = 8;				// Taille de la ball
-let		printBall = true;			// Afficher la ball ou non
 
 let		player1Y = (canvas.height - playerHeight) / 2;	//player 1
 let		player2Y = player1Y ;							//player 2
@@ -18,22 +17,49 @@ const	scorePlayer2Elem = document.getElementById('scorePlayer2');
 let		ballX = canvas.width / 2;	// Placer la ball au milieu horizontal du canvas
 let		ballY = canvas.height / 2;	// Placer la ball au milieu verticalement du canvas
 
+let		printBall = true;			// Afficher la ball ou non
+
+
+const	playerSpeed = 5;			// Vitesse des players
+const	playerBuffer = 10;			// Ecart des players au bord
+
 let		ballSpeed = 3;				// Vitesse de la ball par défaut
 let		ballSpeedX = 3;				// Vitesse de la ball X
 let		ballSpeedY = 3;				// Vitesse de la ball Y
 const	MAX_SPEED = 16;				// Vitesse max de la ball
 const	acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
 
-const	playerSpeed = 5;			// Vitesse des players
-const	playerBuffer = 10;			// Ecart des players au bord
-
-
 canvas.width = canvas.clientWidth; // Rendre responsive
+
+// Connexion WebSocket
+const socket = new WebSocket('ws://localhost:8080');
+
 
 // Suivi des touches enfoncées (pour mobilité + fluide)
 const keys = {};
 document.addEventListener('keydown', e => keys[e.key] = true);
 document.addEventListener('keyup', e => keys[e.key] = false);
+
+// Écouter les messages WebSocket pour les mouvements des joueurs et la position de la balle
+socket.addEventListener('message', (event) => {
+	const message = JSON.parse(event.data);
+
+	if (message.type === 'move') {
+	  if (message.player === 1) {
+		player1Y = message.y;
+	  } else if (message.player === 2) {
+		player2Y = message.y;
+	  }
+	}
+
+	// if (message.type === 'ball') {
+	// 	ballX = message.x;
+	// 	ballY = message.y;
+	// 	scorePlayer1Elem.textContent = message.scorePlayer1;
+	// 	scorePlayer2Elem.textContent = message.scorePlayer2;
+	// }
+  });
+
 
 // Dessiner players et ball
 function draw()
@@ -56,10 +82,25 @@ function draw()
 // Déplacer les players
 function updatePlayers()
 {
-	if (keys['w'] && player1Y > 0) player1Y -= playerSpeed;
-	if (keys['s'] && player1Y < canvas.height - playerHeight) player1Y += playerSpeed;
-	if (keys['ArrowUp'] && player2Y > 0) player2Y -= playerSpeed;
-	if (keys['ArrowDown'] && player2Y < canvas.height - playerHeight) player2Y += playerSpeed;
+		// Player 1 (utilise les touches 'w' et 's')
+		if (keys['w'] && player1Y > 0) {
+		  player1Y -= playerSpeed;
+		  socket.send(JSON.stringify({ type: 'move', player: 1, y: player1Y }));
+		}
+		if (keys['s'] && player1Y < canvas.height - playerHeight) {
+		  player1Y += playerSpeed;
+		  socket.send(JSON.stringify({ type: 'move', player: 1, y: player1Y }));
+		}
+	  
+		// Player 2 (utilise les touches fléchées)
+		if (keys['ArrowUp'] && player2Y > 0) {
+		  player2Y -= playerSpeed;
+		  socket.send(JSON.stringify({ type: 'move', player: 2, y: player2Y }));
+		}
+		if (keys['ArrowDown'] && player2Y < canvas.height - playerHeight) {
+		  player2Y += playerSpeed;
+		  socket.send(JSON.stringify({ type: 'move', player: 2, y: player2Y }));
+		}
 }
 
 // Gérer les mouvements et collisions de la balle
