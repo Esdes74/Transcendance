@@ -1,20 +1,20 @@
-function getCookie(name) {
-	let cookieValue = null;
-	console.log("bonjour1");
-	if (document.cookie && document.cookie !== '') {
-		console.log("bonjour2");
-		const cookies = document.cookie.split(';');
-		for (let i = 0; i < cookies.length; i++) {
-			console.log("bonjour3");
-			const cookie = cookies[i].trim();
-			if (cookie.substring(0, name.length + 1) === (name + '=')) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
-}
+// function getCookie(name) {
+// 	let cookieValue = null;
+// 	console.log("bonjour1");
+// 	if (document.cookie && document.cookie !== '') {
+// 		console.log("bonjour2");
+// 		const cookies = document.cookie.split(';');
+// 		for (let i = 0; i < cookies.length; i++) {
+// 			console.log("bonjour3");
+// 			const cookie = cookies[i].trim();
+// 			if (cookie.substring(0, name.length + 1) === (name + '=')) {
+// 				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+// 				break;
+// 			}
+// 		}
+// 	}
+// 	return cookieValue;
+// }
 
 document.addEventListener('DOMContentLoaded', () => {
 	const form = document.getElementById('loginForm');
@@ -25,26 +25,42 @@ document.addEventListener('DOMContentLoaded', () => {
 		// Récupère les données du formulaire
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
+		const confirmed_password = document.getElementById('confirmed-password').value;
+		const pseudo = document.getElementById('pseudo').value;
+		const mail = document.getElementById('mail').value;
+		const phone_nb = document.getElementById('phone_nb').value;
+		const address = document.getElementById('address').value;
+
+		// Vérification si le mdp est bien confirmé
+		if (password != confirmed_password)
+		{
+			alert('Password not confirmed');
+			return ;
+		}
 
 		// Crée l'objet pour les données du formulaire
 		const data = {
 			username: username,
-			password: password
+			password: password,
+			pseudo: pseudo,
+			mail: mail,
+			phone_nb: phone_nb,
+			address: address
 		};
 
-		cookie = getCookie('csrftoken');
+		// cookie = getCookie('csrftoken');
+		// 'X-CSRFToken': cookie
+		// credentials: 'include',
 
 		try {
 			// envois des donées en log pour le debuggage
-			console.log(cookie);
+			// console.log(cookie);
 			// Envoie les données à l'API
-			const response = await fetch('http://localhost:8000/api/auth/login/', {
+			const response = await fetch('http://localhost:8000/api/auth/create/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-CSRFToken': cookie
 				},
-				credentials: 'include',
 				body: JSON.stringify(data)
 			});
 

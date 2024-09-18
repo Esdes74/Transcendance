@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_^x_f^5e$xdxogi7z5-f=yq-q&74(t&*z3bxprfiaq6cbbl3wv'
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGO = os.getenv('ALGO')
+
+# Pour vérifier que la clée secrete soit bien définis
+if not SECRET_KEY:
+    raise ValueError("La clé secrète n'est pas définie dans l'environnement !")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -102,6 +108,10 @@ AUTH_PASSWORD_VALIDATORS = [
 		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
 	},
 ]
+
+
+# Autorisation des models de user custom
+AUTH_USER_MODEL = 'app.FullUser'
 
 
 # Internationalization
