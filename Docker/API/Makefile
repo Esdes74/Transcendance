@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/05 14:22:44 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/20 18:20:18 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,16 +14,25 @@ V_DB := /home/eslamber/data/API/
 
 DOCKER := docker-compose.yml
 
+# Les networks a créer et gérer
+NETWK := backend
+
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
 RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
-all: dir
+build:
+	docker-compose -f $(DOCKER) up --build
+
+all: dir $(NETWK)
 	docker-compose -f $(DOCKER) up --build
 
 restart:
 	docker-compose -f $(DOCKER) restart
+
+$(NETWK):
+	docker network create $@
 
 rm_dir:
 	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: este <este@student.42.fr>                  +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 10:52:53 by este              #+#    #+#              #
-#    Updated: 2024/09/18 19:38:23 by este             ###   ########.fr        #
+#    Updated: 2024/09/20 17:19:31 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,17 +28,22 @@ def login(request):
 			print(f"username = {request.body}, et pass = {password}")
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
-		# Authentification de l'utilisateurs avec les comptes prééxistans
-		user = authenticate(request, username=username, password=password)
+		try:
+			# Authentification de l'utilisateurs avec les comptes prééxistans
+			user = authenticate(request, username=username, password=password)
 
-		# Si n'existe pas
-		if user is None:
-			return JsonResponse({"error": "Invalid Credentials"}, status=400)
+			# Si n'existe pas
+			if user is None:
+				return JsonResponse({"error": "Invalid Credentials"}, status=400)
 
-		token = generate_jwt_token(user)
-		res = "Login Complete with " + username + " and " + password
-		print("complete")
-		return JsonResponse({"message": res, "token": token}, status = 200)
+			token = generate_jwt_token(user)
+			res = "Login Complete with " + username + " and " + password
+			print("complete")
+			return JsonResponse({"message": res, "token": token}, status = 200)
+		
+		except Exception as e:
+			print(f"Error: {str(e)}")
+			return JsonResponse({"error": "Authentification failed"}, status=500)
 
 def create(request):
 	if (request.method == 'POST') :

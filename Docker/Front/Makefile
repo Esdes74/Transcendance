@@ -3,25 +3,34 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/04 12:55:15 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/04 15:14:23 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/20 18:20:10 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 DOCKER := docker-compose.yml
+
+# Les networks a créer et gérer
+NETWK := frontend
 
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
 RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
-all:
+build:
+	docker-compose -f $(DOCKER) up --build
+
+all: dir $(NETWK)
 	docker-compose -f $(DOCKER) up --build
 
 restart:
 	docker-compose -f $(DOCKER) restart
+
+$(NETWK):
+	docker network create $@
 
 fclean: rmi builder_rm system_rm network_rm volume_rm
 
