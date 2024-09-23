@@ -1,5 +1,5 @@
 # Récupération de postgres
-FROM postgres:13
+FROM postgres:16
 
 # Expositiondu port pour communiquer
 EXPOSE $USER_STATS_DB_PORT

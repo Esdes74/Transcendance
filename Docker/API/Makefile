@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/20 18:20:18 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/23 13:43:49 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ V_DB := /home/eslamber/data/API/
 DOCKER := docker-compose.yml
 
 # Les networks a créer et gérer
-NETWK := backend
+NETWK := backend \
+		 frontend
 
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
