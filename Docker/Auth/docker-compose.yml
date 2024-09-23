@@ -35,6 +35,7 @@ services:
         - LAUNCH=${LAUNCH_WORKDIR:-/run/launch}
     volumes:
       - /home/eslamber/data/Auth:${PSQL_DATA_REPO}
+      - ./postgresql/tools/initdb.d:/docker-entrypoint-initdb.d
     env_file:
       - .env
     ports:

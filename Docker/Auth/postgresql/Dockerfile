@@ -1,5 +1,5 @@
 # Récupération de postgres
-FROM postgres:13
+FROM postgres:16
 
 # Expositiondu port pour communiquer
 EXPOSE 5432
@@ -14,10 +14,3 @@ ENV POSTGRES_USER=$POSTGRES_USER \
 	POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
 	POSTGRES_DB=$POSTGRES_DB \
 	LAUNCH=$LAUNCH
-
-# Copie du launch.sh la ou il faut
-COPY ./tools/launch.sh $LAUNCH/launch.sh
-RUN sed -i 's/\r$//g' $LAUNCH/launch.sh
-RUN chmod +x $LAUNCH/launch.sh
-
-ENTRYPOINT ["sh", "-c", "$LAUNCH/launch.sh"]

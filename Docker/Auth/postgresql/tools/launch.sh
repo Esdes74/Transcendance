@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 17:45:21 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/20 18:58:14 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/23 09:59:14 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@
 #   sleep 2
 # done
 
-psql -h postgreSQL_Auth -U $SQL_USER -d $SQL_DATABASE
+# psql -h postgreSQL_Auth -U $SQL_USER -d $SQL_DATABASE
 
 # # Attendre que PostgreSQL soit prêt
 # until PGPASSWORD=$SQL_PASSWORD psql -h $SQL_HOST -U $SQL_USER -d $SQL_DATABASE -c '\q'; do
