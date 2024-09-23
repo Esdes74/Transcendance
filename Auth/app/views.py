@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 10:52:53 by este              #+#    #+#              #
-#    Updated: 2024/09/20 17:19:31 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/23 17:59:07 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ def login(request):
 		password = request.POST.get('password')
 
 		# Regarde si les identifiants sont donnés/recus
+		print(f"username = {username}, et pass = {password}")
 		if not username or not password :
-			print(f"username = {request.body}, et pass = {password}")
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		try:
@@ -34,7 +34,7 @@ def login(request):
 
 			# Si n'existe pas
 			if user is None:
-				return JsonResponse({"error": "Invalid Credentials"}, status=400)
+				return JsonResponse({"error": "Invalid Credentials"}, status=401)
 
 			token = generate_jwt_token(user)
 			res = "Login Complete with " + username + " and " + password
@@ -74,7 +74,7 @@ def create(request):
 				# si le user est bien créé avec on créée le token et on renvois tous
 				token = generate_jwt_token(user)
 				res = "Login Complete with " + username + " and " + password
-				print("complete")
+				print("suscription complete")
 				return JsonResponse({"message": res, "token": token}, status = 201)
 			else:
 				# si le user n'existe pas alors il y a une erreure et on renvois l'erreure

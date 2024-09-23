@@ -109,12 +109,12 @@ REST_FRAMEWORK = {
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('SQL_DATABASE', 'default_db'),
-        'USER': os.environ.get('SQL_USER', 'default_us'),
-        'PASSWORD': os.environ.get('SQL_PASSWORD', 'default_ps'),
-        'HOST': os.environ.get('SQL_HOST', 'localhost'),
-        'PORT': os.environ.get('SQL_PORT', '5432'),
+        'ENGINE': os.getenv('SQL_ENGINE'),
+        'NAME': os.getenv('SQL_DATABASE'),
+        'USER': os.getenv('SQL_USER'),
+        'PASSWORD': os.getenv('SQL_PASSWORD'),
+        'PORT': os.getenv('SQL_PORT'),
+        'HOST': os.getenv('SQL_HOST'),
     }
 }
 

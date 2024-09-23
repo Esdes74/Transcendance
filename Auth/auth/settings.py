@@ -82,14 +82,33 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 
 DATABASES = {
 	'default': {
-		'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
-		'NAME': os.environ.get('SQL_DATABASE', 'default_db'),
-		'USER': os.getenv('SQL_USER'),
-		'PASSWORD': os.environ.get('SQL_PASSWORD', 'default_ps'),
-		'HOST': os.environ.get('SQL_HOST', 'localhost'),
-		'PORT': os.environ.get('SQL_PORT', '5432'),
+		'ENGINE': os.getenv('SQL_ENGINE'),
+		'NAME': 'este', # os.getenv('SQL_DATABASE'),
+		'USER': 'este', # os.getenv('SQL_USER'),
+		'PASSWORD': '123soleil', # os.getenv('SQL_PASSWORD'),
+		'HOST': os.getenv('SQL_HOST'),
+		'PORT': os.getenv('SQL_PORT'),
 	}
 }
+
+# Logs pour les requetes de django vers la base de donnée
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+    },
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
