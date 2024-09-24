@@ -42,11 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-CSRFToken': cookie
 				},
-				credentials: 'include',
 				body: JSON.stringify(data)
 			});
+			// 'X-CSRFToken': cookie
+			// credentials: 'include',
 
 			// Vérifie la réponse de l'API
 			if (response.ok) { // TODO: Gérer la éception des cookies 
