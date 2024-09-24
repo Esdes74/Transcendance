@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 10:52:53 by este              #+#    #+#              #
-#    Updated: 2024/09/24 15:45:01 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/24 17:51:12 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,10 @@ def login(request):
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		try:
+			print("bonjour2")
 			# Authentification de l'utilisateurs avec les comptes prééxistans
 			user = authenticate(request, username=username, password=password)
+			print("bonjour3")
 
 			# Si n'existe pas
 			if user is None:

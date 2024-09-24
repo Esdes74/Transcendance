@@ -83,21 +83,21 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': os.getenv('SQL_ENGINE'),
-		'NAME': os.getenv('SQL_DATABASE'),		# Name of database
-		'USER': os.getenv('SQL_USER'),			# Name of user
-		'PASSWORD': os.getenv('SQL_PASSWORD'),	# Password of user
+		'NAME': 'authentification_db',
+		'USER': 'auth_role',
+		'PASSWORD': 'auth15sandwich',
 		'HOST': os.getenv('SQL_HOST'),
 		'PORT': os.getenv('SQL_PORT'),
-		'CONN_MAX_AGE': int(os.getenv('CONN_TIME', 0)) if os.getenv('CONN_TIME') else None,	# Temps pour renvoyer une réponse avant avortement
 	}
 }
+		# 'CONN_MAX_AGE': int(os.getenv('CONN_TIME', 0)) if os.getenv('CONN_TIME') else None,	# Temps pour renvoyer une réponse avant avortement
 
-print(f"os.getenv('SQL_ENGINE'), = {os.getenv('SQL_ENGINE')}")
-print(f"os.getenv('SQL_DATABASE'), = {os.getenv('SQL_DATABASE')}")
-print(f"os.getenv('SQL_USER'), = {os.getenv('SQL_USER')}")
-print(f"os.getenv('SQL_PASSWORD'), = {os.getenv('SQL_PASSWORD')}")
-print(f"os.getenv('SQL_HOST'), = {os.getenv('SQL_HOST')}")
-print(f"os.getenv('SQL_PORT'), = {os.getenv('SQL_PORT')}")
+# print(f"os.getenv('SQL_ENGINE'), = {os.getenv('SQL_ENGINE')}")
+# print(f"os.getenv('SQL_DATABASE'), = {os.getenv('SQL_DATABASE')}")
+# print(f"os.getenv('SQL_USER'), = {os.getenv('SQL_USER')}")
+# print(f"os.getenv('SQL_PASSWORD'), = {os.getenv('SQL_PASSWORD')}")
+# print(f"os.getenv('SQL_HOST'), = {os.getenv('SQL_HOST')}")
+# print(f"os.getenv('SQL_PORT'), = {os.getenv('SQL_PORT')}")
 
 # Logs pour les requetes de django vers la base de donnée
 LOGGING = {
