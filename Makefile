@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/10 13:26:44 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/25 19:32:02 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ API_DB := /home/eslamber/data/API
 
 # Les networks a créer et gérer
 NETWK := backend \
-		 frontend
+		 frontend \
 
 # Les diférents composes qu'on a
 API_DOCKER := Docker/API/docker-compose.yml

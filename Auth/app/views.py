@@ -6,13 +6,13 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 10:52:53 by este              #+#    #+#              #
-#    Updated: 2024/09/24 17:51:12 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/25 17:54:50 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
 from django.db import IntegrityError
 from .models import FullUser

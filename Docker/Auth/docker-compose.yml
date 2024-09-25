@@ -12,8 +12,8 @@ services:
     volumes:
       - ../../Auth:${DJANGO_WORKDIR:-/home/Auth}
     environment:
-      - POSTGRES_USER=${SQL_USER:-default_us}
-      - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
+      - POSTGRES_USER=${PSQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
       - POSTGRES_DB=${SQL_DATABASE:-default_db}
     env_file:
       - .env
@@ -22,6 +22,7 @@ services:
         condition: "service_healthy"
     networks:
       - backend
+      - auth_db
     restart: always
 
   db:
@@ -29,10 +30,9 @@ services:
     build:
       context: ./postgresql
       args:
-        - POSTGRES_USER=${SQL_USER:-default_us}
-        - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
+        - POSTGRES_USER=${PSQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
-        - LAUNCH=${LAUNCH_WORKDIR:-/run/launch}
         - PSQL_DATA_REPO=${PSQL_DATA_REPO:-/var/lib/postgresql/data}
     volumes:
       - /home/eslamber/data/Auth:${PSQL_DATA_REPO}
@@ -42,7 +42,7 @@ services:
     ports:
       - "5431:5432"
     networks:
-      - backend
+      - auth_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $USER"]
       start_period: 5s
@@ -54,4 +54,8 @@ services:
 networks:
   backend:
     external: true
+    driver: bridge
+
+  auth_db:
+    name: auth_db
     driver: bridge

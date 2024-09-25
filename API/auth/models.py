@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
-class Users(models.Model):
-	tok = models.CharField(max_length=255, unique=True, db_index=True)
-
-	def __str__(self):
-		return self.tok
+# Classe d'authentification custom
+class FullUser(AbstractUser):
+	pseudo = models.CharField(max_length=25)
+	email = models.CharField(blank=True, null=True)
+	phone_nb = models.CharField(max_length=10, blank=True, null=True)
+	adress = models.CharField(blank=True, null=True)

@@ -21,7 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-22i&!c(g+femmd=dy=e6krq7*qab#vvesd1aneu&dl#b=(v$(m'
+SECRET_KEY = os.getenv('SECRET_KEY')
+ALGO = os.getenv('ALGO')
+
+# Pour vérifier que la clée secrete soit bien définis
+if not SECRET_KEY:
+    raise ValueError("La clé secrète n'est pas définie dans l'environnement !")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -111,8 +116,8 @@ DATABASES = {
     'default': {
         'ENGINE': os.getenv('SQL_ENGINE'),
         'NAME': os.getenv('SQL_DATABASE'),
-        'USER': os.getenv('SQL_USER'),
-        'PASSWORD': os.getenv('SQL_PASSWORD'),
+        'USER': os.getenv('PSQL_USER'),
+        'PASSWORD': os.getenv('PSQL_PASS'),
         'PORT': os.getenv('SQL_PORT'),
         'HOST': os.getenv('SQL_HOST'),
     }
@@ -136,6 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Autorisation des models de user custom
+AUTH_USER_MODEL = 'auth.FullUser'
 
 
 # Internationalization

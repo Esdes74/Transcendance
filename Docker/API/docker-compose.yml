@@ -12,8 +12,8 @@ services:
     volumes:
       - ../../API:${DJANGO_WORKDIR:-/home/API}
     environment:
-      - POSTGRES_USER=${SQL_USER:-default_us}
-      - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
+      - POSTGRES_USER=${PSQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
       - POSTGRES_DB=${SQL_DATABASE:-default_db}
     env_file:
       - .env
@@ -23,6 +23,7 @@ services:
     networks:
       - backend
       - frontend
+      - api_db
     restart: always
 
   db:
@@ -30,8 +31,8 @@ services:
     build:
       context: ./postgresql
       args:
-        - POSTGRES_USER=${SQL_USER:-default_us}
-        - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
+        - POSTGRES_USER=${PSQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
     volumes:
       - /home/eslamber/data/API:${PSQL_DATA_REPO}
@@ -41,7 +42,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - backend
+      - api_db
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $USER"]
       start_period: 5s
@@ -57,4 +58,8 @@ networks:
 
   frontend:
     external: true
+    driver: bridge
+  
+  api_db:
+    name: api_db
     driver: bridge

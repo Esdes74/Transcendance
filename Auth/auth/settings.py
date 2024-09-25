@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': os.getenv('SQL_ENGINE'),
-		'NAME': 'authentification_db',
-		'USER': 'auth_role',
-		'PASSWORD': 'auth15sandwich',
+        'NAME': os.getenv('SQL_DATABASE'),
+        'USER': os.getenv('PSQL_USER'),
+        'PASSWORD': os.getenv('PSQL_PASS'),
 		'HOST': os.getenv('SQL_HOST'),
 		'PORT': os.getenv('SQL_PORT'),
 	}
@@ -100,22 +100,22 @@ DATABASES = {
 # print(f"os.getenv('SQL_PORT'), = {os.getenv('SQL_PORT')}")
 
 # Logs pour les requetes de django vers la base de donnée
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'level': 'DEBUG',
+#             'handlers': ['console'],
+#         },
+#     },
+# }
 
 
 # Password validation
