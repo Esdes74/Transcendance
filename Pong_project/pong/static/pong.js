@@ -29,16 +29,23 @@ const	playerBuffer = 10;			// Ecart des players au bord
 
 canvas.width = canvas.clientWidth; // Rendre responsive
 
-// Connexion WebSocket
+
+// ################################################################################################################ //
+// 												Connexion WebSocket													//
+// ################################################################################################################ //
+
 const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');
 
 // Gestion de l'ouverture de la connexion WebSocket
-socket.onopen = function (e) {
+socket.onopen = function (e)
+{
 	console.log("WebSocket is connected");
 };
 
 // Gestion de la réception de messages WebSocket
-socket.onmessage = function (e) {
+socket.onmessage = function (e)
+{
+	console.log('Message from server:', event.data);
 	const data = JSON.parse(e.data);
 
 	// Mise à jour des positions reçues du serveur
@@ -54,6 +61,24 @@ socket.onmessage = function (e) {
 		scorePlayer2Elem.textContent = scorePlayer2;
 	}
 };
+
+// Gestion des erreurs WebSocket
+socket.onerror = function (error)
+{
+	console.error('WebSocket error:', error);
+};
+
+// Gestion de la fermeture de la connexion WebSocket
+socket.onclose = function (event)
+{
+	console.log('WebSocket is closed:', event);
+};
+
+// ################################################################################################################ //
+// 												Connexion WebSocket													//
+// ################################################################################################################ //
+
+
 
 // Suivi des touches enfoncées (pour mobilité + fluide)
 const keys = {};

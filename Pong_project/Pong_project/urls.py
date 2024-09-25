@@ -15,9 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from pong import consumers
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 	path('', include('pong.urls')),  # Inclure les URLs de ton application pong
+	re_path(r'ws/pong/$', consumers.PongConsumer.as_asgi()),
 ]
