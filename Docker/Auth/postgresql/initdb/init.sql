@@ -30,16 +30,16 @@ GRANT ALL PRIVILEGES ON DATABASE authentification_db TO postgres;
 
 -- Ceci est pour mettre fin au message d'erreure disant que le role este et la database este
 -- Donc si pas besoin a terme car pas ce problème sur pc fac --> a supprimer
--- CREATE DATABASE este; -- voir si besoin ou pas (a cause du défault de django ?)
+CREATE DATABASE este; -- voir si besoin ou pas (a cause du défault de django ?)
 
--- CREATE OR REPLACE FUNCTION create_role_if_not_exists() 
--- RETURNS VOID AS $$
--- BEGIN
--- 	IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'este') THEN
---         CREATE ROLE este WITH LOGIN PASSWORD 'moi123moi';
---         ALTER ROLE este CREATEDB; -- Permet de créer des bases de données
---     END IF;
--- END;
--- $$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION create_role_if_not_exists() 
+RETURNS VOID AS $$
+BEGIN
+	IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'este') THEN
+        CREATE ROLE este WITH LOGIN PASSWORD 'moi123moi';
+        ALTER ROLE este CREATEDB; -- Permet de créer des bases de données
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
 
--- SELECT create_role_if_not_exists();
+SELECT create_role_if_not_exists();

@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'fgbdfg'#os.getenv('SECRET_KEY')
 ALGO = os.getenv('ALGO')
 
 # Pour vérifier que la clée secrete soit bien définis
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'django.contrib.sites',
 	'djap_login',
 ]
 
@@ -76,13 +77,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djpr_Registery.wsgi.application'
 
+SITE_ID = 1
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
 	'default': {
-		'ENGINE': os.getenv('SQL_ENGINE'),
+		'ENGINE': 'django.db.backends.postgresql', #os.getenv('SQL_ENGINE'),
         'NAME': os.getenv('SQL_DATABASE'),
         'USER': os.getenv('PSQL_USER'),
         'PASSWORD': os.getenv('PSQL_PASS'),

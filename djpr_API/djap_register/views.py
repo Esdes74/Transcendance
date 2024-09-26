@@ -6,16 +6,16 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/26 10:45:10 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/26 11:08:19 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import authenticate
-from .models import FullUser
-from .gen_token import generate_jwt_token
+# from rest_framework_simplejwt.tokens import RefreshToken
+# from django.contrib.auth import authenticate
+# from .models import FullUser
+# from .gen_token import generate_jwt_token
 import requests
 
 # TODO: Passer en GET

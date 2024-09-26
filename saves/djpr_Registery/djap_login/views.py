@@ -6,11 +6,11 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/13 10:52:53 by este              #+#    #+#              #
-#    Updated: 2024/09/26 10:44:12 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/26 12:53:57 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# from django.shortcuts import render
+from django.shortcuts import render
 from django.http import JsonResponse
 # from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate
@@ -18,7 +18,7 @@ from django.db import IntegrityError
 from .models import FullUser
 # from .gen_token import generate_jwt_token
 
-def login(request):
+def register(request):
 	print("bonjour")
 	if (request.method == 'POST') : # TODO: paser en GET
 		username = request.POST.get('username')

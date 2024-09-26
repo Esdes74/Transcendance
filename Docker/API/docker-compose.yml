@@ -27,7 +27,7 @@ services:
     restart: always
 
   api_psql:
-    container_name: postgreSQL_API
+    container_name: postgreSQL-API
     build:
       context: ./postgresql
       args:

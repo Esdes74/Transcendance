@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    requirements.txt                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: este <este@student.42.fr>                  +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/18 11:43:17 by este             ###   ########.fr        #
+#    Updated: 2024/09/26 11:40:00 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ psycopg2-binary>=2.9,<3.0
 gunicorn>=20.0,<21.0
 
 # Permet de gérer les requestes Cors du front -> pas sur de devoir le garder
-django-cors-headers>=3.13,<4.0
+# django-cors-headers>=3.13,<4.0
 
 # Permet de récupérer des variables d'environnements (donc la clée secrete)
 python-dotenv>=0.21.1,<1.0

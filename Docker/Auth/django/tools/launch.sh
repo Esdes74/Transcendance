@@ -6,11 +6,14 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/23 16:12:57 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/26 11:41:26 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
+
+# Pour fabriquer et vérifier les migrations a faire
+python3 $VOLUME/manage.py makemigrations
 
 # Appliquer les migrations (sans générer de nouvelles migrations inutilement)
 python3 $VOLUME/manage.py migrate
