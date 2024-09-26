@@ -1,5 +1,5 @@
 services:
-  web:
+  api_web:
     build:
       context: ./django
       args:
@@ -10,7 +10,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ../../API:${DJANGO_WORKDIR:-/home/API}
+      - ../../djpr_API:${DJANGO_WORKDIR:-/home/API}
     environment:
       - POSTGRES_USER=${PSQL_USER:-default_us}
       - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
@@ -18,7 +18,7 @@ services:
     env_file:
       - .env
     depends_on:
-      db:
+      api_psql:
         condition: "service_healthy"
     networks:
       - backend
@@ -26,7 +26,7 @@ services:
       - api_db
     restart: always
 
-  db:
+  api_psql:
     container_name: postgreSQL_API
     build:
       context: ./postgresql

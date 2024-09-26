@@ -1,5 +1,5 @@
 services:
-  web:
+  auth_web:
     build:
       context: ./django
       args:
@@ -10,7 +10,7 @@ services:
     ports:
       - "8001:8000"
     volumes:
-      - ../../Auth:${DJANGO_WORKDIR:-/home/Auth}
+      - ../../djpr_Registery:${DJANGO_WORKDIR:-/home/Auth}
     environment:
       - POSTGRES_USER=${PSQL_USER:-default_us}
       - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
@@ -18,15 +18,15 @@ services:
     env_file:
       - .env
     depends_on:
-      db:
+      auth_psql:
         condition: "service_healthy"
     networks:
       - backend
       - auth_db
     restart: always
 
-  db:
-    container_name: postgreSQL_Auth
+  auth_psql:
+    container_name: postgreSQL-Auth
     build:
       context: ./postgresql
       args:
