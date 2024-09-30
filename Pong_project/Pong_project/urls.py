@@ -21,13 +21,4 @@ urlpatterns = [
 	path('admin/', admin.site.urls),
 	path('pong/', include('pong.urls')),  # Redirection vers les URLs de l'application Pong
 ]
-
-# from django.contrib import admin
-# from django.urls import path, include, re_path
-# from pong import consumers
-
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-# 	path('', include('pong.urls')),  # Inclure les URLs de ton application pong
-# 	re_path(r'ws/pong/$', consumers.PongConsumer.as_asgi()),
-# ]
+# path('', include('pong.urls')),  # Redirection vers les URLs de l'application Pong

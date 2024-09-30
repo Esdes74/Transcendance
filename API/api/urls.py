@@ -26,4 +26,5 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 	path('api/auth/', include('auth.urls')), # rediriges vers l'app auth
+	# path('ws/pong/', include('pong.urls')), # rediriges vers l'app pong_back
 ]

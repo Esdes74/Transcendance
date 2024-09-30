@@ -54,21 +54,22 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Pong_project.urls'
 
-	# TEMPLATES = [
-	# 	{
-	# 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-	# 		'DIRS': [os.path.join(BASE_DIR, 'pong/templates')],  # Spécifie le chemin des templates
-	# 		'APP_DIRS': True,
-	# 		'OPTIONS': {
-	# 			'context_processors': [
-	# 				'django.template.context_processors.debug',
-	# 				'django.template.context_processors.request',
-	# 				'django.contrib.auth.context_processors.auth',
-	# 				'django.contrib.messages.context_processors.messages',
-	# 			],
-	# 		},
-	# 	},
-	# ]
+TEMPLATES = [
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [],  # Vous pouvez laisser ceci vide ou mettre un répertoire si nécessaire
+		'APP_DIRS': True,  # Django recherchera les templates dans les répertoires d'applications
+		'OPTIONS': {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
+]
+
 	# WSGI_APPLICATION = 'Pong_project.wsgi.application' todo
 ASGI_APPLICATION = 'Pong_project.asgi.application'
 
@@ -85,11 +86,11 @@ CHANNEL_LAYERS = {
 # Ajoutez cette ligne pour indiquer où se trouvent vos fichiers front-end
 FRONT_FILES_DIR = os.path.join(BASE_DIR, 'Front/files/')
 
-# Configurer les fichiers statiques pour servir le contenu du dossier Front/Files
-STATICFILES_DIRS = [
-    FRONT_FILES_DIR,
-]
-	# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'pong/static')]  # Spécifie le chemin des fichiers statiques
+# # Configurer les fichiers statiques pour servir le contenu du dossier Front/Files
+# STATICFILES_DIRS = [
+#     FRONT_FILES_DIR,
+# ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'pong/static')]  # Spécifie le chemin des fichiers statiques
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

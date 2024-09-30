@@ -34,7 +34,7 @@ canvas.width = canvas.clientWidth; // Rendre responsive
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 
-const socket = new WebSocket('ws://' + window.location.host + '/ws/pong/');
+const socket = new WebSocket('ws://localhost:8000/ws/pong/launch');
 
 // Gestion de l'ouverture de la connexion WebSocket
 socket.onopen = function (e)
@@ -45,7 +45,7 @@ socket.onopen = function (e)
 // Gestion de la réception de messages WebSocket
 socket.onmessage = function (e)
 {
-	console.log('Message from server:', event.data);
+	console.log('Message from server :', event.data);
 	const data = JSON.parse(e.data);
 
 	// Mise à jour des positions reçues du serveur
@@ -65,13 +65,13 @@ socket.onmessage = function (e)
 // Gestion des erreurs WebSocket
 socket.onerror = function (error)
 {
-	console.error('WebSocket error:', error);
+	console.error('WebSocket error :', error);
 };
 
 // Gestion de la fermeture de la connexion WebSocket
 socket.onclose = function (event)
 {
-	console.log('WebSocket is closed:', event);
+	console.log('WebSocket is closed :', event);
 };
 
 // ################################################################################################################ //
