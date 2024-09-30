@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'channels',  # Ajout de Django Channels
-	'pong',
+	'channels',	# Ajout de Django Channels
+	'pong',		# L'application du jeu Pong
 ]
 
 MIDDLEWARE = [
@@ -54,24 +54,42 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Pong_project.urls'
 
-TEMPLATES = [
-	{
-		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [os.path.join(BASE_DIR, 'pong/templates')],  # Spécifie le chemin des templates
-		'APP_DIRS': True,
-		'OPTIONS': {
-			'context_processors': [
-				'django.template.context_processors.debug',
-				'django.template.context_processors.request',
-				'django.contrib.auth.context_processors.auth',
-				'django.contrib.messages.context_processors.messages',
-			],
-		},
-	},
-]
-
+	# TEMPLATES = [
+	# 	{
+	# 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+	# 		'DIRS': [os.path.join(BASE_DIR, 'pong/templates')],  # Spécifie le chemin des templates
+	# 		'APP_DIRS': True,
+	# 		'OPTIONS': {
+	# 			'context_processors': [
+	# 				'django.template.context_processors.debug',
+	# 				'django.template.context_processors.request',
+	# 				'django.contrib.auth.context_processors.auth',
+	# 				'django.contrib.messages.context_processors.messages',
+	# 			],
+	# 		},
+	# 	},
+	# ]
+	# WSGI_APPLICATION = 'Pong_project.wsgi.application' todo
 ASGI_APPLICATION = 'Pong_project.asgi.application'
 
+# Channels layer settings 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # Assurez-vous que Redis fonctionne sur ce port
+        },
+    },
+}
+
+# Ajoutez cette ligne pour indiquer où se trouvent vos fichiers front-end
+FRONT_FILES_DIR = os.path.join(BASE_DIR, 'Front/files/')
+
+# Configurer les fichiers statiques pour servir le contenu du dossier Front/Files
+STATICFILES_DIRS = [
+    FRONT_FILES_DIR,
+]
+	# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'pong/static')]  # Spécifie le chemin des fichiers statiques
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -107,11 +125,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -119,7 +134,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'pong/static')]  # Spécifie le chemin des fichiers statiques
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -127,11 +141,3 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'pong/static')]  # Spécifie le chemi
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],  # Assurez-vous que Redis fonctionne sur ce port
-        },
-    },
-}
