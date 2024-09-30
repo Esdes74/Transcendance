@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views  # Assure-toi que views est importé
+from .views import pong_view
 
 urlpatterns = [
-	path('', views.pong_view, name='pong'),  # Associe la vue pong_view à l'URL racine
+    path('', pong_view, name='pong'),
 ]
