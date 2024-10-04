@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    launch.sh                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/08/30 17:23:16 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/02 17:50:19 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
 
 # Créer des migrations
-python3 $VOLUME/manage.py makemigrations
+# python3 $VOLUME/manage.py makemigrations
 
 # Appliquer les migrations
 python3 $VOLUME/manage.py migrate

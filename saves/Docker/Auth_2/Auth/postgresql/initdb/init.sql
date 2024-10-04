@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS dblink;
 DO
 $$
 DECLARE
-    dbname TEXT := 'api_db';
+    dbname TEXT := 'authentification_db';
 BEGIN
     IF NOT EXISTS (
         SELECT FROM pg_database
@@ -24,20 +24,20 @@ $$ LANGUAGE plpgsql;
 -- ALTER USER postgres WITH PASSWORD '123soleil';
 
 -- Accorder les privilèges sur la base de données
-GRANT ALL PRIVILEGES ON DATABASE api_db TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE authentification_db TO postgres;
 
 
 
 -- Ceci est pour mettre fin au message d'erreure disant que le role este et la database este
 -- Donc si pas besoin a terme car pas ce problème sur pc fac --> a supprimer
-CREATE DATABASE "este-lamb"; -- voir si besoin ou pas (a cause du défault de django ?)
+CREATE DATABASE 'este-lamb'; -- voir si besoin ou pas (a cause du défault de django ?)
 
 CREATE OR REPLACE FUNCTION create_role_if_not_exists() 
 RETURNS VOID AS $$
 BEGIN
 	IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'este-lamb') THEN
-        CREATE ROLE "este-lamb" WITH LOGIN PASSWORD 'moi123moi';
-        ALTER ROLE "este-lamb" CREATEDB; -- Permet de créer des bases de données
+        CREATE ROLE 'este-lamb' WITH LOGIN PASSWORD 'moi123moi';
+        ALTER ROLE 'este-lamb' CREATEDB; -- Permet de créer des bases de données
     END IF;
 END;
 $$ LANGUAGE plpgsql;

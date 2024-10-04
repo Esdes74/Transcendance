@@ -6,7 +6,7 @@ services:
         - VOLUME=${DJANGO_WORKDIR:-/home/Auth}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-Auth
-    command: python manage.py runserver 0.0.0.0:8000 
+    command: python $VOLUME/manage.py runserver 0.0.0.0:8000 
     ports:
       - "8001:8000"
     volumes:
@@ -33,9 +33,10 @@ services:
         - POSTGRES_USER=${PSQL_USER:-default_us}
         - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
+        - PSQL_DATA_REPO=${PSQL_DATA_REPO:-/var/lib/postgresql/data}
     volumes:
       - /home/eslamber/data/Auth:${PSQL_DATA_REPO}
-      - ./postgresql/tools:/docker-entrypoint-initdb.d
+      - ./postgresql/initdb:/docker-entrypoint-initdb.d
     env_file:
       - .env
     ports:

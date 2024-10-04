@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS dblink;
 DO
 $$
 DECLARE
-    dbname TEXT := 'api_db';
+    dbname TEXT := 'auth_db';
 BEGIN
     IF NOT EXISTS (
         SELECT FROM pg_database
@@ -24,7 +24,7 @@ $$ LANGUAGE plpgsql;
 -- ALTER USER postgres WITH PASSWORD '123soleil';
 
 -- Accorder les privilèges sur la base de données
-GRANT ALL PRIVILEGES ON DATABASE api_db TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE auth_db TO postgres;
 
 
 

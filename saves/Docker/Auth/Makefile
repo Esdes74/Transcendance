@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/04 13:26:35 by eslamber         ###   ########.fr        #
+#    Updated: 2024/09/25 08:20:58 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
