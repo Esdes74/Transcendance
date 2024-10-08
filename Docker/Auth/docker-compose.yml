@@ -33,7 +33,8 @@ services:
         - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
     volumes:
-      - /home/eslamber/data/Auth:${PSQL_DATA_REPO}
+      # - ~/data/Auth:${PSQL_DATA_REPO}
+      - /home/tdutel/data/Auth:${PSQL_DATA_REPO}
     env_file:
       - .env
     ports:
@@ -41,7 +42,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $USER"]
+      test: ["CMD-SHELL", "pg_isready -U $SQL_USER -d $SQL_DATABASE"]
       start_period: 5s
       retries: 10
       interval: 15s

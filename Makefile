@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: tdutel <tdutel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/06 15:38:12 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/08 11:03:43 by tdutel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Les volumes des bases de données sur la machine
-PONG_DB := /home/eslamber/data/Auth
-API_DB := /home/eslamber/data/API
+AUTH_DB := /home/tdutel/data/Auth
+PONG_DB := /home/tdutel/data/Pong
+API_DB := /home/tdutel/data/API
 
 # Les networks a créer et gérer
 NETWK := backend \
@@ -22,6 +23,7 @@ NETWK := backend \
 API_DOCKER := Docker/API/docker-compose.yml
 AUTH_DOCKER := Docker/Auth/docker-compose.yml
 FRONT_DOCKER := Docker/Front/docker-compose.yml
+PONG_DOCKER := Docker/Pong/docker-compose.yml
 
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
@@ -33,12 +35,14 @@ build:
 	docker-compose -f $(API_DOCKER) up -d --build
 	docker-compose -f $(AUTH_DOCKER) up -d --build
 	docker-compose -f $(FRONT_DOCKER) up -d --build
+	docker-compose -f $(PONG_DOCKER) up -d --build
 
 # Lancement du serveur
 all: dir $(NETWK)
 	docker-compose -f $(API_DOCKER) up -d --build
 	docker-compose -f $(AUTH_DOCKER) up -d --build
 	docker-compose -f $(FRONT_DOCKER) up -d --build
+	docker-compose -f $(PONG_DOCKER) up -d --build
 
 $(NETWK):
 	docker network create $@
@@ -48,19 +52,22 @@ restart:
 	docker-compose -f $(API_DOCKER) restart
 	docker-compose -f $(AUTH_DOCKER) restart
 	docker-compose -f $(FRONT_DOCKER) restart
+	docker-compose -f $(PONG_DOCKER) restart
 
 # Supprime les repos des bases de données des sarvices sur la machine
 rm_dir:
 	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)
-	sudo rm -rf $(PONG_DB)
-	sudo rm -rf $(API_DB)
+	 rm -rf $(AUTH_DB)
+	 rm -rf $(PONG_DB)
+	 rm -rf $(API_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Créer les répos des bases de données sur la machine pour les différents services
 dir:
 	@echo -e $(LIGHTBLUE)Making $(RED)Data directorie$(NEUTRAL)
-	sudo mkdir -p $(PONG_DB)
-	sudo mkdir -p $(API_DB)
+	mkdir -p $(AUTH_DB)
+	mkdir -p $(PONG_DB)
+	mkdir -p $(API_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Commandes de clean du docker
@@ -70,11 +77,13 @@ stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
 	docker-compose -f $(API_DOCKER) down
 	docker-compose -f $(AUTH_DOCKER) down
+	docker-compose -f $(PONG_DOCKER) down
 	docker-compose -f $(FRONT_DOCKER) down
 
 down:
 	docker-compose -f $(API_DOCKER) down
 	docker-compose -f $(AUTH_DOCKER) down
+	docker-compose -f $(PONG_DOCKER) down
 	docker-compose -f $(FRONT_DOCKER) down
 
 rm:

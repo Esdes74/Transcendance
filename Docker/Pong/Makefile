@@ -6,11 +6,11 @@
 #    By: tdutel <tdutel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/30 17:35:29 by tdutel           ###   ########.fr        #
+#    Updated: 2024/10/07 16:38:53 by tdutel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-V_DB := /home/eslamber/data/Pong_back
+V_DB := /home/tdutel/data/Pong_back
 
 DOCKER := docker-compose.yml
 
@@ -27,12 +27,12 @@ restart:
 
 rm_dir:
 	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)
-	sudo rm -rf $(V_DB)
+	 rm -rf $(V_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 dir:
 	@echo -e $(LIGHTBLUE)Making $(RED)Data directorie$(NEUTRAL)
-	sudo mkdir -p $(V_DB)
+	 mkdir -p $(V_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 fclean: rmi builder_rm system_rm rm_dir network_rm volume_rm
