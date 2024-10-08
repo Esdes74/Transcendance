@@ -34,7 +34,9 @@ services:
         - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
     volumes:
-      - /home/tdutel/data/API:${PSQL_DATA_REPO}
+      # - /home/tdutel/data/API:${PSQL_DATA_REPO}
+      # - /sgoinfre/tdutel/data/API:${PSQL_DATA_REPO}
+      - API_v:${PSQL_DATA_REPO}
     env_file:
       - .env
     ports:
@@ -54,3 +56,7 @@ networks:
     external: true
   frontend:
     external: true
+
+volumes:
+  API_v:
+    driver: local

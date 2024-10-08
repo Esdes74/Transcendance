@@ -34,7 +34,9 @@ services:
         - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}
         - POSTGRES_DB=${SQL_DATABASE:-default_db}
     volumes:
-      - /home/tdutel/data/Pong_back:${PSQL_DATA_REPO}
+      # - /home/tdutel/data/Pong_back:${PSQL_DATA_REPO}
+      # - /sgoinfre/tdutel/data/Pong:${PSQL_DATA_REPO}
+      - Pong_v:${PSQL_DATA_REPO}
     env_file:
       - .env
     ports:
@@ -55,3 +57,8 @@ networks:
   Pong_back_db:
     name: Pong_back_db
     driver: bridge
+
+volumes:
+  Pong_v:
+    driver: local
+    name: Pong_v

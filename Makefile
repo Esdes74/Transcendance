@@ -71,7 +71,7 @@ dir:
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Commandes de clean du docker
-fclean: rmi builder_rm system_rm rm_dir network_rm volume_rm
+fclean: rmi volume_rm builder_rm system_rm network_rm rm_dir
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
