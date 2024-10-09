@@ -20,6 +20,10 @@ psycopg2-binary>=2.9.7,<3.0
 # Serveur WSGI pour exécuter l'application
 gunicorn>=20.1.0,<21.0
 
+# # Serveur ASGI pour exécuter l'application
+# uvicorn>=0.15.0,<0.16.0
+uvicorn[standard]>=0.13.4
+
 # Framework pour la création d'API REST
 djangorestframework>=3.14.0,<4.0
 

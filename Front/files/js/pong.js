@@ -34,7 +34,7 @@ canvas.width = canvas.clientWidth; // Rendre responsive
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 
-const socket = new WebSocket('ws://localhost:8000/ws/pong/launch');
+const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 
 // Gestion de l'ouverture de la connexion WebSocket
 socket.onopen = function (e)

@@ -6,7 +6,8 @@ services:
         - VOLUME=${DJANGO_WORKDIR:-/home/API}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django_API
-    command: python manage.py runserver 0.0.0.0:8000 
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: ["uvicorn", "api.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
     ports:
       - "8000:8000"
     volumes:
