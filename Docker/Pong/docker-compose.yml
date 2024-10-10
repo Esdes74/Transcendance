@@ -6,11 +6,11 @@ services:
         - VOLUME=${DJANGO_WORKDIR:-/home/Pong_back}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django_pong
-    command: python manage.py runserver 0.0.0.0:8000 
+    command: ["uvicorn", "Pong.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
     ports:
       - "8002:8000"
     volumes:
-      - ../../Pong_project:${DJANGO_WORKDIR:-/home/Pong_back}
+      - ../../Pong:${DJANGO_WORKDIR:-/home/Pong_back}
     environment:
       - POSTGRES_USER=${SQL_USER:-default_us}
       - POSTGRES_PASSWORD=${SQL_PASSWORD:-default_ps}

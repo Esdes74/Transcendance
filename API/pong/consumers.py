@@ -1,28 +1,32 @@
+from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from channels.generic.websocket import WebsocketConsumer
+import asyncio
+import websockets
 
-class PongConsumer(WebsocketConsumer):
-	def connect(self):
-		self.accept()
-		self.send(text_data=json.dumps({
-            'message': 'Bite'
-        }))
+class PongConsumer(AsyncWebsocketConsumer):
+	async def connect(self):
+		await self.accept()
 
-	def disconnect(self, close_code):
+	async def disconnect(self, close_code):
 		pass
 
-	def receive(self, text_data):
-		# our webhook handling code will go here.
-		print(text_data)
+	async def receive(self, text_data):
+		data = json.loads(text_data)
+		
+		# Envoie ce message au service Pong
+		print(f"Message reçu de l'API : {data.get('key', 'No content')}")
+		response = await self.send_to_pong_service(data.get('key', 'malformed request'))
 
-	# async def receive(self, text_data):
-	# 	data = json.loads(text_data)
+		# Envoie la réponse reçue au frontend
+		await self.send(text_data=json.dumps({
+			'response': response
+		}))
 
-	# 	# Simuler la gestion des messages reçus depuis le client
-	# 	if data['type'] == 'pong.move':
-	# 		# Ici, on pourrait traiter les mouvements des joueurs
-	# 			await self.send(text_data=json.dumps({
-	# 			'type': 'pong.update',
-	# 			'message': 'Player moved'
-	# 		}))
 
+	async def send_to_pong_service(self, data):
+		uri = "ws://django_pong:8000/ws/pong/calcul"  # WebSocket service Pong
+		async with websockets.connect(uri) as websocket:
+			await websocket.send(data)
+			response = await websocket.recv()
+			print(f"Réponse du service Pong : {response}")
+			return response
