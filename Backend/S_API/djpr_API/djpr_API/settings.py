@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'djpr_API.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('SQL_ENGINE'),
-        'NAME': os.getenv('SQL_DATABASE'),
+        'NAME': os.getenv('SQL_DATABASE_API'),
         'USER': os.getenv('PSQL_USER'),
         'PASSWORD': os.getenv('PSQL_PASS'),
         'PORT': os.getenv('SQL_PORT'),
-        'HOST': os.getenv('SQL_HOST'),
+        'HOST': os.getenv('SQL_HOST_API'),
     }
 }
 
