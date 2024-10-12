@@ -10,7 +10,7 @@ services:
     ports:
       - "8001:8000"
     volumes:
-      - ../../djpr_Registery:${DJANGO_WORKDIR:-/home/Auth}
+      - ../djpr_Registery:${DJANGO_WORKDIR:-/home/Auth}
     environment:
       - POSTGRES_USER=${PSQL_USER:-default_us}
       - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
@@ -52,7 +52,7 @@ services:
 
 networks:
   backend:
-    external: true
+    name: backend
     driver: bridge
 
   auth_db:

@@ -10,7 +10,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ../../Front:${BOOT_WORKDIR:-/home/front}
+      - ../Front:${BOOT_WORKDIR:-/home/front}
     env_file:
       - ./.env
     networks:
@@ -19,5 +19,5 @@ services:
 
 networks:
   frontend:
-    external: true
+    name: frontend
     driver: bridge

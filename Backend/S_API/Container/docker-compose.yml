@@ -10,7 +10,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ../../djpr_API:${DJANGO_WORKDIR:-/home/API}
+      - ../djpr_API:${DJANGO_WORKDIR:-/home/API}
     environment:
       - POSTGRES_USER=${PSQL_USER:-default_us}
       - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
@@ -53,11 +53,11 @@ services:
 
 networks:
   backend:
-    external: true
+    name: backend
     driver: bridge
 
   frontend:
-    external: true
+    name: frontend
     driver: bridge
   
   api_db:

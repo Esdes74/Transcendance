@@ -6,16 +6,11 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/04 13:26:35 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/12 19:41:57 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-V_DB := /home/eslamber/data/Auth
-
 DOCKER := docker-compose.yml
-
-# Les networks a créer et gérer
-NETWK := backend
 
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
@@ -25,29 +20,13 @@ NEUTRAL := '\e[0m'
 build:
 	docker-compose -f $(DOCKER) up --build
 
-all: dir $(NETWK)
-	docker-compose -f $(DOCKER) up --build
-
 start:
 	sudo systemctl start docker
 
 restart:
 	docker-compose -f $(DOCKER) restart
 
-$(NETWK):
-	docker network create $@
-
-rm_dir:
-	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)
-	sudo rm -rf $(V_DB)
-	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
-
-dir:
-	@echo -e $(LIGHTBLUE)Making $(RED)Data directorie$(NEUTRAL)
-	sudo mkdir -p $(V_DB)
-	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
-
-fclean: rmi builder_rm system_rm rm_dir network_rm volume_rm
+fclean: rmi builder_rm system_rm network_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
@@ -75,4 +54,4 @@ network_rm:
 
 re: rmi volume_rm builder_rm system_rm rm_dir all
 
-.PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re restart
+.PHONY: stop rm rmi volume_rm builder_rm system_rm network_rm fclean down re restart
