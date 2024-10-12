@@ -83,10 +83,10 @@ WSGI_APPLICATION = 'djpr_Registery.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': os.getenv('SQL_ENGINE'),
-        'NAME': os.getenv('SQL_DATABASE'),
+        'NAME': os.getenv('SQL_DATABASE_AUTH'),
         'USER': os.getenv('PSQL_USER'),
         'PASSWORD': os.getenv('PSQL_PASS'),
-		'HOST': os.getenv('SQL_HOST'),
+		'HOST': os.getenv('SQL_HOST_AUTH'),
 		'PORT': os.getenv('SQL_PORT'),
 	}
 }
