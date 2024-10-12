@@ -5,87 +5,56 @@
 #                                                     +:+ +:+         +:+      #
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/11 10:34:53 by eslamber         ###   ########.fr        #
+#    Created: 2024/08/25 12:22:38 by eslamber          #+#    #+#              #
+#    Updated: 2024/09/25 08:20:58 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Les volumes des bases de données sur la machine
-PONG_DB := /home/eslamber/data/Auth
-API_DB := /home/eslamber/data/API
+V_DB := /home/eslamber/data/Auth
+
+DOCKER := docker-compose.yml
 
 # Les networks a créer et gérer
-NETWK := backend \
-		 frontend \
-
-# Les diférents composes qu'on a
-API_DOCKER := Docker/API/docker-compose.yml
-AUTH_DOCKER := Docker/Auth/docker-compose.yml
-FRONT_DOCKER := Docker/Front/docker-compose.yml
-DOCKER := docker-compose.yml
+NETWK := backend
 
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
 RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
-# Build les images et seulement les images
 build:
-	docker-compose -f $(DOCKER) up -d --build
-# docker-compose -f $(API_DOCKER) up -d --build
-# docker-compose -f $(AUTH_DOCKER) up -d --build
-# docker-compose -f $(FRONT_DOCKER) up -d --build
+	docker-compose -f $(DOCKER) up --build
 
-# Lancement du serveur
 all: dir $(NETWK)
-	docker-compose -f $(DOCKER) up -d --build
-# docker-compose -f $(API_DOCKER) up -d --build
-# docker-compose -f $(AUTH_DOCKER) up -d --build
-# docker-compose -f $(FRONT_DOCKER) up -d --build
+	docker-compose -f $(DOCKER) up --build
+
+start:
+	sudo systemctl start docker
+
+restart:
+	docker-compose -f $(DOCKER) restart
 
 $(NETWK):
 	docker network create $@
 
-# Lance le restart des services
-restart: stop build
-
-# Regle pour activer docker
-start:
-	sudo systemctl start docker
-
-sys: start build
-
-sysall: start all
-
-# Supprime les repos des bases de données des sarvices sur la machine
 rm_dir:
 	@echo -e $(LIGHTBLUE)Remove $(RED)Data directorie$(NEUTRAL)
-	sudo rm -rf $(PONG_DB)
-	sudo rm -rf $(API_DB)
+	sudo rm -rf $(V_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
-# Créer les répos des bases de données sur la machine pour les différents services
 dir:
 	@echo -e $(LIGHTBLUE)Making $(RED)Data directorie$(NEUTRAL)
-	sudo mkdir -p $(PONG_DB)
-	sudo mkdir -p $(API_DB)
+	sudo mkdir -p $(V_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
-# Commandes de clean du docker
 fclean: rmi builder_rm system_rm rm_dir network_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
 	docker-compose -f $(DOCKER) down
-# docker-compose -f $(API_DOCKER) down
-# docker-compose -f $(AUTH_DOCKER) down
-# docker-compose -f $(FRONT_DOCKER) down
 
 down:
 	docker-compose -f $(DOCKER) down
-# docker-compose -f $(API_DOCKER) down
-# docker-compose -f $(AUTH_DOCKER) down
-# docker-compose -f $(FRONT_DOCKER) down
 
 rm:
 	docker rm -f $$(docker ps -aq)										# Supprimer tous les conteneurs
@@ -106,4 +75,4 @@ network_rm:
 
 re: rmi volume_rm builder_rm system_rm rm_dir all
 
-.PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re build restart start sys sysall
+.PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re restart

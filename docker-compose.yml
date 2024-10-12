@@ -1,0 +1,207 @@
+services:
+  # Tous les conteneurs web contenant django
+  api_web:
+    build:
+      context: ./Backend/S_API/Container/django
+      args:
+        - VOLUME=${DJANGO_WORKDIR_API:-/home/API}
+        - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
+    container_name: django-API
+    command: python manage.py runserver 0.0.0.0:8000 
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Backend/S_API/djpr_API:${DJANGO_WORKDIR_API:-/home/API}
+    environment:
+      - POSTGRES_USER=${PSQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+      - POSTGRES_DB=${SQL_DATABASE_API:-default_db}
+    env_file:
+      - .env
+    depends_on:
+      api_psql:
+        condition: "service_healthy"
+    networks:
+      - backend
+      - frontend
+      - api_db
+    restart: always
+  
+  auth_web:
+    build:
+      context: ./Backend/S_Auth/Container/django
+      args:
+        - VOLUME=${DJANGO_WORKDIR_AUTH:-/home/Auth}
+        - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
+    container_name: django-Auth
+    command: python manage.py runserver 0.0.0.0:8000 
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./Backend/S_Auth/djpr_Registery:${DJANGO_WORKDIR_AUTH:-/home/Auth}
+    environment:
+      - POSTGRES_USER=${PSQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+      - POSTGRES_DB=${SQL_DATABASE_AUTH:-default_db}
+    env_file:
+      - .env
+    depends_on:
+      auth_psql:
+        condition: "service_healthy"
+    networks:
+      - backend
+      - auth_db
+    restart: always
+  
+  pong_web:
+    build:
+      context: ./Backend/S_Pong/Container/django
+      args:
+        - VOLUME=${DJANGO_WORKDIR_PONG:-/home/Pong_back}
+        - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
+    container_name: django-Pong
+    command: ["uvicorn", "Pong.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./Backend/S_Pong/Pong:${DJANGO_WORKDIR_PONG:-/home/Pong_back}
+    environment:
+      - POSTGRES_USER=${PSQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+      - POSTGRES_DB=${SQL_DATABASE_PONG:-default_db}
+    env_file:
+      - .env
+    depends_on:
+      pong_psql:
+        condition: "service_healthy"
+    networks:
+      - backend
+      - pong_db
+    restart: always
+
+  # Tous les conteneurs database contenant postgresql
+  api_psql:
+    container_name: postgreSQL-API
+    build:
+      context: ./Backend/S_API/Container/postgresql
+      args:
+        - POSTGRES_USER=${PSQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+        - POSTGRES_DB=${SQL_DATABASE_API:-default_db}
+    volumes:
+      - API_v:${PSQL_DATA_REPO}
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    networks:
+      - api_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_API"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      start_period: 5s
+      retries: 10
+      interval: 15s
+      timeout: 10s
+    restart: on-failure
+  
+  auth_psql:
+    container_name: postgreSQL-Auth
+    build:
+      context: ./Backend/S_Auth/Container/postgresql
+      args:
+        - POSTGRES_USER=${PSQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+        - POSTGRES_DB=${SQL_DATABASE_AUTH:-default_db}
+    volumes:
+      - Auth_v:${PSQL_DATA_REPO}
+    env_file:
+      - .env
+    ports:
+      - "5431:5432"
+    networks:
+      - auth_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_AUTH"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      start_period: 5s
+      retries: 10
+      interval: 15s
+      timeout: 10s
+    restart: on-failure
+
+  pong_psql:
+    container_name: postgreSQL-Pong
+    build:
+      context: ./Backend/S_Pong/Container/postgresql
+      args:
+        - POSTGRES_USER=${PSQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+        - POSTGRES_DB=${SQL_DATABASE_PONG:-default_db}
+    volumes:
+      - Pong_v:${PSQL_DATA_REPO}
+    env_file:
+      - .env
+    ports:
+      - "5430:5432"
+    networks:
+      - pong_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_PONG"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      start_period: 5s
+      retries: 10
+      interval: 15s
+      timeout: 10s
+    restart: on-failure
+
+  # Conteneur de front
+  front:
+    build:
+      context: ./Frontend/Container/Bootstrap
+      args:
+        - VOLUME=${BOOT_WORKDIR:-/home/front}
+        - PORT=${PORT_FRONT:-3000}
+    container_name: Frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Frontend/S_Front:${BOOT_WORKDIR:-/home/front}
+    env_file:
+      - .env
+    networks:
+      - frontend
+    restart: always
+
+# Networks
+networks:
+  backend:
+    name: backend
+    driver: bridge
+
+  frontend:
+    name: frontend
+    driver: bridge
+  
+  api_db:
+    name: api_db
+    driver: bridge
+  
+  auth_db:
+    name: auth_db
+    driver: bridge
+
+  pong_db:
+    name: pong_db
+    driver: bridge
+
+# Volumes
+volumes:
+  API_v:
+    driver: local
+    name: API_v
+
+  Auth_v:
+    driver: local
+    name: Auth_v
+
+  Pong_v:
+    driver: local
+    name: Pong_v
