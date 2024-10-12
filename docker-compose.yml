@@ -1,4 +1,5 @@
 services:
+  # Tous les conteneurs web contenant django
   api_web:
     build:
       context: ./Backend/S_API/Container/django
@@ -25,7 +26,34 @@ services:
       - frontend
       - api_db
     restart: always
+  
+  auth_web:
+    build:
+      context: ./Backend/S_Auth/Container/django
+      args:
+        - VOLUME=${DJANGO_WORKDIR_AUTH:-/home/Auth}
+        - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
+    container_name: django-Auth
+    command: python manage.py runserver 0.0.0.0:8000 
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./Backend/S_Auth/djpr_Registery:${DJANGO_WORKDIR_AUTH:-/home/Auth}
+    environment:
+      - POSTGRES_USER=${PSQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+      - POSTGRES_DB=${SQL_DATABASE_AUTH:-default_db}
+    env_file:
+      - .env
+    depends_on:
+      auth_psql:
+        condition: "service_healthy"
+    networks:
+      - backend
+      - auth_db
+    restart: always
 
+  # Tous les conteneurs database contenant postgresql
   api_psql:
     container_name: postgreSQL-API
     build:
@@ -49,8 +77,50 @@ services:
       interval: 15s
       timeout: 10s
     restart: on-failure
+  
+  auth_psql:
+    container_name: postgreSQL-Auth
+    build:
+      context: ./Backend/S_Auth/Container/postgresql
+      args:
+        - POSTGRES_USER=${PSQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+        - POSTGRES_DB=${SQL_DATABASE_AUTH:-default_db}
+    volumes:
+      - Auth_v:${PSQL_DATA_REPO}
+    env_file:
+      - .env
+    ports:
+      - "5431:5432"
+    networks:
+      - auth_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_AUTH"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      start_period: 5s
+      retries: 10
+      interval: 15s
+      timeout: 10s
+    restart: on-failure
 
-      # test: ["CMD-SHELL", "pg_isready -U $USER"] # Celle la fonctionne mais fait une fatal car elle teste avec un user qui n'existe pas
+  # Conteneur de front
+  front:
+    build:
+      context: ./Frontend/Container/Bootstrap
+      args:
+        - VOLUME=${BOOT_WORKDIR:-/home/front}
+        - PORT=${PORT_FRONT:-3000}
+    container_name: Frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Frontend/S_Front:${BOOT_WORKDIR:-/home/front}
+    env_file:
+      - .env
+    networks:
+      - frontend
+    restart: always
+
+# Networks
 networks:
   backend:
     name: backend
@@ -63,8 +133,17 @@ networks:
   api_db:
     name: api_db
     driver: bridge
+  
+  auth_db:
+    name: auth_db
+    driver: bridge
 
+# Volumes
 volumes:
   API_v:
     driver: local
     name: API_v
+
+  Auth_v:
+    driver: local
+    name: Auth_v
