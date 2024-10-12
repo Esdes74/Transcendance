@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/25 19:32:02 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/11 10:34:53 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ NETWK := backend \
 API_DOCKER := Docker/API/docker-compose.yml
 AUTH_DOCKER := Docker/Auth/docker-compose.yml
 FRONT_DOCKER := Docker/Front/docker-compose.yml
+DOCKER := docker-compose.yml
 
 # Definitions of differents printed colors
 LIGHTBLUE := '\e[0;32m'
@@ -30,15 +31,17 @@ NEUTRAL := '\e[0m'
 
 # Build les images et seulement les images
 build:
-	docker-compose -f $(API_DOCKER) up -d --build
-	docker-compose -f $(AUTH_DOCKER) up -d --build
-	docker-compose -f $(FRONT_DOCKER) up -d --build
+	docker-compose -f $(DOCKER) up -d --build
+# docker-compose -f $(API_DOCKER) up -d --build
+# docker-compose -f $(AUTH_DOCKER) up -d --build
+# docker-compose -f $(FRONT_DOCKER) up -d --build
 
 # Lancement du serveur
 all: dir $(NETWK)
-	docker-compose -f $(API_DOCKER) up -d --build
-	docker-compose -f $(AUTH_DOCKER) up -d --build
-	docker-compose -f $(FRONT_DOCKER) up -d --build
+	docker-compose -f $(DOCKER) up -d --build
+# docker-compose -f $(API_DOCKER) up -d --build
+# docker-compose -f $(AUTH_DOCKER) up -d --build
+# docker-compose -f $(FRONT_DOCKER) up -d --build
 
 $(NETWK):
 	docker network create $@
@@ -73,14 +76,16 @@ fclean: rmi builder_rm system_rm rm_dir network_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
-	docker-compose -f $(API_DOCKER) down
-	docker-compose -f $(AUTH_DOCKER) down
-	docker-compose -f $(FRONT_DOCKER) down
+	docker-compose -f $(DOCKER) down
+# docker-compose -f $(API_DOCKER) down
+# docker-compose -f $(AUTH_DOCKER) down
+# docker-compose -f $(FRONT_DOCKER) down
 
 down:
-	docker-compose -f $(API_DOCKER) down
-	docker-compose -f $(AUTH_DOCKER) down
-	docker-compose -f $(FRONT_DOCKER) down
+	docker-compose -f $(DOCKER) down
+# docker-compose -f $(API_DOCKER) down
+# docker-compose -f $(AUTH_DOCKER) down
+# docker-compose -f $(FRONT_DOCKER) down
 
 rm:
 	docker rm -f $$(docker ps -aq)										# Supprimer tous les conteneurs

@@ -1,3 +1,6 @@
 *.pyc
 */migrations/*.py
-*/env
+*/*/env
+*/*/*/env
+*/.env
+.env
