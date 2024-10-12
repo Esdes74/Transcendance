@@ -43,14 +43,14 @@ services:
     networks:
       - api_db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $USER"] # Celle la fonctionne mais fait une fatal car elle teste avec un user qui n'existe pas
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_API"] # Celle la est la bonne mais elle fait waiting a l'infinie
       start_period: 5s
       retries: 10
       interval: 15s
       timeout: 10s
     restart: on-failure
 
-      # test: ["CMD-SHELL", "pg_isready -U $SQL_USER -d $SQL_DATABASE"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      # test: ["CMD-SHELL", "pg_isready -U $USER"] # Celle la fonctionne mais fait une fatal car elle teste avec un user qui n'existe pas
 networks:
   backend:
     name: backend
