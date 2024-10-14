@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/04 17:31:46 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/14 13:52:45 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ gunicorn>=20.0,<21.0
 requests>=2.25.1
 
 # Permet de gérer les requestes Cors du front
-django-cors-headers>=3.13,<4.0
+# django-cors-headers>=3.13,<4.0
 
 # Bibliothèque pour créer et manipuler les tokens JWT
 PyJWT>=2.6.0
