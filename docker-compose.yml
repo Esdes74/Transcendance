@@ -52,7 +52,7 @@ services:
       - backend
       - auth_db
     restart: always
-  
+
   pong_web:
     build:
       context: ./Backend/S_Pong/Container/django
