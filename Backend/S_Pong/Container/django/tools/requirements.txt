@@ -3,36 +3,24 @@
 #                                                         :::      ::::::::    #
 #    requirements.txt                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/12 22:07:37 by eslamber         ###   ########.fr        #
+#    Updated: 2024/08/26 16:19:16 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Version de Django
-Django>=4.2.5,<5.0
+# Version de django
+Django>=4.2,<5.0
 
-# Driver PostgreSQL pour Django
-psycopg2-binary>=2.9.7,<3.0
+# Ce qui sert a django pour travailler avec postgresql
+psycopg2-binary>=2.9,<3.0
 
-# Serveur WSGI pour exécuter l'application
-gunicorn>=20.1.0,<21.0
-
-# Serveur ASGI pour exécuter l'application
-uvicorn[standard]>=0.13.4
-
-# Framework pour la création d'API REST
-djangorestframework>=3.14.0,<4.0
-
-# Bibliothèque pour la création de tokens JWT
-djangorestframework-simplejwt>=5.2.2,<6.0
-
-# Module pour effectuer des requêtes HTTP
-requests>=2.25.1
-
-# Gestion des requêtes CORS
-django-cors-headers>=3.13,<4.0
+# Améliore les capacitées et la réactivitée du site
+gunicorn>=20.0,<21.0
 
 # Support pour les WebSockets
 channels>=4.0,<5.0
+
+# Serveur ASGI pour exécuter l'application
+uvicorn[standard]>=0.13.4

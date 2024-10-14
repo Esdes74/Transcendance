@@ -11,6 +11,18 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'djpr_API.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djpr_API.settings")
 
-application = get_asgi_application()
+# application = get_asgi_application()
+
+
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from pong.routing import websocket_urlpatterns
+
+application = ProtocolTypeRouter(
+    {
+        "http": get_asgi_application(),  # Les requêtes HTTP passent par urls.py
+        "websocket": AuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
+    }
+)
