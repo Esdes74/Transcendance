@@ -6,20 +6,20 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/04 17:27:28 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/14 14:19:05 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 # from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate
+# from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
 from .models import FullUser
 from .gen_token import generate_jwt_token
 
 def login(request):
-	print("bonjour")
 	if (request.method == 'POST') : # TODO: paser en GET
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -30,21 +30,23 @@ def login(request):
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		try:
-			print("bonjour2")
 			# Authentification de l'utilisateurs avec les comptes prééxistans
-			user = authenticate(request, username=username, password=password)
-			print("bonjour3")
+			user = FullUser.objects.filter(username=username).first()
 
 			# Si n'existe pas
 			if user is None:
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
+			
+			# Vérifier le mot de passe (en utilisant la fonction Django hash)
+			if not check_password(password, user.password):
+				return JsonResponse({"error": "Invalid Credentials"}, status=401)
 
-			# token = generate_jwt_token(user)
+			token = generate_jwt_token(user)
 			res = "Login Complete with " + username + " and " + password
 			print("complete")
-			return JsonResponse({"message": res}, status = 200)
-			# return JsonResponse({"message": res, "token": token}, status = 200)
-		
+			# return JsonResponse({"message": res}, status = 200)
+			return JsonResponse({"message": res, "token": token}, status = 200)
+
 		except Exception as e:
 			print(f"Error: {str(e)}")
 			return JsonResponse({"error": "Authentification failed"}, status=500)
@@ -60,7 +62,6 @@ def create(request):
 
 		# Regarde si les identifiants sont donnés/recus
 		if not username or not password or not pseudo :
-			print(f"username = {request.body}, et pass = {password}")
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		try:
@@ -76,11 +77,11 @@ def create(request):
 
 			if user:
 				# si le user est bien créé avec on créée le token et on renvois tous
-				# token = generate_jwt_token(user)
+				token = generate_jwt_token(user)
 				res = "Login Complete with " + username + " and " + password
-				print("suscription complete")
-				# return JsonResponse({"message": res, "token": token}, status = 201)
-				return JsonResponse({"message": res}, status = 201)
+				print("subscription complete")
+				return JsonResponse({"message": res, "token": token}, status = 201)
+				# return JsonResponse({"message": res}, status = 201)
 			else:
 				# si le user n'existe pas alors il y a une erreure et on renvois l'erreure
 				return JsonResponse({"error": "User creation failed"}, status=500)

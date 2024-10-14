@@ -61,16 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data)
+				body: JSON.stringify(data),
+				credentials: 'include'
 			});
 
 			// Vérifie la réponse de l'API
-			if (response.ok) { // TODO: Gérer la éception des cookies 
+			if (response.ok) { // TODO: Gérer la réception des cookies 
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result);
 
 				// Sauvegarde le token ou redirige l'utilisateur
-				localStorage.setItem('token', result.token); // Sauvegarde le token dans le stockage local
+				// response.set_cookie(key='jwt_token', value=token)//, httponly=True, secure=True)  // secure=True pour HTTPS
 
 				// Redirige vers une autre page ou affiche un message de succès
 				window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée

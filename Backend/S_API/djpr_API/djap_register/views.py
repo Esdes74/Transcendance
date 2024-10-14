@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/26 11:08:19 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/14 15:30:26 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,19 +16,18 @@ from rest_framework.response import Response
 # from django.contrib.auth import authenticate
 # from .models import FullUser
 # from .gen_token import generate_jwt_token
+from django.http import JsonResponse
 import requests
 
 # TODO: Passer en GET
 @api_view(['POST'])
 def login_view(request):
-	print(f"cookie = {request.COOKIES} et request.META = {request.META.get('HTTP_X_CSRFTOKEN')}") # Ajout pour debuggage
 	username = request.data.get('username')
 	password = request.data.get('password')
 
 	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
 
-	print("bonjour2") # Ajout pour debuggage
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/registery/register/"
 	payload = {
@@ -52,20 +51,15 @@ def login_view(request):
 	# tok = RefeshToken.for_user()
 
 	try:
-		print("bonjour3") # Ajout pour debuggage
-		print(f"Sending request to {external_service_url} with payload {payload}")# and cookie {COOKIE}")
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 		# Vérifier si la requête a réussi
 		if response.status_code == 200:
-			return Response(response.json(), status=200) # TODO: retourner le token renvoyé en cas de bonne réponse
+			return Response(response.json(), status=200)
 		else:
-			print("bonjour4") # Ajout pour debuggage
-			print(response.text) # Ajout pour debuggage
 			res = "Login failed\n" + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
-		print("bonjour5") # Ajout pour debuggage
 		return Response({"error": str(e)}, status=500)
 
 @api_view(['POST'])
@@ -96,7 +90,18 @@ def create_view(request):
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 201:
-			return Response(response.json(), status=201) # TODO: retourner le token renvoyé en cas de bonne réponse
+			if response.status_code == 201:
+				token = response.json().get('token')
+				if token:
+					# Créez la réponse JSON avec le token
+					json_response = JsonResponse(response.json(), status=201)
+					json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+					return json_response
+				else:
+					return JsonResponse({"error": "Token not found in response"}, status=500)
+
+			# response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)  # Ajouter secure=True pour HTTPS
+			# return Response(response.json(), status=201)
 		else:
 			res = "Login failed\n" + response.text
 			return Response({"error": res}, status=response.status_code)
