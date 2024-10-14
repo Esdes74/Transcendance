@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/14 14:19:05 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/14 15:42:43 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ def login(request):
 		password = request.POST.get('password')
 
 		# Regarde si les identifiants sont donnés/recus
-		print(f"username = {username}, et pass = {password}")
 		if not username or not password :
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
@@ -36,7 +35,7 @@ def login(request):
 			# Si n'existe pas
 			if user is None:
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
-			
+
 			# Vérifier le mot de passe (en utilisant la fonction Django hash)
 			if not check_password(password, user.password):
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
@@ -89,9 +88,9 @@ def create(request):
 		except IntegrityError as e:
 			# Gérer les erreurs comme la violation de contrainte (doublon sur le nom d'utilisateur)
 			return JsonResponse({'error': 'Integrity error', 'details': str(e)}, status=400)
-		
+
 		except Exception as e:
 			# Gérer d'autres types d'erreurs qui pourraient survenir
 			return JsonResponse({'error': 'An unexpected error occurred', 'details': str(e)}, status=500)
-	
+
 	return JsonResponse({'error': 'Invalid request method'}, status=405)

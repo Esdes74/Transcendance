@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/14 15:30:26 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/14 15:35:30 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,14 @@ def login_view(request):
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 		# Vérifier si la requête a réussi
 		if response.status_code == 200:
-			return Response(response.json(), status=200)
+			token = response.json().get('token')
+			if token:
+				# Créez la réponse JSON avec le token
+				json_response = JsonResponse(response.json(), status=200)
+				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+				return json_response
+			else:
+				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
 			res = "Login failed\n" + response.text
 			return Response({"error": res}, status=response.status_code)
@@ -90,15 +97,14 @@ def create_view(request):
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 201:
-			if response.status_code == 201:
-				token = response.json().get('token')
-				if token:
-					# Créez la réponse JSON avec le token
-					json_response = JsonResponse(response.json(), status=201)
-					json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
-					return json_response
-				else:
-					return JsonResponse({"error": "Token not found in response"}, status=500)
+			token = response.json().get('token')
+			if token:
+				# Créez la réponse JSON avec le token
+				json_response = JsonResponse(response.json(), status=201)
+				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+				return json_response
+			else:
+				return JsonResponse({"error": "Token not found in response"}, status=500)
 
 			# response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)  # Ajouter secure=True pour HTTPS
 			# return Response(response.json(), status=201)
