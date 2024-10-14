@@ -6,14 +6,12 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/14 15:42:43 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/14 18:02:07 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-# from django.views.decorators.csrf import csrf_exempt
-# from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
 from .models import FullUser
@@ -41,10 +39,12 @@ def login(request):
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
 
 			token = generate_jwt_token(user)
+			print(token)
 			res = "Login Complete with " + username + " and " + password
 			print("complete")
 			# return JsonResponse({"message": res}, status = 200)
 			return JsonResponse({"message": res, "token": token}, status = 200)
+			# return JsonResponse({"message": res, "token": token}, status = 200)
 
 		except Exception as e:
 			print(f"Error: {str(e)}")
@@ -77,6 +77,7 @@ def create(request):
 			if user:
 				# si le user est bien créé avec on créée le token et on renvois tous
 				token = generate_jwt_token(user)
+				print(token)
 				res = "Login Complete with " + username + " and " + password
 				print("subscription complete")
 				return JsonResponse({"message": res, "token": token}, status = 201)

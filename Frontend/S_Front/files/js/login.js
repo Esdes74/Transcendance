@@ -1,20 +1,20 @@
-function getCookie(name) {
-	let cookieValue = null;
-	console.log("bonjour1");
-	if (document.cookie && document.cookie !== '') {
-		console.log("bonjour2");
-		const cookies = document.cookie.split(';');
-		for (let i = 0; i < cookies.length; i++) {
-			console.log("bonjour3");
-			const cookie = cookies[i].trim();
-			if (cookie.substring(0, name.length + 1) === (name + '=')) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
-}
+// function getCookie(name) {
+// 	let cookieValue = null;
+// 	console.log("bonjour1");
+// 	if (document.cookie && document.cookie !== '') {
+// 		console.log("bonjour2");
+// 		const cookies = document.cookie.split(';');
+// 		for (let i = 0; i < cookies.length; i++) {
+// 			console.log("bonjour3");
+// 			const cookie = cookies[i].trim();
+// 			if (cookie.substring(0, name.length + 1) === (name + '=')) {
+// 				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+// 				break;
+// 			}
+// 		}
+// 	}
+// 	return cookieValue;
+// }
 
 document.addEventListener('DOMContentLoaded', () => {
 	const form = document.getElementById('loginForm');
@@ -32,18 +32,19 @@ document.addEventListener('DOMContentLoaded', () => {
 			password: password
 		};
 
-		cookie = getCookie('csrftoken');
+		// cookie = getCookie('csrftoken');
 
 		try {
 			// envois des donées en log pour le debuggage
-			console.log(cookie);
+			// console.log(cookie);
 			// Envoie les données à l'API
 			const response = await fetch('http://localhost:8000/api/auth/login/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data)
+				body: JSON.stringify(data),
+				credentials: 'include'
 			});
 			// 'X-CSRFToken': cookie
 			// credentials: 'include',
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				console.log('Réponse de l\'API :', result);
 
 				// Sauvegarde le token ou redirige l'utilisateur
-				localStorage.setItem('token', result.token); // Sauvegarde le token dans le stockage local
+				// localStorage.setItem('token', result.token); // Sauvegarde le token dans le stockage local
 
 				// Redirige vers une autre page ou affiche un message de succès
 				window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée

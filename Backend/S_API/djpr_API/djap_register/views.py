@@ -6,16 +6,12 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/14 15:35:30 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/14 18:15:32 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# from rest_framework_simplejwt.tokens import RefreshToken
-# from django.contrib.auth import authenticate
-# from .models import FullUser
-# from .gen_token import generate_jwt_token
 from django.http import JsonResponse
 import requests
 
@@ -35,24 +31,9 @@ def login_view(request):
 		'password': password
 	}
 
-	# Ajout d'un header pour le CSRF si nécessaire
-	# csrf_token = request.META.get('HTTP_X_CSRFTOKEN')
-	# headers = {
-	# 	'Content-Type': 'application/x-www-form-urlencoded',
-	# }
-
-	# if csrf_token:
-	# 	headers['X-CSRFToken'] = csrf_token
-
-	# COOKIE=get_cookies_from_request(request)
-	# COOKIE=request.META.get('HTTP_X_CSRFTOKEN') # plus util sauf pour le debug
-	
-	# Création du token jwt
-	# tok = RefeshToken.for_user()
-
 	try:
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
-		# Vérifier si la requête a réussi
+
 		if response.status_code == 200:
 			token = response.json().get('token')
 			if token:
@@ -101,13 +82,11 @@ def create_view(request):
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=201)
-				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+				json_response.set_cookie(key='jwt_token', value=token, httponly=True, max_age=3600)
 				return json_response
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 
-			# response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)  # Ajouter secure=True pour HTTPS
-			# return Response(response.json(), status=201)
 		else:
 			res = "Login failed\n" + response.text
 			return Response({"error": res}, status=response.status_code)
