@@ -3,25 +3,27 @@
 #                                                         :::      ::::::::    #
 #    launch.sh                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/02 17:50:19 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/21 18:58:05 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
 
+cd $VOLUME
 # Créer des migrations
-# python3 $VOLUME/manage.py makemigrations
+python3 manage.py makemigrations
 
 # Appliquer les migrations
-python3 $VOLUME/manage.py migrate
+python3 manage.py migrate
 
 # Créer un superutilisateur automatiquement
 if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ] && [ "$DJANGO_SUPERUSER_EMAIL" ]; then
-    python3 $VOLUME/manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
+    python3 manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
 fi
 
 # Lancer le serveur Django
-python3 $VOLUME/manage.py runserver 0.0.0.0:8000
+uvicorn djpr_API.asgi:application --host 0.0.0.0 --port 8000
+# python3 manage.py runserver 0.0.0.0:8000

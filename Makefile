@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/11 10:34:53 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/21 16:53:34 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ dir:
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Commandes de clean du docker
-fclean: rmi builder_rm system_rm rm_dir network_rm volume_rm
+fclean: rmi builder_rm system_rm volume_rm rm_dir network_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
