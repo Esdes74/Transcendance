@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/21 15:18:45 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/22 16:33:57 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ import requests
 # TODO: Passer en GET
 @api_view(['POST'])
 def login_view(request):
-	# print(request.COOKIES['jwt_token'])
 	username = request.data.get('username')
 	password = request.data.get('password')
 
