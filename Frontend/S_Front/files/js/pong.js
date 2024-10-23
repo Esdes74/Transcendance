@@ -1,31 +1,31 @@
-const	canvas = document.getElementById('pongCanvas');
-const	ctx = canvas.getContext('2d');
+const canvas = document.getElementById('pongCanvas');
+const ctx = canvas.getContext('2d');
 
-const	playerWidth = 10;			// Epaisseur players
-const	playerHeight = 100;			// Hauteur players
-const	ballRadius = 8;				// Taille de la ball
-let		printBall = true;			// Afficher la ball ou non
+const playerWidth = 10;			// Epaisseur players
+const playerHeight = 100;			// Hauteur players
+const ballRadius = 8;				// Taille de la ball
+let printBall = true;			// Afficher la ball ou non
 
-let		player1Y = (canvas.height - playerHeight) / 2;	//player 1
-let		player2Y = player1Y;							//player 2
+let player1Y = (canvas.height - playerHeight) / 2;	//player 1
+let player2Y = player1Y;							//player 2
 
-let		scorePlayer1 = 0;				// score player 1
-let		scorePlayer2 = 0;				// score player 2
+let scorePlayer1 = 0;				// score player 1
+let scorePlayer2 = 0;				// score player 2
 
-const	scorePlayer1Elem = document.getElementById('scorePlayer1');
-const	scorePlayer2Elem = document.getElementById('scorePlayer2');
+const scorePlayer1Elem = document.getElementById('scorePlayer1');
+const scorePlayer2Elem = document.getElementById('scorePlayer2');
 
-let		ballX = canvas.width / 2;	// Placer la ball au milieu horizontal du canvas
-let		ballY = canvas.height / 2;	// Placer la ball au milieu verticalement du canvas
+let ballX = canvas.width / 2;	// Placer la ball au milieu horizontal du canvas
+let ballY = canvas.height / 2;	// Placer la ball au milieu verticalement du canvas
 
-let		ballSpeed = 3;				// Vitesse de la ball par défaut
-let		ballSpeedX = 3;				// Vitesse de la ball X
-let		ballSpeedY = 3;				// Vitesse de la ball Y
-const	MAX_SPEED = 16;				// Vitesse max de la ball
-const	acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
+let ballSpeed = 3;				// Vitesse de la ball par défaut
+let ballSpeedX = 3;				// Vitesse de la ball X
+let ballSpeedY = 3;				// Vitesse de la ball Y
+const MAX_SPEED = 16;				// Vitesse max de la ball
+const acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
 
-const	playerSpeed = 5;			// Vitesse des players
-const	playerBuffer = 10;			// Ecart des players au bord
+// const playerSpeed = 5;			// Vitesse des players
+const playerBuffer = 10;			// Ecart des players au bord
 
 canvas.width = canvas.clientWidth; // Rendre responsive
 
@@ -37,15 +37,27 @@ canvas.width = canvas.clientWidth; // Rendre responsive
 const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 
 // Gestion de l'ouverture de la connexion WebSocket
-socket.onopen = function (e)
-{
-	console.log("WebSocket is connected");
+socket.onopen = function (e) {
+	console.log("WebSocket is connected ouais");
+
+	// Envoyer la configuration initiale
+	const config = {
+		type: 'config',
+		player1Y: player1Y,
+		player2Y: player2Y,
+		ballX: ballX,
+		ballY: ballY,
+		ballSpeedX: ballSpeedX,
+		ballSpeedY: ballSpeedY,
+		scorePlayer1: scorePlayer1,
+		scorePlayer2: scorePlayer2
+	};
+	socket.send(JSON.stringify(config));
 };
 
 // Gestion de la réception de messages WebSocket
-socket.onmessage = function (e)
-{
-	console.log('Message from server :', event.data);
+socket.onmessage = function (e) {
+	console.log('Message from server il dit :', event.data);
 	const data = JSON.parse(e.data);
 
 	// Mise à jour des positions reçues du serveur
@@ -63,15 +75,13 @@ socket.onmessage = function (e)
 };
 
 // Gestion des erreurs WebSocket
-socket.onerror = function (error)
-{
-	console.error('WebSocket error :', error);
+socket.onerror = function (error) {
+	console.error('WebSocket error la big erreur la:', error);
 };
 
 // Gestion de la fermeture de la connexion WebSocket
-socket.onclose = function (event)
-{
-	console.log('WebSocket is closed :', event);
+socket.onclose = function (event) {
+	console.log('WebSocket is closed bah il sest ferme:', event);
 };
 
 // ################################################################################################################ //
@@ -82,8 +92,7 @@ socket.onclose = function (event)
 
 // Suivi des touches enfoncées (pour mobilité + fluide)
 const keys = {};
-document.addEventListener('keydown', e =>
-	{
+document.addEventListener('keydown', e => {
 	keys[e.key] = true;
 
 	// Envoyer l'action de mouvement au serveur
@@ -97,16 +106,14 @@ document.addEventListener('keydown', e =>
 document.addEventListener('keyup', e => keys[e.key] = false);
 
 // Dessiner players et ball
-function draw()
-{
+function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = 'white';
 	// Players
 	ctx.fillRect(playerBuffer, player1Y, playerWidth, playerHeight);
 	ctx.fillRect(canvas.width - playerWidth - playerBuffer, player2Y, playerWidth, playerHeight);
 	// Ball
-	if (printBall == true)
-	{
+	if (printBall == true) {
 		ctx.beginPath();
 		ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
 		ctx.fill();
@@ -114,8 +121,7 @@ function draw()
 }
 
 // Gérer les mouvements et collisions de la balle
-function updateBall()
-{
+function updateBall() {
 	// Limiter la vitesse de la balle
 	if (Math.abs(ballSpeedX) > MAX_SPEED)
 		ballSpeedX = (ballSpeedX > 0 ? 1 : -1) * MAX_SPEED;
@@ -131,8 +137,7 @@ function updateBall()
 }
 
 // Boucle du jeu
-function gameLoop()
-{
+function gameLoop() {
 	draw();
 	requestAnimationFrame(gameLoop);
 }
