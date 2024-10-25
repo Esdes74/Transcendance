@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				// response.set_cookie(key='jwt_token', value=token)//, httponly=True, secure=True)  // secure=True pour HTTPS
 
 				// Redirige vers une autre page ou affiche un message de succès
-				window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée
+				window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from corsheaders.defaults import default_headers
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 ALGO = os.getenv('ALGO')
 
 # Pour vérifier que la clée secrete soit bien définis
-if not SECRET_KEY:
+if not SECRET_KEY or not ALGO:
     raise ValueError("La clé secrète n'est pas définie dans l'environnement !")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -54,6 +55,16 @@ CORS_ALLOW_METHODS = [
 # Autoriser l'envoi de cookies avec les requêtes CORS
 CORS_ALLOW_CREDENTIALS = True
 
+# Parametres opur simple jwt
+SIMPLE_JWT = {
+    'SIGNING_KEY': SECRET_KEY,
+    'ALGORITHM': ALGO,
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Durée de vie du token d'accès
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Durée de vie du token de rafraîchissement
+    'ROTATE_REFRESH_TOKENS': True,                   # Rotation des tokens de rafraîchissement
+    'BLACKLIST_AFTER_ROTATION': True,                # Liste noire des tokens après rotation
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -66,6 +77,7 @@ INSTALLED_APPS = [
     'corsheaders',
 	'djap_register',
 	'rest_framework',
+	'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -99,6 +111,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djpr_API.wsgi.application'
 
+# Paramètres de Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

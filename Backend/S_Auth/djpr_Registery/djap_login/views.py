@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/23 16:40:56 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/25 16:34:30 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ def login(request):
 			token = generate_temporary_token(user)
 			# print(token)
 			res = "Login Complete with " + username + " and " + password
+			print(token)
 			print("complete")
 			# return JsonResponse({"message": res}, status = 200)
 			return JsonResponse({"message": res, "token": token}, status = 200)
@@ -103,3 +104,38 @@ def create(request):
 			return JsonResponse({'error': 'An unexpected error occurred', 'details': str(e)}, status=500)
 
 	return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def otp(request):
+	if (request.method == 'POST') : # TODO: paser en GET
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+
+		# Regarde si les identifiants sont donnés/recus
+		if not username or not password :
+			return JsonResponse({"error": "Missings credentials"}, status = 400)
+
+		try:
+			# Authentification de l'utilisateurs avec les comptes prééxistans
+			user = FullUser.objects.filter(username=username).first()
+
+			# Si n'existe pas
+			if user is None:
+				return JsonResponse({"error": "Invalid Token"}, status=401)
+
+			totp = pyotp.TOTP(otp_secret)
+			if not totp.verify(user_input_otp):
+				return JsonResponse({"error": "Invalid Credentials"}, status=401)
+
+			# Génération du token temporaire et renvois
+			token = generate_jwt_token(user)
+			# print(token)
+			res = "Login Complete with " + username + " and " + password
+			print(token)
+			print("complete")
+			# return JsonResponse({"message": res}, status = 200)
+			return JsonResponse({"message": res, "token": token}, status = 200)
+			# return JsonResponse({"message": res, "token": token}, status = 200)
+
+		except Exception as e:
+			print(f"Error: {str(e)}")
+			return JsonResponse({"error": "Authentification failed"}, status=500)
