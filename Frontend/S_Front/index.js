@@ -12,8 +12,13 @@ const server = http.createServer((req, res) => {
     const staticDir = path.join(__dirname, 'files');
 
     // Obtenir l'extension du fichier pour déterminer le type de contenu
+    let filePath;
+        if (req.url === '/')
+		filePath = path.join(staticDir, 'html', 'base.html');
+	else
+		filePath = path.join(staticDir, 'html', req.url);
     const extname = path.extname(filePath);
-    let contentType = 'text/html';
+    let contentType = 'text/html';    
     switch (extname) {
         case '.js':
             contentType = 'text/javascript';

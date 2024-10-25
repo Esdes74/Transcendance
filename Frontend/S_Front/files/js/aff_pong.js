@@ -29,8 +29,8 @@ function affPong()
 		</div>
 	</div>
     `
+    document.body = newBody
     let pongScriptElement = document.createElement('script')
     pongScriptElement.setAttribute("src", "pong.js")
     document.head.appendChild(pongScriptElement)
-    document.body = newBody
 }
