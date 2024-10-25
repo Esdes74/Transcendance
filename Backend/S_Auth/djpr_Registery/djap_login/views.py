@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/22 16:33:06 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/23 16:40:56 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
 from .models import FullUser
-from .gen_token import generate_jwt_token
+from .gen_token import generate_jwt_token, generate_temporary_token
+import pyotp
 
 def login(request):
 	if (request.method == 'POST') : # TODO: paser en GET
@@ -38,8 +39,9 @@ def login(request):
 			if not check_password(password, user.password):
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
 
-			token = generate_jwt_token(user)
-			print(token)
+			# Génération du token temporaire et renvois
+			token = generate_temporary_token(user)
+			# print(token)
 			res = "Login Complete with " + username + " and " + password
 			print("complete")
 			# return JsonResponse({"message": res}, status = 200)
@@ -64,6 +66,9 @@ def create(request):
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		try:
+			# Création du secret du profil
+			otp_sec = pyotp.random_base32()
+
 			# Création du profil
 			user = FullUser.objects.create_user(
 				username=username,
@@ -71,12 +76,15 @@ def create(request):
 				pseudo=pseudo,
 				phone_nb=phone_nb,
 				email=mail,
-				adress=adress
+				adress=adress,
+				secret=otp_sec
 			)
+			user.save()
 
 			if user:
 				# si le user est bien créé avec on créée le token et on renvois tous
-				token = generate_jwt_token(user)
+				# Génération du token temporaire et renvois
+				token = generate_temporary_token(user)
 				print(token)
 				res = "Login Complete with " + username + " and " + password
 				print("subscription complete")

@@ -33,6 +33,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['django-Auth', '127.0.0.1', 'localhost', '0.0.0.0']
 
+# Settings d'envois d'e-mail
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'djap_login',
+	'pyotp',
 ]
 
 MIDDLEWARE = [

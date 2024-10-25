@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/14 13:52:45 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/23 16:35:37 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,17 +19,11 @@ psycopg2-binary>=2.9,<3.0
 # Améliore les capacitées et la réactivitée du site
 gunicorn>=20.0,<21.0
 
-# Framework pour la création d'api
-# djangorestframework>=3.12,<4.0
-
-# Installation de la bibliothèque simplejwt pour créer les token
-# djangorestframework-simplejwt>=5.0,<5.3
-
 # Modules pour gérer les requetes
 requests>=2.25.1
 
-# Permet de gérer les requestes Cors du front
-# django-cors-headers>=3.13,<4.0
-
 # Bibliothèque pour créer et manipuler les tokens JWT
 PyJWT>=2.6.0
+
+# Pour générer le mot de passe a usage uique utilisé pour la 2fa
+pyotp>=2.8.0,<3.0

@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:26:29 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/04 17:26:34 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/23 16:55:51 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,3 +19,4 @@ class FullUser(AbstractUser):
 	email = models.CharField(blank=True, null=True)
 	phone_nb = models.CharField(max_length=10, blank=True, null=True)
 	adress = models.CharField(blank=True, null=True)
+	secret = models.CharField(max_length=32, blank=True, null=True)
