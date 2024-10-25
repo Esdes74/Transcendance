@@ -47,6 +47,8 @@ const server = http.createServer((req, res) => {
             contentType = 'image/gif';
 			filePath = path.join(staticDir, 'images', req.url);
             break;
+	case '.html':
+	    filePath = path.join(staticDir, 'html', 'base.html');
     }
 
     // Lire le fichier et le renvoyer comme réponse
