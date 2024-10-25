@@ -11,17 +11,9 @@ const server = http.createServer((req, res) => {
     // Définir le répertoire où se trouvent les fichiers statiques
     const staticDir = path.join(__dirname, 'files');
 
-    // Construire le chemin du fichier demandé
-    let filePath;
-	if (req.url === '/')
-		filePath = path.join(staticDir, 'html', 'index.html');
-	else
-		filePath = path.join(staticDir, 'html', req.url);
-
     // Obtenir l'extension du fichier pour déterminer le type de contenu
     const extname = path.extname(filePath);
     let contentType = 'text/html';
-
     switch (extname) {
         case '.js':
             contentType = 'text/javascript';
@@ -47,8 +39,8 @@ const server = http.createServer((req, res) => {
             contentType = 'image/gif';
 			filePath = path.join(staticDir, 'images', req.url);
             break;
-	case '.html':
-	    filePath = path.join(staticDir, 'html', 'base.html');
+	    default:
+	        filePath = path.join(staticDir, 'html', 'base.html');
     }
 
     // Lire le fichier et le renvoyer comme réponse

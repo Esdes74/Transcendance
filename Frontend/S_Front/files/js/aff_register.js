@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+function affRegister()
+{
+    let newBody = document.createElement('body')
+    document.title = "Login"
+    newBody.innerHTML = `
     <div class="container mt-5">
         <h2>Connexion</h2>
         <form id="loginForm">
@@ -44,5 +40,6 @@
     </div>
 
     <script src="register.js"></script>
-</body>
-</html>
+    `
+    document.body = newBody
+}

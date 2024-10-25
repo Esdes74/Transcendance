@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil</title>
-    <link rel="stylesheet" href="style.css"> <!-- Lien vers un fichier CSS si tu veux ajouter du style -->
-</head>
-<body>
-    <header>
+function affBravo()
+{
+    let newBody = document.createElement('body')
+    document.title = "Bravo"
+    newBody.innerHTML = `
+     <header>
         <h1>BRAVO</h1>
     </header>
 
@@ -22,5 +18,6 @@
     <footer>
         <p>&copy; 2024 Mon Site. Tous droits réservés.</p>
     </footer>
-</body>
-</html>
+    `
+    document.body = newBody
+}
