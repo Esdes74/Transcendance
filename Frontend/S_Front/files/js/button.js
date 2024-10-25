@@ -1,13 +1,11 @@
 function updateButton()
 {
-    console.log("caca")
     history.pushState({pageID: 'prouteur'}, 'Coucou le caca', '/prout.html')
     rootMyUrl()
 }
 
 function updateSecondButton()
 {
-    console.log("pipi")
     history.pushState({pageID: 'secondButton'}, 'Cca', '/therapie.html')
     rootMyUrl()
 }
