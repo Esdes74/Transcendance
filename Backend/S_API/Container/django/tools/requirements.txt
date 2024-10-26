@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/26 11:21:24 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/26 11:50:03 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,9 @@ psycopg2-binary>=2.9.7,<3.0
 
 # Serveur WSGI pour exécuter l'application
 gunicorn>=20.1.0,<21.0
+
+# Framework pour la création d'api
+djangorestframework>=3.12,<4.0
 
 # Serveur ASGI pour exécuter l'application
 uvicorn[standard]>=0.13.4

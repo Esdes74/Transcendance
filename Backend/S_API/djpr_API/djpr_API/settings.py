@@ -55,15 +55,6 @@ CORS_ALLOW_METHODS = [
 # Autoriser l'envoi de cookies avec les requêtes CORS
 CORS_ALLOW_CREDENTIALS = True
 
-# Parametres opur simple jwt
-# SIMPLE_JWT = {
-#     'SIGNING_KEY': SECRET_KEY,
-#     'ALGORITHM': ALGO,
-#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # Durée de vie du token d'accès
-#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Durée de vie du token de rafraîchissement
-#     'ROTATE_REFRESH_TOKENS': True,                   # Rotation des tokens de rafraîchissement
-#     'BLACKLIST_AFTER_ROTATION': True,                # Liste noire des tokens après rotation
-# }
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
@@ -79,7 +70,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'channels',
-    'corsheaders',
     'corsheaders',
     'djap_register',
     'djap_pong',
@@ -123,9 +113,6 @@ CHANNEL_LAYERS = {
 
 WSGI_APPLICATION = 'djpr_API.wsgi.application'
 ASGI_APPLICATION = 'djpr_API.asgi.application'
-
-# Configuration de rest_framework
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
