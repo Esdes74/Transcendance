@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 17:14:17 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/23 17:36:34 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/26 10:37:38 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,17 +34,20 @@ def generate_jwt_token(user):
 		'grade': 'admin',
 	}
 
+	# Génération du token
 	token = jwt.encode(payload, SECRET_KEY, algorithm=ALGO)
 	return token
 
 def generate_temporary_token(user):
 	payload = {
 		'user_id': user.id,
+		'username': user.username,
 		'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3),  # Expiration dans 3 minutes
 		'iat': datetime.datetime.utcnow(),
 		'grade': 'auth',
 	}
 
+	# Génération du token
 	token = jwt.encode(payload, SECRET_KEY, algorithm=ALGO)
 
 	# Génération du mot de passe temporaire envoyé

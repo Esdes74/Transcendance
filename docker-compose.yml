@@ -36,7 +36,7 @@ services:
     container_name: django-Auth
     command: python manage.py runserver 0.0.0.0:8000 
     ports:
-      - "8001:8000"
+      - "7999:8000"
     volumes:
       - ./Backend/S_Auth/djpr_Registery:${DJANGO_WORKDIR_AUTH:-/home/Auth}
     environment:

@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/21 15:39:27 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/26 09:17:28 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,7 +72,7 @@ dir:
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Commandes de clean du docker
-fclean: rmi builder_rm system_rm volume_rm rm_dir network_rm
+fclean: rmi builder_rm system_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution

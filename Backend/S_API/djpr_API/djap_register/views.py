@@ -6,13 +6,14 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/25 18:06:03 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/26 10:02:49 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import requests
-from rest_framework_simplejwt.backends import TokenBackend
-from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+import jwt
+import os
+from jwt.exceptions import InvalidTokenError, DecodeError
 from django.conf import settings
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -109,16 +110,22 @@ def otp_verif(request):
 
 	# Verification du token
 	try:
-		token_backend = TokenBackend(algorithm=settings.SIMPLE_JWT['ALGORITHM'])
-		decoded_token = token_backend.decode(token, verify=True)
+		decoded_token = jwt.decode(
+			token,
+			os.getenv('SECRET_KEY'),
+			algorithms=[os.getenv('ALGO')],
+			options={"verify_signature": True}
+		)
 
 		grade = decoded_token.get('grade')
 		username = decoded_token.get('username')
-		if (grade != auth or not grade or not username):
+		print(f"grade = {grade}")
+		print(f"username = {username}")
+		if (grade != 'auth' or not grade or not username):
 			return Response({"error": "Unauthorized token"}, status=401)
-	except InvalidToken:
+	except InvalidTokenError:
 		return Response({"error": "Invalid token"}, status=401)
-	except TokenError:
+	except DecodeError:
 		return Response({"error": "Token error"}, status=401)
 
 	# Appeler un autre service pour gérer l'authentification
