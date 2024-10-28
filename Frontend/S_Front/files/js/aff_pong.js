@@ -1,8 +1,7 @@
 function affPong()
 {
-    let newBody = document.createElement('body')
-    document.title = "Pong"
-    newBody.innerHTML = `
+    let docMain = document.querySelector('main')
+   	docMain.innerHTML = `
     <div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
@@ -29,8 +28,4 @@ function affPong()
 		</div>
 	</div>
     `
-    document.body = newBody
-    let pongScriptElement = document.createElement('script')
-    pongScriptElement.setAttribute("src", "pong.js")
-    document.head.appendChild(pongScriptElement)
 }

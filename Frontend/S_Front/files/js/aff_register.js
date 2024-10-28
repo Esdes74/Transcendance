@@ -1,8 +1,7 @@
 function affRegister()
 {
-    let newBody = document.createElement('body')
-    document.title = "Login"
-    newBody.innerHTML = `
+    let docMain = document.querySelector('main')
+    docMain.innerHTML = `
     <div class="container mt-5">
         <h2>Connexion</h2>
         <form id="loginForm">
@@ -38,8 +37,6 @@ function affRegister()
         </form>
         <div id="error-message" class="mt-3 text-danger"></div>
     </div>
-
     <script src="register.js"></script>
     `
-    document.body = newBody
 }

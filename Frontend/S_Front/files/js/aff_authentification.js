@@ -1,8 +1,7 @@
 function affAuthentification()
 {
-    let newBody = document.createElement('body')
-    document.title = "Authentification"
-    newBody.innerHTML = `
+    let docMain = document.querySelector('main')
+    docMain.innerHTML = `
     <div class="container mt-5">
 		<h2>Connexion</h2>
 		<form id="loginForm">
@@ -22,8 +21,6 @@ function affAuthentification()
 			<a href="/register.html" class="btn btn-primary">register</a> <!-- Lien vers la page d'authentification -->
 		</section>
 	</div>
-
 	<script src="login.js"></script> 
     `
-    document.body = newBody
 }

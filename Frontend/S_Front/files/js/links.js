@@ -1,6 +1,6 @@
 function updateButton()
 {
-    //history.pushState({pageID: 'index'}, 'Index', '/')
+    history.pushState({pageID: 'index'}, 'Index', '/')
     rootMyUrl()
 }
 
@@ -24,7 +24,7 @@ function updateFourthButton()
 
 function getLinks()
 {
-    let buttons = document.querySelectorAll("input")
+    let buttons = document.querySelectorAll("button")
     buttons.forEach( button => {
     if (button.value === "Accueil")
         button.addEventListener("click", updateButton)
