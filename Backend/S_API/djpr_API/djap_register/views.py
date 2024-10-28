@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/26 10:02:49 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/28 16:54:01 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,6 @@ def create_view(request):
 		'pseudo': pseudo,
 		'phone_nb': phone_nb,
 		'mail': mail,
-		'adress': adress
 	}
 
 	try:
@@ -119,8 +118,6 @@ def otp_verif(request):
 
 		grade = decoded_token.get('grade')
 		username = decoded_token.get('username')
-		print(f"grade = {grade}")
-		print(f"username = {username}")
 		if (grade != 'auth' or not grade or not username):
 			return Response({"error": "Unauthorized token"}, status=401)
 	except InvalidTokenError:

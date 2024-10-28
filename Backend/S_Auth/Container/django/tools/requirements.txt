@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/23 16:35:37 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/28 16:52:53 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,3 +27,7 @@ PyJWT>=2.6.0
 
 # Pour générer le mot de passe a usage uique utilisé pour la 2fa
 pyotp>=2.8.0,<3.0
+
+# Pour stocker correctement le numéro de téléphone
+django-phonenumber-field>=7.0.0,<8.0
+phonenumbers>=8.12.0,<9.0

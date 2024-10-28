@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/26 11:16:33 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/28 16:53:20 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,6 @@ def create(request):
 		pseudo = request.POST.get('pseudo')
 		phone_nb = request.POST.get('phone_nb')
 		mail = request.POST.get('mail')
-		adress = request.POST.get('adress')
 
 		# Regarde si les identifiants sont donnés/recus
 		if not username or not password or not pseudo :
@@ -77,7 +76,6 @@ def create(request):
 				pseudo=pseudo,
 				phone_nb=phone_nb,
 				email=mail,
-				adress=adress,
 				secret=otp_sec
 			)
 			user.save()
