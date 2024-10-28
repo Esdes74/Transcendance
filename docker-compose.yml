@@ -9,7 +9,7 @@ services:
     container_name: django-API
     command: ["uvicorn", "djpr_API.asgi:application", "--host", "0.0.0.0", "--port", "8000"] 
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - ./Backend/S_API/djpr_API:${DJANGO_WORKDIR_API:-/home/API}
     environment:
@@ -36,7 +36,7 @@ services:
     container_name: django-Auth
     command: python manage.py runserver 0.0.0.0:8000 
     ports:
-      - "7999:8000"
+      - "127.0.0.1:7999:8000"
     volumes:
       - ./Backend/S_Auth/djpr_Registery:${DJANGO_WORKDIR_AUTH:-/home/Auth}
     environment:
@@ -62,7 +62,7 @@ services:
     container_name: django-Pong
     command: ["uvicorn", "Pong.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
     ports:
-      - "8002:8000"
+      - "127.0.0.1:8002:8000"
     volumes:
       - ./Backend/S_Pong/Pong:${DJANGO_WORKDIR_PONG:-/home/Pong_back}
     environment:
@@ -93,7 +93,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     networks:
       - api_db
     healthcheck:
@@ -117,7 +117,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5431:5432"
+      - "127.0.0.1:5431:5432"
     networks:
       - auth_db
     healthcheck:
@@ -141,7 +141,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5430:5432"
+      - "127.0.0.1:5430:5432"
     networks:
       - pong_db
     healthcheck:
