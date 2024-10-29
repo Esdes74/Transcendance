@@ -6,18 +6,20 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/28 16:54:01 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/29 12:01:41 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 import requests
 import jwt
 import os
-from jwt.exceptions import InvalidTokenError, DecodeError
 from django.conf import settings
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
+from djap_register.models import UserProfile
+from .save_new_user import save_new_user
 
 # TODO: Passer en GET
 @api_view(['POST'])
@@ -44,7 +46,12 @@ def login_view(request):
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
+				# TODO: Je pens qu'il faudra le passer en https et en secure
 				json_response.set_cookie(key='jwt_token', value=token, httponly=False, max_age=180)
+
+				# Archivage du user_id pour l'identifier comme authentifié plus tard
+				save_new_user(token)
+
 				return json_response
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
@@ -87,7 +94,12 @@ def create_view(request):
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=201)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
+				# TODO: Je pens qu'il faudra le passer en https et en secure
 				json_response.set_cookie(key='jwt_token', value=token, httponly=False, max_age=180)
+
+				# Archivage du user_id pour l'identifier comme authentifié plus tard
+				save_new_user(token)
+
 				return json_response
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
@@ -100,30 +112,14 @@ def create_view(request):
 		return Response({"error": str(e)}, status=500)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def otp_verif(request):
 	password = request.data.get('password')
-	token = request.COOKIES.get('jwt_token')
+	username = request.data.get('username')
+	print("hello")
 
-	if not token or not password:
+	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
-
-	# Verification du token
-	try:
-		decoded_token = jwt.decode(
-			token,
-			os.getenv('SECRET_KEY'),
-			algorithms=[os.getenv('ALGO')],
-			options={"verify_signature": True}
-		)
-
-		grade = decoded_token.get('grade')
-		username = decoded_token.get('username')
-		if (grade != 'auth' or not grade or not username):
-			return Response({"error": "Unauthorized token"}, status=401)
-	except InvalidTokenError:
-		return Response({"error": "Invalid token"}, status=401)
-	except DecodeError:
-		return Response({"error": "Token error"}, status=401)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/registery/2fa/"
@@ -141,6 +137,10 @@ def otp_verif(request):
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
 				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+
+				# Archivage du user_id pour l'identifier comme authentifié plus tard
+				save_new_user(token)
+
 				return json_response
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)

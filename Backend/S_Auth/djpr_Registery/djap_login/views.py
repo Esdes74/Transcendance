@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/29 09:08:40 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/29 11:29:26 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
 from .models import FullUser
-from .gen_token import generate_jwt_token, generate_temporary_token
+from .gen_token import generate_jwt_token_auth, generate_temporary_token
 import pyotp
 
 def login(request):
@@ -46,7 +46,7 @@ def login(request):
 
 			# Génération du token temporaire et renvois
 			token = generate_temporary_token(user)
-			res = "Login Complete with " + username + " and " + password
+			res = "Login Complete"
 			return JsonResponse({"message": res, "token": token}, status = 200)
 
 		except Exception as e:
@@ -84,7 +84,7 @@ def create(request):
 				# si le user est bien créé avec on créée le token et on renvois tous
 				# Génération du token temporaire et renvois
 				token = generate_temporary_token(user)
-				res = "Login Complete with " + username + " and " + password
+				res = "Login Complete"
 				return JsonResponse({"message": res, "token": token}, status = 201)
 			else:
 				# si le user n'existe pas alors il y a une erreure et on renvois l'erreure
@@ -124,8 +124,8 @@ def otp(request):
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
 
 			# Génération du token temporaire et renvois
-			token = generate_jwt_token(user)
-			res = "Login Complete with " + username + " and " + password
+			token = generate_jwt_token_auth(user)
+			res = "Login Complete"
 			return JsonResponse({"message": res, "token": token}, status = 200)
 
 		except Exception as e:
