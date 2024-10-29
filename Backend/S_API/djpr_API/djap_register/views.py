@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/29 12:01:41 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/29 20:36:13 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,8 +114,10 @@ def create_view(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def otp_verif(request):
+	print("hello")
 	password = request.data.get('password')
-	username = request.data.get('username')
+	username = getattr(request, 'username', None)
+	print(f"username = {username}, password = {password}")
 	print("hello")
 
 	if not username or not password:
