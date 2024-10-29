@@ -25,7 +25,7 @@ services:
       - backend
       - frontend
       - api_db
-    restart: always
+    restart: on-failure
   
   auth_web:
     build:
@@ -51,7 +51,7 @@ services:
     networks:
       - backend
       - auth_db
-    restart: always
+    restart: on-failure
 
   pong_web:
     build:
@@ -77,7 +77,7 @@ services:
     networks:
       - backend
       - pong_db
-    restart: always
+    restart: on-failure
 
   # Tous les conteneurs database contenant postgresql
   api_psql:
@@ -168,7 +168,7 @@ services:
       - .env
     networks:
       - frontend
-    restart: always
+    restart: on-failure
 
 # Networks
 networks:

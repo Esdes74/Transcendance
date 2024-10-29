@@ -55,9 +55,12 @@ CORS_ALLOW_METHODS = [
 # Autoriser l'envoi de cookies avec les requêtes CORS
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
+# Autorisation CSRF
+CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+CSRF_COOKIE_SECURE = False
 
 # Application definition
 
@@ -128,6 +131,8 @@ DATABASES = {
         'HOST': os.getenv('SQL_HOST_API'),
     }
 }
+
+AUTH_USER_MODEL = 'djap_register.UserProfile'
 
 # Paramètres de sécuritée de la base de donnée
 SECURE_BROWSER_XSS_FILTER = True

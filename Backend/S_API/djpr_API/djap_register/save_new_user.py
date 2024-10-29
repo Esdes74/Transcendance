@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 11:20:20 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/29 12:08:57 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/29 19:32:04 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,14 @@ def save_new_user(token):
 	# Vérifiez que u_id est valide
 	if u_id is not None:
 		try:
+			print(UserProfile.objects.filter(user_id=u_id).exists())
 			# Vérifiez d'abord si l'utilisateur existe
-			user, created = UserProfile.objects.get_or_create(user_id=u_id)
-			if created:
-				print(f"Nouvel utilisateur créé avec user_id: {u_id}")
-			else:
+			if UserProfile.objects.filter(user_id=u_id).exists():
 				print(f"L'utilisateur avec user_id: {u_id} existe déjà.")
+			else:
+				user = UserProfile.objects.create(user_id=u_id)
+				user.save()
+				print(f"Nouvel utilisateur créé avec user_id: {u_id}")
 		except IntegrityError:
 			print(f"Une erreur d'intégrité s'est produite pour user_id: {u_id}.")
 

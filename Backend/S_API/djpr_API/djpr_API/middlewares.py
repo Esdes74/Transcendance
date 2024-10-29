@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 09:30:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/29 12:26:49 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/29 18:41:27 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ from django.utils.deprecation import MiddlewareMixin
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import AuthenticationFailed
 from djap_register.models import UserProfile
 from jwt.exceptions import InvalidTokenError, DecodeError
@@ -30,9 +31,9 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
 			request.user = AnonymousUser()
 			return
 
-		print("bonjour2")
 		try:
 			# Décodage du token
+			print("bonjour2")
 			decoded_token = jwt.decode(
 				token,
 				os.getenv('SECRET_KEY'),
@@ -44,6 +45,7 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
 			grade = decoded_token.get('grade')
 			username = decoded_token.get('username')
 			if (grade != '2fa' or not grade or not username):
+				print("bonjour3")
 				raise AuthenticationFailed("Unauthorized token")
 			request.username = username
 
@@ -51,18 +53,24 @@ class JWTAuthenticationMiddleware(MiddlewareMixin):
 			user_id = decoded_token.get('user_id')
 
 			# Charger l'utilisateur associé au token
-			user = UserProfile.objects.filter(user_id=user_id).first()
+			print("avant get user")
+			print(user_id)
+			user_id = int(user_id)
+			user = get_object_or_404(UserProfile, user_id=user_id)
+			print("apres get user")
 
 			# Les exceptions sur la gestion du user
 			if user is None:
-				print("bonjour6")
+				print("bonjour4")
 				request.user = AnonymousUser()
 			else:
+				print("bonjour5")
 				request.user = user
-			print("bonjour3")
 
 		# Les exceptions sur la gestion du token
 		except InvalidTokenError:
+			print("bonjour6")
 			raise AuthenticationFailed("Invalid token")
 		except DecodeError:
+			print("bonjour7")
 			raise AuthenticationFailed("Token error")
