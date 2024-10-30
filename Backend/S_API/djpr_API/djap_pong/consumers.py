@@ -34,7 +34,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 			print(f"MSG RECU DE l'API : {key}")
 
 			# Envoie au service calcul pour déterminer les nouvelles positions
-			response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': key}))
+			response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': key})) #todo: envoyer le type config sinon le calcul consumer a une configuration manquante OU envoyer toutes les données (player1Y, player2Y, ballX, ballY, scorePlayer1, scorePlayer2)
 			# Extrait les nouvelles positions du service calcul
 			new_positions = json.loads(response)
 			# afficher la response reçue

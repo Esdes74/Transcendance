@@ -7,7 +7,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		print('Connecté')
 		await self.accept()
-		self.player1Y = 200
+		self.player1Y = None
 
 	async def disconnect(self, close_code):
 		pass
@@ -27,6 +27,9 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		
 		elif data.get('type') == 'pong.move':
 			# afficher le message reçu
+			if self.player1Y is None:
+				print('Configuration manquante')
+				return
 			print(f"pong.move donc : {data}")
 
 			key = data['key']
@@ -34,9 +37,9 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			# afficher valeur de player1Y avant le mouvement
 			print(f"player1Y avant : {self.player1Y}") 
 			if key == 'arrowUp':
-				self.player1Y += self.player1Y - 10
+				self.player1Y = self.player1Y - 10
 			elif key == 'ArrowDown':
-				self.player1Y += 10
+				self.player1Y = self.player1Y + 10
 			# afficher valeur de player1Y apres le mouvement
 			print(f"player1Y apres : {self.player1Y}")
 
