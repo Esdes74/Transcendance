@@ -15,8 +15,8 @@ let scorePlayer2 = 0;				// score player 2
 const scorePlayer1Elem = document.getElementById('scorePlayer1');
 const scorePlayer2Elem = document.getElementById('scorePlayer2');
 
-let ballX = canvas.width / 2;	// Placer la ball au milieu horizontal du canvas
-let ballY = canvas.height / 2;	// Placer la ball au milieu verticalement du canvas
+let ballX = 0.5 * canvas.width;		// Placer la ball au milieu horizontal du canvas	en pourcentage
+let ballY = 0.5 * canvas.height;	// Placer la ball au milieu verticalement du canvas	en pourcentage
 
 let ballSpeed = 3;				// Vitesse de la ball par défaut
 let ballSpeedX = 3;				// Vitesse de la ball X
@@ -40,19 +40,19 @@ const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 socket.onopen = function (e) {
 	console.log("WebSocket is connected ouais");
 
-	// Envoyer la configuration initiale
-	const config = {
-		type: 'config',
-		player1Y: player1Y,
-		player2Y: player2Y,
-		ballX: ballX,
-		ballY: ballY,
-		ballSpeedX: ballSpeedX,
-		ballSpeedY: ballSpeedY,
-		scorePlayer1: scorePlayer1,
-		scorePlayer2: scorePlayer2
-	};
-	socket.send(JSON.stringify(config));
+	// // Envoyer la configuration initiale
+	// const config = {
+	// 	type: 'config',
+	// 	player1Y: player1Y,
+	// 	player2Y: player2Y,
+	// 	ballX: ballX,
+	// 	ballY: ballY,
+	// 	ballSpeedX: ballSpeedX,
+	// 	ballSpeedY: ballSpeedY,
+	// 	scorePlayer1: scorePlayer1,
+	// 	scorePlayer2: scorePlayer2
+	// };
+	// socket.send(JSON.stringify(config));
 };
 
 // Gestion de la réception de messages WebSocket
@@ -62,10 +62,12 @@ socket.onmessage = function (e) {
 
 	// Mise à jour des positions reçues du serveur
 	if (data.type === 'pong.update') {
-		player1Y = data.player1Y;
-		player2Y = data.player2Y;
-		ballX = data.ballX;
-		ballY = data.ballY;
+		player1Y = data.player1Y * canvas.height;
+		player2Y = data.player2Y * canvas.height;
+		ballX = data.ballX * canvas.width;
+		ballY = data.ballY * canvas.height;
+		ballSpeedX = data.ballSpeedX;
+		ballSpeedY = data.ballSpeedY;
 		scorePlayer1 = data.scorePlayer1;
 		scorePlayer2 = data.scorePlayer2;
 
