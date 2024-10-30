@@ -28,7 +28,7 @@ ALGO = os.getenv('ALGO')
 
 # Pour vérifier que la clée secrete soit bien définis
 if not SECRET_KEY or not ALGO:
-    raise ValueError("La clé secrète n'est pas définie dans l'environnement !")
+	raise ValueError("La clé secrète n'est pas définie dans l'environnement !")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,19 +37,19 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django-API']
 
 # Paramétrage des CORS policies
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+	"http://localhost:3000",
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
-    'X-token',
+	'X-token',
 ]
 
 CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'DELETE',
-    'OPTIONS',
+	'GET',
+	'POST',
+	'PUT',
+	'DELETE',
+	'OPTIONS',
 ]
 
 # Autoriser l'envoi de cookies avec les requêtes CORS
@@ -57,7 +57,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # Autorisation CSRF
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
+	"http://localhost:3000",
 ]
 
 CSRF_COOKIE_SECURE = False
@@ -65,53 +65,54 @@ CSRF_COOKIE_SECURE = False
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'channels',
-    'corsheaders',
-    'djap_register',
-    'djap_pong',
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'rest_framework',
+	'channels',
+	'corsheaders',
+	'djap_register',
+	'djap_pong',
 ]
 
 MIDDLEWARE = [
+	# 'djpr_API.middlewares.DisableCSRFMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-	'djpr_API.middlewares.JWTAuthenticationMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.security.SecurityMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	# 'djpr_API.middlewares.JWTAuthenticationMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'djpr_API.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
 ]
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    },
+	'default': {
+		'BACKEND': 'channels.layers.InMemoryChannelLayer',
+	},
 }
 
 WSGI_APPLICATION = 'djpr_API.wsgi.application'
@@ -121,14 +122,14 @@ ASGI_APPLICATION = 'djpr_API.asgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('SQL_ENGINE'),
-        'NAME': os.getenv('SQL_DATABASE_API'),
-        'USER': os.getenv('PSQL_USER'),
-        'PASSWORD': os.getenv('PSQL_PASS'),
-        'PORT': os.getenv('SQL_PORT'),
-        'HOST': os.getenv('SQL_HOST_API'),
-    }
+	'default': {
+		'ENGINE': os.getenv('SQL_ENGINE'),
+		'NAME': os.getenv('SQL_DATABASE_API'),
+		'USER': os.getenv('PSQL_USER'),
+		'PASSWORD': os.getenv('PSQL_PASS'),
+		'PORT': os.getenv('SQL_PORT'),
+		'HOST': os.getenv('SQL_HOST_API'),
+	}
 }
 
 AUTH_USER_MODEL = 'djap_register.UserProfile'
@@ -143,18 +144,18 @@ CSRF_COOKIE_SECURE = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+	{
+		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+	},
 ]
 
 # Internationalization

@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/29 20:36:13 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/30 18:01:15 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,12 @@ import jwt
 import os
 from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
 from djap_register.models import UserProfile
 from .save_new_user import save_new_user
+from rest_framework.permissions import AllowAny
+from djpr_API.decorator import jwt_required_2fa
 
 # TODO: Passer en GET
 @api_view(['POST'])
@@ -47,7 +48,7 @@ def login_view(request):
 				json_response = JsonResponse(response.json(), status=200)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
 				# TODO: Je pens qu'il faudra le passer en https et en secure
-				json_response.set_cookie(key='jwt_token', value=token, httponly=False, max_age=180)
+				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
 
 				# Archivage du user_id pour l'identifier comme authentifié plus tard
 				save_new_user(token)
@@ -95,7 +96,7 @@ def create_view(request):
 				json_response = JsonResponse(response.json(), status=201)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
 				# TODO: Je pens qu'il faudra le passer en https et en secure
-				json_response.set_cookie(key='jwt_token', value=token, httponly=False, max_age=180)
+				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
 
 				# Archivage du user_id pour l'identifier comme authentifié plus tard
 				save_new_user(token)
@@ -112,13 +113,11 @@ def create_view(request):
 		return Response({"error": str(e)}, status=500)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@jwt_required_2fa
+# @permission_classes([AllowAny])
 def otp_verif(request):
-	print("hello")
 	password = request.data.get('password')
 	username = getattr(request, 'username', None)
-	print(f"username = {username}, password = {password}")
-	print("hello")
 
 	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
