@@ -6,13 +6,14 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 11:14:51 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/29 19:34:28 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/30 18:18:29 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
 
+# Models pour permettre de créer un model personnalisé qui n'a que le champ user_id
 class UserProfileManager(BaseUserManager):
     def create_user(self, user_id, password=None, **extra_fields):
         if not user_id:
@@ -28,6 +29,7 @@ class UserProfileManager(BaseUserManager):
 
         return self.create_user(user_id, password, **extra_fields)
 
+# Model qui stocke les user_id
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     user_id = models.CharField(max_length=255, unique=True)
     

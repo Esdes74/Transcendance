@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/30 18:01:15 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/30 18:19:30 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,7 +114,6 @@ def create_view(request):
 
 @api_view(['POST'])
 @jwt_required_2fa
-# @permission_classes([AllowAny])
 def otp_verif(request):
 	password = request.data.get('password')
 	username = getattr(request, 'username', None)
@@ -138,10 +137,6 @@ def otp_verif(request):
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
 				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
-
-				# Archivage du user_id pour l'identifier comme authentifié plus tard
-				save_new_user(token)
-
 				return json_response
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)

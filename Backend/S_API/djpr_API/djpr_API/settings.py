@@ -79,13 +79,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-	# 'djpr_API.middlewares.DisableCSRFMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
 	'django.middleware.csrf.CsrfViewMiddleware',
-	# 'djpr_API.middlewares.JWTAuthenticationMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',

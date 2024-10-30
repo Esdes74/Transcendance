@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 17:01:00 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/30 17:57:22 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/30 18:19:50 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,6 @@ def jwt_required_2fa(view_func):
 			grade = decoded_token.get('grade')
 			username = decoded_token.get('username')
 			if (grade != '2fa' or not grade or not username):
-				print(grade)
-				print(username)
 				return JsonResponse({"detail": "Unauthorized token"}, status=401)
 
 			request.username = username
