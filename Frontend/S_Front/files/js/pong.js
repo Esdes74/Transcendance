@@ -57,20 +57,25 @@ socket.onopen = function (e) {
 
 // Gestion de la réception de messages WebSocket
 socket.onmessage = function (e) {
-	console.log('Message from server il dit :', event.data);
+	// console.log('Message from server il dit :', event.data);
 	const data = JSON.parse(e.data);
 
 	// Mise à jour des positions reçues du serveur
-	if (data.type === 'pong.update') {
-		player1Y = data.player1Y * canvas.height;
-		player2Y = data.player2Y * canvas.height;
+	if (data.type === 'pong.player1') {
+		player1Y = data.player1Y * canvas.height - playerHeight / 2;
+	}
+	if (data.type === 'pong.player2') {
+		player2Y = data.player2Y * canvas.height - playerHeight / 2;
+	}
+	if (data.type === 'pong.ball') {
 		ballX = data.ballX * canvas.width;
 		ballY = data.ballY * canvas.height;
 		ballSpeedX = data.ballSpeedX;
 		ballSpeedY = data.ballSpeedY;
+	}
+	if (data.type === 'pong.score') {
 		scorePlayer1 = data.scorePlayer1;
 		scorePlayer2 = data.scorePlayer2;
-
 		scorePlayer1Elem.textContent = scorePlayer1;
 		scorePlayer2Elem.textContent = scorePlayer2;
 	}
@@ -93,19 +98,64 @@ socket.onclose = function (event) {
 
 
 // Suivi des touches enfoncées (pour mobilité + fluide)
-const keys = {};
-document.addEventListener('keydown', e => {
-	keys[e.key] = true;
+// const keys = {};
+// // Je veux que toutes les changements d'état des keys soient envoyées au serveur
+// document.addEventListener('keydown', e => {
+// 	console.log('key pressed:', e.key);
+// 	keys[e.key] = true;
+// 	// Envoyer l'action de mouvement au serveur
+// 	// if (['w', 's'].includes(e.key)) {
+// 	// 	socket.send(JSON.stringify({
+// 	// 		'type': 'pong.move',
+// 	// 		'key': e.key
+// 	// 	}));
+// 	// }
+// 	// if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+// 	// 	socket.send(JSON.stringify({
+// 	// 		'type': 'pong.move',
+// 	// 		'key': e.key
+// 	// 	}));
+// 	// }
 
-	// Envoyer l'action de mouvement au serveur
-	if (['w', 's', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
-		socket.send(JSON.stringify({
-			'type': 'pong.move',
-			'key': e.key
-		}));
-	}
+// 	for (let key in keys) {
+// 		if (keys[key] === true && ['w', 's', 'ArrowUp', 'ArrowDown'].includes(key)) {
+// 			socket.send(JSON.stringify({
+// 				'type': 'pong.move',
+// 				'key': key
+// 			}));
+// 		}
+// 	}
+// });
+// document.addEventListener('keyup', e => {
+// 	keys[e.key] = false;
+// });
+
+const keys = {};
+
+// Je veux que toutes les changements d'état des keys soient envoyées au serveur
+document.addEventListener('keydown', e => {
+    console.log('key pressed:', e.key);
+    keys[e.key] = true;
 });
-document.addEventListener('keyup', e => keys[e.key] = false);
+
+document.addEventListener('keyup', e => {
+    keys[e.key] = false;
+});
+
+// Envoyer l'état des touches au serveur à intervalles réguliers
+setInterval(() => {
+
+
+	for (let key in keys) {
+        if (keys[key] === true && ['w', 's', 'ArrowUp', 'ArrowDown'].includes(key)) {
+            socket.send(JSON.stringify({
+                'type': 'pong.move',
+                'key': key
+            }));
+        }
+    }
+}, 10);
+
 
 // Dessiner players et ball
 function draw() {
