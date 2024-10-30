@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/30 18:19:30 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/30 19:14:15 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,6 @@ def create_view(request):
 	pseudo = request.data.get('pseudo')
 	phone_nb = request.data.get('phone_nb')
 	mail = request.data.get('mail')
-	adress = request.data.get('adress')
 
 	# Si je n'ai pas les champs obligatoires
 	if not username or not password or not pseudo:
