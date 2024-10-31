@@ -8,10 +8,10 @@ function removeScripts()
 
 function rootMyUrl()
 {
-    removeScripts()
     loc = window.location.pathname
     if (loc === "/index.html" || loc === "/index" || loc === "/")
     {
+        document.title = "Accueil"
         let scriptElement = document.createElement('script')
         scriptElement.setAttribute("src", "js/aff_index.js")
         document.head.appendChild(scriptElement)
@@ -22,6 +22,7 @@ function rootMyUrl()
     }
     else if (loc === "/bravo.html" || loc === "/bravo")
     {
+        document.title = "Bravo"
         let scriptElement = document.createElement('script')
         scriptElement.setAttribute("src", "js/aff_bravo.js")
         document.head.appendChild(scriptElement)
@@ -32,6 +33,7 @@ function rootMyUrl()
     }
     else if (loc === "/authentification.html" || loc === "/authentification")
     {
+        document.title = "Authentification"
         let scriptElement = document.createElement('script')
         scriptElement.setAttribute("src", "js/aff_authentification.js")
         document.head.appendChild(scriptElement)
@@ -42,6 +44,7 @@ function rootMyUrl()
     }
     else if (loc === "/register.html" || loc === "/register")
     {
+        document.title = "Enregistrement"
         let scriptElement = document.createElement('script')
         scriptElement.setAttribute("src", "js/aff_register.js")
         document.head.appendChild(scriptElement)
@@ -52,6 +55,7 @@ function rootMyUrl()
     }
     else if (loc === "/pong.html" || loc === "/pong")
     {
+        document.title = "Pong de ZINZIN"
         let scriptElement = document.createElement('script')
         scriptElement.setAttribute("src", "js/aff_pong.js")
         document.head.appendChild(scriptElement)
@@ -60,6 +64,7 @@ function rootMyUrl()
             affPong()
         }
     }
+    getLinks()
 }
 
 rootMyUrl()

@@ -2,7 +2,7 @@ function affIndex()
 {
     let newBody = document.createElement('body')
     let scriptElement = document.createElement('script')
-    scriptElement.setAttribute("src", "indexLinks.js")
+    scriptElement.setAttribute("src", "js/indexLinks.js")
     document.head.appendChild(scriptElement)
     document.title = "Accueil"
     newBody.innerHTML = `

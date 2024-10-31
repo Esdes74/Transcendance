@@ -161,7 +161,7 @@ services:
         - PORT=${PORT_FRONT:-3000}
     container_name: Frontend
     ports:
-      - "3000:3000"
+      - "3000:443"
     volumes:
       - ./Frontend/S_Front:${BOOT_WORKDIR:-/home/front}
     env_file:

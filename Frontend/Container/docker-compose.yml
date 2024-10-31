@@ -8,7 +8,7 @@ services:
     container_name: Frontend
     command: npm start
     ports:
-      - "3000:3000"
+      - "3000:443"
     volumes:
       - ../Front:${BOOT_WORKDIR:-/home/front}
     env_file:

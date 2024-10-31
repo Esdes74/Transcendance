@@ -11,6 +11,20 @@ ENV VOLUME=$VOLUME PORT=$PORT
 RUN mkdir -p $VOLUME
 WORKDIR /app
 
+#NGINX
+
+RUN	apt-get -y update
+RUN	apt-get -y upgrade
+RUN	apt-get -y install nginx
+RUN	apt-get -y install openssl
+
+RUN	openssl req -x509 -nodes -out /etc/nginx/crt.pem -keyout /etc/nginx/privkey.pem -subj "/C=FR"
+COPY	config/nginx.conf /etc/nginx/nginx.conf
+RUN	mkdir /var/www/html/myproject
+COPY	files /var/www/html/myproject
+
+EXPOSE	443
+
 # Copie du package
 COPY config/package.json .
 
@@ -27,4 +41,6 @@ RUN npm run build
 EXPOSE $PORT
 
 # démarre l'application
-CMD ["npm", "start"]
+
+CMD ["nginx", "-g", "daemon off;"]
+#CMD ["npm", "start"]
