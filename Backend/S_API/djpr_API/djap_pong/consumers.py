@@ -7,6 +7,9 @@ class PongConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		await self.accept()
 
+		self.keys = {}
+		# await self.loop_task()
+
 	async def disconnect(self, close_code):
 		pass
 
@@ -15,39 +18,34 @@ class PongConsumer(AsyncWebsocketConsumer):
 		type = data.get('type', 'malformed request')
 		key = data.get('key', 'malformed request')
 
-# 		# for key in keys
-		# 	up + 0.2
-		# if type == ':
-		# 	keys ={}
-		# 	keys['w'] = True
-		# print(f"-----> Envoie au CalculConsumer la data : {data}")
-		# # Envoie au service calcul pour déterminer les nouvelles positions
-		# response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': key})) #todo: envoyer le type config sinon le calcul consumer a une configuration manquante OU envoyer toutes les données (player1Y, player2Y, ballX, ballY, scorePlayer1, scorePlayer2)
 
-		if type == 'pong.move':
-			print(f"-----> Envoie au CalculConsumer la data : {data}")
-			# Envoie au service calcul pour déterminer les nouvelles positions
-			response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': key})) #todo: envoyer le type config sinon le calcul consumer a une configuration manquante OU envoyer toutes les données (player1Y, player2Y, ballX, ballY, scorePlayer1, scorePlayer2)
+		if type == 'key.pressed':
+			self.keys[key] = True
+		if type == 'key.released':
+			self.keys[key] = False
 
-			# Extrait les nouvelles positions du service calcul
-			new_positions = json.loads(response)
-			# afficher la response reçue
-			print(f"<----- Réponse reçue new_positions : {new_positions}")
-			print(f"response : {response}")
+		for k, value in self.keys.items():
+			print(f"keys : {self.keys}")
+			if value == True and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
+				response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
+				# new_positions = json.loads(response)
+				await self.send(response)
+
+		if type == 'pong.ball':
+			print(f"ball")
+			response = await self.send_to_pong_service(json.dumps({'type': 'pong.ball'}))
 			await self.send(response)
 
-		# Envoie la réponse reçue au frontend
-		# await self.send(text_data=json.dumps({
-		# 		'type': 'pong.update',
-		# 		'player1Y': new_positions.get('player1Y'),
-		# 		'player2Y': new_positions.get('player2Y'),
-		# 		'ballX': new_positions.get('ballX'),
-		# 		'ballY': new_positions.get('ballY'),
-		# 		'scorePlayer1': new_positions.get('scorePlayer1'),
-		# 		'scorePlayer2': new_positions.get('scorePlayer2')
-		# 	}))
-			# afficher la nouvelle position du player1Y
-		# print(f"DEBUG: new position du player1Y : {new_positions.get('player1Y')}")
+		# if type == 'pong.move':
+		# 	print(f"-----> Envoie au CalculConsumer la data : {data}")
+		# 	# Envoie au service calcul pour déterminer les nouvelles positions
+		# 	response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': key}))
+
+		# 	# Extrait les nouvelles positions du service calcul
+		# 	new_positions = json.loads(response)
+		# 	# afficher la response reçue
+		# 	print(f"response : {response}")
+		# 	await self.send(response)
 
 
 
@@ -65,6 +63,16 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 		print(f"FCT <--- Réponse du service Pong")
 		return response
+
+	# async def loop_task(self):
+	# 	while True:
+	# 		for k, value in self.keys.items():
+	# 			# print(f"keys : {self.keys}")
+	# 			if value == True and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
+	# 				response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
+	# 				# new_positions = json.loads(response)
+	# 				await self.send(response)
+	# 			await asyncio.sleep(0.1)
 
 
 
