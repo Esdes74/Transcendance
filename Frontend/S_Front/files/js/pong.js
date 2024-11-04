@@ -17,8 +17,8 @@ let scorePlayer2 = 0;				// score player 2
 const scorePlayer1Elem = document.getElementById('scorePlayer1');
 const scorePlayer2Elem = document.getElementById('scorePlayer2');
 
-let ballX = 0.5 * canvas.width;		// Placer la ball au milieu horizontal du canvas	en pourcentage
-let ballY = 0.5 * canvas.height;	// Placer la ball au milieu verticalement du canvas	en pourcentage
+let ballX = 0.5;		// Placer la ball au milieu horizontal du canvas	en pourcentage
+let ballY = 0.5;	// Placer la ball au milieu verticalement du canvas	en pourcentage
 
 let ballSpeed = 0.01;				// Vitesse de la ball par défaut
 let ballSpeedX = 0.01;				// Vitesse de la ball X

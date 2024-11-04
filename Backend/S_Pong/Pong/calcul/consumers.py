@@ -9,7 +9,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		await self.accept()
 
 		self.player1X = 0.05
-		self.player2X = 0.05
+		self.player2X = 1 - 0.05
 		self.player1Y = 0.5
 		self.player2Y = 0.5
 		self.playerHeight = 0.30
@@ -70,9 +70,9 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				}))
 
 		elif data.get('type') == 'pong.ball':
-			self.ballX += self.ballSpeedX 
+			self.ballX += self.ballSpeedX
 			self.ballY += self.ballSpeedY
-			if abs(self.ballSpeedX) > self.max_speed:
+			if abs(self.ballSpeedX) >= self.max_speed:
 				self.ballSpeedX = (1 if self.ballSpeedX > 0 else -1) * self.max_speed
 
 			# Rebondir sur le haut et le bas du terrain
@@ -80,10 +80,10 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.ballSpeedY = -self.ballSpeedY
 
 			# Détection de collision avec les raquettes
-			if self.ballX < self.player1X and self.ballY > self.player1Y and self.ballY < self.player1Y + self.playerHeight:
-				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration  # Rebond immédiat
-			if self.ballX > 1 - self.player2X and self.ballY > self.player2Y and self.ballY < self.player2Y + self.playerHeight:
-				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration  # Rebond immédiat
+			if self.ballX <= self.player1X and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
+				self.ballSpeedX = abs(self.ballSpeedX)  # Rebond immédiat
+			if self.ballX >= self.player2X and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
+				self.ballSpeedX = -abs(self.ballSpeedX)  # Rebond immédiat
 
 			await self.send(text_data=json.dumps({
 				'type': 'pong.ball',
@@ -96,6 +96,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			print(f"self.ballY : {self.ballY}")
 			print(f"self.ballSpeedX : {self.ballSpeedX}")
 			print(f"self.ballSpeedY : {self.ballSpeedY}")
+			print(f"self.player1X : {self.player1X}, self.player1Y : {self.player1Y}")
+			print(f"self.player2X : {self.player2X}, self.player2Y : {self.player2Y}")
 
 
 		# if data.get('type') == 'pong.ball'
