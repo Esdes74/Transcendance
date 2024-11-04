@@ -60,16 +60,15 @@ socket.onmessage = function (e) {
 		ballY = data.ballY * canvas.height;
 		ballSpeedX = data.ballSpeedX;
 		ballSpeedY = data.ballSpeedY;
-		console.log('ballX:', ballX);
-		console.log('ballY:', ballY);
-		console.log('ballSpeedX:', ballSpeedX);
-		console.log('ballSpeedY:', ballSpeedY);
-	}
-	if (data.type === 'pong.score') {
 		scorePlayer1 = data.scorePlayer1;
 		scorePlayer2 = data.scorePlayer2;
 		scorePlayer1Elem.textContent = scorePlayer1;
 		scorePlayer2Elem.textContent = scorePlayer2;
+
+		console.log('ballX:', ballX);
+		console.log('ballY:', ballY);
+		console.log('ballSpeedX:', ballSpeedX);
+		console.log('ballSpeedY:', ballSpeedY);
 	}
 };
 
@@ -156,7 +155,7 @@ socket.addEventListener('open', () => {
                 'type': 'pong.ball',
             }));
         }
-    }, 30);
+    }, 20);
 });
 
 // setInterval(() => {

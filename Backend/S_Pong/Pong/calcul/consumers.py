@@ -17,8 +17,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.scorePlayer2 = 0
 		self.ballX = 0.5
 		self.ballY = 0.5
-		self.ballSpeedX = 0.01
-		self.ballSpeedY = 0.01
+		self.ballSpeedX = 0.005
+		self.ballSpeedY = 0.005
 		# self.ballRadius = 8
 		self.max_speed = 16
 		self.acceleration = 1.1
@@ -81,9 +81,33 @@ class CalculConsumer(AsyncWebsocketConsumer):
 
 			# Détection de collision avec les raquettes
 			if self.ballX <= self.player1X and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
-				self.ballSpeedX = abs(self.ballSpeedX)  # Rebond immédiat
+				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
 			if self.ballX >= self.player2X and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
-				self.ballSpeedX = -abs(self.ballSpeedX)  # Rebond immédiat
+				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
+
+			# Réinitialiser la balle si elle sort du terrain
+			if self.ballX >= 1: # Joueur 1 marque
+				self.scorePlayer1 = self.scorePlayer1 + 1
+				self.ballX = 0.5
+				self.ballY = 0.5
+				self.ballSpeedX = 0
+				self.ballSpeedY = 0
+				#attendre 1 seconde avant de relancer la balle
+				asyncio.sleep(1000)
+				self.ballSpeedX = 0.005 * -1
+				self.ballSpeedY = 0.005
+				# await self.resetBall(-1);						# Renvoyer la balle vers la gauche
+			if	self.ballX <= 0:			# Joueur 2 marque
+				self.scorePlayer2 = self.scorePlayer2 + 1
+				self.ballX = 0.5
+				self.ballY = 0.5
+				self.ballSpeedX = 0
+				self.ballSpeedY = 0
+				#attendre 1 seconde avant de relancer la balle
+				asyncio.sleep(1000)
+				self.ballSpeedX = 0.005 * 1
+				self.ballSpeedY = 0.005
+				# await self.resetBall(1);						# Renvoyer la balle vers la gauche
 
 			await self.send(text_data=json.dumps({
 				'type': 'pong.ball',
@@ -91,6 +115,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				'ballY': self.ballY,
 				'ballSpeedX': self.ballSpeedX,
 				'ballSpeedY': self.ballSpeedY,
+				'scorePlayer1': self.scorePlayer1,
+				'scorePlayer2': self.scorePlayer2,
 				}))
 			print(f"self.ballX : {self.ballX}")
 			print(f"self.ballY : {self.ballY}")
@@ -99,6 +125,15 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			print(f"self.player1X : {self.player1X}, self.player1Y : {self.player1Y}")
 			print(f"self.player2X : {self.player2X}, self.player2Y : {self.player2Y}")
 
+	# def resetBall(self, direction):
+	# 	self.ballX = 0.5
+	# 	self.ballY = 0.5
+	# 	self.ballSpeedX = 0
+	# 	self.ballSpeedY = 0
+	# 	#attendre 1 seconde avant de relancer la balle
+	# 	asyncio.sleep(1)
+	# 	self.ballSpeedX = 0.01 * direction
+	# 	self.ballSpeedY = 0.01
 
 		# if data.get('type') == 'pong.ball'
 			# await self.send(text_data=json.dumps({
