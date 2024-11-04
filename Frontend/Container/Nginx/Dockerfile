@@ -1,4 +1,4 @@
-FROM nginx:1.27.2
+FROM debian:12
 
 # Récupération du volume où est envoyé le code
 ARG VOLUME PORT
@@ -11,6 +11,7 @@ RUN mkdir -p $VOLUME
 
 RUN	apt-get -y update
 RUN	apt-get -y upgrade
+RUN	apt-get -y install nginx
 RUN	apt-get -y install openssl
 
 RUN	openssl req -x509 -nodes -out /etc/nginx/crt.pem -keyout /etc/nginx/privkey.pem -subj "/C=FR"
