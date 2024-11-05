@@ -9,3 +9,5 @@ function affBravo()
     </section>
     `
 }
+
+affBravo()

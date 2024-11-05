@@ -29,3 +29,5 @@ function affPong()
 	</div>
     `
 }
+
+affPong()

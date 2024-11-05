@@ -21,6 +21,8 @@ function affAuthentification()
 			<a href="/register.html" class="btn btn-primary">register</a> <!-- Lien vers la page d'authentification -->
 		</section>
 	</div>
-	<script src="js/login.js"></script> 
     `
+    addScript("js/login.js")
 }
+
+affAuthentification()

@@ -33,6 +33,9 @@ function affRegister()
         </form>
         <div id="error-message" class="mt-3 text-danger"></div>
     </div>
-    <script src="js/register.js"></script>
     `
+    if (!addScript("js/register.js"))
+	listenRegister()	
 }
+
+affRegister()

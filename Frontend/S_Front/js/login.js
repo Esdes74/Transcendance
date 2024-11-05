@@ -15,9 +15,10 @@ function getCookie(name) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	const form = document.getElementById('loginForm');
+		console.log("ICI!")
+		const form = document.getElementById('loginForm');
 
-	form.addEventListener('submit', async (event) => {
+		form.addEventListener('submit', async (event) => {
 		event.preventDefault(); // Empêche le formulaire de se soumettre de manière traditionnelle
 
 		// Récupère les données du formulaire
@@ -65,3 +66,4 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 });
+

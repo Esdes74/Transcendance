@@ -13,3 +13,5 @@ function affIndex()
     </section>
     `
 }
+
+affIndex()
