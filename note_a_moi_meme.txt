@@ -49,3 +49,18 @@ Pour résoudre ce type de comportement indéfini, je te conseille de :
 Vérifier que la clé secrète JWS est la même dans tous les microservices.
 Traquer l'expiration des tokens pour voir si le délai est bien interprété dans chaque service.
 Activer des logs détaillés sur la validation des tokens pour identifier les moments où l'authentification échoue.
+
+
+
+
+
+
+
+
+
+
+
+Notes sur la sécurisation de l'api et des entrypoints
+j'utilise des décorateurs pour savoir si le token jwt est bien envoyé dans la requete pour s'assurer que la requete ne vient pas de quelqu'un qui n'a pas le droit
+pour l'instant je n'ai que le décorateur IsAuthenticated mais on peut créer ce qu'on veut (IsAdmin, IsAutor et meme IsGod si on veut)
+chat gpt aidera a créer ces nouveaux décorateurs si il y a besoin

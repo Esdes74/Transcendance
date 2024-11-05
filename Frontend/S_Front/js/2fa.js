@@ -1,19 +1,17 @@
 function getCookie(name) {
-	let cookieValue = null;
-	console.log("bonjour1");
-	if (document.cookie && document.cookie !== '') {
-		console.log("bonjour2");
-		const cookies = document.cookie.split(';');
-		for (let i = 0; i < cookies.length; i++) {
-			console.log("bonjour3");
-			const cookie = cookies[i].trim();
-			if (cookie.substring(0, name.length + 1) === (name + '=')) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Vérifie si ce cookie commence par le nom donné
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,38 +21,32 @@ document.addEventListener('DOMContentLoaded', () => {
 		event.preventDefault(); // Empêche le formulaire de se soumettre de manière traditionnelle
 
 		// Récupère les données du formulaire
-		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
 
 		// Crée l'objet pour les données du formulaire
 		const data = {
-			username: username,
 			password: password
 		};
 
-		cookie = getCookie('csrftoken');
-
 		try {
-			// envois des donées en log pour le debuggage
-			console.log(cookie);
+			// Récupération token csrf
+			csrf_token = getCookie('csrftoken')
+
 			// Envoie les données à l'API
-			const response = await fetch('http://localhost:8000/api/auth/login/', {
+			const response = await fetch('http://localhost:8000/api/auth/2fa/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					'X-CSRFToken': csrf_token
 				},
-				body: JSON.stringify(data)
+				body: JSON.stringify(data),
+				credentials: 'include'
 			});
-			// 'X-CSRFToken': cookie
-			// credentials: 'include',
 
 			// Vérifie la réponse de l'API
 			if (response.ok) { // TODO: Gérer la éception des cookies 
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result);
-
-				// Sauvegarde le token ou redirige l'utilisateur
-				localStorage.setItem('token', result.token); // Sauvegarde le token dans le stockage local
 
 				// Redirige vers une autre page ou affiche un message de succès
 				window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée

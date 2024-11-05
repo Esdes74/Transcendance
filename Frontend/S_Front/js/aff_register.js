@@ -11,11 +11,11 @@ function affRegister()
             </div>
             <div class="form-group">
                 <label for="password">Mot de passe</label>
-                <input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" required>
+                <input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" autocomplete="defaultpswd" required>
             </div>
             <div class="form-group">
                 <label for="confirmed-password">Confirmation mot de passe</label>
-                <input type="password" class="form-control" id="confirmed-password" placeholder="Confirmez votre mot de passe" required>
+                <input type="password" class="form-control" id="confirmed-password" placeholder="Confirmez votre mot de passe" autocomplete="defaultpswd" required>
             </div>
             <div class="form-group">
                 <label for="pseudo">Pseudo</label>
@@ -23,20 +23,16 @@ function affRegister()
             </div>
             <div class="form-group">
                 <label for="mail">E-Mail</label>
-                <input type="email" class="form-control" id="mail" placeholder="Entrez votre e-mail">
+                <input type="email" class="form-control" id="mail" placeholder="Entrez votre e-mail" required>
             </div>
             <div class="form-group">
                 <label for="phone_nb">Phone number</label>
                 <input type="tel" class="form-control" id="phone_nb" placeholder="Entrez votre numéros de téléphone">
             </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" class="form-control" id="address" placeholder="Entrez votre addresse">
-            </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
         <div id="error-message" class="mt-3 text-danger"></div>
     </div>
-    <script src="register.js"></script>
+    <script src="js/register.js"></script>
     `
 }

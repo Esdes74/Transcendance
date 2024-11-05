@@ -13,7 +13,7 @@ function rootMyUrl()
     {
         document.title = "Accueil"
         let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "aff_index.js")
+        scriptElement.setAttribute("src", "js/aff_index.js")
         document.head.appendChild(scriptElement)
         scriptElement.onload = function()
         {
@@ -24,7 +24,7 @@ function rootMyUrl()
     {
         document.title = "Bravo"
         let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "aff_bravo.js")
+        scriptElement.setAttribute("src", "js/aff_bravo.js")
         document.head.appendChild(scriptElement)
         scriptElement.onload = function()
         {
@@ -35,7 +35,7 @@ function rootMyUrl()
     {
         document.title = "Authentification"
         let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "aff_authentification.js")
+        scriptElement.setAttribute("src", "js/aff_authentification.js")
         document.head.appendChild(scriptElement)
         scriptElement.onload = function()
         {
@@ -46,7 +46,7 @@ function rootMyUrl()
     {
         document.title = "Enregistrement"
         let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "aff_register.js")
+        scriptElement.setAttribute("src", "js/aff_register.js")
         document.head.appendChild(scriptElement)
         scriptElement.onload = function()
         {
@@ -57,7 +57,7 @@ function rootMyUrl()
     {
         document.title = "Pong de ZINZIN"
         let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "aff_pong.js")
+        scriptElement.setAttribute("src", "js/aff_pong.js")
         document.head.appendChild(scriptElement)
         scriptElement.onload = function()
         {

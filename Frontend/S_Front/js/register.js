@@ -1,20 +1,18 @@
-// function getCookie(name) {
-// 	let cookieValue = null;
-// 	console.log("bonjour1");
-// 	if (document.cookie && document.cookie !== '') {
-// 		console.log("bonjour2");
-// 		const cookies = document.cookie.split(';');
-// 		for (let i = 0; i < cookies.length; i++) {
-// 			console.log("bonjour3");
-// 			const cookie = cookies[i].trim();
-// 			if (cookie.substring(0, name.length + 1) === (name + '=')) {
-// 				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-// 				break;
-// 			}
-// 		}
-// 	}
-// 	return cookieValue;
-// }
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Vérifie si ce cookie commence par le nom donné
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 	const form = document.getElementById('loginForm');
@@ -29,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		const pseudo = document.getElementById('pseudo').value;
 		const mail = document.getElementById('mail').value;
 		const phone_nb = document.getElementById('phone_nb').value;
-		const address = document.getElementById('address').value;
 
 		// Vérification si le mdp est bien confirmé
 		if (password != confirmed_password)
@@ -45,35 +42,34 @@ document.addEventListener('DOMContentLoaded', () => {
 			pseudo: pseudo,
 			mail: mail,
 			phone_nb: phone_nb,
-			address: address
 		};
 
-		// cookie = getCookie('csrftoken');
-		// 'X-CSRFToken': cookie
-		// credentials: 'include',
-
 		try {
-			// envois des donées en log pour le debuggage
-			// console.log(cookie);
+			// Récupération token csrf
+			csrf_token = getCookie('csrftoken')
+
+			// Envois des donées en log pour le debuggage
 			// Envoie les données à l'API
 			const response = await fetch('http://localhost:8000/api/auth/create/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					'X-CSRFToken': csrf_token
 				},
-				body: JSON.stringify(data)
+				body: JSON.stringify(data),
+				credentials: 'include'
 			});
 
 			// Vérifie la réponse de l'API
-			if (response.ok) { // TODO: Gérer la éception des cookies 
+			if (response.ok) { // TODO: Gérer la réception des cookies 
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result);
 
 				// Sauvegarde le token ou redirige l'utilisateur
-				localStorage.setItem('token', result.token); // Sauvegarde le token dans le stockage local
+				// response.set_cookie(key='jwt_token', value=token)//, httponly=True, secure=True)  // secure=True pour HTTPS
 
 				// Redirige vers une autre page ou affiche un message de succès
-				window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée
+				window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();

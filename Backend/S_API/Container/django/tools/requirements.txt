@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/12 22:07:37 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/26 11:50:03 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,14 +19,14 @@ psycopg2-binary>=2.9.7,<3.0
 # Serveur WSGI pour exécuter l'application
 gunicorn>=20.1.0,<21.0
 
+# Framework pour la création d'api
+djangorestframework>=3.12,<4.0
+
 # Serveur ASGI pour exécuter l'application
 uvicorn[standard]>=0.13.4
 
-# Framework pour la création d'API REST
-djangorestframework>=3.14.0,<4.0
-
-# Bibliothèque pour la création de tokens JWT
-djangorestframework-simplejwt>=5.2.2,<6.0
+# Installation de la bibliothèque jwt pour gérer la vérification des tokens
+PyJWT>=2.0,<3.0
 
 # Module pour effectuer des requêtes HTTP
 requests>=2.25.1
