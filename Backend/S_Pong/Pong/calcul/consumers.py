@@ -17,10 +17,10 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.scorePlayer2 = 0
 		self.ballX = 0.5
 		self.ballY = 0.5
-		self.ballSpeedX = 0.005
-		self.ballSpeedY = 0.005
+		self.ballSpeedX = 0.003
+		self.ballSpeedY = 0.003
 		# self.ballRadius = 8
-		self.max_speed = 16
+		self.max_speed = 0.012
 		self.acceleration = 1.1
 
 		print(f">>>>>>> PHASE D'INITIALISATION : {self.player1Y}")
@@ -39,25 +39,29 @@ class CalculConsumer(AsyncWebsocketConsumer):
 
 			#todo switch case
 			if key == 'w':
-				self.player1Y = self.player1Y - 0.02
+				if self.player1Y - (self.playerHeight / 2) > 0:
+					self.player1Y = self.player1Y - 0.012
 				await self.send(text_data=json.dumps({
 				'type': 'pong.player1',
 				'player1Y': self.player1Y
 				}))
 			elif key == 's':
-				self.player1Y = self.player1Y + 0.02
+				if self.player1Y + (self.playerHeight / 2) < 1:
+					self.player1Y = self.player1Y + 0.012
 				await self.send(text_data=json.dumps({
 				'type': 'pong.player1',
 				'player1Y': self.player1Y
 				}))
 			elif key == 'ArrowUp':
-				self.player2Y = self.player2Y - 0.02
+				if self.player2Y - (self.playerHeight / 2) > 0:
+					self.player2Y = self.player2Y - 0.012
 				await self.send(text_data=json.dumps({
 				'type': 'pong.player2',
 				'player2Y': self.player2Y
 				}))
 			elif key == 'ArrowDown':
-				self.player2Y = self.player2Y + 0.02
+				if self.player2Y + (self.playerHeight / 2) < 1:
+					self.player2Y = self.player2Y + 0.012
 				await self.send(text_data=json.dumps({
 				'type': 'pong.player2',
 				'player2Y': self.player2Y
@@ -76,37 +80,39 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.ballSpeedX = (1 if self.ballSpeedX > 0 else -1) * self.max_speed
 
 			# Rebondir sur le haut et le bas du terrain
-			if self.ballY >= 1 or self.ballY <= 0:
+			if self.ballY >= 1 - 0.005 or self.ballY <= 0 + 0.005:
 				self.ballSpeedY = -self.ballSpeedY
 
 			# Détection de collision avec les raquettes
-			if self.ballX <= self.player1X and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
+			if self.ballX <= self.player1X - 0.005 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
 				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
-			if self.ballX >= self.player2X and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
+				# self.ballSpeedY = (self.ballY - self.player1Y) * 0.03 * self.acceleration		# Rebond en fonction de la position de la raquette
+			if self.ballX >= self.player2X + 0.005 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
 				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
+				# self.ballSpeedY = (self.ballY - self.player2Y) * 0.03 * self.acceleration		# Rebond en fonction de la position de la raquette
 
 			# Réinitialiser la balle si elle sort du terrain
 			if self.ballX >= 1: # Joueur 1 marque
 				self.scorePlayer1 = self.scorePlayer1 + 1
 				self.ballX = 0.5
 				self.ballY = 0.5
-				self.ballSpeedX = 0
-				self.ballSpeedY = 0
-				#attendre 1 seconde avant de relancer la balle
-				asyncio.sleep(1000)
-				self.ballSpeedX = 0.005 * -1
-				self.ballSpeedY = 0.005
+				# self.ballSpeedX = 0
+				# self.ballSpeedY = 0
+				# #attendre 1 seconde avant de relancer la balle
+				# asyncio.sleep(1000)
+				self.ballSpeedX = 0.003 * -1
+				self.ballSpeedY = 0.003
 				# await self.resetBall(-1);						# Renvoyer la balle vers la gauche
 			if	self.ballX <= 0:			# Joueur 2 marque
 				self.scorePlayer2 = self.scorePlayer2 + 1
 				self.ballX = 0.5
 				self.ballY = 0.5
-				self.ballSpeedX = 0
-				self.ballSpeedY = 0
+				# self.ballSpeedX = 0
+				# self.ballSpeedY = 0
 				#attendre 1 seconde avant de relancer la balle
-				asyncio.sleep(1000)
-				self.ballSpeedX = 0.005 * 1
-				self.ballSpeedY = 0.005
+				# asyncio.sleep(1000)
+				self.ballSpeedX = 0.003 * 1
+				self.ballSpeedY = 0.003
 				# await self.resetBall(1);						# Renvoyer la balle vers la gauche
 
 			await self.send(text_data=json.dumps({
@@ -135,24 +141,17 @@ class CalculConsumer(AsyncWebsocketConsumer):
 	# 	self.ballSpeedX = 0.01 * direction
 	# 	self.ballSpeedY = 0.01
 
-		# if data.get('type') == 'pong.ball'
-			# await self.send(text_data=json.dumps({
-			# 	'type': 'pong.ball',
-			# 	'ballX': self.ballX,
-			# 	'ballY': self.ballY,
-			# 	'ballSpeedX': self.ballSpeedX,
-			# 	'ballSpeedY': self.ballSpeedY,
-			# }))
-		
-		# if data.get('type') == 'pong.score'
-			# await self.send(text_data=json.dumps({
-			# 	'type': 'pong.score',
-			# 	'scorePlayer1': self.scorePlayer1,
-			# 	'scorePlayer2': self.scorePlayer2,
-			# }))
+
+
+	# if data.get('type') == 'pong.score'
+		# await self.send(text_data=json.dumps({
+		# 	'type': 'pong.score',
+		# 	'scorePlayer1': self.scorePlayer1,
+		# 	'scorePlayer2': self.scorePlayer2,
+		# }))
 
 
 
 
 
-		# await self.send(text_data=f"The one piece is real : {text_data}")
+	# await self.send(text_data=f"The one piece is real : {text_data}")
