@@ -61,6 +61,5 @@ Activer des logs détaillés sur la validation des tokens pour identifier les mo
 
 
 Notes sur la sécurisation de l'api et des entrypoints
-j'utilise des décorateurs pour savoir si le token jwt est bien envoyé dans la requete pour s'assurer que la requete ne vient pas de quelqu'un qui n'a pas le droit
-pour l'instant je n'ai que le décorateur IsAuthenticated mais on peut créer ce qu'on veut (IsAdmin, IsAutor et meme IsGod si on veut)
-chat gpt aidera a créer ces nouveaux décorateurs si il y a besoin
+j'utilise des décorateurs personnalisés pour savoir si le token jwt est bien envoyé dans la requete pour s'assurer que la requete ne vient pas de quelqu'un qui n'a pas le droit
+chat gpt aidera a créer des nouveaux décorateurs si il y a besoin
