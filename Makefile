@@ -5,8 +5,7 @@
 #                                                     +:+ +:+         +:+      #
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/09/02 14:18:49 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/26 11:18:39 by eslamber         ###   ########.fr        #
+#    Updated: 2024/10/23 19:50:54 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,15 +29,15 @@ RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
 # Build les images et seulement les images
-build:
+all:
 	docker-compose -f $(DOCKER) up -d --build
 # docker-compose -f $(API_DOCKER) up -d --build
 # docker-compose -f $(AUTH_DOCKER) up -d --build
 # docker-compose -f $(FRONT_DOCKER) up -d --build
 
 # Lancement du serveur
-all: dir $(NETWK)
-	docker-compose -f $(DOCKER) up -d --build
+#all: dir $(NETWK)
+#	docker-compose -f $(DOCKER) up -d --build
 # docker-compose -f $(API_DOCKER) up -d --build
 # docker-compose -f $(AUTH_DOCKER) up -d --build
 # docker-compose -f $(FRONT_DOCKER) up -d --build
@@ -47,13 +46,13 @@ $(NETWK):
 	docker network create $@
 
 # Lance le restart des services
-restart: stop build
+restart: stop all
 
 # Regle pour activer docker
 start:
 	sudo systemctl start docker
 
-sys: start build
+sys: start all
 
 sysall: start all
 
@@ -67,8 +66,8 @@ rm_dir:
 # Créer les répos des bases de données sur la machine pour les différents services
 dir:
 	@echo -e $(LIGHTBLUE)Making $(RED)Data directorie$(NEUTRAL)
-	sudo mkdir -p $(PONG_DB)
-	sudo mkdir -p $(API_DB)
+#	sudo mkdir -p $(PONG_DB)
+#	sudo mkdir -p $(API_DB)
 	@echo -e $(LIGHTBLUE)done$(NEUTRAL)
 
 # Commandes de clean du docker

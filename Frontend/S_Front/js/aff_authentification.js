@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-	<div class="container mt-5">
+function affAuthentification()
+{
+    let newBody = document.createElement('body')
+    document.title = "Authentification"
+    newBody.innerHTML = `
+    <div class="container mt-5">
 		<h2>Connexion</h2>
 		<form id="loginForm">
 			<div class="form-group">
@@ -27,6 +23,7 @@
 		</section>
 	</div>
 
-	<script src="login.js"></script>
-</body>
-</html>
+	<script src="js/login.js"></script> 
+    `
+    document.body = newBody
+}

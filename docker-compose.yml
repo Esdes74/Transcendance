@@ -155,15 +155,15 @@ services:
   # Conteneur de front
   front:
     build:
-      context: ./Frontend/Container/Bootstrap
+      context: ./Frontend/Container/Nginx
       args:
-        - VOLUME=${BOOT_WORKDIR:-/home/front}
+        - VOLUME=${NGINX_WORKDIR:-/home/front}
         - PORT=${PORT_FRONT:-3000}
     container_name: Frontend
     ports:
-      - "3000:3000"
+      - "3000:443"
     volumes:
-      - ./Frontend/S_Front:${BOOT_WORKDIR:-/home/front}
+      - ./Frontend/S_Front:${NGINX_WORKDIR:-/home/front}
     env_file:
       - .env
     networks:
