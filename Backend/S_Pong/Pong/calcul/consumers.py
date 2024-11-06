@@ -8,6 +8,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		print('Connecté')
 		await self.accept()
 
+		self.action = True
+		self.nextService = 1
 		self.player1X = 0.05
 		self.player2X = 1 - 0.05
 		self.player1Y = 0.5
@@ -74,6 +76,10 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				}))
 
 		elif data.get('type') == 'pong.ball':
+			if self.action == False:
+				self.action = True
+				self.ballSpeedX = 0.003 * self.nextService
+				self.ballSpeedY = 0.003
 			self.ballX += self.ballSpeedX
 			self.ballY += self.ballSpeedY
 			if abs(self.ballSpeedX) >= self.max_speed:
@@ -96,26 +102,27 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			# Réinitialiser la balle si elle sort du terrain
 			if self.ballX >= 1: # Joueur 1 marque
 				self.scorePlayer1 = self.scorePlayer1 + 1
-				self.ballX = 0.5
-				self.ballY = 0.5
-				self.ballSpeedX = 0
-				self.ballSpeedY = 0
-				# #attendre 1 seconde avant de relancer la balle
-				asyncio.sleep(1000)
-				self.ballSpeedX = 0.003 * -1
-				self.ballSpeedY = 0.003
-				# await self.resetBall(-1);						# Renvoyer la balle vers la gauche
+				# self.ballX = 0.5
+				# self.ballY = 0.5
+				# self.ballSpeedX = 0
+				# self.ballSpeedY = 0
+				# # #attendre 1 seconde avant de relancer la balle
+				# asyncio.sleep(1000)
+				# self.ballSpeedX = 0.003 * -1
+				# self.ballSpeedY = 0.003
+				await self.resetBall(-1);						# Renvoyer la balle vers la gauche
+				
 			if	self.ballX <= 0:			# Joueur 2 marque
 				self.scorePlayer2 = self.scorePlayer2 + 1
-				self.ballX = 0.5
-				self.ballY = 0.5
-				self.ballSpeedX = 0
-				self.ballSpeedY = 0
-				#attendre 1 seconde avant de relancer la balle
-				asyncio.sleep(1000)
-				self.ballSpeedX = 0.003 * 1
-				self.ballSpeedY = 0.003
-				# await self.resetBall(1);						# Renvoyer la balle vers la gauche
+				# self.ballX = 0.5
+				# self.ballY = 0.5
+				# self.ballSpeedX = 0
+				# self.ballSpeedY = 0
+				# #attendre 1 seconde avant de relancer la balle
+				# asyncio.sleep(1000)
+				# self.ballSpeedX = 0.003 * 1
+				# self.ballSpeedY = 0.003
+				await self.resetBall(1);						# Renvoyer la balle vers la gauche
 
 			await self.send(text_data=json.dumps({
 				'type': 'pong.ball',
@@ -125,6 +132,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				'ballSpeedY': self.ballSpeedY,
 				'scorePlayer1': self.scorePlayer1,
 				'scorePlayer2': self.scorePlayer2,
+				'action': self.action,
 				}))
 			print(f"self.ballX : {self.ballX}")
 			print(f"self.ballY : {self.ballY}")
@@ -133,15 +141,15 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			print(f"self.player1X : {self.player1X}, self.player1Y : {self.player1Y}")
 			print(f"self.player2X : {self.player2X}, self.player2Y : {self.player2Y}")
 
-	# def resetBall(self, direction):
-	# 	self.ballX = 0.5
-	# 	self.ballY = 0.5
-	# 	self.ballSpeedX = 0
-	# 	self.ballSpeedY = 0
-	# 	#attendre 1 seconde avant de relancer la balle
-	# 	asyncio.sleep(1)
-	# 	self.ballSpeedX = 0.01 * direction
-	# 	self.ballSpeedY = 0.01
+	async def resetBall(self, direction):
+		self.action = False
+		self.nextService = direction
+		self.ballX = 0.5
+		self.ballY = 0.5
+		# self.ballSpeedX = 0
+		# self.ballSpeedY = 0
+		#attendre 1 seconde avant de relancer la balle
+		# await asyncio.sleep(1)
 
 
 

@@ -63,12 +63,19 @@ socket.onmessage = function (e) {
 		scorePlayer2 = data.scorePlayer2;
 		scorePlayer1Elem.textContent = scorePlayer1;
 		scorePlayer2Elem.textContent = scorePlayer2;
-
-		console.log('ballX:', ballX);
-		console.log('ballY:', ballY);
-		console.log('ballSpeedX:', ballSpeedX);
-		console.log('ballSpeedY:', ballSpeedY);
+		printBall = data.action
+		if (printBall == false) {
+			console.log('scorePlayer1:', scorePlayer1);
+			console.log('scorePlayer2:', scorePlayer2);
+			setTimeout(() => {
+				printBall = true;
+			}, 1000);
+		}
 	}
+		// console.log('ballX:', ballX);
+		// console.log('ballY:', ballY);
+		// console.log('ballSpeedX:', ballSpeedX);
+		// console.log('ballSpeedY:', ballSpeedY);
 };
 
 // Gestion des erreurs WebSocket
@@ -108,7 +115,7 @@ document.addEventListener('keyup', e => {
 
 socket.addEventListener('open', () => {
     setInterval(() => {
-        if (socket.readyState === WebSocket.OPEN) {
+        if (socket.readyState === WebSocket.OPEN && printBall == true) {
             socket.send(JSON.stringify({
                 'type': 'pong.ball',
             }));
