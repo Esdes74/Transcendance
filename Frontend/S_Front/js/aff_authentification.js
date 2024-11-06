@@ -22,7 +22,8 @@ function affAuthentification()
 		</section>
 	</div>
     `
-    addScript("js/login.js")
+    if (!addScript("js/login.js"))
+		loadLogin()
 }
 
 affAuthentification()

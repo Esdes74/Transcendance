@@ -35,7 +35,7 @@ function affRegister()
     </div>
     `
     if (!addScript("js/register.js"))
-	listenRegister()	
+	    loadLogin()	
 }
 
 affRegister()

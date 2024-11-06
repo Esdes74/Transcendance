@@ -14,7 +14,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function listenRegister(){
 document.addEventListener('DOMContentLoaded', () => {
 	const form = document.getElementById('loginForm');
 
@@ -83,5 +82,4 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 });
-}
-listenRegister()
+

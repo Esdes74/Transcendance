@@ -4,8 +4,6 @@ function scriptAlreadyLoaded(url)
 	let scripts = document.getElementsByTagName('script')
 	for (let i = scripts.length; i--;)
 	{
-		console.log(scripts[i].src)
-		console.log(url)
 		if (scripts[i].src === url) 
 			return true
 	}

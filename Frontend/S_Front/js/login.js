@@ -14,8 +14,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-		console.log("ICI!")
+function loadLogin(){
+//document.addEventListener('DOMContentLoaded', () => {
 		const form = document.getElementById('loginForm');
 
 		form.addEventListener('submit', async (event) => {
@@ -65,5 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			alert('Une erreur est survenue. Veuillez réessayer.');
 		}
 	});
-});
+}
+loadLogin()
 
