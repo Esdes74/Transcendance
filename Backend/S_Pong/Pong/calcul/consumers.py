@@ -21,7 +21,6 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.ballY = 0.5
 		self.ballSpeedX = 0.003
 		self.ballSpeedY = 0.003
-		# self.ballRadius = 8
 		self.max_speed = 0.012
 		self.acceleration = 1.1
 
@@ -100,28 +99,12 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.ballSpeedY = (self.ballY - self.player2Y) * 0.03 * self.acceleration		# Rebond en fonction de la position de la raquette
 
 			# Réinitialiser la balle si elle sort du terrain
-			if self.ballX >= 1: # Joueur 1 marque
+			if self.ballX >= 1:				# Joueur 1 marque
 				self.scorePlayer1 = self.scorePlayer1 + 1
-				# self.ballX = 0.5
-				# self.ballY = 0.5
-				# self.ballSpeedX = 0
-				# self.ballSpeedY = 0
-				# # #attendre 1 seconde avant de relancer la balle
-				# asyncio.sleep(1000)
-				# self.ballSpeedX = 0.003 * -1
-				# self.ballSpeedY = 0.003
 				await self.resetBall(-1);						# Renvoyer la balle vers la gauche
 				
 			if	self.ballX <= 0:			# Joueur 2 marque
 				self.scorePlayer2 = self.scorePlayer2 + 1
-				# self.ballX = 0.5
-				# self.ballY = 0.5
-				# self.ballSpeedX = 0
-				# self.ballSpeedY = 0
-				# #attendre 1 seconde avant de relancer la balle
-				# asyncio.sleep(1000)
-				# self.ballSpeedX = 0.003 * 1
-				# self.ballSpeedY = 0.003
 				await self.resetBall(1);						# Renvoyer la balle vers la gauche
 
 			await self.send(text_data=json.dumps({
@@ -134,22 +117,13 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				'scorePlayer2': self.scorePlayer2,
 				'action': self.action,
 				}))
-			print(f"self.ballX : {self.ballX}")
-			print(f"self.ballY : {self.ballY}")
-			print(f"self.ballSpeedX : {self.ballSpeedX}")
-			print(f"self.ballSpeedY : {self.ballSpeedY}")
-			print(f"self.player1X : {self.player1X}, self.player1Y : {self.player1Y}")
-			print(f"self.player2X : {self.player2X}, self.player2Y : {self.player2Y}")
+
 
 	async def resetBall(self, direction):
 		self.action = False
 		self.nextService = direction
 		self.ballX = 0.5
 		self.ballY = 0.5
-		# self.ballSpeedX = 0
-		# self.ballSpeedY = 0
-		#attendre 1 seconde avant de relancer la balle
-		# await asyncio.sleep(1)
 
 
 

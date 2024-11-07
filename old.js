@@ -116,6 +116,27 @@ function resetBall(direction)		// Direction = 1 ou -1
 	}, 1000);
 }
 
+function gameOver()
+{
+	ballX = canvas.width / 2;		// Remettre la ball au centre
+	ballY = canvas.height / 2;
+	ballSpeedX = 0;					// Arrêter la balle
+	ballSpeedY = 0;
+	printBall = false;
+
+	const winMessageElem = document.getElementById('winMessage');
+	if (scorePlayer1 > scorePlayer2) {
+		winMessageElem.textContent = 'Player 1 wins!';
+	} else {
+		winMessageElem.textContent = 'Player 2 wins!';
+	}
+	winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+
+	const replayBlockElem = document.getElementById('replayBlock');
+	replayBlockElem.style.display = 'block';
+
+
+}
 // Boucle du jeu
 function gameLoop()
 {

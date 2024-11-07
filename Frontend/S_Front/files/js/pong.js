@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 const playerWidth = 10;			// Epaisseur players
 const playerHeight = 0.30 * canvas.height;			// Hauteur players
 const ballRadius = 8;				// Taille de la ball
-let printBall = true;			// Afficher la ball ou non
+let printBall = false;			// Afficher la ball ou non
 
 let player1X = 0.05
 let player2X = 1 - player1X
@@ -17,8 +17,8 @@ let scorePlayer2 = 0;				// score player 2
 const scorePlayer1Elem = document.getElementById('scorePlayer1');
 const scorePlayer2Elem = document.getElementById('scorePlayer2');
 
-let ballX = 0.5;		// Placer la ball au milieu horizontal du canvas	en pourcentage
-let ballY = 0.5;	// Placer la ball au milieu verticalement du canvas	en pourcentage
+let ballX = 0.5 * canvas.width;		// Placer la ball au milieu horizontal du canvas	en pourcentage
+let ballY = 0.5 * canvas.height;	// Placer la ball au milieu verticalement du canvas	en pourcentage
 
 let ballSpeed = 0.01;				// Vitesse de la ball par défaut
 let ballSpeedX = 0.01;				// Vitesse de la ball X
@@ -28,7 +28,9 @@ let ballSpeedY = 0.01;				// Vitesse de la ball Y
 
 const playerBuffer = 0.05 * canvas.width;			// Ecart des players au bord
 
+let gameStart = false;
 canvas.width = canvas.clientWidth; // Rendre responsive
+const countdownElem = document.getElementById('countdown');
 
 
 // ################################################################################################################ //
@@ -38,9 +40,38 @@ canvas.width = canvas.clientWidth; // Rendre responsive
 const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 
 // Gestion de l'ouverture de la connexion WebSocket
-socket.onopen = function (e) {
+socket.onopen = async function (e) {
 	console.log("WebSocket is connected ouais");
+	// Afficher le compte à rebours avant que ça commence
+	draw();
+	startCountdown(3, gameLoop);
 };
+
+// Fonction pour démarrer le compte à rebours
+function startCountdown(seconds, callback) {
+    let counter = seconds;
+
+    const interval = setInterval(() => {
+		countdownElem.textContent = counter;
+
+		console.log('counter:', counter);
+        counter--;
+        if (counter < 0) {
+            clearInterval(interval);
+            countdownElem.style.display = 'none';
+            callback();
+			printBall = true;
+			gameStart = true;
+			console.log('GO !');
+        }
+    }, 1000);
+}
+
+// function startGame() {
+//     // Code pour démarrer le jeu
+//     console.log("Game started!");
+// }
+
 
 // Gestion de la réception de messages WebSocket
 socket.onmessage = function (e) {
@@ -67,15 +98,16 @@ socket.onmessage = function (e) {
 		if (printBall == false) {
 			console.log('scorePlayer1:', scorePlayer1);
 			console.log('scorePlayer2:', scorePlayer2);
-			setTimeout(() => {
-				printBall = true;
-			}, 1000);
+			if (scorePlayer1 >= 5 || scorePlayer2 >= 5) {
+				gameOver();
+			}
+			else {
+				setTimeout(() => {
+					printBall = true;
+				}, 1000);
+			}
 		}
 	}
-		// console.log('ballX:', ballX);
-		// console.log('ballY:', ballY);
-		// console.log('ballSpeedX:', ballSpeedX);
-		// console.log('ballSpeedY:', ballSpeedY);
 };
 
 // Gestion des erreurs WebSocket
@@ -93,9 +125,9 @@ socket.onclose = function (event) {
 // ################################################################################################################ //
 
 
-	//Quand une touche est pressée, on envoie un message au serveur
+//Quand une touche est pressée, on envoie un message au serveur
 document.addEventListener('keydown', e => {
-	if (socket.readyState === WebSocket.OPEN) {
+	if (socket.readyState === WebSocket.OPEN && gameStart == true) {
 		socket.send(JSON.stringify({
 			'type': 'key.pressed',
 			'key': e.key
@@ -105,7 +137,7 @@ document.addEventListener('keydown', e => {
 
 //Quand une touche est relaché, on envoie un message au serveur
 document.addEventListener('keyup', e => {
-	if (socket.readyState === WebSocket.OPEN) {
+	if (socket.readyState === WebSocket.OPEN && gameStart == true) {
 	socket.send(JSON.stringify({
 		'type': 'key.released',
 		'key': e.key
@@ -114,27 +146,42 @@ document.addEventListener('keyup', e => {
 });
 
 socket.addEventListener('open', () => {
-    setInterval(() => {
-        if (socket.readyState === WebSocket.OPEN && printBall == true) {
-            socket.send(JSON.stringify({
-                'type': 'pong.ball',
-            }));
-        }
-    }, 10);
+	setInterval(() => {
+	if (socket.readyState === WebSocket.OPEN && printBall == true) {
+	socket.send(JSON.stringify({
+				'type': 'pong.ball',
+			}));
+		}
+	}, 10);
 });
 
-// setInterval(() => {
-// 	socket.send(JSON.stringify({
-// 			'type': 'pong.ball',
-// 				}));
-// 			}, 1000);
-// 			const keys = {};
-			
-			// document.addEventListener('keydown', e => {
-				//     // console.log('key pressed:', e.key);
-				
-//     keys[e.key] = true;
-// });
+function gameOver()
+{
+	const winMessageElem = document.getElementById('winMessage');
+	if (scorePlayer1 > scorePlayer2) {
+		winMessageElem.textContent = 'Player 1 wins!';
+	}
+	else {
+		winMessageElem.textContent = 'Player 2 wins!';
+	}
+	winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+
+	const replayBlockElem = document.getElementById('replayBlock');
+	replayBlockElem.style.display = 'block';
+
+	document.getElementById('YES').addEventListener('click', function() {
+		location.reload(); // Recharger la page pour rejouer
+	});
+	
+	document.getElementById('SETTING').addEventListener('click', function() {
+		window.location.href = 'settings.html'; // Rediriger vers la page des paramètres
+	});
+	
+	document.getElementById('BTH').addEventListener('click', function() {
+		window.location.href = 'index.html'; // Rediriger vers la page d'accueil
+	});
+	// TODO save les statistiques dans le profil des joueurs
+}
 
 
 // Dessiner players et ball
@@ -158,4 +205,4 @@ function gameLoop() {
 	requestAnimationFrame(gameLoop);
 }
 
-gameLoop();
+// gameLoop();
