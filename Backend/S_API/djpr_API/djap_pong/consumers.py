@@ -19,9 +19,9 @@ class PongConsumer(AsyncWebsocketConsumer):
 		type = data.get('type', 'malformed request')
 		key = data.get('key', 'malformed request')
 
-		if type == 'key.pressed':
+		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = True
-		if type == 'key.released':
+		if type == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = False
 
 		if type == 'pong.ball':

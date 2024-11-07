@@ -31,6 +31,7 @@ const playerBuffer = 0.05 * canvas.width;			// Ecart des players au bord
 canvas.width = canvas.clientWidth; // Rendre responsive
 const countdownElem = document.getElementById('countdown');
 
+let websocketLock = false;
 
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
@@ -42,7 +43,7 @@ const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 socket.onopen = async function (e) {
 	console.log("WebSocket is connected ouais");
 	// Afficher le compte à rebours avant que ça commence
-	draw();
+	// draw();
 	gameLoop();
 	startCountdown(2);
 };
@@ -70,6 +71,18 @@ function startCountdown(seconds) {
 //     console.log("Game started!");
 // }
 
+async function sendMessage(data) {
+    if (websocketLock) {
+        return; // Si le verrou est actif, ne pas envoyer de message
+    }
+    websocketLock = true; // Activer le verrou
+
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(data));
+    }
+
+    websocketLock = false; // Désactiver le verrou
+}
 
 // Gestion de la réception de messages WebSocket
 socket.onmessage = function (e) {
@@ -125,32 +138,34 @@ socket.onclose = function (event) {
 
 //Quand une touche est pressée, on envoie un message au serveur
 document.addEventListener('keydown', e => {
-	if (socket.readyState === WebSocket.OPEN) {
-		socket.send(JSON.stringify({
+	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
+		console.log(`Key pressed: ${e.key}`);
+		sendMessage({
 			'type': 'key.pressed',
 			'key': e.key
-	}));
+		});
 	}
 });
 
 //Quand une touche est relaché, on envoie un message au serveur
 document.addEventListener('keyup', e => {
-	if (socket.readyState === WebSocket.OPEN) {
-	socket.send(JSON.stringify({
-		'type': 'key.released',
-		'key': e.key
-	}));
-	}
+	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
+		console.log(`Key released: ${e.key}`);
+		sendMessage({
+            'type': 'key.released',
+            'key': e.key
+        });
+    }
 });
 
 socket.addEventListener('open', () => {
 	setInterval(() => {
 	if (socket.readyState === WebSocket.OPEN && printBall == true) {
-	socket.send(JSON.stringify({
-				'type': 'pong.ball',
-			}));
-		}
-	}, 10);
+        sendMessage({
+			'type': 'pong.ball',
+		});
+	}
+}, 10);
 });
 
 function gameOver()
