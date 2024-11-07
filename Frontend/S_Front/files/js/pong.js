@@ -28,7 +28,6 @@ let ballSpeedY = 0.01;				// Vitesse de la ball Y
 
 const playerBuffer = 0.05 * canvas.width;			// Ecart des players au bord
 
-let gameStart = false;
 canvas.width = canvas.clientWidth; // Rendre responsive
 const countdownElem = document.getElementById('countdown');
 
@@ -44,11 +43,12 @@ socket.onopen = async function (e) {
 	console.log("WebSocket is connected ouais");
 	// Afficher le compte à rebours avant que ça commence
 	draw();
-	startCountdown(3, gameLoop);
+	gameLoop();
+	startCountdown(2);
 };
 
 // Fonction pour démarrer le compte à rebours
-function startCountdown(seconds, callback) {
+function startCountdown(seconds) {
     let counter = seconds;
 
     const interval = setInterval(() => {
@@ -59,9 +59,7 @@ function startCountdown(seconds, callback) {
         if (counter < 0) {
             clearInterval(interval);
             countdownElem.style.display = 'none';
-            callback();
 			printBall = true;
-			gameStart = true;
 			console.log('GO !');
         }
     }, 1000);
@@ -127,7 +125,7 @@ socket.onclose = function (event) {
 
 //Quand une touche est pressée, on envoie un message au serveur
 document.addEventListener('keydown', e => {
-	if (socket.readyState === WebSocket.OPEN && gameStart == true) {
+	if (socket.readyState === WebSocket.OPEN) {
 		socket.send(JSON.stringify({
 			'type': 'key.pressed',
 			'key': e.key
@@ -137,7 +135,7 @@ document.addEventListener('keydown', e => {
 
 //Quand une touche est relaché, on envoie un message au serveur
 document.addEventListener('keyup', e => {
-	if (socket.readyState === WebSocket.OPEN && gameStart == true) {
+	if (socket.readyState === WebSocket.OPEN) {
 	socket.send(JSON.stringify({
 		'type': 'key.released',
 		'key': e.key
