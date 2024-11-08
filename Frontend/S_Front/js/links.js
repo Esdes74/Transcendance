@@ -1,24 +1,10 @@
-function updateButton()
+function updatePage(value)
 {
-    history.pushState({pageID: 'index'}, 'Index', '/')
-    rootMyUrl()
-}
-
-function updateSecondButton()
-{
-    history.pushState({pageID: 'authentification'}, 'authentification', '/authentification')
-    rootMyUrl()
-}
-
-function updateThirdButton()
-{
-    history.pushState({pageID: 'bravo'}, 'bravo', '/bravo')
-    rootMyUrl()
-}
-
-function updateFourthButton()
-{
-    history.pushState({pageID: 'Pong'}, 'Pong', '/pong')
+    if (value === "index")
+	value = ""
+    if (value === history.state.pageID)
+    	return
+    history.pushState({pageID: value}, '', "/" + value)
     rootMyUrl()
 }
 
@@ -26,13 +12,6 @@ function getLinks()
 {
     let buttons = document.querySelectorAll("button")
     buttons.forEach( button => {
-    if (button.value === "Accueil")
-        button.addEventListener("click", updateButton)
-    else if (button.value === "Connexion")
-        button.addEventListener("click", updateSecondButton)
-    else if (button.value === "Play")
-        button.addEventListener("click", updateFourthButton)
-    else
-        button.addEventListener("click", updateThirdButton)
-})
+    	button.addEventListener("click", () => updatePage(button.value))
+    })
 }

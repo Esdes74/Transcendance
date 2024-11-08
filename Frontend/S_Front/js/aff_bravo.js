@@ -10,4 +10,5 @@ function affBravo()
     `
 }
 
+pages["/bravo"].funct = affBravo
 affBravo()

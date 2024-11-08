@@ -14,8 +14,20 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function loadLogin(){
-//document.addEventListener('DOMContentLoaded', () => {
+function registerLink()
+{
+	//const button = document.querySelector('button[value="Register"]')
+	//button.removeEventListener("click", registerLink);
+	console.log("BUTTON")
+	history.pushState({pageID: 'Register'}, 'Register', '/register');
+	rootMyUrl();
+}
+
+function loadLogin()
+{
+		const button = document.querySelector('button[value="Register"]')	
+		if (button !== null)
+			button.addEventListener("click", registerLink);
 		const form = document.getElementById('loginForm');
 
 		form.addEventListener('submit', async (event) => {

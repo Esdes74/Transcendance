@@ -30,4 +30,5 @@ function affPong()
     `
 }
 
+pages["/pong"].funct = affPong
 affPong()

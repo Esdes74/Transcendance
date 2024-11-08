@@ -1,3 +1,31 @@
+let pages = {
+	"/": {
+		title: "Welcome",
+		script: "js/aff_index.js",
+		funct: null
+	},
+	"/bravo": {
+		title: "Bravo!",
+		script: "js/aff_bravo.js",
+		funct: null
+	},
+	"/authentification": {
+		title: "Authentification",
+		script: "js/aff_authentification.js",
+		funct: null
+	},
+	"/register": {
+		title: "Register",
+		script: "js/aff_register.js",
+		funct: null
+	},
+	"/pong": {
+		title: "Crazy Pong",
+		script: "js/aff_pong.js",
+		funct: null
+	}
+}
+
 function scriptAlreadyLoaded(url)
 {
 	url = "https://localhost:3000/" + url
@@ -22,41 +50,23 @@ function addScript(src)
 
 function rootMyUrl()
 {
-    loc = window.location.pathname
-    if (loc === "/index.html" || loc === "/index" || loc === "/")
+    let loc = window.location.pathname;
+    if (pages[loc])
     {
-        document.title = "Index"
-	if (!addScript("js/aff_index.js"))
-		affIndex()
+       let page = pages[loc];
+       document.title = page.title;
+       if (!addScript(page.script))
+	page.funct();
     }
-    else if (loc === "/bravo.html" || loc === "/bravo")
-    {
-        document.title = "Bravo"
-        if (!addScript("js/aff_bravo.js"))
-		affBravo()
-    }
-    else if (loc === "/authentification.html" || loc === "/authentification")
-    {
-        document.title = "Authentification"
-    	if (!addScript("js/aff_authentification.js"))
-		affAuthentification()
-    }
-    else if (loc === "/register.html" || loc === "/register")
-    {
-        document.title = "Enregistrement"
-    	if (!addScript("js/aff_register.js"))
-		affRegister()
-    }
-    else if (loc === "/pong.html" || loc === "/pong")
-    {
-        document.title = "Pong de ZINZIN"
-        if (!addScript("js/aff_pong.js"))
-		affPong()
-    }
+    else
+      console.log("error 404");
 }
 
+var path = window.location.pathname
+history.pushState({pageID: path.substring(1)}, '', path)
 rootMyUrl()
 getLinks()
+document.body.style.display = 'block';
 window.addEventListener('popstate', function (event)
 {
     rootMyUrl()

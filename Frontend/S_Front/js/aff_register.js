@@ -29,13 +29,14 @@ function affRegister()
                 <label for="phone_nb">Phone number</label>
                 <input type="tel" class="form-control" id="phone_nb" placeholder="Entrez votre numéros de téléphone">
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">rregister</button>
         </form>
         <div id="error-message" class="mt-3 text-danger"></div>
     </div>
     `
-    if (!addScript("js/register.js"))
-	    loadLogin()	
+    //if (!addScript("js/register.js"))
+//	    loadLogin()	
 }
 
+pages["/register"].funct = affRegister
 affRegister()

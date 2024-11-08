@@ -17,13 +17,14 @@ function affAuthentification()
 		</form>
 		<div id="error-message" class="mt-3 text-danger"></div>
 		<section>
-			<h2>Accéder à votre compte</h2>
-			<a href="/register.html" class="btn btn-primary">register</a> <!-- Lien vers la page d'authentification -->
+			<h2>Creer votre compte</h2>
+			<button type="button" class="btn btn-dark" value="Register"> Register</button>
 		</section>
 	</div>
     `
-    if (!addScript("js/login.js"))
-		loadLogin()
+ //   if (!addScript("js/login.js"))
+//		loadLogin()
 }
 
+pages["/authentification"].funct = affAuthentification
 affAuthentification()

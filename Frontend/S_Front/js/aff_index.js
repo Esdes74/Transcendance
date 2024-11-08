@@ -14,4 +14,5 @@ function affIndex()
     `
 }
 
+pages["/"].funct = affIndex
 affIndex()
