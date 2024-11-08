@@ -31,13 +31,23 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 
 	async def send_keys_periodically(self):
-		while True:
-			for k, value in self.keys.items():
-				print(f"keys : {self.keys}")
-				if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown']:
-					response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
-					await self.send(response)
-			await asyncio.sleep(0.01)
+		try:
+			while True:
+				keys_copy = list(self.keys.items())
+				for k, value in keys_copy:
+					print(f"keys : {self.keys}")
+					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown']:
+						response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
+						await self.send(response)
+				await asyncio.sleep(0.01)
+		except asyncio.CancelledError:
+			print("send_keys_periodically task was cancelled")
+		except Exception as e:
+			print(f"Exception in send_keys_periodically: {e}")
+
+# Le bug des players qui ne repondaient plus d'un coup, venait en fait d'une erreur qui n'était pas catch 
+# dans le send_keys_periodically. L'exception disait "dictionary changed size during iteration"
+# Il fallait donc faire une copie de la liste des keys pour pouvoir itérer dessus sans problème.
 
 
 	async def send_to_pong_service(self, data):

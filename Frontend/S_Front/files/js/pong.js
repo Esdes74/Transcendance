@@ -1,6 +1,10 @@
 const canvas = document.getElementById('pongCanvas');
 const ctx = canvas.getContext('2d');
 
+
+canvas.width = canvas.clientWidth; // Rendre responsive
+canvas.height = canvas.clientHeight; // Rendre responsive
+
 const playerWidth = 10;			// Epaisseur players
 const playerHeight = 0.30 * canvas.height;			// Hauteur players
 const ballRadius = 8;				// Taille de la ball
@@ -25,13 +29,11 @@ let ballSpeedX = 0.01;				// Vitesse de la ball X
 let ballSpeedY = 0.01;				// Vitesse de la ball Y
 // const MAX_SPEED = 16;				// Vitesse max de la ball
 // const acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
-
-const playerBuffer = 0.05 * canvas.width;			// Ecart des players au bord
-
-canvas.width = canvas.clientWidth; // Rendre responsive
-const countdownElem = document.getElementById('countdown');
+const playerBuffer = 0.02 * canvas.width;			// Ecart des players au bord
 
 let websocketLock = false;
+let countdownActive = false; // Variable pour suivre l'état du compte à rebours
+let countdownValue = 0; // Valeur actuelle du compte à rebours
 
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
@@ -42,34 +44,26 @@ const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 // Gestion de l'ouverture de la connexion WebSocket
 socket.onopen = async function (e) {
 	console.log("WebSocket is connected ouais");
-	// Afficher le compte à rebours avant que ça commence
-	// draw();
 	gameLoop();
-	startCountdown(2);
+	startCountdown(3);
 };
 
 // Fonction pour démarrer le compte à rebours
 function startCountdown(seconds) {
-    let counter = seconds;
+	countdownActive = true;
+	countdownValue = seconds;
 
-    const interval = setInterval(() => {
-		countdownElem.textContent = counter;
-
-		console.log('counter:', counter);
-        counter--;
-        if (counter < 0) {
-            clearInterval(interval);
-            countdownElem.style.display = 'none';
+	const interval = setInterval(() => {
+		//afficher le compte à rebours
+		countdownValue--;
+		if (countdownValue <= 0) {
+			clearInterval(interval);
+			countdownActive = false;
 			printBall = true;
 			console.log('GO !');
-        }
-    }, 1000);
+		}
+	}, 1000);
 }
-
-// function startGame() {
-//     // Code pour démarrer le jeu
-//     console.log("Game started!");
-// }
 
 async function sendMessage(data) {
     if (websocketLock) {
@@ -201,6 +195,30 @@ function gameOver()
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = 'white';
+
+	// Ligne filet
+	ctx.setLineDash([15, 10]); // Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width / 2, canvas.height);
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+	// ligne médiane de service
+	ctx.fillRect(canvas.width / 6, canvas.height / 2, canvas.width * 2/3, 2);
+
+	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de gauche et qui monte jusquau terrain
+	ctx.fillRect(canvas.width / 6, canvas.height / 6, 2, canvas.height * 2/3);
+	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de droite et qui monte jusquau terrain
+	ctx.fillRect(5 * canvas.width / 6, canvas.height / 6, 2, canvas.height * 2/3);
+	// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
+	ctx.fillRect(0, canvas.height / 6, canvas.width, 2);
+	// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
+	ctx.fillRect(0, 5 * canvas.height / 6, canvas.width, 2);
+
+
 	// Players
 	ctx.fillRect(playerBuffer, player1Y, playerWidth, playerHeight);
 	ctx.fillRect(canvas.width - playerWidth - playerBuffer, player2Y, playerWidth, playerHeight);
@@ -209,6 +227,19 @@ function draw() {
 		ctx.beginPath();
 		ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
 		ctx.fill();
+	}
+
+	// Dessiner le compte à rebours si actif
+	if (countdownActive) {
+		ctx.strokeStyle = 'rgb(115, 171, 201)'; // Couleur du contour
+        ctx.lineWidth = 28; // Largeur du contour
+        ctx.strokeText(countdownValue, canvas.width / 2, canvas.height / 2);
+		ctx.font = '70px Sans-serif';
+		ctx.fillStyle = 'white';
+		// centrer en x et y
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		ctx.fillText(countdownValue, canvas.width / 2, canvas.height / 2);
 	}
 }
 
