@@ -14,7 +14,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function loadRegister()
+{
 	const form = document.getElementById('loginForm');
 
 	form.addEventListener('submit', async (event) => {
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			// Envois des donées en log pour le debuggage
 			// Envoie les données à l'API
-			const response = await fetch('http://localhost:8000/api/auth/create/', {
+			const response = await fetch('https://localhost:3000/api/auth/create/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -81,5 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			alert('Une erreur est survenue. Veuillez réessayer.');
 		}
 	});
-});
+}
+loadRegister()
 
