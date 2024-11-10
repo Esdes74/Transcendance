@@ -23,6 +23,11 @@ let pages = {
 		title: "Crazy Pong",
 		script: "js/aff_pong.js",
 		funct: null
+	},
+	"/2fa": {
+		title: "2fa",
+		script: "js/aff_2fa.js",
+		funct: null
 	}
 }
 

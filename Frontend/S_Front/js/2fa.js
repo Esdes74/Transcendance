@@ -14,7 +14,8 @@ function getCookie(name) {
     return cookieValue;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function load2faLogin()
+{
 	const form = document.getElementById('loginForm');
 
 	form.addEventListener('submit', async (event) => {
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			csrf_token = getCookie('csrftoken')
 
 			// Envoie les données à l'API
-			const response = await fetch('http://localhost:8000/api/auth/2fa/', {
+			const response = await fetch('https://localhost:3000/api/auth/2fa/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -61,4 +62,5 @@ document.addEventListener('DOMContentLoaded', () => {
 			alert('Une erreur est survenue. Veuillez réessayer.');
 		}
 	});
-});
+}
+load2faLogin()
