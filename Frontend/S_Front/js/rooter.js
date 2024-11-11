@@ -28,6 +28,21 @@ let pages = {
 		title: "2fa",
 		script: "js/aff_2fa.js",
 		funct: null
+	},
+	"/play": {
+		title: "play",
+		script: "js/aff_play.js",
+		funct: null
+	},
+	"/tournament": {
+		title: "tournament",
+		script: "js/aff_tournament.js",
+		funct: null
+	},
+	"/online": {
+		title: "Online Pong",
+		script: "js/aff_online.js",
+		funct: null
 	}
 }
 

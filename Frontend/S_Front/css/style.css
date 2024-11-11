@@ -62,7 +62,14 @@ section p {
     line-height: 1.6;
 }
 
-/* Bouton */
+/* Cards */
+
+.card:hover {
+	box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+	transform: scale(1.02);
+}
+
+/* Buttons */
 .btn {
     display: inline-block;
     padding: 10px 20px;
