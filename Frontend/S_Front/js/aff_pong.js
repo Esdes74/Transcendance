@@ -4,30 +4,13 @@ function affPong()
    	docMain.innerHTML = `
     <div class="container text-center my-5">
 		<div class="row justify-content-center">
-			<div class="col-md-8">
-				<h1 class="mb-4">PONG</h1>
-
-				<!-- SCOREBOARD -->
-				<div class="score-board d-flex justify-content-around mb-3">
-					<div id="scorePlayer1" class="fs-2">0</div> <!-- Score du joueur 1 -->
-					<div id="scorePlayer2" class="fs-2">0</div> <!-- Score du joueur 2 -->
-				</div>
-				<div class="canvas-container">
-					<canvas id="pongCanvas" class="w-100" height="400"></canvas>
-					<div id="replayBlock">
-						<h2 id="winMessage"></h2>
-						<div class="button-group">
-							<button id="YES" class="btn btn-outline-light m-2">Replay</button>
-							<button id="SETTING" class="btn btn-outline-light m-2">Settings</button>
-							<button id="BTH" class="btn btn-outline-light m-2">Back to Home</button>
-							<!-- \todo: href les buttons -->
-						</div>
-					</div>
-				</div>
-			</div>
+			<canvas id="offlineCanvas" width="1200" height="800">
+			</canvas>
 		</div>
-	</div>
+    </div>
     `
+    if (!addScript("js/init_offline_pong.js"))
+	initOfflinePong()
 }
 
 pages["/pong"].funct = affPong
