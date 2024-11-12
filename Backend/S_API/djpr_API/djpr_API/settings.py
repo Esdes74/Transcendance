@@ -25,6 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGO = os.getenv('ALGO')
+FRONT_IP = os.getenv('FRONT_IP')
+print(FRONT_IP)
 
 # Pour vérifier que la clée secrete soit bien définis
 if not SECRET_KEY or not ALGO:
@@ -33,32 +35,35 @@ if not SECRET_KEY or not ALGO:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django-API']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-API', FRONT_IP]
 
-# Paramétrage des CORS policies
-CORS_ALLOWED_ORIGINS = [
-	"https://localhost:3000",
-]
+# # Paramétrage des CORS policies
+# CORS_ALLOWED_ORIGINS = [
+# 	"https://localhost:3000",
+# 	NGINX_URL,
+# ]
+# # CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOW_HEADERS = list(default_headers) + [
-	'X-token',
-]
+# CORS_ALLOW_HEADERS = list(default_headers) + [
+# 	'X-token',
+# ]
 
-CORS_ALLOW_METHODS = [
-	'GET',
-	'POST',
-	'PUT',
-	'DELETE',
-	'OPTIONS',
-]
+# CORS_ALLOW_METHODS = [
+# 	'GET',
+# 	'POST',
+# 	'PUT',
+# 	'DELETE',
+# 	'OPTIONS',
+# ]
 
-# Autoriser l'envoi de cookies avec les requêtes CORS
-CORS_ALLOW_CREDENTIALS = True
+# # Autoriser l'envoi de cookies avec les requêtes CORS
+# CORS_ALLOW_CREDENTIALS = True
 
 # Autorisation CSRF
 CSRF_TRUSTED_ORIGINS = [
 	"https://localhost:3000",
 ]
+	# NGINX_URL,
 
 CSRF_COOKIE_SECURE = False
 
@@ -79,6 +84,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+	'djpr_API.mon_middleware.LogRequestURLMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',

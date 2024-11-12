@@ -1,18 +1,18 @@
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Vérifie si ce cookie commence par le nom donné
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+// function getCookie(name) {
+//     let cookieValue = null;
+//     if (document.cookie && document.cookie !== '') {
+//         const cookies = document.cookie.split(';');
+//         for (let i = 0; i < cookies.length; i++) {
+//             const cookie = cookies[i].trim();
+//             // Vérifie si ce cookie commence par le nom donné
+//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                 break;
+//             }
+//         }
+//     }
+//     return cookieValue;
+// }
 
 function registerLink()
 {
@@ -42,18 +42,18 @@ function loadLogin()
 
 		try {
 			// Récupération token csrf
-			csrf_token = getCookie('csrftoken')
+			// csrf_token = getCookie('csrftoken')
 
 			// Envoie les données à l'API
 			const response = await fetch('https://localhost:3000/api/auth/login/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					'X-CSRFToken': csrf_token
 				},
 				body: JSON.stringify(data),
 				credentials: 'include'
 			});
+			// 'X-CSRFToken': csrf_token
 			// 'X-token': token
 
 			// Vérifie la réponse de l'API
