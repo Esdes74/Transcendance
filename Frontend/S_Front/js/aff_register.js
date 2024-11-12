@@ -1,8 +1,7 @@
 function affRegister()
 {
-    let newBody = document.createElement('body')
-    document.title = "Login"
-    newBody.innerHTML = `
+    let docMain = document.querySelector('main')
+    docMain.innerHTML = `
     <div class="container mt-5">
         <h2>Connexion</h2>
         <form id="loginForm">
@@ -30,12 +29,14 @@ function affRegister()
                 <label for="phone_nb">Phone number</label>
                 <input type="tel" class="form-control" id="phone_nb" placeholder="Entrez votre numéros de téléphone">
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">rregister</button>
         </form>
         <div id="error-message" class="mt-3 text-danger"></div>
     </div>
-
-    <script src="js/register.js"></script>
     `
-    document.body = newBody
+    if (!addScript("js/register.js"))
+	    loadRegister()	
 }
+
+pages["/register"].funct = affRegister
+affRegister()

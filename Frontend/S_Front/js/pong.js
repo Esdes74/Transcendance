@@ -1,9 +1,9 @@
-const canvas = document.getElementById('pongCanvas');
-const ctx = canvas.getContext('2d');
+let canvas = document.getElementById('pongCanvas');
+let ctx = canvas.getContext('2d');
 
-const playerWidth = 10;			// Epaisseur players
-const playerHeight = 100;			// Hauteur players
-const ballRadius = 8;				// Taille de la ball
+let playerWidth = 10;			// Epaisseur players
+let playerHeight = 100;			// Hauteur players
+let ballRadius = 8;				// Taille de la ball
 let printBall = true;			// Afficher la ball ou non
 
 let player1Y = (canvas.height - playerHeight) / 2;	//player 1
@@ -12,8 +12,8 @@ let player2Y = player1Y;							//player 2
 let scorePlayer1 = 0;				// score player 1
 let scorePlayer2 = 0;				// score player 2
 
-const scorePlayer1Elem = document.getElementById('scorePlayer1');
-const scorePlayer2Elem = document.getElementById('scorePlayer2');
+let scorePlayer1Elem = document.getElementById('scorePlayer1');
+let scorePlayer2Elem = document.getElementById('scorePlayer2');
 
 let ballX = canvas.width / 2;	// Placer la ball au milieu horizontal du canvas
 let ballY = canvas.height / 2;	// Placer la ball au milieu verticalement du canvas
@@ -21,77 +21,18 @@ let ballY = canvas.height / 2;	// Placer la ball au milieu verticalement du canv
 let ballSpeed = 3;				// Vitesse de la ball par défaut
 let ballSpeedX = 3;				// Vitesse de la ball X
 let ballSpeedY = 3;				// Vitesse de la ball Y
-const MAX_SPEED = 16;				// Vitesse max de la ball
-const acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
+let MAX_SPEED = 16;				// Vitesse max de la ball
+let acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
 
 // const playerSpeed = 5;			// Vitesse des players
-const playerBuffer = 10;			// Ecart des players au bord
+let playerBuffer = 10;			// Ecart des players au bord
 
 canvas.width = canvas.clientWidth; // Rendre responsive
 
 
-// ################################################################################################################ //
-// 												Connexion WebSocket													//
-// ################################################################################################################ //
-
-const socket = new WebSocket('ws://localhost:8000/ws/pong/');
-
-// Gestion de l'ouverture de la connexion WebSocket
-socket.onopen = function (e) {
-	console.log("WebSocket is connected ouais");
-
-	// Envoyer la configuration initiale
-	const config = {
-		type: 'config',
-		player1Y: player1Y,
-		player2Y: player2Y,
-		ballX: ballX,
-		ballY: ballY,
-		ballSpeedX: ballSpeedX,
-		ballSpeedY: ballSpeedY,
-		scorePlayer1: scorePlayer1,
-		scorePlayer2: scorePlayer2
-	};
-	socket.send(JSON.stringify(config));
-};
-
-// Gestion de la réception de messages WebSocket
-socket.onmessage = function (e) {
-	console.log('Message from server il dit :', event.data);
-	const data = JSON.parse(e.data);
-
-	// Mise à jour des positions reçues du serveur
-	if (data.type === 'pong.update') {
-		player1Y = data.player1Y;
-		player2Y = data.player2Y;
-		ballX = data.ballX;
-		ballY = data.ballY;
-		scorePlayer1 = data.scorePlayer1;
-		scorePlayer2 = data.scorePlayer2;
-
-		scorePlayer1Elem.textContent = scorePlayer1;
-		scorePlayer2Elem.textContent = scorePlayer2;
-	}
-};
-
-// Gestion des erreurs WebSocket
-socket.onerror = function (error) {
-	console.error('WebSocket error la big erreur la:', error);
-};
-
-// Gestion de la fermeture de la connexion WebSocket
-socket.onclose = function (event) {
-	console.log('WebSocket is closed bah il sest ferme:', event);
-};
-
-// ################################################################################################################ //
-// 												Connexion WebSocket													//
-// ################################################################################################################ //
-
-
 
 // Suivi des touches enfoncées (pour mobilité + fluide)
-const keys = {};
+let keys = {};
 document.addEventListener('keydown', e => {
 	keys[e.key] = true;
 

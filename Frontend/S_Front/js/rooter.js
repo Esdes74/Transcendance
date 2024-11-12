@@ -1,68 +1,92 @@
-function removeScripts()
+let pages = {
+	"/": {
+		title: "Welcome",
+		script: "js/aff_index.js",
+		funct: null
+	},
+	"/bravo": {
+		title: "Bravo!",
+		script: "js/aff_bravo.js",
+		funct: null
+	},
+	"/authentification": {
+		title: "Authentification",
+		script: "js/aff_authentification.js",
+		funct: null
+	},
+	"/register": {
+		title: "Register",
+		script: "js/aff_register.js",
+		funct: null
+	},
+	"/pong": {
+		title: "Crazy Pong",
+		script: "js/aff_pong.js",
+		funct: null
+	},
+	"/2fa": {
+		title: "2fa",
+		script: "js/aff_2fa.js",
+		funct: null
+	},
+	"/play": {
+		title: "play",
+		script: "js/aff_play.js",
+		funct: null
+	},
+	"/tournament": {
+		title: "tournament",
+		script: "js/aff_tournament.js",
+		funct: null
+	},
+	"/online": {
+		title: "Online Pong",
+		script: "js/aff_online.js",
+		funct: null
+	}
+}
+
+function scriptAlreadyLoaded(url)
 {
-    let scripts = document.querySelectorAll("script")
-    scripts.forEach( script => {
-    script.parentNode.removeChild(script)
-})
+	url = "https://localhost:3000/" + url
+	let scripts = document.getElementsByTagName('script')
+	for (let i = scripts.length; i--;)
+	{
+		if (scripts[i].src === url) 
+			return true
+	}
+	return false
+}
+
+function addScript(src)
+{
+	if (scriptAlreadyLoaded(src))
+		return (false)
+	let scriptElement = document.createElement('script')
+	scriptElement.setAttribute("src", src)
+	document.body.appendChild(scriptElement)
+	return (true)
 }
 
 function rootMyUrl()
 {
-    removeScripts()
-    loc = window.location.pathname
-    if (loc === "/index.html" || loc === "/index" || loc === "/")
+    let loc = window.location.pathname;
+    if (pages[loc])
     {
-        let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "js/aff_index.js")
-        document.head.appendChild(scriptElement)
-        scriptElement.onload = function()
-        {
-            affIndex()
-        }
+       let page = pages[loc];
+       document.title = page.title;
+       if (!addScript(page.script))
+	page.funct();
     }
-    else if (loc === "/bravo.html" || loc === "/bravo")
-    {
-        let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "js/aff_bravo.js")
-        document.head.appendChild(scriptElement)
-        scriptElement.onload = function()
-        {
-            affBravo()
-        }
-    }
-    else if (loc === "/authentification.html" || loc === "/authentification")
-    {
-        let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "js/aff_authentification.js")
-        document.head.appendChild(scriptElement)
-        scriptElement.onload = function()
-        {
-            affAuthentification()
-        }
-    }
-    else if (loc === "/register.html" || loc === "/register")
-    {
-        let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "js/aff_register.js")
-        document.head.appendChild(scriptElement)
-        scriptElement.onload = function()
-        {
-            affRegister()
-        }
-    }
-    else if (loc === "/pong.html" || loc === "/pong")
-    {
-        let scriptElement = document.createElement('script')
-        scriptElement.setAttribute("src", "js/aff_pong.js")
-        document.head.appendChild(scriptElement)
-        scriptElement.onload = function()
-        {
-            affPong()
-        }
-    }
+    else
+      console.log("error 404");
 }
 
+var path = window.location.pathname
+history.pushState({pageID: path.substring(1)}, '', path)
 rootMyUrl()
+getLinks()
+document.body.style.display = 'block';
 window.addEventListener('popstate', function (event)
 {
     rootMyUrl()
