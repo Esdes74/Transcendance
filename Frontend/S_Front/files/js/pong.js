@@ -52,6 +52,7 @@ const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 // Gestion de l'ouverture de la connexion WebSocket
 socket.onopen = async function (e) {
 	console.log("WebSocket is connected ouais");
+	restoreGameState();
 	gameLoop();
 	startCountdown(3);
 };
@@ -131,6 +132,7 @@ socket.onerror = function (error) {
 // Gestion de la fermeture de la connexion WebSocket
 socket.onclose = function (event) {
 	console.log('WebSocket is closed bah il sest ferme:', event);
+	saveGameState();
 };
 
 // ################################################################################################################ //
@@ -257,4 +259,39 @@ function gameLoop() {
 	requestAnimationFrame(gameLoop);
 }
 
-// gameLoop();
+function saveGameState() {
+	const gameState = {
+		player1Y,
+		player2Y,
+		ballX,
+		ballY,
+		ballSpeedX,
+		ballSpeedY,
+		scorePlayer1,
+		scorePlayer2,
+		printBall,
+		countdownActive,
+		countdownValue
+	};
+	localStorage.setItem('pongGameState', JSON.stringify(gameState));
+}
+
+// function pour restaurer l'état du jeu depuis le stockage local
+function restoreGameState() {
+	const gameState = JSON.parse(localStorage.getItem('pongGameState'));
+	if (gameState) {
+		player1Y = gameState.player1Y;
+		player2Y = gameState.player2Y;
+		ballX = gameState.ballX;
+		ballY = gameState.ballY;
+		ballSpeedX = gameState.ballSpeedX;
+		ballSpeedY = gameState.ballSpeedY;
+		scorePlayer1 = gameState.scorePlayer1;
+		scorePlayer2 = gameState.scorePlayer2;
+		printBall = gameState.printBall;
+		countdownActive = gameState.countdownActive;
+		countdownValue = gameState.countdownValue;
+		scorePlayer1Elem.textContent = scorePlayer1;
+		scorePlayer2Elem.textContent = scorePlayer2;
+	}
+}
