@@ -1,9 +1,8 @@
 const canvas = document.getElementById('pongCanvas');
 const ctx = canvas.getContext('2d');
 
-
-canvas.width = canvas.clientWidth; // Rendre responsive
-canvas.height = canvas.clientHeight; // Rendre responsive
+// canvas.width = canvas.clientWidth; // Rendre responsive
+// canvas.height = canvas.clientHeight; // Rendre responsive
 
 const playerWidth = 10;			// Epaisseur players
 const playerHeight = 0.30 * canvas.height;			// Hauteur players
@@ -35,6 +34,15 @@ let websocketLock = false;
 let countdownActive = false; // Variable pour suivre l'état du compte à rebours
 let countdownValue = 0; // Valeur actuelle du compte à rebours
 
+function resizeCanvas() {
+	canvas.width = canvas.clientWidth; // Rendre responsive
+	canvas.height = canvas.clientHeight; // Rendre responsive
+	draw();
+}
+
+resizeCanvas();
+
+window.addEventListener('resize', resizeCanvas);
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
