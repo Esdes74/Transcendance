@@ -54,7 +54,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 		print(f"FCT send_to_pong_service")
 
 		# Check if the WebSocket connection already exists
-		if not hasattr(self, 'websocket') or self.websocket.closed:
+		if not hasattr(self, 'websocket'): # or self.websocket.closed:
 			uri = "ws://django-Pong:8000/ws/pong/calcul"  # WebSocket service Pong
 			self.websocket = await websockets.connect(uri)
 
