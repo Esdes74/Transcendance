@@ -43,6 +43,11 @@ let pages = {
 		title: "Online Pong",
 		script: "js/aff_online.js",
 		funct: null
+	},
+	"/404": {
+		title: "Error 404",
+		script: "js/aff_404.js",
+		funct: null
 	}
 }
 
@@ -79,7 +84,10 @@ function rootMyUrl()
 	page.funct();
     }
     else
-      console.log("error 404");
+    {
+	history.pushState({pageID: '404'}, '', "/404")
+	rootMyUrl()
+    }
 }
 
 var path = window.location.pathname
