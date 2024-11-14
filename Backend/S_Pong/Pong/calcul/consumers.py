@@ -42,40 +42,41 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			if key == 'w':
 				if self.player1Y - (self.playerHeight / 2) > 0:
 					self.player1Y = self.player1Y - 0.012
-				await self.send(text_data=json.dumps({
-				'type': 'pong.player1',
-				'player1Y': self.player1Y
-				}))
+				# await self.send(text_data=json.dumps({
+				# 'type': 'pong.player1',
+				# 'player1Y': self.player1Y
+				# }))
 			elif key == 's':
 				if self.player1Y + (self.playerHeight / 2) < 1:
 					self.player1Y = self.player1Y + 0.012
-				await self.send(text_data=json.dumps({
-				'type': 'pong.player1',
-				'player1Y': self.player1Y
-				}))
+				# await self.send(text_data=json.dumps({
+				# 'type': 'pong.player1',
+				# 'player1Y': self.player1Y
+				# }))
 			elif key == 'ArrowUp':
 				if self.player2Y - (self.playerHeight / 2) > 0:
 					self.player2Y = self.player2Y - 0.012
-				await self.send(text_data=json.dumps({
-				'type': 'pong.player2',
-				'player2Y': self.player2Y
-				}))
+				# await self.send(text_data=json.dumps({
+				# 'type': 'pong.player2',
+				# 'player2Y': self.player2Y
+				# }))
 			elif key == 'ArrowDown':
 				if self.player2Y + (self.playerHeight / 2) < 1:
 					self.player2Y = self.player2Y + 0.012
-				await self.send(text_data=json.dumps({
-				'type': 'pong.player2',
-				'player2Y': self.player2Y
-				}))
+				# await self.send(text_data=json.dumps({
+				# 'type': 'pong.player2',
+				# 'player2Y': self.player2Y
+				# }))
 			else:
 				print('key non reconnue')
-				await self.send(text_data=json.dumps({
-				'type': 'pong.error',
-				'error': 'key non reconnue'
-				}))
+				# await self.send(text_data=json.dumps({
+				# 'type': 'pong.error',
+				# 'error': 'key non reconnue'
+				# }))
 
 		elif data.get('type') == 'pong.ball':
 			if self.action == False:
+				await asyncio.sleep(0.5)
 				self.action = True
 				self.ballSpeedX = 0.003 * self.nextService
 				self.ballSpeedY = 0.003
@@ -85,16 +86,16 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.ballSpeedX = (1 if self.ballSpeedX > 0 else -1) * self.max_speed
 
 			# Rebondir sur le haut et le bas du terrain
-			if self.ballY >= 1 - 0.005:
+			if self.ballY >= 1 - 0.02:
 				self.ballSpeedY = -abs(self.ballSpeedY)
-			if self.ballY <= 0 + 0.005:
+			if self.ballY <= 0 + 0.02:
 				self.ballSpeedY = abs(self.ballSpeedY)
 
 			# Détection de collision avec les raquettes
-			if self.ballX <= self.player1X - 0.005 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
+			if self.ballX <= self.player1X - 0.02 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
 				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
 				self.ballSpeedY = (self.ballY - self.player1Y) * 0.03 * self.acceleration		# Rebond en fonction de la position de la raquette
-			if self.ballX >= self.player2X + 0.005 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
+			if self.ballX >= self.player2X + 0.02 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
 				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
 				self.ballSpeedY = (self.ballY - self.player2Y) * 0.03 * self.acceleration		# Rebond en fonction de la position de la raquette
 
@@ -107,16 +108,16 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.scorePlayer2 = self.scorePlayer2 + 1
 				await self.resetBall(1);						# Renvoyer la balle vers la gauche
 
-			await self.send(text_data=json.dumps({
-				'type': 'pong.ball',
-				'ballX': self.ballX,
-				'ballY': self.ballY,
-				'ballSpeedX': self.ballSpeedX,
-				'ballSpeedY': self.ballSpeedY,
-				'scorePlayer1': self.scorePlayer1,
-				'scorePlayer2': self.scorePlayer2,
-				'action': self.action,
-				}))
+		await self.send(text_data=json.dumps({
+			'type': 'pong.update',
+			'player1Y': self.player1Y,
+			'player2Y': self.player2Y,
+			'ballX': self.ballX,
+			'ballY': self.ballY,
+			'scorePlayer1': self.scorePlayer1,
+			'scorePlayer2': self.scorePlayer2,
+			'action': self.action,
+			}))
 
 
 	async def resetBall(self, direction):

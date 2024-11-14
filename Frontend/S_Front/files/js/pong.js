@@ -1,38 +1,38 @@
 const canvas = document.getElementById('pongCanvas');
 const ctx = canvas.getContext('2d');
 
-// canvas.width = canvas.clientWidth; // Rendre responsive
-// canvas.height = canvas.clientHeight; // Rendre responsive
 
-const playerWidth = 10;			// Epaisseur players
-const playerHeight = 0.30 * canvas.height;			// Hauteur players
-const ballRadius = 8;				// Taille de la ball
-let printBall = false;			// Afficher la ball ou non
+// paddle properties
 
-let player1X = 0.05
-let player2X = 1 - player1X
-let player1Y = (canvas.height - playerHeight) / 2;	//player 1
-let player2Y = player1Y;							//player 2
+const	paddleWidth = 10;							// Epaisseur players
+const	paddleHeight = 0.30 * canvas.height;		// Hauteur players
+const	paddleBuffer = 0.02 * canvas.width;			// Ecart des players au bord
+// let		paddle1Y;
+// let		paddle2Y;
+let paddle1Y = (canvas.height - paddleHeight) / 2;	//player 1
+let paddle2Y = paddle1Y;							//player 2
 
-let scorePlayer1 = 0;				// score player 1
-let scorePlayer2 = 0;				// score player 2
 
-const scorePlayer1Elem = document.getElementById('scorePlayer1');
-const scorePlayer2Elem = document.getElementById('scorePlayer2');
+//  ball properties
 
-let ballX = 0.5 * canvas.width;		// Placer la ball au milieu horizontal du canvas	en pourcentage
-let ballY = 0.5 * canvas.height;	// Placer la ball au milieu verticalement du canvas	en pourcentage
+const	ballRadius = 8;					// Taille de la ball
+let		printBall = false;				// Afficher la ball ou non
+let		ballX = 0.5 * canvas.width;		// Placer la ball au milieu horizontal du canvas	en pourcentage
+let		ballY = 0.5 * canvas.height;	// Placer la ball au milieu verticalement du canvas	en pourcentage
 
-let ballSpeed = 0.01;				// Vitesse de la ball par défaut
-let ballSpeedX = 0.01;				// Vitesse de la ball X
-let ballSpeedY = 0.01;				// Vitesse de la ball Y
-// const MAX_SPEED = 16;				// Vitesse max de la ball
-// const acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
-const playerBuffer = 0.02 * canvas.width;			// Ecart des players au bord
 
-let websocketLock = false;
-let countdownActive = false; // Variable pour suivre l'état du compte à rebours
-let countdownValue = 0; // Valeur actuelle du compte à rebours
+// game properties
+
+let		scorePlayer1 = 0;				// score player 1
+let		scorePlayer2 = 0;				// score player 2
+
+const	scorePlayer1Elem = document.getElementById('scorePlayer1');
+const	scorePlayer2Elem = document.getElementById('scorePlayer2');
+
+let		websocketLock = false;
+let		countdownActive = false;		// Variable pour suivre l'état du compte à rebours
+let		countdownValue = 0;				// Valeur actuelle du compte à rebours
+
 
 function resizeCanvas() {
 	canvas.width = canvas.clientWidth; // Rendre responsive
@@ -43,18 +43,31 @@ function resizeCanvas() {
 resizeCanvas();
 
 window.addEventListener('resize', resizeCanvas);
+const socket = new WebSocket('ws://localhost:8000/ws/pong/');
+// canvas.width = canvas.clientWidth; // Rendre responsive
+// canvas.height = canvas.clientHeight; // Rendre responsive
+
+// ///////////////////////////////////////////////////////////////////////// //
+
+
+// let player1X = 0.05
+// let player2X = 1 - player1X
+
+// const MAX_SPEED = 16;				// Vitesse max de la ball
+// const acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
+
+
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 
-const socket = new WebSocket('ws://localhost:8000/ws/pong/');
+
 
 // Gestion de l'ouverture de la connexion WebSocket
 socket.onopen = async function (e) {
 	console.log("WebSocket is connected ouais");
-	restoreGameState();
-	gameLoop();
 	startCountdown(3);
+	gameLoop();
 };
 
 // Fonction pour démarrer le compte à rebours
@@ -88,37 +101,32 @@ async function sendMessage(data) {
 }
 
 // Gestion de la réception de messages WebSocket
-socket.onmessage = function (e) {
-	// console.log('Message from server il dit :', event.data);
+socket.onmessage = function (e)
+{	// console.log('Message from server il dit :', event.data);
 	const data = JSON.parse(e.data);
-	
 	// Mise à jour des positions reçues du serveur
-	if (data.type === 'pong.player1') {
-		player1Y = data.player1Y * canvas.height - playerHeight / 2;
-	}
-	if (data.type === 'pong.player2') {
-		player2Y = data.player2Y * canvas.height - playerHeight / 2;
-	}
-	if (data.type === 'pong.ball') {
+	// if (data.type === 'pong.player1') {
+	// 	// paddle1Y = data.player1Y * canvas.height - paddleHeight / 2;
+	// }
+	// if (data.type === 'pong.player2') {
+	// 	// paddle2Y = data.player2Y * canvas.height - paddleHeight / 2;
+	// }
+	if (data.type === 'pong.update') {
+		paddle1Y = data.player1Y * canvas.height - paddleHeight / 2;
+		paddle2Y = data.player2Y * canvas.height - paddleHeight / 2;
 		ballX = data.ballX * canvas.width;
 		ballY = data.ballY * canvas.height;
-		ballSpeedX = data.ballSpeedX;
-		ballSpeedY = data.ballSpeedY;
 		scorePlayer1 = data.scorePlayer1;
 		scorePlayer2 = data.scorePlayer2;
 		scorePlayer1Elem.textContent = scorePlayer1;
 		scorePlayer2Elem.textContent = scorePlayer2;
-		printBall = data.action
-		if (printBall == false) {
+		printBall = data.action;
+		if (printBall == false)
+			{
 			console.log('scorePlayer1:', scorePlayer1);
 			console.log('scorePlayer2:', scorePlayer2);
 			if (scorePlayer1 >= 5 || scorePlayer2 >= 5) {
 				gameOver();
-			}
-			else {
-				setTimeout(() => {
-					printBall = true;
-				}, 1000);
 			}
 		}
 	}
@@ -132,7 +140,6 @@ socket.onerror = function (error) {
 // Gestion de la fermeture de la connexion WebSocket
 socket.onclose = function (event) {
 	console.log('WebSocket is closed bah il sest ferme:', event);
-	saveGameState();
 };
 
 // ################################################################################################################ //
@@ -162,15 +169,6 @@ document.addEventListener('keyup', e => {
     }
 });
 
-socket.addEventListener('open', () => {
-	setInterval(() => {
-	if (socket.readyState === WebSocket.OPEN && printBall == true) {
-        sendMessage({
-			'type': 'pong.ball',
-		});
-	}
-}, 10);
-});
 
 function gameOver()
 {
@@ -230,8 +228,8 @@ function draw() {
 
 
 	// Players
-	ctx.fillRect(playerBuffer, player1Y, playerWidth, playerHeight);
-	ctx.fillRect(canvas.width - playerWidth - playerBuffer, player2Y, playerWidth, playerHeight);
+	ctx.fillRect(paddleBuffer, paddle1Y, paddleWidth, paddleHeight);
+	ctx.fillRect(canvas.width - paddleWidth - paddleBuffer, paddle2Y, paddleWidth, paddleHeight);
 	// Ball
 	if (printBall == true) {
 		ctx.beginPath();
@@ -257,41 +255,4 @@ function draw() {
 function gameLoop() {
 	draw();
 	requestAnimationFrame(gameLoop);
-}
-
-function saveGameState() {
-	const gameState = {
-		player1Y,
-		player2Y,
-		ballX,
-		ballY,
-		ballSpeedX,
-		ballSpeedY,
-		scorePlayer1,
-		scorePlayer2,
-		printBall,
-		countdownActive,
-		countdownValue
-	};
-	localStorage.setItem('pongGameState', JSON.stringify(gameState));
-}
-
-// function pour restaurer l'état du jeu depuis le stockage local
-function restoreGameState() {
-	const gameState = JSON.parse(localStorage.getItem('pongGameState'));
-	if (gameState) {
-		player1Y = gameState.player1Y;
-		player2Y = gameState.player2Y;
-		ballX = gameState.ballX;
-		ballY = gameState.ballY;
-		ballSpeedX = gameState.ballSpeedX;
-		ballSpeedY = gameState.ballSpeedY;
-		scorePlayer1 = gameState.scorePlayer1;
-		scorePlayer2 = gameState.scorePlayer2;
-		printBall = gameState.printBall;
-		countdownActive = gameState.countdownActive;
-		countdownValue = gameState.countdownValue;
-		scorePlayer1Elem.textContent = scorePlayer1;
-		scorePlayer2Elem.textContent = scorePlayer2;
-	}
 }
