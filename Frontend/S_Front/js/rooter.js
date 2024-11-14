@@ -74,7 +74,7 @@ function rootMyUrl()
     if (pages[loc])
     {
        let page = pages[loc];
-       document.title = page.title;
+       //document.title = page.title;
        if (!addScript(page.script))
 	page.funct();
     }
