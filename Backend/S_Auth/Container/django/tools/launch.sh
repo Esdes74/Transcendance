@@ -6,22 +6,29 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/04 17:58:26 by eslamber         ###   ########.fr        #
+#    Updated: 2024/11/14 16:06:55 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
 
+while ! pg_isready -h auth_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
+	echo "attente du service postgresql"
+	sleep 1
+done
+
+cd $VOLUME
+
 # Créer des migrations
-# python3 $VOLUME/manage.py makemigrations
+python3 manage.py makemigrations
 
 # Appliquer les migrations
-python3 $VOLUME/manage.py migrate
+python3 manage.py migrate
 
 # Créer un superutilisateur automatiquement
 if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ] && [ "$DJANGO_SUPERUSER_EMAIL" ]; then
-    python3 $VOLUME/manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
+    python3 manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
 fi
 
 # Lancer le serveur Django
-python3 $VOLUME/manage.py runserver 0.0.0.0:8000
+python3 manage.py runserver 0.0.0.0:8000
