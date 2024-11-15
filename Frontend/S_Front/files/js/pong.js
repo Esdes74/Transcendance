@@ -15,103 +15,77 @@ let paddle2Y = paddle1Y;							//player 2
 
 //  ball properties
 
-const	ballRadius = 8;					// Taille de la ball
-let		printBall = false;				// Afficher la ball ou non
-let		ballX = 0.5 * canvas.width;		// Placer la ball au milieu horizontal du canvas	en pourcentage
-let		ballY = 0.5 * canvas.height;	// Placer la ball au milieu verticalement du canvas	en pourcentage
+const	ballRadius = 8;								// Taille de la ball
+let		printBall = false;							// Afficher la ball ou non
+let		ballX = 0.5 * canvas.width;					// Placer la ball au milieu horizontal du canvas	en pourcentage
+let		ballY = 0.5 * canvas.height;				// Placer la ball au milieu verticalement du canvas	en pourcentage
 
 
 // game properties
 
-let		scorePlayer1 = 0;				// score player 1
-let		scorePlayer2 = 0;				// score player 2
+let		scorePlayer1 = 0;							// score player 1
+let		scorePlayer2 = 0;							// score player 2
 
 const	scorePlayer1Elem = document.getElementById('scorePlayer1');
 const	scorePlayer2Elem = document.getElementById('scorePlayer2');
 
 let		websocketLock = false;
-let		countdownActive = false;		// Variable pour suivre l'état du compte à rebours
-let		countdownValue = 0;				// Valeur actuelle du compte à rebours
+let		countdownActive = false;					// Variable pour suivre l'état du compte à rebours
+let		countdownValue = 0;							// Valeur actuelle du compte à rebours
 
 
-function resizeCanvas() {
-	canvas.width = canvas.clientWidth; // Rendre responsive
-	canvas.height = canvas.clientHeight; // Rendre responsive
+
+window.addEventListener('resize', resizeCanvas);
+
+function resizeCanvas()								// Rendre responsive
+{
+	canvas.width = canvas.clientWidth;
+	canvas.height = canvas.clientHeight;
 	draw();
 }
 
 resizeCanvas();
 
-window.addEventListener('resize', resizeCanvas);
-const socket = new WebSocket('ws://localhost:8000/ws/pong/');
-// canvas.width = canvas.clientWidth; // Rendre responsive
-// canvas.height = canvas.clientHeight; // Rendre responsive
-
-// ///////////////////////////////////////////////////////////////////////// //
-
-
-// let player1X = 0.05
-// let player2X = 1 - player1X
-
-// const MAX_SPEED = 16;				// Vitesse max de la ball
-// const acceleration = 1.1;			// Vitesse multiplie a chaque renvoi
-
-
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 
+const socket = new WebSocket('ws://localhost:8000/ws/pong/');
 
 
-// Gestion de l'ouverture de la connexion WebSocket
-socket.onopen = async function (e) {
+/// Gestion de l'ouverture de la connexion WebSocket \\\
+
+socket.onopen = async function (e)
+{
 	console.log("WebSocket is connected ouais");
 	startCountdown(3);
 	gameLoop();
 };
 
-// Fonction pour démarrer le compte à rebours
-function startCountdown(seconds) {
-	countdownActive = true;
-	countdownValue = seconds;
 
-	const interval = setInterval(() => {
-		//afficher le compte à rebours
-		countdownValue--;
-		if (countdownValue <= 0) {
-			clearInterval(interval);
-			countdownActive = false;
-			printBall = true;
-			console.log('GO !');
-		}
-	}, 1000);
+async function sendMessage(data)
+{
+	if (websocketLock)
+	{
+		return;
+	}
+	websocketLock = true;
+	if (socket.readyState === WebSocket.OPEN)
+	{
+		socket.send(JSON.stringify(data));
+	}
+	
+	websocketLock = false;
 }
 
-async function sendMessage(data) {
-    if (websocketLock) {
-        return; // Si le verrou est actif, ne pas envoyer de message
-    }
-    websocketLock = true; // Activer le verrou
 
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify(data));
-    }
+/// Gestion de la réception de messages WebSocket \\\
 
-    websocketLock = false; // Désactiver le verrou
-}
-
-// Gestion de la réception de messages WebSocket
 socket.onmessage = function (e)
-{	// console.log('Message from server il dit :', event.data);
+{
 	const data = JSON.parse(e.data);
-	// Mise à jour des positions reçues du serveur
-	// if (data.type === 'pong.player1') {
-	// 	// paddle1Y = data.player1Y * canvas.height - paddleHeight / 2;
-	// }
-	// if (data.type === 'pong.player2') {
-	// 	// paddle2Y = data.player2Y * canvas.height - paddleHeight / 2;
-	// }
-	if (data.type === 'pong.update') {
+	if (data.type === 'pong.update')
+	{
 		paddle1Y = data.player1Y * canvas.height - paddleHeight / 2;
 		paddle2Y = data.player2Y * canvas.height - paddleHeight / 2;
 		ballX = data.ballX * canvas.width;
@@ -122,12 +96,11 @@ socket.onmessage = function (e)
 		scorePlayer2Elem.textContent = scorePlayer2;
 		printBall = data.action;
 		if (printBall == false)
-			{
+		{
 			console.log('scorePlayer1:', scorePlayer1);
 			console.log('scorePlayer2:', scorePlayer2);
-			if (scorePlayer1 >= 5 || scorePlayer2 >= 5) {
+			if (scorePlayer1 >= 5 || scorePlayer2 >= 5)
 				gameOver();
-			}
 		}
 	}
 };
@@ -163,20 +136,22 @@ document.addEventListener('keyup', e => {
 	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
 		console.log(`Key released: ${e.key}`);
 		sendMessage({
-            'type': 'key.released',
-            'key': e.key
-        });
-    }
+			'type': 'key.released',
+			'key': e.key
+		});
+	}
 });
 
 
 function gameOver()
 {
 	const winMessageElem = document.getElementById('winMessage');
-	if (scorePlayer1 > scorePlayer2) {
+	if (scorePlayer1 > scorePlayer2)
+	{
 		winMessageElem.textContent = 'Player 1 wins!';
 	}
-	else {
+	else
+	{
 		winMessageElem.textContent = 'Player 2 wins!';
 	}
 	winMessageElem.style.display = 'block';  // Rendre visible l'encadré
@@ -184,54 +159,71 @@ function gameOver()
 	const replayBlockElem = document.getElementById('replayBlock');
 	replayBlockElem.style.display = 'block';
 
-	document.getElementById('YES').addEventListener('click', function() {
+	document.getElementById('YES').addEventListener('click', function()
+	{
 		location.reload(); // Recharger la page pour rejouer
 	});
-	
-	document.getElementById('SETTING').addEventListener('click', function() {
+
+	document.getElementById('SETTING').addEventListener('click', function()
+	{
 		window.location.href = 'settings.html'; // Rediriger vers la page des paramètres
 	});
-	
-	document.getElementById('BTH').addEventListener('click', function() {
+
+	document.getElementById('BTH').addEventListener('click', function()
+	{
 		window.location.href = 'index.html'; // Rediriger vers la page d'accueil
 	});
-	// TODO save les statistiques dans le profil des joueurs
 }
 
+// Fonction pour démarrer le compte à rebours
+function startCountdown(seconds)
+{
+	countdownActive = true;
+	countdownValue = seconds;
+
+	const interval = setInterval(() =>
+	{
+		countdownValue--;
+		if (countdownValue <= 0)
+		{
+			clearInterval(interval);
+			countdownActive = false;
+			printBall = true;
+			console.log('GO !');
+		}
+	}, 1000);
+}
 
 // Dessiner players et ball
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.fillStyle = 'white';
-
+	
 	// Ligne filet
-	ctx.setLineDash([15, 10]); // Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, 0);
-    ctx.lineTo(canvas.width / 2, canvas.height);
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 4;
-    ctx.stroke();
-    ctx.setLineDash([]);
+	ctx.setLineDash([15, 10]);														// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
+	ctx.beginPath();
+	ctx.moveTo(canvas.width / 2, 0);
+	ctx.lineTo(canvas.width / 2, canvas.height);
+	ctx.strokeStyle = 'white';
+	ctx.lineWidth = 4;
+	ctx.stroke();
+	ctx.setLineDash([]);
 
-	// ligne médiane de service
-	ctx.fillRect(canvas.width / 6, canvas.height / 2, canvas.width * 2/3, 2);
+	ctx.fillRect(canvas.width / 6, canvas.height / 2, canvas.width * 2/3, 2);		// ligne médiane de service
 
-	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de gauche et qui monte jusquau terrain
-	ctx.fillRect(canvas.width / 6, canvas.height / 6, 2, canvas.height * 2/3);
-	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de droite et qui monte jusquau terrain
-	ctx.fillRect(5 * canvas.width / 6, canvas.height / 6, 2, canvas.height * 2/3);
-	// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
-	ctx.fillRect(0, canvas.height / 6, canvas.width, 2);
-	// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
-	ctx.fillRect(0, 5 * canvas.height / 6, canvas.width, 2);
+	ctx.fillRect(canvas.width / 6, canvas.height / 6, 2, canvas.height * 2/3);		// ligne perpendiculaire a la lgine médiane du service sur l'extremité de gauche et qui monte jusquau terrain
+	ctx.fillRect(5 * canvas.width / 6, canvas.height / 6, 2, canvas.height * 2/3);	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de droite et qui monte jusquau terrain
+	ctx.fillRect(0, canvas.height / 6, canvas.width, 2);							// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
+	ctx.fillRect(0, 5 * canvas.height / 6, canvas.width, 2);						// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
 
 
 	// Players
 	ctx.fillRect(paddleBuffer, paddle1Y, paddleWidth, paddleHeight);
 	ctx.fillRect(canvas.width - paddleWidth - paddleBuffer, paddle2Y, paddleWidth, paddleHeight);
+
 	// Ball
-	if (printBall == true) {
+	if (printBall == true)
+	{
 		ctx.beginPath();
 		ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
 		ctx.fill();
@@ -239,11 +231,12 @@ function draw() {
 
 	// Dessiner le compte à rebours si actif
 	if (countdownActive) {
-		ctx.strokeStyle = 'rgb(115, 171, 201)'; // Couleur du contour
-        ctx.lineWidth = 28; // Largeur du contour
-        ctx.strokeText(countdownValue, canvas.width / 2, canvas.height / 2);
+		ctx.strokeStyle = 'rgb(115, 171, 201)';										// Couleur du contour
+		ctx.lineWidth = 28;															// Largeur du contour
+		ctx.strokeText(countdownValue, canvas.width / 2, canvas.height / 2);
 		ctx.font = '70px Sans-serif';
 		ctx.fillStyle = 'white';
+
 		// centrer en x et y
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
@@ -252,7 +245,8 @@ function draw() {
 }
 
 // Boucle du jeu
-function gameLoop() {
+function gameLoop()
+{
 	draw();
 	requestAnimationFrame(gameLoop);
 }

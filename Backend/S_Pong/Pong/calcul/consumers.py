@@ -33,49 +33,25 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		data = json.loads(text_data)
 
 		if data.get('type') == 'pong.move':
-			# afficher le message reçu
-			print(f"-----> pong.move donc : {data}")
-
 			key = data['key']
 
-			#todo switch case
 			if key == 'w':
 				if self.player1Y - (self.playerHeight / 2) > 0:
 					self.player1Y = self.player1Y - 0.012
-				# await self.send(text_data=json.dumps({
-				# 'type': 'pong.player1',
-				# 'player1Y': self.player1Y
-				# }))
 			elif key == 's':
 				if self.player1Y + (self.playerHeight / 2) < 1:
 					self.player1Y = self.player1Y + 0.012
-				# await self.send(text_data=json.dumps({
-				# 'type': 'pong.player1',
-				# 'player1Y': self.player1Y
-				# }))
 			elif key == 'ArrowUp':
 				if self.player2Y - (self.playerHeight / 2) > 0:
 					self.player2Y = self.player2Y - 0.012
-				# await self.send(text_data=json.dumps({
-				# 'type': 'pong.player2',
-				# 'player2Y': self.player2Y
-				# }))
 			elif key == 'ArrowDown':
 				if self.player2Y + (self.playerHeight / 2) < 1:
 					self.player2Y = self.player2Y + 0.012
-				# await self.send(text_data=json.dumps({
-				# 'type': 'pong.player2',
-				# 'player2Y': self.player2Y
-				# }))
 			else:
 				print('key non reconnue')
-				# await self.send(text_data=json.dumps({
-				# 'type': 'pong.error',
-				# 'error': 'key non reconnue'
-				# }))
 
 		elif data.get('type') == 'pong.ball':
-			if self.action == False:
+			if self.action == False:				# Ici si l'action est en pause soit si goal
 				await asyncio.sleep(0.5)
 				self.action = True
 				self.ballSpeedX = 0.003 * self.nextService
@@ -125,18 +101,5 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.nextService = direction
 		self.ballX = 0.5
 		self.ballY = 0.5
-
-
-
-	# if data.get('type') == 'pong.score'
-		# await self.send(text_data=json.dumps({
-		# 	'type': 'pong.score',
-		# 	'scorePlayer1': self.scorePlayer1,
-		# 	'scorePlayer2': self.scorePlayer2,
-		# }))
-
-
-
-
 
 	# await self.send(text_data=f"The one piece is real : {text_data}")
