@@ -39,5 +39,5 @@ if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ] && [ "$D
 fi
 
 # Lancer le serveur Django
-uvicorn djpr_API.asgi:application --host 0.0.0.0 --port 8000
+uvicorn djpr_API.asgi:application --host 0.0.0.0 --port 8000 --reload
 # python3 manage.py runserver 0.0.0.0:8000

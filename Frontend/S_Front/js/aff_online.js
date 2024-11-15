@@ -13,6 +13,7 @@ function affOnline()
 					<div id="scorePlayer2" class="fs-2">0</div> <!-- Score du joueur 2 -->
 				</div>
 				<div class="canvas-container">
+					<!-- <div id="countdown" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; color: white;"></div> -->
 					<canvas id="pongCanvas" class="w-100" height="400"></canvas>
 					<div id="replayBlock">
 						<h2 id="winMessage"></h2>
