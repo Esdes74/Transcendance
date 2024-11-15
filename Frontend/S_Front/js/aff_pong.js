@@ -30,7 +30,9 @@ function affPong()
 	</div>
 `	
 	if (!addScript("js/pong.js"))
-		gameLoop()
+	{
+		initPong()
+	}
     //addScript("js/PONG.js")
 }
 
