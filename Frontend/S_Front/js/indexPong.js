@@ -1,4 +1,4 @@
-function initPong()
+function initIndexPong()
 {
 	
 	const gameSettings = {
@@ -10,12 +10,24 @@ function initPong()
 
 		paddle1Y: 0,	//player 1
 		paddle2Y: 0,							//player 2
+		player1: 0.5,
+		player2: 0.5,
 	
 		//  ball properties
 		ballRadius: 8,								// Taille de la ball
 		printBall: false,							// Afficher la ball ou non
 		ballX: 0,					// Placer la ball au milieu horizontal du canvas	en pourcentage
 		ballY: 0,					// Placer la ball au milieu verticalement du canvas	en pourcentage
+
+		ballSpeedX: 0.008,
+		ballSpeedY: 0.008,
+		maxSpeed: 0.012,
+		acceleration: 1.1,
+
+		ArrowUp: false,
+		ArrowDown: false,
+		w: false,
+		s: false,
 
 		// game properties
 		scorePlayer1: 0,							// score player 1
@@ -26,9 +38,12 @@ function initPong()
 	
 		countdownActive: false,					// Variable pour suivre l'état du compte à rebours
 		countdownValue: 0,							// Valeur actuelle du compte à rebours
-		};
+	};
+		resizeIndexCanvas(gameSettings);
 		gameSettings.ballX = 0.5 * gameSettings.canvas.width;					// Placer la ball au milieu horizontal du gameSettings.canvas	en pourcentage
 		gameSettings.ballY = 0.5 * gameSettings.canvas.height;
+		console.log(gameSettings.ballX)
+		console.log(gameSettings.ballY)
 		// paddle properties
 		gameSettings.paddleWidth = 10;							// Epaisseur players
 		gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;		// Hauteur players
@@ -37,165 +52,59 @@ function initPong()
 		gameSettings.paddle2Y = gameSettings.paddle1Y;							//player 2
 					// Afficher la ball ou non				// Placer la ball au milieu verticalement du canvas	en pourcentage
 
-	window.addEventListener('resize', resizeCanvas);
-	resizeCanvas(gameSettings);
-	websocketLock = false;
-	const socket = new WebSocket('ws://localhost:8000/ws/pong/');	// new WebSocket('wss://localhost:000/ws/pong/')
-	initSocket(socket, gameSettings);
-	EventManager(socket, websocketLock);
+	indexEventManager(gameSettings);
+//	window.addEventListener('resize', resizeIndexCanvas);
+	gameSettings.printBall = true;
+	indexGameLoop(gameSettings);
 }
 	
 	
 	
-	function resizeCanvas(gameSettings)								// Rendre responsive
-	{
-		gameSettings.canvas.width = gameSettings.canvas.clientWidth;
-		gameSettings.canvas.height = gameSettings.canvas.clientHeight;
-		draw(gameSettings);
-	}
-	
-	
-	async function sendMessage(data, socket, websocketLock)
-	{
-		if (websocketLock)
-		{
-			return;
-		}
-		websocketLock = true;
-		if (socket.readyState === WebSocket.OPEN)
-		{
-			socket.send(JSON.stringify(data));
-		}
-		
-		websocketLock = false;
-	}
-
-	// ################################################################################################################ //
-	// 												Connexion WebSocket													//
-	// ################################################################################################################ //
-	
-	
-function initSocket(socket, gameSettings)
+function resizeIndexCanvas(gameSettings)								// Rendre responsive
 {
-	/// Gestion de l'ouverture de la connexion WebSocket \\\
-	
-socket.onopen = async function (e)
-{
-    console.log("WebSocket is connected ouais");
-    gameSettings.printBall = true;
-    console.log("printball 2", gameSettings.printBall);
-    gameLoop(gameSettings);
-    console.log("printball 2", gameSettings.printBall);
-};
-	
-	
-	
-	
-	/// Gestion de la réception de messages WebSocket \\\
-	
-	socket.onmessage = function (e)
-	{
-		const data = JSON.parse(e.data);
-		if (data.type === 'pong.update')
-		{
-			gameSettings.paddle1Y = data.player1Y * gameSettings.canvas.height - gameSettings.paddleHeight / 2;
-			gameSettings.paddle2Y = data.player2Y * gameSettings.canvas.height - gameSettings.paddleHeight / 2;
-			gameSettings.ballX = data.ballX * gameSettings.canvas.width;
-			gameSettings.ballY = data.ballY * gameSettings.canvas.height;
-			gameSettings.scorePlayer1 = data.scorePlayer1;
-			gameSettings.scorePlayer2 = data.scorePlayer2;
-			gameSettings.scorePlayer1Elem.textContent = gameSettings.scorePlayer1;
-			gameSettings.scorePlayer2Elem.textContent = gameSettings.scorePlayer2;
-			gameSettings.printBall = data.action;
-			if (gameSettings.printBall == false)
-			{
-				console.log('scorePlayer1:', gameSettings.scorePlayer1);
-				console.log('scorePlayer2:', gameSettings.scorePlayer2);
-				if (gameSettings.scorePlayer1 >= 5 || gameSettings.scorePlayer2 >= 5)
-				gameOver(gameSettings.scorePlayer1, gameSettings.scorePlayer2);
-		}
-	}
-};
-
-// Gestion des erreurs WebSocket
-socket.onerror = function (error) {
-	console.error('WebSocket error la big erreur la:', error);
-};
-
-// Gestion de la fermeture de la connexion WebSocket
-socket.onclose = function (event) {
-	console.log('WebSocket is closed bah il sest ferme:', event);
-};
-
+	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
+	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
+	indexDraw(gameSettings);
 }
-
-// ################################################################################################################ //
-// 												Connexion WebSocket													//
-// ################################################################################################################ //
-
-
-function EventManager(socket, websocketLock)
+	
+function indexEventManager(gameSettings)
 {
 
 	
 	//Quand une touche est pressée, on envoie un message au serveur
 	document.addEventListener('keydown', e => {
-		if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
-			console.log(`Key pressed: ${e.key}`);
-			sendMessage({
-				'type': 'key.pressed',
-				'key': e.key
-			},socket ,websocketLock);
+		if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')
+		{
+ 			if (e.key === 'ArrowUp')
+				gameSettings.ArrowUp = true
+			else if (e.key === 'ArrowDown')
+			 	gameSettings.ArrowDown = true
+			else if (e.key === 'w')
+				gameSettings.w = true
+			else
+				gameSettings.s = true
 		}
 	});
 	
 	//Quand une touche est relaché, on envoie un message au serveur
 	document.addEventListener('keyup', e => {
-		if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
-			console.log(`Key released: ${e.key}`);
-			sendMessage({
-				'type': 'key.released',
-				'key': e.key
-			},socket, websocketLock);
+		if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')
+		{
+ 			if (e.key === 'ArrowUp')
+				gameSettings.ArrowUp = false
+			else if (e.key === 'ArrowDown')
+			 	gameSettings.ArrowDown = false
+			else if (e.key === 'w')
+				gameSettings.w = false
+			else
+				gameSettings.s = false
 		}
 	});
 	
 }
-	
-function gameOver(scorePlayer1, scorePlayer2)
-{
-	const winMessageElem = document.getElementById('winMessage');
-	if (scorePlayer1 > scorePlayer2)
-	{
-		winMessageElem.textContent = 'Player 1 wins!';
-	}
-	else
-	{
-		winMessageElem.textContent = 'Player 2 wins!';
-	}
-	winMessageElem.style.display = 'block';  // Rendre visible l'encadré
-	
-	const replayBlockElem = document.getElementById('replayBlock');
-	replayBlockElem.style.display = 'block';
-	
-	document.getElementById('YES').addEventListener('click', function()
-	{
-		location.reload(); // Recharger la page pour rejouer
-	});
-	
-	document.getElementById('SETTING').addEventListener('click', function()
-	{
-		window.location.href = 'settings.html'; // Rediriger vers la page des paramètres
-	});
-	
-	document.getElementById('BTH').addEventListener('click', function()
-	{
-		window.location.href = 'index.html'; // Rediriger vers la page d'accueil
-	});
-}
 
 // Dessiner players et ball
-function draw(gameSettings)
+function indexDraw(gameSettings)
 {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
@@ -224,35 +133,56 @@ function draw(gameSettings)
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	
 	// Ball
-	console.log("printball before if", gameSettings.printBall);
-	if (gameSettings.printBall == true)
-	{
+//	if (gameSettings.printBall == true)
+//	{
 		ctx.beginPath();
 		ctx.arc(gameSettings.ballX, gameSettings.ballY, gameSettings.ballRadius, 0, Math.PI * 2);
 		ctx.fill();
-	}
-	console.log("printball after if", gameSettings.printBall);
+//	}
 	// Dessiner le compte à rebours si actif
-	if (gameSettings.countdownActive) {
-		ctx.strokeStyle = 'rgb(115, 171, 201)';										// Couleur du contour
-		ctx.lineWidth = 28;															// Largeur du contour
-		ctx.strokeText(gameSettings.countdownValue, gameSettings.canvas.width / 2, gameSettings.canvas.height / 2);
-		ctx.font = '70px Sans-serif';
-		ctx.fillStyle = 'white';
-		
-		// centrer en x et y
-		ctx.textAlign = 'center';
-		ctx.textBaseline = 'middle';
-		ctx.fillText(gameSettings.countdownValue, gameSettings.canvas.width / 2, gameSettings.canvas.height / 2);
-	}
 }
 
 // Boucle du jeu
-function gameLoop(gameSettings) {
-    console.log("printball 3", gameSettings.printBall);
-    draw(gameSettings);
-    console.log("printball 4", gameSettings.printBall);
-    requestAnimationFrame(() => gameLoop(gameSettings));
-    console.log("printball 5", gameSettings.printBall);
+function indexGameLoop(gameSettings) {
+    indexDraw(gameSettings);
+    gameSettings.ballX += gameSettings.ballSpeedX * gameSettings.canvas.width;
+    gameSettings.ballY += gameSettings.ballSpeedY * gameSettings.canvas.height;
+    gameSettings.ballSpeedX 
+    if (gameSettings.w)
+    {
+	gameSettings.player1 = gameSettings.player1 - 0.012
+	gameSettings.paddle1Y = gameSettings.player1 * gameSettings.canvas.height - gameSettings.paddleHeight / 2
+    }
+    if (gameSettings.s)
+    {
+	gameSettings.player1 = gameSettings.player1 + 0.012
+	gameSettings.paddle1Y = gameSettings.player1 * gameSettings.canvas.height - gameSettings.paddleHeight / 2
+    }
+    if (gameSettings.ArrowUp)
+    {
+	gameSettings.player2 = gameSettings.player2 - 0.012
+	gameSettings.paddle2Y = gameSettings.player2 * gameSettings.canvas.height - gameSettings.paddleHeight / 2
+    }
+    if (gameSettings.ArrowDown)
+    {
+	gameSettings.player2 = gameSettings.player2 + 0.012
+	gameSettings.paddle2Y = gameSettings.player2 * gameSettings.canvas.height - gameSettings.paddleHeight / 2
+    }
+    if (gameSettings.ballX <= 0.05 * gameSettings.canvas.width)
+    {
+        gameSettings.ballSpeedX *= -1
+        gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.paddle1Y) / gameSettings.canvas.height * 0.03            //   # Rebond en fonction de la position de la raquette
+    }
+    if (gameSettings.ballX >= 0.95 * gameSettings.canvas.width)
+    {
+	gameSettings.ballSpeedX *= -1
+        gameSettingsballSpeedY = (gameSettings.ballY - gameSettings.paddle2Y) / gameSettings.canvas.height * 0.03
+    }
+    if (gameSettings.ballY <= 8 || gameSettings.ballY >= gameSettings.canvas.height - 8)
+    {
+	gameSettings.ballSpeedY *= -1
+    }
+  
+    requestAnimationFrame(() => indexGameLoop(gameSettings));
 }
-initPong();
+initIndexPong();

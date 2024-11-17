@@ -25,7 +25,7 @@ function affIndex()
     document.getElementById("replayBlock").style.display = "block"
     if (!addScript("js/indexPong.js"))
     {
-	initPong()
+	initIndexPong()
     }
 }
 
