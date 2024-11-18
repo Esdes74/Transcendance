@@ -13,7 +13,7 @@ function aff2fa()
 		</form>
 	</div>
     `
-	if (!addScript("js/2fa.js"))
+	if (!addScript("/js/2fa.js"))
 		load2faLogin()
 }
 

@@ -1,59 +1,58 @@
 let pages = {
 	"/": {
 		title: "Welcome",
-		script: "js/aff_index.js",
+		script: "/js/aff_index.js",
 		funct: null
 	},
 	"/bravo": {
 		title: "Bravo!",
-		script: "js/aff_bravo.js",
+		script: "/js/aff_bravo.js",
 		funct: null
 	},
 	"/authentification": {
 		title: "Authentification",
-		script: "js/aff_authentification.js",
+		script: "/js/aff_authentification.js",
 		funct: null
 	},
 	"/register": {
 		title: "Register",
-		script: "js/aff_register.js",
+		script: "/js/aff_register.js",
 		funct: null
 	},
 	"/pong": {
 		title: "Crazy Pong",
-		script: "js/aff_pong.js",
+		script: "/js/aff_pong.js",
 		funct: null
 	},
 	"/2fa": {
 		title: "2fa",
-		script: "js/aff_2fa.js",
+		script: "/js/aff_2fa.js",
 		funct: null
 	},
 	"/play": {
 		title: "play",
-		script: "js/aff_play.js",
+		script: "/js/aff_play.js",
 		funct: null
 	},
 	"/tournament": {
 		title: "tournament",
-		script: "js/aff_tournament.js",
+		script: "/js/aff_tournament.js",
 		funct: null
 	},
 	"/online": {
 		title: "Online Pong",
-		script: "js/aff_online.js",
+		script: "/js/aff_online.js",
 		funct: null
 	},
 	"/404": {
 		title: "Error 404",
-		script: "js/aff_404.js",
+		script: "/js/aff_404.js",
 		funct: null
 	}
 }
 
 function scriptAlreadyLoaded(url)
 {
-	url = "https://localhost:3000/" + url
 	let scripts = document.getElementsByTagName('script')
 	for (let i = scripts.length; i--;)
 	{

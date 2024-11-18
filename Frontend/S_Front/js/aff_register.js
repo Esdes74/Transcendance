@@ -34,7 +34,7 @@ function affRegister()
         <div id="error-message" class="mt-3 text-danger"></div>
     </div>
     `
-    if (!addScript("js/register.js"))
+    if (!addScript("/js/register.js"))
 	    loadRegister()	
 }
 

@@ -45,7 +45,7 @@ function loadLogin()
 			// csrf_token = getCookie('csrftoken')
 
 			// Envoie les données à l'API
-			const response = await fetch('https://localhost:3000/api/auth/login/', {
+			const response = await fetch('/api/auth/login/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

@@ -51,7 +51,7 @@ function loadRegister()
 
 			// Envois des donées en log pour le debuggage
 			// Envoie les données à l'API
-			const response = await fetch('https://localhost:3000/api/auth/create/', {
+			const response = await fetch('/api/auth/create/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

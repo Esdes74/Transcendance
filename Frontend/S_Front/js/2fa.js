@@ -34,7 +34,7 @@ function load2faLogin()
 			// csrf_token = getCookie('csrftoken')
 
 			// Envoie les données à l'API
-			const response = await fetch('https://localhost:3000/api/auth/2fa/', {
+			const response = await fetch('/api/auth/2fa/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
