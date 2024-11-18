@@ -14,10 +14,10 @@ function initIndexPong()
 		player2: 0.5,
 	
 		//  ball properties
-		ballRadius: 8,								// Taille de la ball
-		printBall: false,							// Afficher la ball ou non
-		ballX: 0,					// Placer la ball au milieu horizontal du canvas	en pourcentage
-		ballY: 0,					// Placer la ball au milieu verticalement du canvas	en pourcentage
+		ballRadius: 8,		
+		printBall: false,	
+		ballX: 0,				
+		ballY: 0,					
 
 		ballSpeedX: 0.008,
 		ballSpeedY: 0.008,
@@ -39,21 +39,20 @@ function initIndexPong()
 		countdownActive: false,					// Variable pour suivre l'état du compte à rebours
 		countdownValue: 0,							// Valeur actuelle du compte à rebours
 	};
+
+
 		resizeIndexCanvas(gameSettings);
 		gameSettings.ballX = 0.5 * gameSettings.canvas.width;					// Placer la ball au milieu horizontal du gameSettings.canvas	en pourcentage
 		gameSettings.ballY = 0.5 * gameSettings.canvas.height;
-		console.log(gameSettings.ballX)
-		console.log(gameSettings.ballY)
 		// paddle properties
 		gameSettings.paddleWidth = 10;							// Epaisseur players
 		gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;		// Hauteur players
 		gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;			// Ecart des players au bord;
 		gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;	//player 1
 		gameSettings.paddle2Y = gameSettings.paddle1Y;							//player 2
-					// Afficher la ball ou non				// Placer la ball au milieu verticalement du canvas	en pourcentage
 
 	indexEventManager(gameSettings);
-//	window.addEventListener('resize', resizeIndexCanvas);
+	window.addEventListener('resize', resizeIndexCanvas);
 	gameSettings.printBall = true;
 	indexGameLoop(gameSettings);
 }
@@ -171,12 +170,12 @@ function indexGameLoop(gameSettings) {
     if (gameSettings.ballX <= 0.05 * gameSettings.canvas.width)
     {
         gameSettings.ballSpeedX *= -1
-        gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.paddle1Y) / gameSettings.canvas.height * 0.03            //   # Rebond en fonction de la position de la raquette
+        gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.paddle1Y - gameSettings.paddleHeight / 2) / gameSettings.canvas.height * 0.08
     }
     if (gameSettings.ballX >= 0.95 * gameSettings.canvas.width)
     {
 	gameSettings.ballSpeedX *= -1
-        gameSettingsballSpeedY = (gameSettings.ballY - gameSettings.paddle2Y) / gameSettings.canvas.height * 0.03
+        gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.paddle2Y - gameSettings.paddleHeight / 2) / gameSettings.canvas.height * 0.08
     }
     if (gameSettings.ballY <= 8 || gameSettings.ballY >= gameSettings.canvas.height - 8)
     {
