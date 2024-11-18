@@ -4,7 +4,7 @@ function initPong()
 	const gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
 		// paddle properties
-		paddleWidth: 10,							// Epaisseur players
+		paddleWidth: 0,							// Epaisseur players
 		paddleHeight: 0,		// Hauteur players
 		paddleBuffer: 0,			// Ecart des players au bord
 
@@ -12,7 +12,7 @@ function initPong()
 		paddle2Y: 0,							//player 2
 	
 		//  ball properties
-		ballRadius: 8,								// Taille de la ball
+		ballRadius: 0,								// Taille de la ball
 		printBall: false,							// Afficher la ball ou non
 		ballX: 0,					// Placer la ball au milieu horizontal du canvas	en pourcentage
 		ballY: 0,					// Placer la ball au milieu verticalement du canvas	en pourcentage
@@ -24,21 +24,13 @@ function initPong()
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),
 	
-		countdownActive: false,					// Variable pour suivre l'état du compte à rebours
+		countdownActive: false,						// Variable pour suivre l'état du compte à rebours
 		countdownValue: 0,							// Valeur actuelle du compte à rebours
 		};
-		gameSettings.ballX = 0.5 * gameSettings.canvas.width;					// Placer la ball au milieu horizontal du gameSettings.canvas	en pourcentage
-		gameSettings.ballY = 0.5 * gameSettings.canvas.height;
-		// paddle properties
-		gameSettings.paddleWidth = 10;							// Epaisseur players
-		gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;		// Hauteur players
-		gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;			// Ecart des players au bord;
-		gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;	//player 1
-		gameSettings.paddle2Y = gameSettings.paddle1Y;							//player 2
-					// Afficher la ball ou non				// Placer la ball au milieu verticalement du canvas	en pourcentage
+		resizeCanvas(gameSettings)
+		console.log('Settings initialized');
 
-	window.addEventListener('resize', resizeCanvas);
-	resizeCanvas(gameSettings);
+	window.addEventListener('resize', resizeCanvas(gameSettings));
 	websocketLock = false;
 	const socket = new WebSocket('ws://localhost:8000/ws/pong/');	// new WebSocket('wss://localhost:000/ws/pong/')
 	initSocket(socket, gameSettings);
@@ -49,8 +41,16 @@ function initPong()
 	
 	function resizeCanvas(gameSettings)								// Rendre responsive
 	{
-		gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 		gameSettings.canvas.height = gameSettings.canvas.clientHeight;
+		gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;							// Epaisseur players
+		gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;				// Taille de la ball
+		gameSettings.ballX = 0.5 * gameSettings.canvas.width;					// Placer la ball au milieu horizontal du gameSettings.canvas	en pourcentage
+		gameSettings.ballY = 0.5 * gameSettings.canvas.height;
+		gameSettings.canvas.width = gameSettings.canvas.clientWidth;
+		gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;		// Hauteur players
+		gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;			// Ecart des players au bord;
+		gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;	//player 1
+		gameSettings.paddle2Y = gameSettings.paddle1Y;	
 		draw(gameSettings);
 	}
 	
@@ -78,14 +78,12 @@ function initPong()
 function initSocket(socket, gameSettings)
 {
 	/// Gestion de l'ouverture de la connexion WebSocket \\\
-	
+
 socket.onopen = async function (e)
 {
-    console.log("WebSocket is connected ouais");
-    startCountdown(3, gameSettings);
-    console.log("printball 2", gameSettings.printBall);
-    gameLoop(gameSettings);
-    console.log("printball 2", gameSettings.printBall);
+	console.log("WebSocket is connected ouais");
+	startCountdown(3, gameSettings);
+	gameLoop(gameSettings);
 };
 	
 	
@@ -221,12 +219,12 @@ function draw(gameSettings)
 	ctx.fillStyle = 'white';
 	
 	// Ligne filet
-	ctx.setLineDash([15, 10]);														// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
+	ctx.setLineDash([1.5 * gameSettings.paddleWidth, gameSettings.paddleWidth]);														// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
 	ctx.beginPath();
 	ctx.moveTo(gameSettings.canvas.width / 2, 0);
 	ctx.lineTo(gameSettings.canvas.width / 2, gameSettings.canvas.height);
 	ctx.strokeStyle = 'white';
-	ctx.lineWidth = 4;
+	ctx.lineWidth = 0.3 * gameSettings.paddleWidth;
 	ctx.stroke();
 	ctx.setLineDash([]);
 	
@@ -243,20 +241,18 @@ function draw(gameSettings)
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	
 	// Ball
-	console.log("printball before if", gameSettings.printBall);
 	if (gameSettings.printBall == true)
 	{
 		ctx.beginPath();
 		ctx.arc(gameSettings.ballX, gameSettings.ballY, gameSettings.ballRadius, 0, Math.PI * 2);
 		ctx.fill();
 	}
-	console.log("printball after if", gameSettings.printBall);
 	// Dessiner le compte à rebours si actif
 	if (gameSettings.countdownActive) {
 		ctx.strokeStyle = 'rgb(115, 171, 201)';										// Couleur du contour
-		ctx.lineWidth = 28;															// Largeur du contour
+		ctx.lineWidth = 0.03 * gameSettings.canvas.width;															// Largeur du contour
 		ctx.strokeText(gameSettings.countdownValue, gameSettings.canvas.width / 2, gameSettings.canvas.height / 2);
-		ctx.font = '70px Sans-serif';
+		ctx.font = `${0.1 * gameSettings.canvas.width}px Sans-serif`;
 		ctx.fillStyle = 'white';
 		
 		// centrer en x et y
@@ -268,10 +264,7 @@ function draw(gameSettings)
 
 // Boucle du jeu
 function gameLoop(gameSettings) {
-    console.log("printball 3", gameSettings.printBall);
-    draw(gameSettings);
-    console.log("printball 4", gameSettings.printBall);
-    requestAnimationFrame(() => gameLoop(gameSettings));
-    console.log("printball 5", gameSettings.printBall);
+	draw(gameSettings);
+	requestAnimationFrame(() => gameLoop(gameSettings));
 }
 initPong();

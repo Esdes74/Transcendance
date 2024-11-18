@@ -15,10 +15,10 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
 	flex-direction: column;
 	position: fixed;
 	width: 100%;
+	/* height: 100vh; */
 }
 
 .mb-4 {
@@ -28,6 +28,8 @@ body {
 	position: relative;
 	background-color: rgb(115, 171, 201);
 	border: 20px solid white;
+	aspect-ratio: 16/9;
+	width: 100%;
 }
 
 .score-board div {
