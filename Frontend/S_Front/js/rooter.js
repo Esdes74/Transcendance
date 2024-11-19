@@ -76,6 +76,7 @@ function addScript(src)
 function rootMyUrl()
 {
     let loc = window.location.pathname;
+	//WebSocket.close();
     if (pages[loc])
     {
        let page = pages[loc];

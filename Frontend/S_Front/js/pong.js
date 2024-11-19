@@ -32,7 +32,7 @@ function initPong()
 
 	window.addEventListener('resize', resizeCanvas(gameSettings));
 	websocketLock = false;
-	const socket = new WebSocket("wss://" + window.location.host + "/ws/pong/");	// new WebSocket('wss://localhost:000/ws/pong/')
+	const socket = new WebSocket("/ws/pong/");	// new WebSocket('wss://localhost:000/ws/pong/')
 	initSocket(socket, gameSettings);
 	EventManager(socket, websocketLock);
 }
@@ -157,8 +157,23 @@ function EventManager(socket, websocketLock)
 			},socket, websocketLock);
 		}
 	});
+	//quand on change de page on ferme la connexion websocket
+	window.addEventListener('popstate', handleViewChange);
+
 	
 }
+
+function handleViewChange() {
+    const currentPath = window.location.pathname;
+
+    // Example: Open WebSocket for a specific path
+    if (currentPath === '/pong') {
+        initWebSocket();
+    } else {
+        closeWebSocket();
+    }
+}
+
 	
 function gameOver(scorePlayer1, scorePlayer2)
 {
@@ -183,6 +198,7 @@ function gameOver(scorePlayer1, scorePlayer2)
 	
 	document.getElementById('SETTING').addEventListener('click', function()
 	{
+
 		window.location.href = 'settings.html'; // Rediriger vers la page des paramètres
 	});
 	
