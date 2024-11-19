@@ -32,7 +32,7 @@ function initPong()
 
 	window.addEventListener('resize', resizeCanvas(gameSettings));
 	websocketLock = false;
-	const socket = new WebSocket('ws://localhost:8000/ws/pong/');	// new WebSocket('wss://localhost:000/ws/pong/')
+	const socket = new WebSocket("wss://" + window.location.host + "/ws/pong/");	// new WebSocket('wss://localhost:000/ws/pong/')
 	initSocket(socket, gameSettings);
 	EventManager(socket, websocketLock);
 }
