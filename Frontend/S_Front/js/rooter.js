@@ -53,7 +53,7 @@ let pages = {
 
 function scriptAlreadyLoaded(url)
 {
-	url = "https://localhost:3000/" + url
+	url = "https://${hostname.host}" + url
 	let scripts = document.getElementsByTagName('script')
 	for (let i = scripts.length; i--;)
 	{

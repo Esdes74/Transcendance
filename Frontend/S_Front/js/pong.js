@@ -27,8 +27,8 @@ function initPong()
 		countdownActive: false,						// Variable pour suivre l'état du compte à rebours
 		countdownValue: 0,							// Valeur actuelle du compte à rebours
 		};
-		resizeCanvas(gameSettings)
-		console.log('Settings initialized');
+	resizeCanvas(gameSettings)
+	console.log('Settings initialized');
 
 	window.addEventListener('resize', resizeCanvas(gameSettings));
 	websocketLock = false;

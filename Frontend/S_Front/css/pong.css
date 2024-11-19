@@ -27,7 +27,7 @@ body {
 #pongCanvas {
 	position: relative;
 	background-color: rgb(115, 171, 201);
-	border: 20px solid white;
+	border: 10px solid white;
 	aspect-ratio: 16/9;
 	width: 100%;
 }
