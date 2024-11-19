@@ -1,3 +1,4 @@
+
 function initPong()
 {
 	
@@ -121,9 +122,9 @@ socket.onerror = function (error) {
 };
 
 // Gestion de la fermeture de la connexion WebSocket
-socket.onclose = function (event) {
-	console.log('WebSocket is closed bah il sest ferme:', event);
-};
+// socket.onclose = function (event) {
+// 	console.log('WebSocket is closed bah il sest ferme:', event);
+// };
 
 }
 
@@ -158,19 +159,20 @@ function EventManager(socket, websocketLock)
 		}
 	});
 	//quand on change de page on ferme la connexion websocket
-	window.addEventListener('popstate', handleViewChange);
-
+	window.addEventListener('popstate', handleViewChange(socket));
+	window.addEventListener(document.getElementById("play_menu", onclick),  handleViewChange(socket));
 	
 }
 
-function handleViewChange() {
+function handleViewChange(socket) {
     const currentPath = window.location.pathname;
 
     // Example: Open WebSocket for a specific path
     if (currentPath === '/pong') {
-        initWebSocket();
+        //initSocket();
+		return ;
     } else {
-        closeWebSocket();
+		socket.close();
     }
 }
 
