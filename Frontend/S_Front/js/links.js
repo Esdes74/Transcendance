@@ -2,15 +2,15 @@ const originalPushState = history.pushState;
 
 function onPushState()
 {
+    console.log("event dispatched");
     const event = new CustomEvent('pageChanged');
     document.dispatchEvent(event);
-    console.log("event dispatched");
 }
 
 history.pushState = function (...args)
 {
+	originalPushState.apply(this, args);
     onPushState();
-    originalPushState.apply(this, args);
 }
 
 function updatePage(value)
