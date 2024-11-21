@@ -21,7 +21,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.ballY = 0.5
 		self.ballSpeedX = 0.003
 		self.ballSpeedY = 0.003
-		self.max_speed = 0.012
+		self.max_speed = 0.02
 		self.acceleration = 1.1
 
 		print(f">>>>>>> PHASE D'INITIALISATION : {self.player1Y}")

@@ -76,6 +76,7 @@ function initSocket(socket, gameSettings) {
 
 	socket.onopen = async function (e) {
 		console.log("WebSocket is connected ouais");
+		// startCountdown(3, gameSettings);
 		gameLoop(gameSettings, socket);
 	};
 
@@ -102,6 +103,14 @@ function initSocket(socket, gameSettings) {
 				if (gameSettings.scorePlayer1 >= 5 || gameSettings.scorePlayer2 >= 5)
 					gameOver(gameSettings.scorePlayer1, gameSettings.scorePlayer2, socket);
 			}
+		}
+		else if (data.type === 'pong.countdown')
+		{
+			gameSettings.countdownValue = data.value;
+			gameSettings.countdownActive = true;
+			draw(gameSettings);
+			if (gameSettings.countdownValue <= 0)
+				gameSettings.countdownActive = false;
 		}
 	};
 
@@ -202,7 +211,7 @@ function gameOver(scorePlayer1, scorePlayer2, socket) {
 	});
 }
 
-// Fonction pour démarrer le compte à rebours
+//Fonction pour démarrer le compte à rebours
 // function startCountdown(seconds, gameSettings)
 // {
 // 	gameSettings.countdownActive = true;
@@ -220,6 +229,8 @@ function gameOver(scorePlayer1, scorePlayer2, socket) {
 // 		}
 // 	}, 1000);
 // }
+
+
 
 // Dessiner players et ball
 function draw(gameSettings) {

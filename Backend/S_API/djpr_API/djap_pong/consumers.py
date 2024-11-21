@@ -10,7 +10,11 @@ class PongConsumer(AsyncWebsocketConsumer):
 		self.printball = False
 		self.keys = {}
 		self.send_task = asyncio.create_task(self.send_keys_periodically())
-		await asyncio.sleep(3)
+		# boucle for qui renvoie un send chaque seconde durant 3 secondes pour le coundown
+		for i in range(4):
+			if i != 0:
+				await asyncio.sleep(1)
+			await self.send(json.dumps({'type': 'pong.countdown', 'value': 3-i}))
 		self.update_ball_task = asyncio.create_task(self.update_ball_position())
 		self.websocket_lock = asyncio.Lock()
 
