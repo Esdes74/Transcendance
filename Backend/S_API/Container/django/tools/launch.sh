@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/11/12 14:37:02 by eslamber         ###   ########.fr        #
+#    Updated: 2024/11/21 16:31:17 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,15 @@ done
 # Maintenant, récupère l'adresse IP
 FRONT_IP=$(getent hosts front | awk '{ print $1 }')
 export FRONT_IP
-# echo "L'adresse IP de front est $FRONT_IP"
 
 # Tu peux maintenant utiliser l'IP comme une variable d'environnement ou la sauvegarder
-# export NGINX_URL="https://$FRONT_IP"
+while ! pg_isready -h api_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
+	echo "attente du service postgresql"
+	sleep 1
+done
 
 cd $VOLUME
+
 # Créer des migrations
 python3 manage.py makemigrations
 
@@ -39,5 +42,5 @@ if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ] && [ "$D
 fi
 
 # Lancer le serveur Django
-uvicorn djpr_API.asgi:application --host 0.0.0.0 --port 8000 --reload
+uvicorn djpr_API.asgi:application --host 0.0.0.0 --port 8000
 # python3 manage.py runserver 0.0.0.0:8000

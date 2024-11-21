@@ -3,16 +3,22 @@
 #                                                         :::      ::::::::    #
 #    launch.sh                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/06 16:56:36 by eslamber         ###   ########.fr        #
+#    Updated: 2024/11/21 16:33:47 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
 
+while ! pg_isready -h pong_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
+	echo "attente du service postgresql"
+	sleep 1
+done
+
 cd $VOLUME
+
 # Créer des migrations
 python3 manage.py makemigrations
 
