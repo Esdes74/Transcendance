@@ -6,14 +6,14 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/11/14 16:07:10 by eslamber         ###   ########.fr        #
+#    Updated: 2024/11/15 18:27:10 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
 
 # Attente que le conteneur front soit en ligne (ping)
-while ! nc -z front 443; do
+while ! nc -z Frontend 443; do
   echo "Attente que le conteneur front soit en ligne..."
   sleep 1
 done

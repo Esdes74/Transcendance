@@ -14,15 +14,17 @@ RUN	apt-get -y upgrade
 RUN	apt-get -y install nginx
 RUN	apt-get -y install openssl
 
-RUN	openssl req -x509 -nodes -out /etc/nginx/crt.pem -keyout /etc/nginx/privkey.pem -subj "/C=FR"
+# Générer un certificat SSL auto-signé pour localhost et *.local
+RUN openssl req -x509 -nodes -out /etc/nginx/crt.pem -keyout /etc/nginx/privkey.pem \
+    -subj "/C=FR/ST=Paris/L=Paris/O=Local/OU=Dev/CN=*.local"
 
 COPY	config/nginx.conf /etc/nginx/nginx.conf
 
 RUN	sed -i "s|\${NGINX_VOLUME}|$VOLUME|g" /etc/nginx/nginx.conf
 
 # Exposition du port
-EXPOSE $PORT
+EXPOSE 443
+EXPOSE 80
 
 # démarre l'application
-
 CMD ["nginx", "-g", "daemon off;"]
