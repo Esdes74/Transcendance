@@ -1,4 +1,4 @@
-function affTournament()
-{
-	let socket = new WebSocket("/ws/tournament/");
-}
+// function affTournament()
+// {
+// 	let socket = new WebSocket("/ws/tournament/");
+// }
