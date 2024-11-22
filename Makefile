@@ -30,7 +30,7 @@ NEUTRAL := '\e[0m'
 
 # Build les images et seulement les images
 all:
-	docker-compose -f $(DOCKER) up -d --build
+	docker compose -f $(DOCKER) up -d --build
 # docker-compose -f $(API_DOCKER) up -d --build
 # docker-compose -f $(AUTH_DOCKER) up -d --build
 # docker-compose -f $(FRONT_DOCKER) up -d --build
