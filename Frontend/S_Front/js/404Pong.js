@@ -1,29 +1,31 @@
+function errorLink()
+{
+	history.pushState({pageID: ''}, '', '/');
+	rootMyUrl();
+}
+
 function init404Pong()
 {		
 	const gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
 		
 		ballRadius: 8,		
-		printBall: false,	
-		ballX: 0,				
-		ballY: 0,					
+		printBall: true,	
+		ballX: 0.5,				
+		ballY: 0.5,
 
 		ballSpeedX: 0.005,
 		ballSpeedY: 0.004,
 	};
 
 
-		resizeIndexCanvas(gameSettings);
-		gameSettings.ballX = 0.5;
-		gameSettings.ballY = 0.5;
+	resizeIndexCanvas(gameSettings);
 
 	window.addEventListener('resize', resizeIndexCanvas);
-	gameSettings.printBall = true;
-
+	const button = document.getElementById("404index");
+	button.addEventListener("click", errorLink);
 	indexGameLoop(gameSettings);
 }
-	
-	
 	
 function resizeIndexCanvas(gameSettings)
 {
