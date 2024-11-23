@@ -53,12 +53,17 @@ let pages = {
 
 function scriptAlreadyLoaded(url)
 {
+	url = "https://" + window.location.host + url
 	let scripts = document.getElementsByTagName('script')
 	for (let i = scripts.length; i--;)
 	{
 		if (scripts[i].src === url) 
+		{
+			console.log("OUIII")
 			return true
+		}
 	}
+	console.log(url)
 	return false
 }
 

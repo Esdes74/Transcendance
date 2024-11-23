@@ -21,11 +21,11 @@ function aff404()
 	</div>
     `
     document.getElementById("replayBlock").style.display = "block"
-    if (!addScript("js/404Pong.js"))
+    if (!addScript("/js/404Pong.js"))
     {
 	init404Pong()
     }
 }
 
-pages["/"].funct = aff404
+pages["/404"].funct = aff404
 aff404()

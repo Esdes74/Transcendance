@@ -29,7 +29,7 @@ function affPong()
 		</div>
 	</div>
 `	
-	if (!addScript("js/pong.js"))
+	if (!addScript("/js/pong.js"))
 	{
 		initPong()
 	}

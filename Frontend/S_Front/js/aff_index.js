@@ -23,10 +23,8 @@ function affIndex()
 	</div>
     `
     document.getElementById("replayBlock").style.display = "block"
-    if (!addScript("js/indexPong.js"))
-    {
+    if (!addScript("/js/indexPong.js"))
 	initIndexPong()
-    }
 }
 
 pages["/"].funct = affIndex
