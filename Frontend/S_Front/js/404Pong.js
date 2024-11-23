@@ -5,60 +5,59 @@ function errorLink()
 }
 
 function init404Pong()
-{		
+{
 	const gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
 		
-		ballRadius: 8,		
 		printBall: true,	
-		ballX: 0.5,				
-		ballY: 0.5,
+		textX: 0.5,				
+		textY: 0.5,
 
-		ballSpeedX: 0.005,
-		ballSpeedY: 0.004,
+		textSpeedX: 0.005,
+		textSpeedY: 0.004,
 	};
 
 
-	resizeIndexCanvas(gameSettings);
+	resize404Canvas(gameSettings);
 
-	window.addEventListener('resize', resizeIndexCanvas);
+	window.addEventListener('resize', resize404Canvas);
 	const button = document.getElementById("404index");
 	button.addEventListener("click", errorLink);
-	indexGameLoop(gameSettings);
+	loop404(gameSettings);
 }
 	
-function resizeIndexCanvas(gameSettings)
+function resize404Canvas(gameSettings)
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
-	indexDraw(gameSettings);
+	draw404(gameSettings);
 }
 
-function indexDraw(gameSettings)
+function draw404(gameSettings)
 {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 
 	ctx.font = "bold 32px Arial";
-	ctx.fillText("404", gameSettings.canvas.width * gameSettings.ballX, gameSettings.canvas.height * gameSettings.ballY)
+	ctx.fillText("404", gameSettings.canvas.width * gameSettings.textX, gameSettings.canvas.height * gameSettings.textY)
 }
 
-function indexGameLoop(gameSettings) {
-    indexDraw(gameSettings);
-    gameSettings.ballX += gameSettings.ballSpeedX;
-    gameSettings.ballY += gameSettings.ballSpeedY;
-    if (gameSettings.ballX <= 0)
+function loop404(gameSettings) {
+    draw404(gameSettings);
+    gameSettings.textX += gameSettings.textSpeedX;
+    gameSettings.textY += gameSettings.textSpeedY;
+    if (gameSettings.textX <= 0)
     {
-        gameSettings.ballSpeedX *= -1
+        gameSettings.textSpeedX *= -1
     }
-    if (gameSettings.ballX * gameSettings.canvas.width >= gameSettings.canvas.width - 55)
+    if (gameSettings.textX * gameSettings.canvas.width >= gameSettings.canvas.width - 55)
     {
-	gameSettings.ballSpeedX *= -1
+	gameSettings.textSpeedX *= -1
     }
-    if (gameSettings.ballY * gameSettings.canvas.height <= 20 || gameSettings.ballY >= 1)
-   	gameSettings.ballSpeedY *= -1 
-  requestAnimationFrame(() => indexGameLoop(gameSettings));
+    if (gameSettings.textY * gameSettings.canvas.height <= 20 || gameSettings.textY >= 1)
+   	gameSettings.textSpeedY *= -1 
+  requestAnimationFrame(() => loop404(gameSettings));
 }
 
 init404Pong();
