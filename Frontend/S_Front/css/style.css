@@ -87,6 +87,11 @@ section p {
 
 .btn:hover {
     background-color: #0056b3;
+    transform: scale(1.02);
+}
+
+.flag-selector:hover {
+    transform: scale(1.05);
 }
 
 .canvas-container {
@@ -96,6 +101,13 @@ section p {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.dropdown-menu {
+    --bs-dropdown-min-width: 72px !important; /* Redéfinir la largeur minimale */
+    /*width: 74px !important;
+    height: auto;*/
+    background-color: rgb(81, 145, 180);
 }
 
 /* Footer */
