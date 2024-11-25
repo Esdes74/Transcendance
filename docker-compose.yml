@@ -81,9 +81,9 @@ services:
 
   tournament_web:
     build:
-      context: ./Backend/S_tournament/Container/django
+      context: ./Backend/S_Tournament/Container/django
       args:
-        - VOLUME=${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament_back}
+        - VOLUME=${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-Tournament
     command: ["uvicorn", "Tournament.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
@@ -206,7 +206,7 @@ services:
       timeout: 10s
     restart: on-failure
 
-  # Conteneur de front
+#   Conteneur de front
   front:
     build:
       context: ./Frontend/Container/Nginx
