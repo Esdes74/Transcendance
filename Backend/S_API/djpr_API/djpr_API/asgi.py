@@ -19,7 +19,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djpr_API.settings")
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from djap_pong.routing import websocket_urlpatterns
-#from djap_tournament.routing import websocket_urlpatterns
+from djap_tournament.routing import websocket_urlpatterns_tournament
 
 application = ProtocolTypeRouter(
     {

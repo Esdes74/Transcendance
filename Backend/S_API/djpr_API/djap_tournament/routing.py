@@ -7,6 +7,6 @@ from . import consumers
 
 # ]
 
-websocket_urlpatterns = [
+websocket_urlpatterns_tournament = [
     re_path(r'ws/tournament/$', consumers.TournamentConsumer.as_asgi()),
 ]
