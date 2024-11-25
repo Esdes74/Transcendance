@@ -59,11 +59,9 @@ function scriptAlreadyLoaded(url)
 	{
 		if (scripts[i].src === url) 
 		{
-			console.log("OUIII")
 			return true
 		}
 	}
-	console.log(url)
 	return false
 }
 
@@ -85,7 +83,7 @@ function rootMyUrl()
        let page = pages[loc];
        //document.title = page.title;
        if (!addScript(page.script))
-	page.funct();
+	 page.funct();
     }
     else
     {
