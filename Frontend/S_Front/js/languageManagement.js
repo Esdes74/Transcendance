@@ -1,21 +1,45 @@
-function tradElements()
+async function tradElements(elements)
 {
 	let currentFlag = document.getElementById("currentFlag")
-	let elements = document.querySelectorAll('[data-translate="true"]')
-	if (currentFlag.getAttribute('data-language') === "spanish")
+	let language = currentFlag.getAttribute('data-language')
+	if (language === "french")
+		return
+	
+	let request;
+	if (language === "spanish")
+		request = new Request("/json/fr_sp_trad.json")
+	if (language === "english")
+		request = new Request("/json/fr_en_trad.json")
+	let response = await fetch(request)
+	if (!response.ok)
+		console.error("Erreur:", response.status)
+	let trads = await response.json()
+	
 	elements.forEach( element => {
-                element.innerText = "paella"
-        })
-	if (currentFlag.getAttribute('data-language') === "english")
-	elements.forEach( element => {
-		element.innerText = "fish and chips"
+                element.innerText = trads[element.innerText]
 	})
-	if (currentFlag.getAttribute('data-language') === "french")
-	elements.forE
 }
 
+async function returnToFrench(language)
+{
+	let request;
+	if (language === "english")
+		request = new Request("/json/fr_en_trad.json")
+	if (language === "spanish")
+		request = new Request("/json/fr_sp_trad.json")
+	let response = await fetch(request)
+	let trads = await response.json()
+	
+	let invertedTrads = {};
+	for (let key in trads)
+		invertedTrads[trads[key]] = key;
+	let elements = document.querySelectorAll('[data-translate="true"]')
+	elements.forEach( element => {
+		element.innerText = invertedTrads[element.innerText]
+	})
+}
 
-function updateLanguage(flag)
+async function updateLanguage(flag)
 {
 	let currentFlag = document.getElementById("currentFlag")
 	if (flag.getAttribute('data-language') === currentFlag.getAttribute('data-language'))
@@ -32,7 +56,10 @@ function updateLanguage(flag)
 	currentFlag.src = tmpSrc
 	currentFlag.setAttribute('data-language', tmpValue)
 
-	tradElements()
+	if (flag.getAttribute('data-language') !== "french")
+		await returnToFrench(flag.getAttribute('data-language'))
+	let elements = document.querySelectorAll('[data-translate="true"]')
+	tradElements(elements)
 }
 
 function getFlags()

@@ -25,7 +25,12 @@ function affIndex()
     document.getElementById("replayBlock").style.display = "block"
     if (!addScript("/js/indexPong.js"))
 	initIndexPong()
-    tradElements()
+    let flag = document.getElementById("currentFlag")
+    if (currentFlag.getAttribute('data-language') !== "french")
+    {
+	let elements = document.querySelectorAll('main [data-translate="true"]')
+	tradElements(elements)
+    }
 }
 
 pages["/"].funct = affIndex
