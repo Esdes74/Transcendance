@@ -104,10 +104,7 @@ section p {
 }
 
 .dropdown-menu {
-    --bs-dropdown-min-width: 72px !important; /* Redéfinir la largeur minimale */
-    /*width: 74px !important;
-    height: auto;*/
-    background-color: rgb(81, 145, 180);
+    --bs-dropdown-min-width: 72px;
 }
 
 /* Footer */
