@@ -75,13 +75,13 @@ fclean: rmi builder_rm system_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
-	docker-compose -f $(DOCKER) down
+	docker compose -f $(DOCKER) down
 # docker-compose -f $(API_DOCKER) down
 # docker-compose -f $(AUTH_DOCKER) down
 # docker-compose -f $(FRONT_DOCKER) down
 
 down:
-	docker-compose -f $(DOCKER) down
+	docker compose -f $(DOCKER) down
 # docker-compose -f $(API_DOCKER) down
 # docker-compose -f $(AUTH_DOCKER) down
 # docker-compose -f $(FRONT_DOCKER) down

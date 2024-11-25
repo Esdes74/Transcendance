@@ -12,6 +12,11 @@
 
 #!/bin/bash
 
+while ! pg_isready -h auth_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
+    echo "attente du service postgresql"
+    sleep 1
+done
+
 # Créer des migrations
 # python3 $VOLUME/manage.py makemigrations
 

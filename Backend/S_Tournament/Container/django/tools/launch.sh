@@ -11,6 +11,17 @@
 # **************************************************************************** #
 
 #!/bin/bash
+# Attente que le conteneur front soit en ligne (ping)
+while ! nc -z pong_web 8000; do
+  echo "Attente que le conteneur front soit en ligne..."
+  sleep 1
+done
+
+# Tu peux maintenant utiliser l'IP comme une variable d'environnement ou la sauvegarder
+while ! pg_isready -h tournament_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
+    echo "attente du service postgresql"
+    sleep 1
+done
 
 cd $VOLUME
 # Créer des migrations
@@ -25,4 +36,4 @@ if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ] && [ "$D
 fi
 
 # Lancer le serveur Django
-uvicorn Pong.asgi:application --host 0.0.0.0 --port 8000
+uvicorn Tournament.asgi:application --host 0.0.0.0 --port 8000

@@ -81,7 +81,7 @@ services:
 
   tournament_web:
     build:
-      context: ./Backend/S_Tournament/Container/django
+      context: ./Backend/S_tournament/Container/django
       args:
         - VOLUME=${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament_back}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
@@ -90,7 +90,7 @@ services:
     ports:
       - "127.0.0.1:8003:8000"
     volumes:
-      - ./Backend/S_Tournament/Tournament:${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament_back}
+      - ./Backend/S_tournament/Tournament:${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
     environment:
       - POSTGRES_USER=${PSQL_USER:-default_us}
       - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
@@ -98,12 +98,12 @@ services:
     env_file:
       - .env
     depends_on:
-      pong_web:
-        condition: "service_healthy"
+#      pong_web:
+#        condition: "service_healthy"
       tournament_psql:
         condition: "service_healthy"
-      api_psql:
-        condition: "service_healthy"
+#      api_psql:
+#        condition: "service_healthy" chaque service a sa db, aucun service n'a acces aux db des autres.
     networks:
       - backend
       - tournament_db

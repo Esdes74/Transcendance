@@ -21,10 +21,12 @@ done
 # Maintenant, récupère l'adresse IP
 FRONT_IP=$(getent hosts front | awk '{ print $1 }')
 export FRONT_IP
-# echo "L'adresse IP de front est $FRONT_IP"
 
 # Tu peux maintenant utiliser l'IP comme une variable d'environnement ou la sauvegarder
-# export NGINX_URL="https://$FRONT_IP"
+while ! pg_isready -h api_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
+    echo "attente du service postgresql"
+    sleep 1
+done
 
 cd $VOLUME
 # Créer des migrations
