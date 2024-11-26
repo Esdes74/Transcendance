@@ -24,6 +24,7 @@ from djap_tournament.routing import websocket_urlpatterns_tournament
 application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),  # Les requêtes HTTP passent par urls.py
-        "websocket": AuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
+        "pong_websocket": AuthMiddlewareStack(URLRouter(websocket_urlpatterns)),
+        "tournament_websocket": AuthMiddlewareStack(URLRouter(websocket_urlpatterns_tournament)),
     }
 )

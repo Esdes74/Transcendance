@@ -21,7 +21,11 @@ let nameList = [];
 
 function selectTournament(numberOfParticipants, nameList) {
 	const inputsContainer = document.getElementById('inputs');
+	let socket;
 
+	socket = new WebSocket('ws/tournament');
+	console.log("nameList");
+	initSocket(socket);
 	// Si trop de noms validés pour le nouveau tournoi, afficher un message d'erreur
 	if (validatedNames > numberOfParticipants)
 	{
@@ -61,6 +65,13 @@ function selectTournament(numberOfParticipants, nameList) {
 	}
 }
 
+function initSocket(socket) {
+	/// Gestion de l'ouverture de la connexion WebSocket \\\
+
+	socket.onopen = async function (e) {
+		console.log("WebSocket is connected ouais");
+	};
+}
 function createInputField(index) {
 	const input = document.createElement('input');
 	input.type = 'text';
@@ -139,6 +150,8 @@ function validateField(input) {
 		input.parentNode.replaceChild(nameContainer, input);
 	}
 }
+
+
 function lockParticipants(input) {
 	console.log(input.length);
 }
