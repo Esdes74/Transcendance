@@ -7,12 +7,14 @@ import json
 
 class CalculConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
+		print('oueeee')
 		await self.accept()
 
 	async def disconnect(self, close_code):
 		pass
 
 	async def receive(self, text_data):
+		print('recu chef')
 		pass
 
 	# async def send_to_tournamentConsumer(self, event):

@@ -21,10 +21,7 @@ function initPong() {
 		scorePlayer2: 0,							// score player 2
 
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
-		scorePlayer2Elem: document.getElementById('scorePlayer2'),
-
-		countdownActive: false,						// Variable pour suivre l'état du compte à rebours
-		countdownValue: 0,							// Valeur actuelle du compte à rebours
+		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
 	};
 	resizeCanvas(gameSettings)
 	console.log('Settings initialized');
