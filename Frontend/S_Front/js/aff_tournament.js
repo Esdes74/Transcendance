@@ -23,7 +23,7 @@ function selectTournament(numberOfParticipants, nameList) {
 	const inputsContainer = document.getElementById('inputs');
 	let socket;
 
-	socket = new WebSocket('ws/tournament');
+	socket = new WebSocket('/ws/Tournament/');
 	console.log("nameList");
 	initSocket(socket);
 	// Si trop de noms validés pour le nouveau tournoi, afficher un message d'erreur
@@ -156,5 +156,5 @@ function lockParticipants(input) {
 	console.log(input.length);
 }
 
-pages["/tournament"].funct = affTournament
+pages["/Tournament"].funct = affTournament
 affTournament()

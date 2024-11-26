@@ -19,8 +19,9 @@ class PongConsumer(AsyncWebsocketConsumer):
 		self.websocket_lock = asyncio.Lock()
 
 	async def disconnect(self, close_code):
-		# self.send_task.cancel()
-		# self.update_ball_task.cancel()
+		self.send_task.cancel()
+		self.update_ball_task.cancel()
+		
 		pass
 
 	async def receive(self, text_data):
@@ -44,8 +45,8 @@ class PongConsumer(AsyncWebsocketConsumer):
 						response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
 						await self.send(response)
 				await asyncio.sleep(0.01)
-		except asyncio.CancelledError:
-			print("send_keys_periodically task was cancelled")
+		# except asyncio.CancelledError:
+		# 	print("send_keys_periodically task was cancelled")
 		except Exception as e:
 			print(f"Exception in send_keys_periodically: {e}")
 
@@ -63,8 +64,8 @@ class PongConsumer(AsyncWebsocketConsumer):
 					self.printball = True
 				await self.send(response)
 				await asyncio.sleep(0.01)
-		except asyncio.CancelledError:
-			print("update_ball_position task was cancelled")
+		# except asyncio.CancelledError:
+			# print("update_ball_position task was cancelled")
 		except Exception as e:
 			print(f"Exception in update_ball_position: {e}")
 

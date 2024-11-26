@@ -90,7 +90,7 @@ services:
     ports:
       - "127.0.0.1:8003:8000"
     volumes:
-      - ./Backend/S_tournament/Tournament:${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
+      - ./Backend/S_Tournament/Tournament:${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
     environment:
       - POSTGRES_USER=${PSQL_USER:-default_us}
       - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}

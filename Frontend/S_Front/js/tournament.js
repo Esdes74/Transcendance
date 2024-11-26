@@ -1,6 +1,6 @@
 // function affTournament()
 // {
-// 	let socket = new WebSocket("/ws/tournament/");
+// 	let socket = new WebSocket("/ws/Tournament/");
 // }
-let socket;
-socket = new WebSocket("/ws/tournament/");
+// let socket;
+// socket = new WebSocket("/ws/Tournament/");

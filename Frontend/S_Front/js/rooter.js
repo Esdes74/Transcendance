@@ -34,8 +34,8 @@ let pages = {
 		script: "js/aff_play.js",
 		funct: null
 	},
-	"/tournament": {
-		title: "tournament",
+	"/Tournament": {
+		title: "Tournament",
 		script: "js/aff_tournament.js",
 		funct: null
 	},

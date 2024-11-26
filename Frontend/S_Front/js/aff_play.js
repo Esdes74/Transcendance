@@ -23,7 +23,7 @@ function affPlay()
 			</div>
 			</div>
 		    <div class="col-4">
-			<div class="card" link="tournament" style="width: 18rem;">
+			<div class="card" link="Tournament" style="width: 18rem;">
 			  <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0Fvcq2MnC3WO3XAvW9I0T0lBg6Rii1NgC_g&s" alt="Card image cap">
 			  <div class="card-body">
 			    <h5 class="card-title text-center fw-bold">Tournament Mode</h5>
