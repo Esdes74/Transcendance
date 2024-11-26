@@ -35,7 +35,8 @@ function affRegister()
     </div>
     `
     if (!addScript("/js/register.js"))
-	    loadRegister()	
+	    loadRegister()
+    tradNewPage()
 }
 
 pages["/register"].funct = affRegister

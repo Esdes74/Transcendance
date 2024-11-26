@@ -5,14 +5,14 @@ function aff404()
        	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
-				<h1 class="fw-bold">Error</h1>
+				<h1 class="fw-bold" data-translate="true">Erreur</h1>
 
 				<div class="canvas-container">
 					<canvas id="pongCanvas" class="w-100" height="400"></canvas>
 					<div id="replayBlock">
-						<h2 class="fw-bold">File not found</h2>
+						<h2 class="fw-bold" data-translate="true">Fichier introuvable</h2>
 						<div class="button-group">
-						<button id="404index" class="btn btn-outline-light m-2 fw-bold">Return to index</button>
+						<button id="404index" class="btn btn-outline-light m-2 fw-bold" data-translate="true">Revenir à l'accueil</button>
 						</div>
 					</div>
 				</div>
@@ -25,6 +25,7 @@ function aff404()
     {
 	init404Pong()
     }
+    tradNewPage()
 }
 
 pages["/404"].funct = aff404
