@@ -24,14 +24,14 @@
                         <button type="button" class="btn text-uppercase border border-2 fw-bold shadow" data-translate="true" value="authentification"> Se connecter</button>
                     </li>
 		    <li class="nav-item mx-2 my-1 d-flex justify-content-center">
-			<div class="dropdown flag-selector" style="width: 93px; height:49px;">
+			<div class="dropdown flag-selector" style="width: 93px; height:49px; user-select: none">
 			<div id="dropdownMenu" value="french" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img id="currentFlag" class="border border-2 shadow rounded" style="width: 72px; height: 49px;" data-language="french" src="/png/french_flag.png" alt="french flag">  </img>
+                        <img id="currentFlag" draggable="false" class="border border-2 shadow rounded" style="width: 72px; height: 49px;" data-language="french" src="/png/french_flag.png" alt="french flag">  </img>
 			<i class="bi bi-caret-down-fill"></i>
 			</div>
-			<div class="border-0 bg-transparent dropdown-menu" style="width: 72px; height: auto; padding: 0;" aria-labelledby="dropdownMenu">
-			<img type="flag" class="flag-selector border border-2 shadow rounded" data-language="english" style="width: 72px; height: 49px;" src="/png/english_flag.png" alt="united kingdom flag"> </img>
-			<img type="flag" class="flag-selector border border-2 shadow rounded" data-language="spanish" style="width: 72px; height: 49px;" src="/png/spanish_flag.png" alt="spanish flag"> </img>
+			<div class="border-0 bg-transparent dropdown-menu" style="width: 72px; user-select: none; -webkit-user-drag: none; height: auto; padding: 0;" aria-labelledby="dropdownMenu">
+			<img type="flag" draggable="false" class="flag-selector border border-2 shadow rounded" data-language="english" style="width: 72px; height: 49px;" src="/png/english_flag.png" alt="united kingdom flag"> </img>
+			<img type="flag" draggable="false" class="flag-selector border border-2 shadow rounded" data-language="spanish" style="width: 72px; height: 49px;" src="/png/spanish_flag.png" alt="spanish flag"> </img>
 			</div>
 			</div>
 		</li>
