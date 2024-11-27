@@ -19,6 +19,11 @@ let pages = {
 		script: "/js/aff_register.js",
 		funct: null
 	},
+	"/registertoft": {
+		title: "RegisterToFT",
+		script: "/js/aff_registertoft.js",
+		funct: null
+	},
 	"/pong": {
 		title: "Crazy Pong",
 		script: "/js/aff_pong.js",

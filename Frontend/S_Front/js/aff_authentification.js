@@ -17,13 +17,18 @@ function affAuthentification()
 		</form>
 		<div id="error-message" class="mt-3 text-danger"></div>
 		<section>
-			<button type="button" class="btn btn-dark" data-translate="true" value="Register"> Créer un compte</button>
+			<button type="button" class="btn btn-dark" data-translate="true" value="register"> Créer un compte</button>
+			<button type="button" class="btn btn-dark" data-translate="true" value="registertoft"> Connexion avec 42</button>
 		</section>
 	</div>
 	`
 	if (!addScript("/js/login.js"))
 		loadLogin()
 	tradNewPage()
+	let buttons = document.querySelectorAll('main button')
+    buttons.forEach( button => {
+	button.addEventListener("click", () => updatePage(button.value))
+	})
 }
 
 pages["/authentification"].funct = affAuthentification
