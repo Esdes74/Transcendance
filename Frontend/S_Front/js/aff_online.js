@@ -29,6 +29,7 @@ function affOnline()
 		</div>
 	</div>
     `
+    tradNewPage()
 }
 
 pages["/online"].funct = affOnline

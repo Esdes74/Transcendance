@@ -35,6 +35,7 @@ function affPlay()
     `
 	if (!addScript("/js/playOptions.js"))
 		loadPlayOptions()
+	tradNewPage()
 }
 
 pages["/play"].funct = affPlay

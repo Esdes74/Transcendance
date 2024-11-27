@@ -2,13 +2,12 @@ function initIndexPong()
 {		
 	const gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
-		// paddle properties
-		paddleWidth: 10,							// Epaisseur players
-		paddleHeight: 0,		// Hauteur players
-		paddleBuffer: 0,			// Ecart des players au bord
+		paddleWidth: 10,
+		paddleHeight: 0,
+		paddleBuffer: 0,
 
-		paddle1Y: 0,	//player 1
-		paddle2Y: 0,							//player 2
+		paddle1Y: 0,
+		paddle2Y: 0,
 		player1: 0.5,
 		player2: 0.5,
 
@@ -26,13 +25,13 @@ function initIndexPong()
 
 
 		resizeIndexCanvas(gameSettings);
-		gameSettings.ballX = 0.5; //* gameSettings.canvas.width;					// Placer la ball au milieu horizontal du gameSettings.canvas	en pourcentage
-		gameSettings.ballY = 0.5;// * gameSettings.canvas.height;
-		// paddle properties
-		gameSettings.paddleWidth = 10;							// Epaisseur players
-		gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;		// Hauteur players
-		gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;			// Ecart des players au bord;
-		gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;	//player 1
+		gameSettings.ballX = 0.5;
+		gameSettings.ballY = 0.5;
+
+		gameSettings.paddleWidth = 10;
+		gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
+		gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
+		gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
 		gameSettings.paddle2Y = gameSettings.paddle1Y;							
 
 	window.addEventListener('resize', resizeIndexCanvas);
@@ -47,22 +46,20 @@ function initIndexPong()
 	
 	
 	
-function resizeIndexCanvas(gameSettings)								// Rendre responsive
+function resizeIndexCanvas(gameSettings)
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
 	indexDraw(gameSettings);
 }
 
-// Dessiner players et ball
 function indexDraw(gameSettings)
 {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 	
-	// Ligne filet
-	ctx.setLineDash([15, 10]);														// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
+	ctx.setLineDash([15, 10]); // pointilles millieux de terrain
 	ctx.beginPath();
 	ctx.moveTo(gameSettings.canvas.width / 2, 0);
 	ctx.lineTo(gameSettings.canvas.width / 2, gameSettings.canvas.height);
@@ -79,7 +76,6 @@ function indexDraw(gameSettings)
 	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);						// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
 	
 	
-	// Players
 	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	
@@ -88,7 +84,6 @@ function indexDraw(gameSettings)
 		ctx.fill();
 }
 
-// Boucle du jeu
 function indexGameLoop(gameSettings) {
     indexDraw(gameSettings);
     gameSettings.ballX += gameSettings.ballSpeedX;
@@ -105,19 +100,15 @@ function indexGameLoop(gameSettings) {
     }
     if (gameSettings.ballX >= 0.95)
     {
-	console.log(gameSettings.paddleHeight)
 	gameSettings.ballSpeedX *= -1
         gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.player2) * 0.08
 	gameSettings.paddle2Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
 	gameSettings.paddle1Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 1, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)
 	gameSettings.player1 = gameSettings.paddle1Dest / gameSettings.canvas.height
-	//gameSettings.paddle1Y -= gameSettings.paddleHeight / 2
 	gameSettings.paddle1Dest -= gameSettings.paddleHeight / 2
     }
     if (gameSettings.ballY <= 0.008 || gameSettings.ballY >= 0.99)
-    {
 	gameSettings.ballSpeedY *= -1
-    }
     if (gameSettings.paddle1Dest >= -1000 && gameSettings.paddle1Y < gameSettings.paddle1Dest)
     {
 	gameSettings.paddle1Y += 0.012 * gameSettings.canvas.height
@@ -152,33 +143,39 @@ function calculatePaddlePos(ballX, ballY, ballSpeedX, ballSpeedY, paddle, width,
 	let value = interTop(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	if (value !== -1)
 	{
+		if (value === 0 || value === width)
+			return (8 + 0.15 * height)
 		return (calculatePaddlePos(value, 8, ballSpeedX, -ballSpeedY, paddle, width, height))
 	}
 	let value1 = interBot(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	if (value1 !== -1)
 	{
+		if (value1 === 0 || value1 === width)
+			return (height - 0.15 * height - 8)
 		return (calculatePaddlePos(value1, height - 8, ballSpeedX, -ballSpeedY, paddle, width, height))
 	}
 	let value2 = interPaddle1(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	if (value2 !== -1 && paddle === 1)
-	{
-		return (randomizeResult(value2, paddleHeight))
-	}
+		return (randomizeResult(value2, paddleHeight, height))
 	let value3 = interPaddle2(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	if (value3 !== -1 && paddle === 2)
-	{
-		return (randomizeResult(value3, paddleHeight))
-	}
+		return (randomizeResult(value3, paddleHeight, height))
 	return (0.5 * height)
 }
 
 function interTop(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
-{
+{	
 	if (ballSpeedY >= 0)
 		return (-1)
 	let interX = (ballSpeedX * -ballY) / ballSpeedY + ballX
-	if (interX >= 0.05 * width && interX <= 0.95 * width)
-		return (interX)
+	if (interX >= 0 && interX <= width)
+	{
+		if (interX >= 0 && interX <= 0.1 * width && ballSpeedX < 0)
+			return (0)
+		if (interX <= width && interX >= 0.9 * width && ballSpeedX > 0)
+			return (width)
+		return (interX)	
+	}
 	return (-1)
 }
 
@@ -187,8 +184,14 @@ function interBot(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	if (ballSpeedY <= 0)
 		return (-1)
 	let interX = (ballSpeedX * (height - ballY)) / ballSpeedY + ballX
-	if (interX >= 0.05 * width && interX <= 0.95 * width)
-		return (interX)
+	if (interX >= 0 && interX <= width)
+	{
+		if (interX >= 0 && interX <= 0.1 * width && ballSpeedX < 0)
+			return (0)
+		if (interX <= width && interX >= 0.9 * width && ballSpeedX > 0)
+			return (width)
+		return (interX)	
+	}
 	return (-1)
 }
 
@@ -216,10 +219,14 @@ function interPaddle2(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	return (interY)
 }
 
-function randomizeResult(result, paddleHeight)
+function randomizeResult(result, paddleHeight, height)
 {
 	let random = Math.random()
+	if (result === 8 + 0.15 * height || result === height - 8 - 0.15 * height)
+		return (result + 4 * random - 2)
 	let value = (paddleHeight - 40) * random - ((paddleHeight - 40) / 2)
+	if (value + result < 8 + 0.15 * height || value + result > height - 8 - 0.15 * height)
+		return (result)
 	return (value + result)
 }
 

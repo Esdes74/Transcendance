@@ -53,11 +53,14 @@ let pages = {
 
 function scriptAlreadyLoaded(url)
 {
+	url = "https://" + window.location.host + url
 	let scripts = document.getElementsByTagName('script')
 	for (let i = scripts.length; i--;)
 	{
 		if (scripts[i].src === url) 
+		{
 			return true
+		}
 	}
 	return false
 }
@@ -80,7 +83,7 @@ function rootMyUrl()
        let page = pages[loc];
        //document.title = page.title;
        if (!addScript(page.script))
-	page.funct();
+	 page.funct();
     }
     else
     {
