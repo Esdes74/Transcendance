@@ -5,20 +5,36 @@ import websockets
 
 class TournamentConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
-		self.websocket_lock = asyncio.Lock();
+		self.websocket_lock = asyncio.Lock()
 		print("Coucou")
-		self.send_to_tournament_service(self, json.dumps({"tournament_id": self.tournament_id}))
 		await self.accept()
-	
+
+
 	async def disconnect(self, close_code):
 		pass
-	
+
+
 	async def receive(self, text_data):
 		print(text_data)
+		data = json.loads(text_data)
+		print("HEOO HEEOO C'EST MOI")
+		type = data.get('type', 'malformed request')
 
-	async def send_to_tournamentCalculConsumer(self, event):
-		await self.send(text_data=json.dumps(event))
-		print('send_to_tournamentCalculConsumer')
+		if type == 'click':
+			btn = data.get('btn', 'malformed request')
+			print("Cest encore moi")
+			response = await self.send_to_tournament_service(json.dumps({"type": "click", "btn": btn}))
+			await self.send(response)
+
+		elif type == 'Enter':
+			name = data.get('name', 'malformed request')
+			index = data.get('index', 'malformed request')
+			inputsContainer = data.get('inputsContainer', 'malformed request')
+			response = await self.send_to_tournament_service(json.dumps({"type": "Enter", "name": name, "index": index, "inputsContainer": inputsContainer}))
+			await self.send(response)
+			print("Cest le moment de la verité")
+
+
 
 	async def send_to_tournament_service(self, data):
 
@@ -34,3 +50,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 		return response
 
+
+	# async def send_to_tournamentCalculConsumer(self, event):
+	# 	await self.send(text_data=json.dumps(event))
+	# 	print('send_to_tournamentCalculConsumer')

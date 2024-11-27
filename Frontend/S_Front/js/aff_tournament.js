@@ -1,7 +1,7 @@
 function affTournament()
 {
 	let	socket = new WebSocket('/ws/Tournament/');
-	let	currentFields= 0;
+	websocketLock = false;
 
 	console.log(socket);
 	let docMain = document.querySelector('main')
@@ -17,9 +17,10 @@ function affTournament()
 	</div>
 	</div>
 	`
-	document.getElementById('btn1').addEventListener('click', () => {currentFields = selectTournament(3, socket, currentFields)});
-	document.getElementById('btn2').addEventListener('click', () => {currentFields = selectTournament(4, socket, currentFields)});
-	document.getElementById('btn3').addEventListener('click', () => {currentFields = selectTournament(8, socket, currentFields)});
+	initSocket(socket);
+	document.getElementById('btn1').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
+	document.getElementById('btn2').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
+	document.getElementById('btn3').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
 	// document.getElementById('btnValid').addEventListener('click', lockParticipants());
 }
 
@@ -27,7 +28,7 @@ function selectTournament(numberOfParticipants, socket, currentFields) {
 	// Ajouter des nouveaux champs si nécessaire
 	const	inputsContainer = document.getElementById('inputs');
 	currentFields = createInputField(numberOfParticipants, currentFields, socket, inputsContainer);
-
+	console.log("currentFields = ", currentFields);
 	// Supprimer les champs vides en excès si nécessaire
 	currentFields = deleteInputField(numberOfParticipants, currentFields, inputsContainer);
 
@@ -46,6 +47,7 @@ function selectTournament(numberOfParticipants, socket, currentFields) {
 
 function deleteInputField(numberOfParticipants, currentFields, inputsContainer)
 {
+	console.log("delete : numberOfParticipants = ", numberOfParticipants, "currentFields = ", currentFields);
 	const existingFields = Array.from(inputsContainer.children);
 
 	if (numberOfParticipants < currentFields)
@@ -66,6 +68,7 @@ function deleteInputField(numberOfParticipants, currentFields, inputsContainer)
 
 function createInputField(numberOfParticipants, currentFields, socket, inputsContainer)
 {
+	console.log("createInputField : numberOfParticipants = ", numberOfParticipants, "currentFields = ", currentFields);
 	while (currentFields < numberOfParticipants)
 	{
 		const inputDiv = document.createElement('div');
@@ -87,93 +90,127 @@ function createFields(index, socket, inputsContainer)
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
 	input.dataset.index = index;
+	input.id = index;
 	input.className = 'input-field';  // Appliquer la classe CSS 'input-field'
 
 	// Gestion de la validation par Entrée
 	input.addEventListener('keydown', function (event) {
 		if (event.key === 'Enter')
 		{
+			console.log("input")
 			if (socket.readyState === WebSocket.OPEN)
 			{
 				sendMessage({
-					'type': name,
-					'key': event.key
+					'type': event.key,
+					'name': input.value,
+					'index': index,
+					'inputsContainer': inputsContainer
 				}, socket);
 			}
-			validateField(input, index, inputsContainer);
+			// validateField(input, index, inputsContainer);
 		}
 
 	});
 	return input;
 }
 
-function validateField(input, index, inputsContainer) {
-	const name = input.value.trim(); // Récupérer la valeur saisie
-	// const inputIndex = input.dataset.index;
-//TODO verification qui doit etre passé dans le back
-		const nameContainer = document.createElement('div');
-		nameContainer.className = 'name-container';
+function validateField(index, inputsContainer) {
+	const input = document.getElementById(index);
+    const name = input.value; // Récupérer la valeur saisie
 
-		const nameDiv = document.createElement('div');
-		nameDiv.className = 'name';
-		nameDiv.textContent = `Participant ${index} : ${name}`;
+    const nameContainer = document.createElement('div');
+    nameContainer.className = 'name-container';
 
-		const deleteBtn = document.createElement('button');
-		deleteBtn.className = 'delete-btn';
-		deleteBtn.textContent = '×'; // Symbole de croix
-		deleteBtn.onclick = function ()
-		{
-//TODO communiquer avec le Back pour qu'il supprime lui aussi le nom
-			// Réintroduire une case vide
-			const inputDiv = document.createElement('div');
-			const newInput = createFields(input.dataset.index, inputsContainer);
-// 			const newInput = createInputField(input.dataset.index, socket);  // Créer un nouveau champ avec la même taille
-			inputDiv.appendChild(newInput);
-			nameContainer.parentNode.replaceChild(inputDiv, nameContainer);
-		};
-		nameContainer.appendChild(nameDiv);
-		nameContainer.appendChild(deleteBtn);
-		// Remplacer le champ par le conteneur nom + croix
-		input.parentNode.replaceChild(nameContainer, input);
-	// }
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'name';
+    nameDiv.textContent = `Participant ${index} : ${name}`;
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.textContent = '×'; // Symbole de croix
+    deleteBtn.onclick = function () {
+        //TODO communiquer avec le Back pour qu'il supprime lui aussi le nom
+        // Réintroduire une case vide
+        const inputDiv = document.createElement('div');
+        const newInput = createFields(input.dataset.index, inputsContainer);
+        inputDiv.appendChild(newInput);
+        if (nameContainer.parentNode) {
+            nameContainer.parentNode.replaceChild(inputDiv, nameContainer);
+        } else {
+            console.error('nameContainer has no parent node');
+        }
+    };
+
+    nameContainer.appendChild(nameDiv);
+    nameContainer.appendChild(deleteBtn);
+
+    // Remplacer le champ par le conteneur nom + croix
+    if (input.parentNode) {
+        input.parentNode.replaceChild(nameContainer, input);
+    } else {
+        console.error('input has no parent node');
+    }
 }
 
-async function sendMessage(data, socket) {
+async function sendMessage(data, socket, websocketLock) {
+	if (websocketLock) {
+		return;
+	}
+	websocketLock = true;
 	if (socket.readyState === WebSocket.OPEN) {
 		socket.send(JSON.stringify(data));
 	}
+
+	websocketLock = false;
 }
 
+function initSocket(socket) {
+	
+	
+	socket.onopen = async function (e) {
+		console.log("Alleluia, le socket est ouvert");
+	};
 
-
-
-
+	
+	socket.onmessage = function (e)
+	{
+		console.log("oula on a recu un message")
+		const data = JSON.parse(e.data);
+		if (data.type === 'click')
+		{
+			console.log("click")
+			selectTournament(data.size, socket, data.fields)
+		}
+		else if (data.type === 'Enter')
+		{
+			console.log("Enter")
+			validateField(data.index, data.inputsContainer);
+		}
+		
+		socket.onerror = function (e) {
+			console.error('ah bah là ya une erreur :', e);
+		};
+		
+		socket.onclose = function (e) {
+			console.error('Oh non le socket fermé inopinément :', e);
+		};
+		
+	}
+}
+	
+	
+	
+	
+	
 pages["/Tournament"].funct = affTournament
 affTournament()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function affTournament()
-// {
-// 	let validatedNames;
+	
+	
+	
+	
+	// function affTournament()
+	// {
+		// 	let validatedNames;
 // 	validatedNames= 0; // Compteur des noms validés
 // 	let currentFields;
 // 	currentFields = 0; // Nombre total de champs actuellement affichés
@@ -243,7 +280,36 @@ affTournament()
 // 			if (input && !input.value.trim()) {
 // 				field.remove();
 // 				fieldsToRemove--;
-// 				currentFields--;
+// // 				currentFields--;function validateField(input, index, inputsContainer) {
+// 	const name = input.value.trim(); // Récupérer la valeur saisie
+// 	// const inputIndex = input.dataset.index;
+// //TODO verification qui doit etre passé dans le back
+// 		const nameContainer = document.createElement('div');
+// 		nameContainer.className = 'name-container';
+
+// 		const nameDiv = document.createElement('div');
+// 		nameDiv.className = 'name';
+// 		nameDiv.textContent = `Participant ${index} : ${name}`;
+
+// 		const deleteBtn = document.createElement('button');
+// 		deleteBtn.className = 'delete-btn';
+// 		deleteBtn.textContent = '×'; // Symbole de croix
+// 		deleteBtn.onclick = function ()
+// 		{
+// //TODO communiquer avec le Back pour qu'il supprime lui aussi le nom
+// 			// Réintroduire une case vide
+// 			const inputDiv = document.createElement('div');
+// 			const newInput = createFields(input.dataset.index, inputsContainer);
+// // 			const newInput = createInputField(input.dataset.index, socket);  // Créer un nouveau champ avec la même taille
+// 			inputDiv.appendChild(newInput);
+// 			nameContainer.parentNode.replaceChild(inputDiv, nameContainer);
+// 		};
+// 		nameContainer.appendChild(nameDiv);
+// 		nameContainer.appendChild(deleteBtn);
+// 		// Remplacer le champ par le conteneur nom + croix
+// 		input.parentNode.replaceChild(nameContainer, input);
+// 	// }
+// }
 // 			}
 // 		}
 // 	}
