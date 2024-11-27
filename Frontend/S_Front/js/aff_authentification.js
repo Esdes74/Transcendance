@@ -1,8 +1,8 @@
 function affAuthentification()
 {
-    let docMain = document.querySelector('main')
-    docMain.innerHTML = `
-    <div class="container mt-5">
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+	<div class="container mt-5">
 		<h2>Connexion</h2>
 		<form id="loginForm">
 			<div class="form-group">
@@ -21,7 +21,7 @@ function affAuthentification()
 			<button type="button" class="btn btn-dark" value="Register"> Register</button>
 		</section>
 	</div>
-    `
+	`
 	if (!addScript("/js/login.js"))
 		loadLogin()
 }
