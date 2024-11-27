@@ -1,0 +1,4 @@
+body {
+	/* background color en degradé bleu cool */
+	background: linear-gradient(200deg, rgba(0, 0, 0, 1) 50%, rgb(2, 135, 153));
+}

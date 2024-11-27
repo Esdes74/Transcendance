@@ -2,6 +2,7 @@ function affTournament()
 {
     let docMain = document.querySelector('main')
     docMain.innerHTML = `
+	<link rel="stylesheet" href="/css/tournament.css">
 	<h1>Organisation de Tournoi</h1>
 	<div class="buttons">
     	<button onclick="selectTournament(3)">Tournoi x3</button>
