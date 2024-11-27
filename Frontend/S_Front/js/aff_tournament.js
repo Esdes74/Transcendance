@@ -26,7 +26,7 @@ function affTournament()
 function selectTournament(numberOfParticipants, socket, currentFields) {
 	// Ajouter des nouveaux champs si nécessaire
 	const	inputsContainer = document.getElementById('inputs');
-	currentFields = createInputField(numberOfParticipants, currentFields, inputsContainer);
+	currentFields = createInputField(numberOfParticipants, currentFields, socket, inputsContainer);
 
 	// Supprimer les champs vides en excès si nécessaire
 	currentFields = deleteInputField(numberOfParticipants, currentFields, inputsContainer);
@@ -64,12 +64,12 @@ function deleteInputField(numberOfParticipants, currentFields, inputsContainer)
 	return currentFields;
 }
 
-function createInputField(numberOfParticipants, currentFields, inputsContainer)
+function createInputField(numberOfParticipants, currentFields, socket, inputsContainer)
 {
 	while (currentFields < numberOfParticipants)
 	{
 		const inputDiv = document.createElement('div');
-		const input = createFields(currentFields + 1, inputsContainer);
+		const input = createFields(currentFields + 1, socket, inputsContainer);
 
 		inputDiv.appendChild(input);
 		inputsContainer.appendChild(inputDiv);
@@ -78,12 +78,12 @@ function createInputField(numberOfParticipants, currentFields, inputsContainer)
 	return currentFields;
 }
 
-function createFields(index, inputsContainer)
+function createFields(index, socket, inputsContainer)
 {
 	const input = document.createElement('input');
 	input.type = 'text';
 	input.minLength = 4;
-	input.minLength = 8;
+	input.maxLength = 8;
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
 	input.dataset.index = index;
@@ -93,13 +93,13 @@ function createFields(index, inputsContainer)
 	input.addEventListener('keydown', function (event) {
 		if (event.key === 'Enter')
 		{
-			// if (socket.readyState === WebSocket.OPEN)
-			// {
-			// 	sendMessage({
-			// 		'type': name,
-			// 		'key': event.key
-			// 	}, socket);
-			// }
+			if (socket.readyState === WebSocket.OPEN)
+			{
+				sendMessage({
+					'type': name,
+					'key': event.key
+				}, socket);
+			}
 			validateField(input, index, inputsContainer);
 		}
 
@@ -138,7 +138,11 @@ function validateField(input, index, inputsContainer) {
 	// }
 }
 
-
+async function sendMessage(data, socket) {
+	if (socket.readyState === WebSocket.OPEN) {
+		socket.send(JSON.stringify(data));
+	}
+}
 
 
 

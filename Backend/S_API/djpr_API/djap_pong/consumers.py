@@ -77,7 +77,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 			self.websocket = await websockets.connect(uri)
 
 		# Send data using the existing or new WebSocket connection
-		async with self.websocket_lock:
+		async with self.websocket_lockwebsocket_lockwebsocket_lock:
 			await self.websocket.send(data)
 			response = await self.websocket.recv()
 
