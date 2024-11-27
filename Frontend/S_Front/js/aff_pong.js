@@ -18,9 +18,9 @@ function affPong()
 					<div id="replayBlock">
 						<h2 id="winMessage"></h2>
 						<div class="button-group">
-							<button id="YES" class="btn btn-outline-light m-2">Replay</button>
-							<button id="SETTING" class="btn btn-outline-light m-2">Settings</button>
-							<button id="BTH" class="btn btn-outline-light m-2">Back to Home</button>
+							<button id="YES" class="btn btn-outline-light m-2" data-translate="true">Rejouer</button>
+							<button id="SETTING" class="btn btn-outline-light m-2" data-translate="true">Paramètres</button>
+							<button id="BTH" class="btn btn-outline-light m-2" data-translate="true">Retour à l'accueil</button>
 							<!-- \todo: href les buttons -->
 						</div>
 					</div>
@@ -29,9 +29,11 @@ function affPong()
 		</div>
 	</div>
 `	
-	if (!addScript("js/pong.js"))
-		gameLoop()
-    //addScript("js/PONG.js")
+	if (!addScript("/js/pong.js"))
+	{
+		initPong()
+	}
+	tradNewPage()
 }
 
 pages["/pong"].funct = affPong

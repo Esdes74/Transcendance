@@ -1,19 +1,3 @@
-// function getCookie(name) {
-//     let cookieValue = null;
-//     if (document.cookie && document.cookie !== '') {
-//         const cookies = document.cookie.split(';');
-//         for (let i = 0; i < cookies.length; i++) {
-//             const cookie = cookies[i].trim();
-//             // Vérifie si ce cookie commence par le nom donné
-//             if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//                 break;
-//             }
-//         }
-//     }
-//     return cookieValue;
-// }
-
 function loadRegister()
 {
 	const form = document.getElementById('loginForm');
@@ -46,12 +30,8 @@ function loadRegister()
 		};
 
 		try {
-			// Récupération token csrf
-			// csrf_token = getCookie('csrftoken')
-
-			// Envois des donées en log pour le debuggage
 			// Envoie les données à l'API
-			const response = await fetch('https://localhost:3000/api/auth/create/', {
+			const response = await fetch('/api/auth/create/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -59,15 +39,11 @@ function loadRegister()
 				body: JSON.stringify(data),
 				credentials: 'include'
 			});
-			// 'X-CSRFToken': csrf_token
 			
 			// Vérifie la réponse de l'API
 			if (response.ok) { // TODO: Gérer la réception des cookies 
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result);
-
-				// Sauvegarde le token ou redirige l'utilisateur
-				// response.set_cookie(key='jwt_token', value=token)//, httponly=True, secure=True)  // secure=True pour HTTPS
 
 				// Redirige vers une autre page ou affiche un message de succès
 				window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée

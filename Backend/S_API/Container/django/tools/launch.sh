@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/11/15 18:27:10 by eslamber         ###   ########.fr        #
+#    Updated: 2024/11/27 13:23:26 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,15 +21,9 @@ done
 # Maintenant, récupère l'adresse IP
 FRONT_IP=$(getent hosts front | awk '{ print $1 }')
 export FRONT_IP
-# echo "L'adresse IP de front est $FRONT_IP"
 
 # Tu peux maintenant utiliser l'IP comme une variable d'environnement ou la sauvegarder
 # export NGINX_URL="https://$FRONT_IP"
-
-while ! pg_isready -h api_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
-	echo "attente du service postgresql"
-	sleep 1
-done
 
 cd $VOLUME
 
