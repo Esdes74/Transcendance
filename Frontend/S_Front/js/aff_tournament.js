@@ -26,10 +26,10 @@ function affTournament()
 
 function selectTournament(size, socket, old_size, champs_libre) {
 	// Ajouter des nouveaux champs si nécessaire
-	const	inputsContainer = document.getElementById('inputs');
-	old_size = createInputField(size, old_size, champs_libre, socket, inputsContainer);
+	// const	inputsContainer = document.getElementById('inputs');
+	old_size = createInputField(size, old_size, champs_libre, socket);
 	// Supprimer les champs vides en excès si nécessaire
-	old_size = deleteInputField(size, old_size, champs_libre, inputsContainer);
+	old_size = deleteInputField(size, old_size, champs_libre);
 
 	return (old_size);
 	// //TODO Si trop de noms validés pour le nouveau tournoi, afficher un message d'erreur
@@ -44,8 +44,9 @@ function selectTournament(size, socket, old_size, champs_libre) {
 
 }
 
-function deleteInputField(size, old_size, champs_libre, inputsContainer)
+function deleteInputField(size, old_size, champs_libre)
 {
+	inputsContainer = document.getElementById('inputs');
 	const existingFields = Array.from(inputsContainer.children);
 
 	if (old_size > size)
@@ -60,17 +61,24 @@ function deleteInputField(size, old_size, champs_libre, inputsContainer)
 				old_size--;
 			}
 		}
+		// parcourir la liste des players et reinitialiser les indices
+		for (let i = 0; i < champs_libre.length; i++)
+		{
+			champs_libre[i] = i + 1;
+		}
+
 	}
 	return old_size;
 }
 
-function createInputField(size, old_size, champs_libre, socket, inputsContainer)
+function createInputField(size, old_size, champs_libre, socket)
 {
+	inputsContainer = document.getElementById('inputs');
 	// console.log("createInputField : size = ", size, "currentFields = ", currentFields);
 	while (old_size < size)
 	{
 		const inputDiv = document.createElement('div');
-		const input = createFields(old_size + 1, socket, inputsContainer);
+		const input = createFields(old_size + 1, socket);
 
 		inputDiv.appendChild(input);
 		inputsContainer.appendChild(inputDiv);
@@ -79,7 +87,7 @@ function createInputField(size, old_size, champs_libre, socket, inputsContainer)
 	return old_size;
 }
 
-function createFields(index, socket, inputsContainer)
+function createFields(index, socket)
 {
 	const input = document.createElement('input');
 	input.type = 'text';
@@ -101,22 +109,21 @@ function createFields(index, socket, inputsContainer)
 					'type': event.key,
 					'name': input.value,
 					'index': index,
-					'inputsContainer': inputsContainer
 				}, socket);
 			}
-			// validateField(input, index, inputsContainer);
 		}
 	});
 	return input;
 }
 
-function validateField(index, inputsContainer) {
+function validateField(index, socket) {
 	const input = document.getElementById(index);
+	console.log("input = ", input);
     const name = input.value; // Récupérer la valeur saisie
 
     const nameContainer = document.createElement('div');
     nameContainer.className = 'name-container';
-
+	nameContainer.id = index;
     const nameDiv = document.createElement('div');
     nameDiv.className = 'name';
     nameDiv.textContent = `Participant ${index} : ${name}`;
@@ -124,18 +131,22 @@ function validateField(index, inputsContainer) {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'delete-btn';
     deleteBtn.textContent = '×'; // Symbole de croix
-    deleteBtn.onclick = function () {
-        //TODO communiquer avec le Back pour qu'il supprime lui aussi le nom
-        // Réintroduire une case vide
-        const inputDiv = document.createElement('div');
-        const newInput = createFields(input.dataset.index, inputsContainer);
-		inputDiv.appendChild(newInput);
-        if (nameContainer.parentNode) {
-            nameContainer.parentNode.replaceChild(inputDiv, nameContainer);
-        } else {
-            console.error('nameContainer has no parent node');
-        }
-    };
+
+	// addeventlistener pour deleteBtn
+	deleteBtn.addEventListener('click', function () {
+	
+		if (socket.readyState === WebSocket.OPEN)
+		{	
+			console.log("nameContainer == : ", nameContainer);
+			sendMessage({
+				'type': 'delete',
+				'name': name,
+				'index': index,
+				// 'nameContainer': nameContainer,
+			}, socket);
+		}
+	});
+
 
     nameContainer.appendChild(nameDiv);
     nameContainer.appendChild(deleteBtn);
@@ -178,19 +189,48 @@ function initSocket(socket) {
 		}
 		else if (data.type === 'Enter')
 		{
-			console.log("Enter")
-			validateField(data.index, data.inputsContainer);
+			console.log("Enter recu")
+			console.log("player_list du Enter : ", data.player_list);
+			validateField(data.index, socket);
 		}
-		
-		socket.onerror = function (e) {
-			console.error('ah bah là ya une erreur :', e);
-		};
-		
-		socket.onclose = function (e) {
-			console.error('Oh non le socket fermé inopinément :', e);
-		};
-		
-	}
+		else if (data.type === 'delete')
+		{
+			console.log("delete recu")
+			nameContainer = document.getElementById(data.index);
+			const inputDiv = document.createElement('div');
+        	const newInput = createFields(data.index, socket);
+			inputDiv.appendChild(newInput);
+			console.log("nameContainer ===== ", nameContainer);
+        	if (nameContainer.parentNode)
+			{
+           		nameContainer.parentNode.replaceChild(inputDiv, nameContainer);
+				console.log("player_list du Delete: ", data.player_list);
+        	}
+			else
+			{
+        	    console.error('nameContainer has no parent node');
+        	}
+			// const nameContainer = document.querySelector(`.name-container`);
+			// nameContainer.remove();
+		}
+		else if (data.type === 'error')
+		{
+			console.error('Erreur :', data);
+		}
+		else
+		{
+			console.error('Type de message inconnu :', data);
+		}
+	};
+
+	socket.onerror = function (e) {
+		console.error('ah bah là ya une erreur :', e);
+	};
+
+	socket.onclose = function (e) {
+		console.error('Oh non le socket fermé inopinément :', e);
+	};
+
 }
 	
 	// TODO: addeventlistener global pour les champs input -> sinon impossible de re Enter après avoir supp un nom

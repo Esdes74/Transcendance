@@ -29,10 +29,16 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		elif type == 'Enter':
 			name = data.get('name', 'malformed request')
 			index = data.get('index', 'malformed request')
-			inputsContainer = data.get('inputsContainer', 'malformed request')
-			response = await self.send_to_tournament_service(json.dumps({"type": "Enter", "name": name, "index": index, "inputsContainer": inputsContainer}))
+			response = await self.send_to_tournament_service(json.dumps({"type": "Enter", "name": name, "index": index}))
 			await self.send(response)
 			print("Cest le moment de la verité")
+
+		elif type == 'delete':
+			name = data.get('name', 'malformed request')
+			index = data.get('index', 'malformed request')
+			nameContainer = data.get('nameContainer', 'malformed request')
+			response = await self.send_to_tournament_service(json.dumps({"type": "delete", "name": name, "index": index}))
+			await self.send(response)
 
 
 

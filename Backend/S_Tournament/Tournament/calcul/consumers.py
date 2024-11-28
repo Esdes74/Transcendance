@@ -22,13 +22,25 @@ class CalculConsumer(AsyncWebsocketConsumer):
 	async def receive(self, text_data):
 		data = json.loads(text_data)
 		print('data :', data)
-		print('player registered :', self.player_registered, '	size : ', self.size, '	fields :', self.old_size, '	curent_fields :', self.champs_libre)
+		print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
 		if data.get('type') == 'click':
 			if data.get('btn') == 'btn1':
+				if self.player_registered > 3:
+					await self.send(text_data=json.dumps({
+						'type': 'error',
+						'error': 'Vous avez déjà trop de joueurs inscrits'
+					}))
+					return 
 				self.old_size = self.size
 				self.size = 3
 				self.champs_libre = self.size - self.player_registered
 			elif data.get('btn') == 'btn2':
+				if self.player_registered > 4:
+					await self.send(text_data=json.dumps({
+						'type': 'error',
+						'error': 'Vous avez déjà trop de joueurs inscrits'
+					}))
+					return
 				self.old_size = self.size
 				self.size = 4
 				self.champs_libre = self.size - self.player_registered
@@ -36,7 +48,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.old_size = self.size
 				self.size = 8
 				self.champs_libre = self.size - self.player_registered
-			print('player registered :', self.player_registered, '	size : ', self.size, '	fields :', self.old_size, '	curent_fields :', self.champs_libre)
+			print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
 			await self.send(text_data=json.dumps({
 				'type': 'click',
 				'size': self.size,
@@ -46,9 +58,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 
 		elif data.get('type') == 'Enter':
 		# 	# TODO check le name et condition de securité 
-			
-			self.player_registered += 1
-			print('player registered = ', self.player_registered)
+
+			self.player_registered = self.player_registered + 1
 			self.old_size = self.old_size - self.player_registered
 			self.player_list.append(data.get('name'))
 
@@ -56,7 +67,21 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				'type': 'Enter',
 				'name': data.get('name'),
 				'index': data.get('index'),
-				'inputsContainer': data.get('inputsContainer'),
+				'player_list' : self.player_list,
+				'fields': self.old_size
+			}))
+
+		elif data.get('type') == 'delete':
+			print('data name :', data.get('name'))
+			print('data index :', data.get('index'))
+			self.player_registered = self.player_registered - 1
+			self.player_list.remove(data.get('name'))
+			
+			await self.send(text_data=json.dumps({
+				'type': 'delete',
+				'name': data.get('name'),
+				'index': data.get('index'),
+				# 'nameContainer': data.get('nameContainer'),
 				'player_list' : self.player_list,
 				'fields': self.old_size
 			}))
