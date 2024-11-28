@@ -9,6 +9,11 @@ let pages = {
 		script: "/js/aff_bravo.js",
 		funct: null
 	},
+	"/bravocallback": {
+		title: "Bravo!callback",
+		script: "/js/aff_bravoCallBack.js",
+		funct: null
+	},
 	"/authentification": {
 		title: "Authentification",
 		script: "/js/aff_authentification.js",
@@ -80,22 +85,58 @@ function addScript(src)
 	return (true)
 }
 
-function rootMyUrl()
-{
-    let loc = window.location.pathname;
-    if (pages[loc])
-    {
-       let page = pages[loc];
-       //document.title = page.title;
-       if (!addScript(page.script))
-	 page.funct();
-    }
-    else
-    {
-	history.pushState({pageID: '404'}, '', "/404")
-	rootMyUrl()
-    }
+function handleApiRedirect() {
+	let loc = window.location.pathname;
+	const urlParams = new URLSearchParams(window.location.search);
+	const apiCode = urlParams.get('code');  // Si l'API ajoute un code à l'URL
+
+	if (apiCode) {
+		// Traitement spécial pour l'URL avec le code d'API
+		// Ajoutez ici la logique pour gérer le code d'API, par exemple :
+		// envoyer ce code à votre backend ou rediriger ailleurs
+		console.log("Code de l'API détecté :", apiCode);
+		// Vous pouvez ici rediriger ou effectuer une action spéciale.
+		return true;
+	}
+	return false;
 }
+
+function rootMyUrl() {
+	let loc = window.location.pathname;
+
+	if (handleApiRedirect()) {
+		return;  // Si l'URL contient un code d'API, ne pas poursuivre avec le routage normal
+	}
+
+	if (pages[loc]) {
+		let page = pages[loc];
+		if (!addScript(page.script) && page.funct) {
+			page.funct();
+		}
+	} else {
+		history.pushState({ pageID: '404' }, '', "/404");
+		rootMyUrl();
+	}
+}
+
+// function rootMyUrl()
+// {
+// 	let loc = window.location.pathname;
+// 	if (pages[loc])
+// 	{
+// 		let page = pages[loc];
+// 		//document.title = page.title;
+// 		if (!addScript(page.script) && page.funct)
+// 		{
+// 			page.funct();
+// 		}
+// 	}
+// 	else
+// 	{
+// 	history.pushState({pageID: '404'}, '', "/404")
+// 	rootMyUrl()
+// 	}
+// }
 
 var path = window.location.pathname
 history.pushState({pageID: path.substring(1)}, '', path)
@@ -104,6 +145,6 @@ getLinks()
 document.body.style.display = 'block';
 window.addEventListener('popstate', function (event)
 {
-    rootMyUrl()
+	rootMyUrl()
 }
 )

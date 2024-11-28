@@ -171,14 +171,14 @@ services:
       - frontend
     restart: on-failure
   
-  dns:
-    build:
-      context: ./Frontend/Container/DNS
-    container_name: DNS
-    networks:
-      - frontend
-    ports:
-      - "5354:53/udp"
+  # dns:
+  #   build:
+  #     context: ./Frontend/Container/DNS
+  #   container_name: DNS
+  #   networks:
+  #     - frontend
+  #   ports:
+  #     - "5354:53/udp"
 
 # Networks
 networks:
