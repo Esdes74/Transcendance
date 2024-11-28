@@ -11,7 +11,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		await self.accept()
 		self.player_registered = 0
 		self.size = 0
-		print('ITS ME MARIO 2')
+		self.old_size = 0
+		self.champs_libre = 0
 		self.player_list = []
 
 
@@ -19,31 +20,36 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		pass
 
 	async def receive(self, text_data):
-		print('ITS ME MARIO')
 		data = json.loads(text_data)
+		print('data :', data)
+		print('player registered :', self.player_registered, '	size : ', self.size, '	fields :', self.old_size, '	curent_fields :', self.champs_libre)
 		if data.get('type') == 'click':
 			if data.get('btn') == 'btn1':
-				fields = self.size - self.player_registered
+				self.old_size = self.size
 				self.size = 3
+				self.champs_libre = self.size - self.player_registered
 			elif data.get('btn') == 'btn2':
-				fields = self.size - self.player_registered
+				self.old_size = self.size
 				self.size = 4
+				self.champs_libre = self.size - self.player_registered
 			elif data.get('btn') == 'btn3':
-				fields = self.size - self.player_registered
+				self.old_size = self.size
 				self.size = 8
-
+				self.champs_libre = self.size - self.player_registered
+			print('player registered :', self.player_registered, '	size : ', self.size, '	fields :', self.old_size, '	curent_fields :', self.champs_libre)
 			await self.send(text_data=json.dumps({
 				'type': 'click',
 				'size': self.size,
-				'fields': fields
+				'old_size': self.old_size,
+				'champs_libre': self.champs_libre,
 			}))
 
 		elif data.get('type') == 'Enter':
 		# 	# TODO check le name et condition de securité 
 			
 			self.player_registered += 1
-			print('Entrer cest ouvert')
-			fields = self.size - self.player_registered
+			print('player registered = ', self.player_registered)
+			self.old_size = self.old_size - self.player_registered
 			self.player_list.append(data.get('name'))
 
 			await self.send(text_data=json.dumps({
@@ -52,11 +58,11 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				'index': data.get('index'),
 				'inputsContainer': data.get('inputsContainer'),
 				'player_list' : self.player_list,
-				'fields': fields
+				'fields': self.old_size
 			}))
 
 		else:
-			print('Eh bah dis donc la cest pas bon')
+			pass
 
 			
 
