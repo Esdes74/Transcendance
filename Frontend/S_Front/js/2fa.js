@@ -30,7 +30,8 @@ function load2faLogin()
 				console.log('Réponse de l\'API :', result);
 
 				// Redirige vers une autre page ou affiche un message de succès
-				window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée
+				updatePage("bravo")
+				// window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();

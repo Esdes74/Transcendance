@@ -32,7 +32,8 @@ function loadLogin()
 				console.log('Réponse de l\'API :', result);
 
 				// Redirige vers une autre page ou affiche un message de succès
-				window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
+				updatePage("2fa")
+				// window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();
