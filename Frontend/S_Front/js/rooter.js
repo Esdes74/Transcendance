@@ -97,8 +97,6 @@ function rootMyUrl()
     }
 }
 
-var path = window.location.pathname
-history.pushState({pageID: path.substring(1)}, '', path)
 rootMyUrl()
 getLinks()
 document.body.style.display = 'block';
