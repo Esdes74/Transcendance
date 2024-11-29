@@ -161,7 +161,6 @@ services:
         - PORT=${PORT_FRONT:-3000}
     container_name: Frontend
     ports:
-      - "80:80"
       - "3000:443"
     volumes:
       - ./Frontend/S_Front:${NGINX_WORKDIR:-/home/front}
@@ -170,15 +169,6 @@ services:
     networks:
       - frontend
     restart: on-failure
-  
-  # dns:
-  #   build:
-  #     context: ./Frontend/Container/DNS
-  #   container_name: DNS
-  #   networks:
-  #     - frontend
-  #   ports:
-  #     - "5354:53/udp"
 
 # Networks
 networks:

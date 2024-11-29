@@ -2,7 +2,7 @@ function updatePage(value)
 {
     if (value === "index")
 	value = ""
-    if (value === history.state.pageID || value === "expand")
+    if (history.state && (value === history.state.pageID || value === "expand"))
     	return
     history.pushState({pageID: value}, '', "/" + value)
     rootMyUrl()
