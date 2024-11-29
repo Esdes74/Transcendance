@@ -21,8 +21,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-		print('data :', data)
-		print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
+		# print('data :', data)
+		# print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
 		if data.get('type') == 'click':
 			if data.get('btn') == 'btn1':
 				if self.player_registered > 3:
@@ -48,7 +48,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.old_size = self.size
 				self.size = 8
 				self.champs_libre = self.size - self.player_registered
-			print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
+			# print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
 			await self.send(text_data=json.dumps({
 				'type': 'click',
 				'size': self.size,
@@ -72,8 +72,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			}))
 
 		elif data.get('type') == 'delete':
-			print('data name :', data.get('name'))
-			print('data index :', data.get('index'))
+			# print('data name :', data.get('name'))
+			# print('data index :', data.get('index'))
 			self.player_registered = self.player_registered - 1
 			self.player_list.remove(data.get('name'))
 			

@@ -15,14 +15,14 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 	async def receive(self, text_data):
-		print(text_data)
+		# print(text_data)
 		data = json.loads(text_data)
-		print("HEOO HEEOO C'EST MOI")
+		# print("HEOO HEEOO C'EST MOI")
 		type = data.get('type', 'malformed request')
 
 		if type == 'click':
 			btn = data.get('btn', 'malformed request')
-			print("Cest encore moi")
+			# print("Cest encore moi")
 			response = await self.send_to_tournament_service(json.dumps({"type": "click", "btn": btn}))
 			await self.send(response)
 
@@ -31,7 +31,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 			index = data.get('index', 'malformed request')
 			response = await self.send_to_tournament_service(json.dumps({"type": "Enter", "name": name, "index": index}))
 			await self.send(response)
-			print("Cest le moment de la verité")
+			# print("Cest le moment de la verité")
 
 		elif type == 'delete':
 			name = data.get('name', 'malformed request')
@@ -59,4 +59,4 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 	# async def send_to_tournamentCalculConsumer(self, event):
 	# 	await self.send(text_data=json.dumps(event))
-	# 	print('send_to_tournamentCalculConsumer')
+		# print('send_to_tournamentCalculConsumer')

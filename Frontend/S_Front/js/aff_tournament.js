@@ -25,13 +25,10 @@ function affTournament()
 }
 
 function selectTournament(size, socket, old_size, champs_libre) {
-	// Ajouter des nouveaux champs si nécessaire
-	// const	inputsContainer = document.getElementById('inputs');
-	old_size = createInputField(size, old_size, champs_libre, socket);
-	// Supprimer les champs vides en excès si nécessaire
-	old_size = deleteInputField(size, old_size, champs_libre);
+	// Ajouter des nouveaux champs si nécessaire / Supprimer les champs vides en excès si nécessaire
+	inputFieldsManagement(size, old_size, champs_libre, socket);
 
-	return (old_size);
+	// return (old_size);
 	// //TODO Si trop de noms validés pour le nouveau tournoi, afficher un message d'erreur
 	// if (validatedNames > numberOfParticipants)
 	// {
@@ -44,13 +41,32 @@ function selectTournament(size, socket, old_size, champs_libre) {
 
 }
 
-function deleteInputField(size, old_size, champs_libre)
+function inputFieldsManagement(size, old_size, champs_libre, socket)
 {
 	inputsContainer = document.getElementById('inputs');
-	const existingFields = Array.from(inputsContainer.children);
-
-	if (old_size > size)
+	console.log("inputsContainer = ", inputsContainer);
+	if (old_size < size)
 	{
+		let n = 0;
+		while (old_size + n < size)
+		{
+			const newDiv = document.createElement('div');
+			
+			let i = 0;
+			while (document.getElementById(i))
+				i++;
+			
+			const input = createEmptyField(i, socket);
+			
+			newDiv.appendChild(input);
+			inputsContainer.appendChild(newDiv);
+			n++;
+		}
+	}
+	else if (old_size > size)
+	{
+		const existingFields = Array.from(inputsContainer.children);
+		console.log("existingFields = ", existingFields);
 		let fieldsToRemove = old_size - size;
 		for (let i = existingFields.length - 1; i >= 0 && fieldsToRemove > 0; i--) {
 			const field = existingFields[i];
@@ -58,36 +74,13 @@ function deleteInputField(size, old_size, champs_libre)
 			if (input && !input.value.trim()) {
 				field.remove();
 				fieldsToRemove--;
-				old_size--;
 			}
 		}
-		// parcourir la liste des players et reinitialiser les indices
-		for (let i = 0; i < champs_libre.length; i++)
-		{
-			champs_libre[i] = i + 1;
-		}
-
 	}
-	return old_size;
 }
 
-function createInputField(size, old_size, champs_libre, socket)
-{
-	inputsContainer = document.getElementById('inputs');
-	// console.log("createInputField : size = ", size, "currentFields = ", currentFields);
-	while (old_size < size)
-	{
-		const inputDiv = document.createElement('div');
-		const input = createFields(old_size + 1, socket);
 
-		inputDiv.appendChild(input);
-		inputsContainer.appendChild(inputDiv);
-		old_size++;
-	}
-	return old_size;
-}
-
-function createFields(index, socket)
+function createEmptyField(index, socket)
 {
 	const input = document.createElement('input');
 	input.type = 'text';
@@ -95,11 +88,9 @@ function createFields(index, socket)
 	input.maxLength = 8;
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
-	input.dataset.index = index;
 	input.id = index;
 	input.className = 'input-field';  // Appliquer la classe CSS 'input-field'
 
-	// Gestion de la validation par Entrée
 	input.addEventListener('keydown', function (event) {
 		if (event.key === 'Enter')
 		{
@@ -116,69 +107,104 @@ function createFields(index, socket)
 	return input;
 }
 
-function validateField(index, socket) {
+
+function createPlayerContainer(index, socket)	// fonction appelée pour créer le playerContainer
+{
 	const input = document.getElementById(index);
-	console.log("input = ", input);
-    const name = input.value; // Récupérer la valeur saisie
+	const name = input.value; // Récupérer la valeur saisie
 
-    const nameContainer = document.createElement('div');
-    nameContainer.className = 'name-container';
-	nameContainer.id = index;
-    const nameDiv = document.createElement('div');
-    nameDiv.className = 'name';
-    nameDiv.textContent = `Participant ${index} : ${name}`;
+	// Le playerContainer est une div qui contient le nom et le bouton de suppression
+	const playerContainer = document.createElement('div');
+	playerContainer.id = index;
 
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.textContent = '×'; // Symbole de croix
+	// playerContainer.className = 'name-container';	-> pas besoin car on peut le supp directement depuis le playerContainer
+	console.log("playerContainer = ", playerContainer);
 
-	// addeventlistener pour deleteBtn
-	deleteBtn.addEventListener('click', function () {
-	
+	// div qui contient le nom
+	const nameDiv = document.createElement('div');
+	nameDiv.className = 'name';
+	nameDiv.textContent = `Participant : ${name}`;
+	playerContainer.appendChild(nameDiv);
+
+	// bouton de suppression
+	const deleteBtn = document.createElement('button');
+	deleteBtn.className = 'delete-btn';
+	deleteBtn.textContent = '×'; // Symbole de croix
+	playerContainer.appendChild(deleteBtn);
+
+	// on remplace le div input par le playerContainer
+	if (input.parentNode) {
+		input.parentNode.replaceChild(playerContainer, input);
+	}
+
+	deleteBtn.addEventListener('click', function ()
+	{
 		if (socket.readyState === WebSocket.OPEN)
-		{	
-			console.log("nameContainer == : ", nameContainer);
+		{
+			console.log("playerContainer == : ", playerContainer);
 			sendMessage({
 				'type': 'delete',
 				'name': name,
 				'index': index,
-				// 'nameContainer': nameContainer,
 			}, socket);
 		}
 	});
+}
+
+// 				Exemple de playerContainer
+// ##########################################################
+// #			playerContainer		id = index				#
+// # 			nameDiv				participant i: name		#
+// # 			deleteBtn			×						#
+// ##########################################################
 
 
-    nameContainer.appendChild(nameDiv);
-    nameContainer.appendChild(deleteBtn);
 
-    // Remplacer le champ par le conteneur nom + croix
-    if (input.parentNode) {
-        input.parentNode.replaceChild(nameContainer, input);
-    } else {
-        console.error('input has no parent node');
-    }
+
+
+function deletePlayerContainer(playerContainer, socket)
+{
+	const newDiv = document.createElement('div');
+
+	// on créer un nouveau champ input avec un nouvel index
+	// let i = 1;
+	// while (document.getElementById(i))
+	// 	i++;				
+				// --> obsolete car on peut réutiliser l'index de l'input supprimé
+
+	const newInput = createEmptyField(playerContainer.id, socket);
+
+	console.log("Voici l'actuel playerContainer : ", playerContainer);
+
+	// on remplace le playerContainer par le div input
+	if (playerContainer.parentNode)
+	{
+		playerContainer.parentNode.replaceChild(newInput, playerContainer);
+	}
+	console.log("Voici le nouveau playerContainer : ", playerContainer);
+
 }
 
 async function sendMessage(data, socket, websocketLock) {
-	if (websocketLock) {
+	if (websocketLock)
+	{
 		return;
 	}
 	websocketLock = true;
-	if (socket.readyState === WebSocket.OPEN) {
+	if (socket.readyState === WebSocket.OPEN)
+	{
 		socket.send(JSON.stringify(data));
 	}
-
 	websocketLock = false;
 }
 
 function initSocket(socket) {
-	
-	
+
 	socket.onopen = async function (e) {
 		console.log("Alleluia, le socket est ouvert");
 	};
 
-	
+
 	socket.onmessage = function (e)
 	{
 		const data = JSON.parse(e.data);
@@ -191,27 +217,13 @@ function initSocket(socket) {
 		{
 			console.log("Enter recu")
 			console.log("player_list du Enter : ", data.player_list);
-			validateField(data.index, socket);
+			createPlayerContainer(data.index, socket);
 		}
 		else if (data.type === 'delete')
 		{
 			console.log("delete recu")
-			nameContainer = document.getElementById(data.index);
-			const inputDiv = document.createElement('div');
-        	const newInput = createFields(data.index, socket);
-			inputDiv.appendChild(newInput);
-			console.log("nameContainer ===== ", nameContainer);
-        	if (nameContainer.parentNode)
-			{
-           		nameContainer.parentNode.replaceChild(inputDiv, nameContainer);
-				console.log("player_list du Delete: ", data.player_list);
-        	}
-			else
-			{
-        	    console.error('nameContainer has no parent node');
-        	}
-			// const nameContainer = document.querySelector(`.name-container`);
-			// nameContainer.remove();
+			playerContainer = document.getElementById(data.index);
+			deletePlayerContainer(playerContainer, socket);
 		}
 		else if (data.type === 'error')
 		{
@@ -241,3 +253,13 @@ function initSocket(socket) {
 	
 pages["/Tournament"].funct = affTournament
 affTournament()
+
+
+//	#########################################################################
+// 	#					 _______InputsContainer________						#
+// 	#					/				|				\					#
+// 	#	PlayerContainer			PlayerContainer			NewDiv				#
+// 	#			|						|					\				#
+// 	#	nameDiv	+ deleteBtn		nameDiv	+ deleteBtn			name + id		#
+// 	#																		#
+// ##########################################################################
