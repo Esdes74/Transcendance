@@ -10,5 +10,4 @@ function loadBravoCallBack()
 		console.error("Code non trouvé dans l'URL");
 	}
 }
-// window.location.reload(true)
 loadBravoCallBack()
