@@ -119,25 +119,6 @@ function rootMyUrl() {
 	}
 }
 
-// function rootMyUrl()
-// {
-// 	let loc = window.location.pathname;
-// 	if (pages[loc])
-// 	{
-// 		let page = pages[loc];
-// 		//document.title = page.title;
-// 		if (!addScript(page.script) && page.funct)
-// 		{
-// 			page.funct();
-// 		}
-// 	}
-// 	else
-// 	{
-// 	history.pushState({pageID: '404'}, '', "/404")
-// 	rootMyUrl()
-// 	}
-// }
-
 rootMyUrl()
 getLinks()
 document.body.style.display = 'block';

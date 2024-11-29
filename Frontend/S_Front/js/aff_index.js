@@ -1,8 +1,8 @@
 function affIndex()
 {
-    let docMain = document.querySelector('main')
-    docMain.innerHTML = `
-       	<div class="container text-center my-5">
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+		<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<h1 class="mb-4 fw-bold" data-translate="true">Pong Majestueux</h1>
@@ -21,15 +21,15 @@ function affIndex()
 			</div>
 		</div>
 	</div>
-    `
-    document.getElementById("replayBlock").style.display = "block"
-    if (!addScript("/js/indexPong.js"))
+	`
+	document.getElementById("replayBlock").style.display = "block"
+	if (!addScript("/js/indexPong.js"))
 	initIndexPong()
-    tradNewPage()
-    let buttons = document.querySelectorAll('main button')
-    buttons.forEach( button => {
+	tradNewPage()
+	let buttons = document.querySelectorAll('main button')
+	buttons.forEach( button => {
 	button.addEventListener("click", () => updatePage(button.value))
-    })
+	})
 }
 
 pages["/"].funct = affIndex

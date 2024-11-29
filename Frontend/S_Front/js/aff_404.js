@@ -1,8 +1,8 @@
 function aff404()
 {
-    let docMain = document.querySelector('main')
-    docMain.innerHTML = `
-       	<div class="container text-center my-5">
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+		<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<h1 class="fw-bold" data-translate="true">Erreur</h1>
@@ -19,13 +19,13 @@ function aff404()
 			</div>
 		</div>
 	</div>
-    `
-    document.getElementById("replayBlock").style.display = "block"
-    if (!addScript("/js/404Pong.js"))
-    {
+	`
+	document.getElementById("replayBlock").style.display = "block"
+	if (!addScript("/js/404Pong.js"))
+	{
 	init404Pong()
-    }
-    tradNewPage()
+	}
+	tradNewPage()
 }
 
 pages["/404"].funct = aff404

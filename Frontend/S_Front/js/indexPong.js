@@ -37,9 +37,9 @@ function initIndexPong()
 	window.addEventListener('resize', resizeIndexCanvas);
 	gameSettings.printBall = true;
 		gameSettings.paddle1Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
-	        gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 2, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)
-        gameSettings.player2 = gameSettings.paddle2Dest / gameSettings.canvas.height
-        gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
+			gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 2, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)
+		gameSettings.player2 = gameSettings.paddle2Dest / gameSettings.canvas.height
+		gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
 
 	indexGameLoop(gameSettings);
 }
@@ -85,56 +85,56 @@ function indexDraw(gameSettings)
 }
 
 function indexGameLoop(gameSettings) {
-    indexDraw(gameSettings);
-    gameSettings.ballX += gameSettings.ballSpeedX;
-    gameSettings.ballY += gameSettings.ballSpeedY;
-    gameSettings.ballSpeedX
-    if (gameSettings.ballX <= 0.05)
-    {
-        gameSettings.ballSpeedX *= -1
-        gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.player1) * 0.08
-    	gameSettings.paddle1Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
+	indexDraw(gameSettings);
+	gameSettings.ballX += gameSettings.ballSpeedX;
+	gameSettings.ballY += gameSettings.ballSpeedY;
+	gameSettings.ballSpeedX
+	if (gameSettings.ballX <= 0.05)
+	{
+		gameSettings.ballSpeedX *= -1
+		gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.player1) * 0.08
+		gameSettings.paddle1Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
 	gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 2, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)
 	gameSettings.player2 = gameSettings.paddle2Dest / gameSettings.canvas.height
 	gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
-    }
-    if (gameSettings.ballX >= 0.95)
-    {
+	}
+	if (gameSettings.ballX >= 0.95)
+	{
 	gameSettings.ballSpeedX *= -1
-        gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.player2) * 0.08
+		gameSettings.ballSpeedY = (gameSettings.ballY - gameSettings.player2) * 0.08
 	gameSettings.paddle2Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
 	gameSettings.paddle1Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 1, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)
 	gameSettings.player1 = gameSettings.paddle1Dest / gameSettings.canvas.height
 	gameSettings.paddle1Dest -= gameSettings.paddleHeight / 2
-    }
-    if (gameSettings.ballY <= 0.008 || gameSettings.ballY >= 0.99)
+	}
+	if (gameSettings.ballY <= 0.008 || gameSettings.ballY >= 0.99)
 	gameSettings.ballSpeedY *= -1
-    if (gameSettings.paddle1Dest >= -1000 && gameSettings.paddle1Y < gameSettings.paddle1Dest)
-    {
+	if (gameSettings.paddle1Dest >= -1000 && gameSettings.paddle1Y < gameSettings.paddle1Dest)
+	{
 	gameSettings.paddle1Y += 0.012 * gameSettings.canvas.height
 	if (gameSettings.paddle1Y > gameSettings.paddle1Dest)
 		gameSettings.paddle1Y = gameSettings.paddle1Dest
-    }
-    else if (gameSettings.paddle1Dest >= -1000 && gameSettings.paddle1Y > gameSettings.paddle1Dest)
-    {
+	}
+	else if (gameSettings.paddle1Dest >= -1000 && gameSettings.paddle1Y > gameSettings.paddle1Dest)
+	{
 	gameSettings.paddle1Y -= 0.012 * gameSettings.canvas.height
 	if (gameSettings.paddle1Y < gameSettings.paddle1Dest)
 		gameSettings.paddle1Y = gameSettings.paddle1Dest
-    }
-    if (gameSettings.paddle2Dest >= -1000 && gameSettings.paddle2Y < gameSettings.paddle2Dest)
-    {
+	}
+	if (gameSettings.paddle2Dest >= -1000 && gameSettings.paddle2Y < gameSettings.paddle2Dest)
+	{
 	gameSettings.paddle2Y += 0.012 * gameSettings.canvas.height
 	if (gameSettings.paddle2Y > gameSettings.paddle2Dest)
 		gameSettings.paddle2Y = gameSettings.paddle2Dest
-    }
-    else if (gameSettings.paddle2Dest >= -1000 && gameSettings.paddle2Y > gameSettings.paddle2Dest)
-    {
+	}
+	else if (gameSettings.paddle2Dest >= -1000 && gameSettings.paddle2Y > gameSettings.paddle2Dest)
+	{
 	gameSettings.paddle2Y -= 0.012 * gameSettings.canvas.height
 	if (gameSettings.paddle2Y < gameSettings.paddle2Dest)
 		gameSettings.paddle2Y = gameSettings.paddle2Dest
-    }
+	}
 
-   requestAnimationFrame(() => indexGameLoop(gameSettings));
+requestAnimationFrame(() => indexGameLoop(gameSettings));
 }
 
 function calculatePaddlePos(ballX, ballY, ballSpeedX, ballSpeedY, paddle, width, height, paddleHeight)

@@ -1,12 +1,12 @@
 function tradNewPage()
 {	
 	let flag = document.getElementById("currentFlag")
-    	if (currentFlag.getAttribute('data-language') !== "french")
-    	{
+		if (currentFlag.getAttribute('data-language') !== "french")
+		{
 		let elements = document.querySelectorAll('main [data-translate="true"]')
 		tradElements(elements)
-    		let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
-        	tradPlaceholders(placeholders)
+			let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
+			tradPlaceholders(placeholders)
 	}
 }
 
@@ -28,7 +28,7 @@ async function tradElements(elements)
 	let trads = await response.json()
 	
 	elements.forEach( element => {
-                element.innerText = trads[element.innerText]
+				element.innerText = trads[element.innerText]
 	})
 }
 
@@ -50,7 +50,7 @@ async function tradPlaceholders(elements)
 	let trads = await response.json()
 	
 	elements.forEach( element => {
-                element.placeholder = trads[element.placeholder]
+				element.placeholder = trads[element.placeholder]
 	})
 }
 

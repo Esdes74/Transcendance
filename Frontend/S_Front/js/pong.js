@@ -81,11 +81,11 @@ function initSocket(socket, gameSettings)
 	
 socket.onopen = async function (e)
 {
-    console.log("WebSocket is connected ouais");
-    startCountdown(3, gameSettings);
-    console.log("printball 2", gameSettings.printBall);
-    gameLoop(gameSettings);
-    console.log("printball 2", gameSettings.printBall);
+	console.log("WebSocket is connected ouais");
+	startCountdown(3, gameSettings);
+	console.log("printball 2", gameSettings.printBall);
+	gameLoop(gameSettings);
+	console.log("printball 2", gameSettings.printBall);
 };
 	
 	
@@ -268,10 +268,10 @@ function draw(gameSettings)
 
 // Boucle du jeu
 function gameLoop(gameSettings) {
-    console.log("printball 3", gameSettings.printBall);
-    draw(gameSettings);
-    console.log("printball 4", gameSettings.printBall);
-    requestAnimationFrame(() => gameLoop(gameSettings));
-    console.log("printball 5", gameSettings.printBall);
+	console.log("printball 3", gameSettings.printBall);
+	draw(gameSettings);
+	console.log("printball 4", gameSettings.printBall);
+	requestAnimationFrame(() => gameLoop(gameSettings));
+	console.log("printball 5", gameSettings.printBall);
 }
 initPong();

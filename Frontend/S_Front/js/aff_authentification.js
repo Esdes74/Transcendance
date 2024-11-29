@@ -26,7 +26,7 @@ function affAuthentification()
 		loadLogin()
 	tradNewPage()
 	let buttons = document.querySelectorAll('main button')
-    buttons.forEach( button => {
+	buttons.forEach( button => {
 	button.addEventListener("click", () => updatePage(button.value))
 	})
 }
