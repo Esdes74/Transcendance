@@ -68,12 +68,12 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.ballSpeedY = abs(self.ballSpeedY)
 
 			# Détection de collision avec les raquettes
-			if self.ballX <= self.player1X - 0.02 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
+			if self.ballX <= self.player1X - 0.005 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
 				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
-				self.ballSpeedY = (self.ballY - self.player1Y) * 0.03 * self.acceleration		# Rebond en fonction de la position de la raquette
-			if self.ballX >= self.player2X + 0.02 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
+				self.ballSpeedY = (self.ballY - self.player1Y) * 0.04 * self.acceleration		# Rebond en fonction de la position de la raquette
+			if self.ballX >= self.player2X + 0.005 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
 				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
-				self.ballSpeedY = (self.ballY - self.player2Y) * 0.03 * self.acceleration		# Rebond en fonction de la position de la raquette
+				self.ballSpeedY = (self.ballY - self.player2Y) * 0.04 * self.acceleration		# Rebond en fonction de la position de la raquette
 
 			# Réinitialiser la balle si elle sort du terrain
 			if self.ballX >= 1:				# Joueur 1 marque
