@@ -84,7 +84,7 @@ function createEmptyField(index, socket)
 {
 	const input = document.createElement('input');
 	input.type = 'text';
-	input.minLength = 4;
+	input.minLength = 2;
 	input.maxLength = 8;
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
@@ -227,7 +227,11 @@ function initSocket(socket) {
 		}
 		else if (data.type === 'error')
 		{
-			console.error('Erreur :', data);
+			// console.error('Erreur :', data);
+			alert
+			(
+				`Oula : ${data.error} `
+			);
 		}
 		else
 		{
@@ -244,10 +248,6 @@ function initSocket(socket) {
 	};
 
 }
-	
-	// TODO: addeventlistener global pour les champs input -> sinon impossible de re Enter après avoir supp un nom
-	// todo: pouvoir re Enter apres l'avoir supp
-	// fix les index des champs input () car création de plusieurs champs input avec le même index
 	// interdire de valider certains nom (nom vide, nom déjà validé, nom trop long, caractères spéciaux)
 	// inderdire de revenir a un mode de tournoi avec moins de participants que ceux déjà validés
 	

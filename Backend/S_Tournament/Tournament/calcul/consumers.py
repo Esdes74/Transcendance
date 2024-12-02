@@ -21,9 +21,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 
 	async def receive(self, text_data):
 		data = json.loads(text_data)
-		# print('data :', data)
-		# print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
 		if data.get('type') == 'click':
+
 			if data.get('btn') == 'btn1':
 				if self.player_registered > 3:
 					await self.send(text_data=json.dumps({
@@ -34,6 +33,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.old_size = self.size
 				self.size = 3
 				self.champs_libre = self.size - self.player_registered
+
 			elif data.get('btn') == 'btn2':
 				if self.player_registered > 4:
 					await self.send(text_data=json.dumps({
@@ -44,11 +44,18 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.old_size = self.size
 				self.size = 4
 				self.champs_libre = self.size - self.player_registered
+
 			elif data.get('btn') == 'btn3':
+				if self.player_registered > 8:
+					await self.send(text_data=json.dumps({
+						'type': 'error',
+						'error': 'Vous avez déjà trop de joueurs inscrits'
+					}))
+					return
 				self.old_size = self.size
 				self.size = 8
 				self.champs_libre = self.size - self.player_registered
-			# print('player registered :', self.player_registered, '	size : ', self.size, '	old_size :', self.old_size, '	champs_libre :', self.champs_libre)
+
 			await self.send(text_data=json.dumps({
 				'type': 'click',
 				'size': self.size,
@@ -57,7 +64,37 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			}))
 
 		elif data.get('type') == 'Enter':
-		# 	# TODO check le name et condition de securité 
+
+			if len(data.get('name')) == 0:
+				await self.send(text_data=json.dumps({
+					'type': 'error',
+					'error': 'Le champs est vide !'
+				}))
+				return
+			if data.get('name') in self.player_list:
+				await self.send(text_data=json.dumps({
+					'type': 'error',
+					'error': 'Le nom \"' + data.get('name') + '\" est déjà utilisé !'
+				}))
+				return
+			if len(data.get('name')) < 2:
+				await self.send(text_data=json.dumps({
+					'type': 'error',
+					'error': 'Le nom \"' + data.get('name') + '\" est trop court !'
+				}))
+				return
+			if len(data.get('name')) > 8:
+				await self.send(text_data=json.dumps({
+					'type': 'error',
+					'error': 'Le nom \"' + data.get('name') + '\" est trop long !'
+				}))
+				return
+			if not data.get('name').isalnum():
+				await self.send(text_data=json.dumps({
+					'type': 'error',
+					'error': 'Le nom \"' + data.get('name') + '\" ne doit pas contenir de caractères spéciaux !'
+				}))
+				return
 
 			self.player_registered = self.player_registered + 1
 			self.old_size = self.old_size - self.player_registered
@@ -72,8 +109,6 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			}))
 
 		elif data.get('type') == 'delete':
-			# print('data name :', data.get('name'))
-			# print('data index :', data.get('index'))
 			self.player_registered = self.player_registered - 1
 			self.player_list.remove(data.get('name'))
 			
@@ -81,7 +116,6 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				'type': 'delete',
 				'name': data.get('name'),
 				'index': data.get('index'),
-				# 'nameContainer': data.get('nameContainer'),
 				'player_list' : self.player_list,
 				'fields': self.old_size
 			}))
@@ -89,7 +123,6 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		else:
 			pass
 
-			
 
 	# async def send_to_tournamentConsumer(self, event):
 	# 	await self.send(text_data=json.dumps(event))
