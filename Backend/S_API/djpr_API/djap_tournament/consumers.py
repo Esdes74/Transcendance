@@ -22,7 +22,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 		if type == 'click':
 			btn = data.get('btn', 'malformed request')
-			# print("Cest encore moi")
 			response = await self.send_to_tournament_service(json.dumps({"type": "click", "btn": btn}))
 			await self.send(response)
 
@@ -40,6 +39,9 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 			response = await self.send_to_tournament_service(json.dumps({"type": "delete", "name": name, "index": index}))
 			await self.send(response)
 
+		elif type == 'Valid':
+			response = await self.send_to_tournament_service(json.dumps({"type": "Valid"}))
+			await self.send(response)
 
 
 	async def send_to_tournament_service(self, data):

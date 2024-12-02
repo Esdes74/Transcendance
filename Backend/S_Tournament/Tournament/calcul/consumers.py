@@ -120,6 +120,27 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				'fields': self.old_size
 			}))
 
+		elif data.get('type') == 'Valid':
+
+			if self.size == 0 or self.size == None:
+				await self.send(text_data=json.dumps({
+					'type': 'error',
+					'error': 'Vous n\'avez pas encore choisi la taille du tournoi !'
+				}))
+				return
+
+			if self.player_registered != self.size:
+				await self.send(text_data=json.dumps({
+					'type': 'error',
+					'error': 'Vous n\'avez pas encore inscrit tous les joueurs !'
+				}))
+				return
+			else:
+				await self.send(text_data=json.dumps({
+					'type': 'Valid',
+					'player_list': self.player_list
+				}))
+
 		else:
 			pass
 

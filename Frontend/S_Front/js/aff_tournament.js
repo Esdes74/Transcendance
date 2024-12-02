@@ -8,20 +8,20 @@ function affTournament()
 	docMain.innerHTML = `
 	<h1>Organisation de Tournoi</h1>
 	<div class="buttons">
-    	<button id="btn1">Tournoi x3</button>
-   		<button id="btn2">Tournoi x4</button>
-    	<button id="btn3">Tournoi x8</button>
-<!--    	<button id="btnValid">valider</button>-->
-	</div>
-	<div class="inputs" id="inputs">
-	</div>
+		<button id="btn1">Tournoi x3</button>
+		<button id="btn2">Tournoi x4</button>
+		<button id="btn3">Tournoi x8</button>
+		</div>
+		<div class="inputs" id="inputs">
+		</div>
+		<button id="btnValid">Valider</button>
 	</div>
 	`
 	initSocket(socket);
 	document.getElementById('btn1').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
 	document.getElementById('btn2').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
 	document.getElementById('btn3').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
-	// document.getElementById('btnValid').addEventListener('click', lockParticipants());
+	document.getElementById('btnValid').addEventListener('click', () => sendMessage({'type': 'Valid'}, socket, websocketLock));
 }
 
 function selectTournament(size, socket, old_size, champs_libre) {
@@ -232,6 +232,10 @@ function initSocket(socket) {
 			(
 				`Oula : ${data.error} `
 			);
+		}
+		else if (data.type === 'Valid')
+		{
+			alert("Tournoi validé : " + data.player_list);
 		}
 		else
 		{
