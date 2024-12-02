@@ -27,18 +27,6 @@ function affTournament()
 function selectTournament(size, socket, old_size, champs_libre) {
 	// Ajouter des nouveaux champs si nécessaire / Supprimer les champs vides en excès si nécessaire
 	inputFieldsManagement(size, old_size, champs_libre, socket);
-
-	// return (old_size);
-	// //TODO Si trop de noms validés pour le nouveau tournoi, afficher un message d'erreur
-	// if (validatedNames > numberOfParticipants)
-	// {
-	// 	alert(
-	// 		`Impossible de passer à un tournoi avec ${numberOfParticipants} participants.
-	//       Vous avez déjà validé ${validatedNames} noms. Supprimez des noms avant de changer.`
-	// 	);
-	// 	return;
-	// }
-
 }
 
 function inputFieldsManagement(size, old_size, champs_libre, socket)

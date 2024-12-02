@@ -69,8 +69,6 @@ body {
 
 	border-radius: 10px;
 	color: white;
-	/* opacity: 0; Commence totalement transparent TODO: transition ease in out pour fondu anime*/	
-  	/* transition: opacity 1s ease-in-out; Transition d'opacité sur 1 seconde */
 }
 
 /* #replayBlock.show { */

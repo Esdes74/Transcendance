@@ -20,7 +20,6 @@ function affPong()
 							<button id="YES" class="btn btn-outline-light m-2">Replay</button>
 							<button id="SETTING" class="btn btn-outline-light m-2">Settings</button>
 							<button id="BTH" class="btn btn-outline-light m-2">Back to Home</button>
-							<!-- \todo: href les buttons -->
 						</div>
 					</div>
 				</div>
