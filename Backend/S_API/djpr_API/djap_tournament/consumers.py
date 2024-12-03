@@ -18,30 +18,42 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 		# print(text_data)
 		data = json.loads(text_data)
 		# print("HEOO HEEOO C'EST MOI")
+		file = data.get('file', 'malformed request')
 		type = data.get('type', 'malformed request')
 
-		if type == 'click':
-			btn = data.get('btn', 'malformed request')
-			response = await self.send_to_tournament_service(json.dumps({"type": "click", "btn": btn}))
-			await self.send(response)
+		if file == 'aff':
+			if type == 'click':
+				btn = data.get('btn', 'malformed request')
+				response = await self.send_to_tournament_service(json.dumps({"file": "aff", "type": "click", "btn": btn}))
+				await self.send(response)
 
-		elif type == 'Enter':
-			name = data.get('name', 'malformed request')
-			index = data.get('index', 'malformed request')
-			response = await self.send_to_tournament_service(json.dumps({"type": "Enter", "name": name, "index": index}))
-			await self.send(response)
-			# print("Cest le moment de la verité")
+			elif type == 'Enter':
+				name = data.get('name', 'malformed request')
+				index = data.get('index', 'malformed request')
+				response = await self.send_to_tournament_service(json.dumps({"file": "aff", "type": "Enter", "name": name, "index": index}))
+				await self.send(response)
 
-		elif type == 'delete':
-			name = data.get('name', 'malformed request')
-			index = data.get('index', 'malformed request')
-			nameContainer = data.get('nameContainer', 'malformed request')
-			response = await self.send_to_tournament_service(json.dumps({"type": "delete", "name": name, "index": index}))
-			await self.send(response)
+			elif type == 'delete':
+				name = data.get('name', 'malformed request')
+				index = data.get('index', 'malformed request')
+				nameContainer = data.get('nameContainer', 'malformed request')
+				response = await self.send_to_tournament_service(json.dumps({"file": "aff", "type": "delete", "name": name, "index": index}))
+				await self.send(response)
 
-		elif type == 'Valid':
-			response = await self.send_to_tournament_service(json.dumps({"type": "Valid"}))
-			await self.send(response)
+			elif type == 'Valid':
+				response = await self.send_to_tournament_service(json.dumps({"file": "aff", "type": "Valid"}))
+				await self.send(response)
+
+			else:
+				await self.send(json.dumps({'error': 'malformed request : type = ' + type}))
+
+
+		elif file == 'tournament':
+			pass
+
+
+		else:
+			await self.send(json.dumps({'error': 'malformed request'}))
 
 
 	async def send_to_tournament_service(self, data):
@@ -57,8 +69,3 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 			response = await self.websocket.recv()
 
 		return response
-
-
-	# async def send_to_tournamentCalculConsumer(self, event):
-	# 	await self.send(text_data=json.dumps(event))
-		# print('send_to_tournamentCalculConsumer')

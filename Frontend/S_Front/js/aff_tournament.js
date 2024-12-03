@@ -17,19 +17,19 @@ function affTournament()
 		<button id="btnValid">Valider</button>
 	</div>
 	`
-	initSocket(socket);
-	document.getElementById('btn1').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
-	document.getElementById('btn2').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
-	document.getElementById('btn3').addEventListener('click', () => sendMessage({'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
-	document.getElementById('btnValid').addEventListener('click', () => sendMessage({'type': 'Valid'}, socket, websocketLock));
+	initSocket(socket, websocketLock);
+	document.getElementById('btn1').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
+	document.getElementById('btn2').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
+	document.getElementById('btn3').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
+	document.getElementById('btnValid').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'Valid'}, socket, websocketLock));
 }
 
-function selectTournament(size, socket, old_size, champs_libre) {
+function selectTournament(size, socket, old_size, websocketLock) {
 	// Ajouter des nouveaux champs si nécessaire / Supprimer les champs vides en excès si nécessaire
-	inputFieldsManagement(size, old_size, champs_libre, socket);
+	inputFieldsManagement(size, old_size, socket, websocketLock);
 }
 
-function inputFieldsManagement(size, old_size, champs_libre, socket)
+function inputFieldsManagement(size, old_size, socket, websocketLock)
 {
 	inputsContainer = document.getElementById('inputs');
 	console.log("inputsContainer = ", inputsContainer);
@@ -44,7 +44,7 @@ function inputFieldsManagement(size, old_size, champs_libre, socket)
 			while (document.getElementById(i))
 				i++;
 			
-			const input = createEmptyField(i, socket);
+			const input = createEmptyField(i, socket, websocketLock);
 			
 			newDiv.appendChild(input);
 			inputsContainer.appendChild(newDiv);
@@ -68,7 +68,7 @@ function inputFieldsManagement(size, old_size, champs_libre, socket)
 }
 
 
-function createEmptyField(index, socket)
+function createEmptyField(index, socket, websocketLock)
 {
 	const input = document.createElement('input');
 	input.type = 'text';
@@ -85,10 +85,11 @@ function createEmptyField(index, socket)
 			if (socket.readyState === WebSocket.OPEN)
 			{
 				sendMessage({
+					'file': 'aff',
 					'type': event.key,
 					'name': input.value,
 					'index': index,
-				}, socket);
+				}, socket, websocketLock);
 			}
 		}
 	});
@@ -96,7 +97,7 @@ function createEmptyField(index, socket)
 }
 
 
-function createPlayerContainer(index, socket)	// fonction appelée pour créer le playerContainer
+function createPlayerContainer(index, socket, websocketLock)	// fonction appelée pour créer le playerContainer
 {
 	const input = document.getElementById(index);
 	const name = input.value; // Récupérer la valeur saisie
@@ -131,10 +132,11 @@ function createPlayerContainer(index, socket)	// fonction appelée pour créer l
 		{
 			console.log("playerContainer == : ", playerContainer);
 			sendMessage({
+				'file': 'aff',
 				'type': 'delete',
 				'name': name,
 				'index': index,
-			}, socket);
+			}, socket, websocketLock);
 		}
 	});
 }
@@ -150,7 +152,7 @@ function createPlayerContainer(index, socket)	// fonction appelée pour créer l
 
 
 
-function deletePlayerContainer(playerContainer, socket)
+function deletePlayerContainer(playerContainer, socket, websocketLock)
 {
 	const newDiv = document.createElement('div');
 
@@ -160,7 +162,7 @@ function deletePlayerContainer(playerContainer, socket)
 	// 	i++;				
 				// --> obsolete car on peut réutiliser l'index de l'input supprimé
 
-	const newInput = createEmptyField(playerContainer.id, socket);
+	const newInput = createEmptyField(playerContainer.id, socket, websocketLock);
 
 	console.log("Voici l'actuel playerContainer : ", playerContainer);
 
@@ -186,7 +188,7 @@ async function sendMessage(data, socket, websocketLock) {
 	websocketLock = false;
 }
 
-function initSocket(socket) {
+function initSocket(socket, websocketLock) {
 
 	socket.onopen = async function (e) {
 		console.log("Alleluia, le socket est ouvert");
@@ -196,38 +198,47 @@ function initSocket(socket) {
 	socket.onmessage = function (e)
 	{
 		const data = JSON.parse(e.data);
-		if (data.type === 'click')
+		if (data.file === 'aff')
 		{
-			console.log("click")
-			selectTournament(data.size, socket, data.old_size, data.champs_libre)
-		}
-		else if (data.type === 'Enter')
-		{
-			console.log("Enter recu")
-			console.log("player_list du Enter : ", data.player_list);
-			createPlayerContainer(data.index, socket);
-		}
-		else if (data.type === 'delete')
-		{
-			console.log("delete recu")
-			playerContainer = document.getElementById(data.index);
-			deletePlayerContainer(playerContainer, socket);
-		}
-		else if (data.type === 'error')
-		{
-			// console.error('Erreur :', data);
-			alert
-			(
-				`Oula : ${data.error} `
-			);
-		}
-		else if (data.type === 'Valid')
-		{
-			alert("Tournoi validé : " + data.player_list);
-		}
-		else
-		{
-			console.error('Type de message inconnu :', data);
+			if (data.type === 'click')
+			{
+				console.log("click")
+				selectTournament(data.size, socket, data.old_size, websocketLock)
+			}
+			else if (data.type === 'Enter')
+			{
+				console.log("Enter recu")
+				console.log("player_list du Enter : ", data.player_list);
+				createPlayerContainer(data.index, socket, websocketLock);
+			}
+			else if (data.type === 'delete')
+			{
+				console.log("delete recu")
+				playerContainer = document.getElementById(data.index);
+				deletePlayerContainer(playerContainer, socket, websocketLock);
+			}
+			else if (data.type === 'error')
+			{
+				// console.error('Erreur :', data);
+				alert
+				(
+					`Oula : ${data.error} `
+				);
+			}
+			else if (data.type === 'Valid')
+			{
+				alert("Tournoi validé : " + data.player_list);
+				// appel du fichier tournament.js et de sa fonction start_tournament() :
+
+				if (!addScript("js/tournament.js"))
+				{
+					start_tournament(data.player_list);
+				}
+			}
+			else
+			{
+				console.error('Type de message inconnu :', data);
+			}
 		}
 	};
 
