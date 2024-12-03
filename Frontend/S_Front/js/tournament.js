@@ -1,14 +1,20 @@
-// tournament.js
-
-
-
-function start_tournament(player_list) {
-	let socket = new WebSocket('/ws/Tournament/');
+function start_tournament(player_list)
+{
+	let	socket = new WebSocket('/ws/Tournament/');
 	websocketLock = false;
-	initSocket(socket);
-	console.log("hello");
-	// Additional logic for starting the tournament can be added here
+	
+	
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+	<h1>Matchmaking</h1>
+	`
+	initSocket(socket, websocketLock);
+	console.log("hello !");
+	console.log("player_list : ", player_list);
 }
+
+// function start_tournament(player_list) {
+// }
 
 
 async function sendMessage(data, socket, websocketLock) {
@@ -44,11 +50,6 @@ function initSocket(socket) {
 		console.log('WebSocket is closed now.', e);
 	};
 }
-
-
-
-
-
 
 
 

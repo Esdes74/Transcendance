@@ -188,6 +188,13 @@ async function sendMessage(data, socket, websocketLock) {
 	websocketLock = false;
 }
 
+function addScript(src, callback) {
+    let script = document.createElement('script');
+    script.src = src;
+    script.onload = callback;
+    document.head.appendChild(script);
+}
+
 function initSocket(socket, websocketLock) {
 
 	socket.onopen = async function (e) {
@@ -227,13 +234,14 @@ function initSocket(socket, websocketLock) {
 			}
 			else if (data.type === 'Valid')
 			{
-				alert("Tournoi validé : " + data.player_list);
+				// alert("Tournoi validé : " + data.player_list);
 				// appel du fichier tournament.js et de sa fonction start_tournament() :
 
-				if (!addScript("js/tournament.js"))
+				addScript("js/tournament.js", function()
 				{
 					start_tournament(data.player_list);
-				}
+					// TODO: suppr la page actuelle et charger la nouvelle page
+				});
 			}
 			else
 			{
