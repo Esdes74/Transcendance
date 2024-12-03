@@ -43,7 +43,7 @@ function loadRegister()
 			// Vérifie la réponse de l'API
 			if (response.ok) { // TODO: Gérer la réception des cookies 
 				const result = await response.json();
-				console.log('Réponse de l\'API :', result);
+				console.log('Réponse de l\'API :', result.message);
 
 				// Redirige vers une autre page ou affiche un message de succès
 				updatePage("2fa")

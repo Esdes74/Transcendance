@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/30 19:14:15 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/03 17:39:44 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import JsonResponse
-from djap_register.models import UserProfile
+# from djap_register.models import UserProfile
 from .save_new_user import save_new_user
 from rest_framework.permissions import AllowAny
 from djpr_API.decorator import jwt_required_2fa
@@ -145,3 +145,33 @@ def otp_verif(request):
 
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
+
+@api_view(['POST'])
+def stock(request):
+	send_state = request.data.get('sendState')
+
+	if not send_state:
+		return Response({"error": "Missing Credentials"}, status=400)
+	if (len(send_state) != 50):
+		return Response({"error": "Invald data format"}, status=400)
+
+	external_service_url = "http://django-Auth:8000/remoteft/stock/"
+	payload = {
+		'sendState': send_state
+	}
+
+	try:
+		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+
+		if response.status_code == 201:
+			return Response({"message": "Data succesfully created"}, status=201)
+		else:
+			res = "Stock failed\n" + response.text
+			return Response({"error": res}, status=response.status_code)
+
+	except requests.exceptions.RequestException as e:
+		return Response({"error": str(e)}, status=500)
+
+	# save_state = StateModel.objects.create(state=send_state)
+
+	# save_state.save()

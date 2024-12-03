@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 	'djap_login',
+	'djap_RemoteFT',
 	'pyotp',
 ]
 

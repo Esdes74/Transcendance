@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGO = os.getenv('ALGO')
 FRONT_IP = os.getenv('FRONT_IP')
-print(FRONT_IP)
+# print(FRONT_IP)
 
 # Pour vérifier que la clée secrete soit bien définis
 if not SECRET_KEY or not ALGO:
@@ -81,10 +81,11 @@ INSTALLED_APPS = [
 	'corsheaders',
 	'djap_register',
 	'djap_pong',
+	# 'djap_Remote_OAUTH',
 ]
 
 MIDDLEWARE = [
-	'djpr_API.mon_middleware.LogRequestURLMiddleware',
+	# 'djpr_API.mon_middleware.LogRequestURLMiddleware',
 	'corsheaders.middleware.CorsMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
