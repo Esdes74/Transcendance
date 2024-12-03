@@ -1,14 +1,5 @@
-function registerLink()
-{
-	history.pushState({pageID: 'Register'}, 'Register', '/register');
-	rootMyUrl();
-}
-
 function loadLogin()
 {
-		const button = document.querySelector('button[value="Register"]')	
-		if (button !== null)
-			button.addEventListener("click", registerLink);
 		const form = document.getElementById('loginForm');
 
 		form.addEventListener('submit', async (event) => {
