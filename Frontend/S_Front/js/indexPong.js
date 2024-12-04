@@ -1,7 +1,7 @@
 function initIndexPong()
 {		
 	const gameSettings = {
-		canvas: document.getElementById('pongIndexCanvas'),
+		canvas: document.getElementById('pongCanvas'),
 		paddleWidth: 10,
 		paddleHeight: 0,
 		paddleBuffer: 0,
