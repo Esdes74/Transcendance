@@ -39,9 +39,9 @@ let pages = {
 		script: "/js/aff_tournament.js",
 		funct: null
 	},
-	"/online": {
-		title: "Online Pong",
-		script: "/js/aff_online.js",
+	"/ai": {
+		title: "AI Pong",
+		script: "/js/aff_ai.js",
 		funct: null
 	},
 	"/404": {
