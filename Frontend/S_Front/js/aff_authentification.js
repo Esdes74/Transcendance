@@ -27,6 +27,7 @@ function affAuthentification()
 	tradNewPage()
 	let buttons = document.querySelectorAll('main button')
 	buttons.forEach( button => {
+	if (button.type !== "submit")
 	button.addEventListener("click", () => updatePage(button.value))
 	})
 }
