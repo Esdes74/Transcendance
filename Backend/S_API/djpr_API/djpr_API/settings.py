@@ -81,6 +81,7 @@ INSTALLED_APPS = [
 	'corsheaders',
 	'djap_register',
 	'djap_pong',
+	'djap_tournament',
 ]
 
 MIDDLEWARE = [

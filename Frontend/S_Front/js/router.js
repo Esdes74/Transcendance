@@ -39,6 +39,11 @@ let pages = {
 		script: "/js/aff_tournament.js",
 		funct: null
 	},
+	// "/matchmaking": {
+	// 	title: "matchmaking",
+	// 	script: "js/tournament.js",
+	// 	funct: null
+	// },	--> peut etre ?
 	"/online": {
 		title: "Online Pong",
 		script: "/js/aff_online.js",
@@ -78,6 +83,7 @@ function addScript(src)
 function rootMyUrl()
 {
     let loc = window.location.pathname;
+	//WebSocket.close();
     if (pages[loc])
     {
        let page = pages[loc];
