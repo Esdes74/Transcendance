@@ -18,11 +18,36 @@ function affTournament()
 	</div>
 	`
 	initSocket(socket, websocketLock);
+	EventManager(socket, websocketLock);
+}
+
+function EventManager(socket, websocketLock)
+{
 	document.getElementById('btn1').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
 	document.getElementById('btn2').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
 	document.getElementById('btn3').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
 	document.getElementById('btnValid').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'Valid'}, socket, websocketLock));
+
+// 	function handleViewChangeWrapper(event) {
+// 		handleViewChange(socket);
+// 		document.removeEventListener(event.type, handleViewChangeWrapper);
+// 	}
+
+// 	document.addEventListener('pageChanged', handleViewChangeWrapper);
+// 	document.addEventListener('popstate', handleViewChangeWrapper);
 }
+
+// function handleViewChange(socket) {
+// 	currentPath = window.location.pathname;
+
+// 	console.log(currentPath);
+// 	if (currentPath !== '/tournament') {
+// 		// window.removeEventListener('resize', resizeCanvas);
+// 		console.log("socket closed")
+// 		socket.close();
+// 		socket = null;
+// 	}
+// }
 
 function selectTournament(size, socket, old_size, websocketLock) {
 	// Ajouter des nouveaux champs si nécessaire / Supprimer les champs vides en excès si nécessaire
