@@ -104,9 +104,9 @@ function handleApiRedirect() {
 function rootMyUrl() {
 	let loc = window.location.pathname;
 
-	if (handleApiRedirect()) {
-		return;  // Si l'URL contient un code d'API, ne pas poursuivre avec le routage normal
-	}
+	// if (handleApiRedirect()) {
+	// 	return;  // Si l'URL contient un code d'API, ne pas poursuivre avec le routage normal
+	// }
 
 	if (pages[loc]) {
 		let page = pages[loc];

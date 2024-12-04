@@ -19,4 +19,5 @@ from . import views
 
 urlpatterns = [
 	path('stock/', views.stock, name="stock_state"),
+	path('make_token/', views.make_token, name="make_token"),
 ]

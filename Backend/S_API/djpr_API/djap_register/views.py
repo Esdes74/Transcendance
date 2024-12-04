@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/03 17:39:44 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/04 17:15:06 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -161,7 +161,7 @@ def stock(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.post(external_service_url, data=payload)
 
 		if response.status_code == 201:
 			return Response({"message": "Data succesfully created"}, status=201)
@@ -172,6 +172,37 @@ def stock(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-	# save_state = StateModel.objects.create(state=send_state)
+@api_view(['POST'])
+def make_token(request):
+	send_state = request.data.get('sendState')
+	send_code = request.data.get('sendCode')
 
-	# save_state.save()
+	if not send_state or not send_code:
+		return Response({"error": "Missing Credentials"}, status=400)
+	if (len(send_state) != 50 or len(send_code) != 64):
+		return Response({"error": "Invald data format"}, status=400)
+
+	external_service_url = "http://django-Auth:8000/remoteft/make_token/"
+	payload = {
+		'sendState': send_state,
+		'sendCode': send_code
+	}
+
+	try:
+		response = requests.post(external_service_url, data=payload)
+
+		if response.status_code == 200:
+			token = response.json().get('token')
+			if token:
+				# Créez la réponse JSON avec le token
+				json_response = JsonResponse(response.json(), status=200)
+				json_response.set_cookie(key='42_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+				return json_response
+			else:
+				return JsonResponse({"error": "Token not found in response"}, status=500)
+		else:
+			res = "Stock failed\n" + response.text
+			return Response({"error": res}, status=response.status_code)
+
+	except requests.exceptions.RequestException as e:
+		return Response({"error": str(e)}, status=500)
