@@ -20,7 +20,7 @@ function init404Pong()
 
 	resize404Canvas(gameSettings);
 
-	window.addEventListener('resize', resize404Canvas);
+	window.addEventListener('resize', resize404Canvas(gameSettings));
 	const button = document.getElementById("404index");
 	button.addEventListener("click", errorLink);
 	loop404(gameSettings);
