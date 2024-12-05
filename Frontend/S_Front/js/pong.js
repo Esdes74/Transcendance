@@ -37,12 +37,12 @@ function initPong() {
 
 function resizeCanvas(gameSettings)								// Rendre responsive
 {
+	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
 	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;							// Epaisseur players
 	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;				// Taille de la ball
 	gameSettings.ballX = 0.5 * gameSettings.canvas.width;					// Placer la ball au milieu horizontal du gameSettings.canvas	en pourcentage
 	gameSettings.ballY = 0.5 * gameSettings.canvas.height;
-	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;		// Hauteur players
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;			// Ecart des players au bord;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;	//player 1

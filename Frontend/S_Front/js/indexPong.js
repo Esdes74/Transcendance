@@ -1,7 +1,7 @@
 function initIndexPong()
 {		
 	const gameSettings = {
-		canvas: document.getElementById('pongCanvas'),
+		canvas: document.getElementById('indexCanvas'),
 		paddleWidth: 10,
 		paddleHeight: 0,
 		paddleBuffer: 0,
@@ -16,8 +16,8 @@ function initIndexPong()
 		
 		ballRadius: 8,		
 		printBall: false,	
-		ballX: 0,				
-		ballY: 0,					
+		ballX: 0.5,
+		ballY: 0.5,					
 
 		ballSpeedX: 0.012,
 		ballSpeedY: 0.012,
@@ -25,16 +25,10 @@ function initIndexPong()
 
 
 		resizeIndexCanvas(gameSettings);
-		gameSettings.ballX = 0.5;
-		gameSettings.ballY = 0.5;
-
-		gameSettings.paddleWidth = 10;
-		gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
-		gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
-		gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
-		gameSettings.paddle2Y = gameSettings.paddle1Y;							
-
-	window.addEventListener('resize', resizeIndexCanvas);
+	window.addEventListener('resize', resizeIndexCanvas(gameSettings));
+	window.addEventListener('popstate', () => {
+		window.removeEventListener('resize', resizeIndexCanvas);
+	})
 	gameSettings.printBall = true;
 		gameSettings.paddle1Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
 	        gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 2, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)
@@ -50,6 +44,13 @@ function resizeIndexCanvas(gameSettings)
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
+	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;
+	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;
+	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
+	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
+
+	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
+	gameSettings.paddle2Y = gameSettings.paddle1Y;
 	indexDraw(gameSettings);
 }
 
