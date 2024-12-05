@@ -130,8 +130,8 @@ function initSocket(socket, gameSettings) {
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 function keyPressed(e, socket, websocketLock, message) {
-	e.preventDefault()
 	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
+		e.preventDefault()
 		console.log(`Key pressed: ${e.key}`);
 		sendMessage({
 			'type': message,
