@@ -20,7 +20,7 @@ body {
 	height: 100vh;
 }
 
-#pongCanvas {
+canvas {
 	position: relative;
 	background-color: rgb(115, 171, 201);
 	border: 10px solid white;
