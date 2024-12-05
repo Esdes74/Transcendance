@@ -26,7 +26,7 @@ function initPong() {
 	resizeCanvas(gameSettings)
 	console.log('Settings initialized');
 
-	window.addEventListener('resize', resizeCanvas(gameSettings));
+//	window.addEventListener('resize', resizeCanvas(gameSettings));
 	websocketLock = false;
 	let socket;
 	socket = new WebSocket("/ws/pong/");	// new WebSocket('wss://localhost:000/ws/pong/')
@@ -166,7 +166,6 @@ function EventManager(socket, websocketLock) {
 
 	window.addEventListener('popstate', () => {
 		socket.close();
-		window.removeEventListener('resize', resizeCanvas);
 	})
 	//document.addEventListener('pageChanged', handleViewChangeWrapper);
 	//document.addEventListener('popstate', handleViewChangeWrapper);
