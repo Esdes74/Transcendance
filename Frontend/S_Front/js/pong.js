@@ -130,6 +130,7 @@ function initSocket(socket, gameSettings) {
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 function keyPressed(e, socket, websocketLock, message) {
+	e.preventDefault()
 	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
 		console.log(`Key pressed: ${e.key}`);
 		sendMessage({
@@ -156,14 +157,19 @@ function EventManager(socket, websocketLock) {
 	// });
 	//quand on change de page on ferme la connexion websocket
 
-	function handleViewChangeWrapper(event) {
-		handleViewChange(socket);
-		document.removeEventListener(event.type, handleViewChangeWrapper);
-	}
+	
+	//function handleViewChangeWrapper(event) {
+		//window.removeEventListener('resize', resizeCanvas);
+		//socket.close();
+	//	handleViewChange(socket);
+	//	document.removeEventListener(event.type, handleViewChangeWrapper);
 
-	document.addEventListener('pageChanged', handleViewChangeWrapper);
-	document.addEventListener('popstate', handleViewChangeWrapper);
-
+	window.addEventListener('popstate', () => {
+		socket.close();
+		window.removeEventListener('resize', resizeCanvas);
+	})
+	//document.addEventListener('pageChanged', handleViewChangeWrapper);
+	//document.addEventListener('popstate', handleViewChangeWrapper);
 }
 
 function handleViewChange(socket) {

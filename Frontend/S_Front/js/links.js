@@ -1,4 +1,4 @@
-const originalPushState = history.pushState;    
+//const originalPushState = history.pushState;    
 
 function onPushState()
 {
@@ -6,12 +6,12 @@ function onPushState()
     const event = new CustomEvent('pageChanged');
     document.dispatchEvent(event);
 }
-
+/*
 history.pushState = function (...args)
 {
 	originalPushState.apply(this, args);
 	onPushState();
-}
+}*/
 
 function updatePage(value)
 {
