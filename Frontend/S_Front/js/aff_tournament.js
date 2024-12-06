@@ -5,6 +5,7 @@ function affTournament()
 
 	console.log(socket);
 	let docMain = document.querySelector('main')
+	console.log(docMain);
 	docMain.innerHTML = `
 	<h1>Organisation de Tournoi</h1>
 	<div class="buttons">
@@ -17,7 +18,7 @@ function affTournament()
 		<button id="btnValid">Valider</button>
 	</div>
 	`
-	initSocket(socket, websocketLock);
+	initTournamentSocket(socket, websocketLock);
 	EventManager(socket, websocketLock);
 }
 
@@ -28,26 +29,26 @@ function EventManager(socket, websocketLock)
 	document.getElementById('btn3').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
 	document.getElementById('btnValid').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'Valid'}, socket, websocketLock));
 
-// 	function handleViewChangeWrapper(event) {
-// 		handleViewChange(socket);
-// 		document.removeEventListener(event.type, handleViewChangeWrapper);
-// 	}
+	function handleViewChangeWrapper(event) {
+		handleViewChange(socket);
+		document.removeEventListener(event.type, handleViewChangeWrapper);
+	}
 
-// 	document.addEventListener('pageChanged', handleViewChangeWrapper);
-// 	document.addEventListener('popstate', handleViewChangeWrapper);
+	document.addEventListener('pageChanged', handleViewChangeWrapper);
+ 	document.addEventListener('popstate', handleViewChangeWrapper);
 }
 
-// function handleViewChange(socket) {
-// 	currentPath = window.location.pathname;
+function handleViewChange(socket) {
+	let currentPath = window.location.pathname;
 
-// 	console.log(currentPath);
-// 	if (currentPath !== '/tournament') {
-// 		// window.removeEventListener('resize', resizeCanvas);
-// 		console.log("socket closed")
-// 		socket.close();
-// 		socket = null;
-// 	}
-// }
+	console.log(currentPath);
+	if (currentPath !== '/tournament') {
+		// window.removeEventListener('resize', resizeCanvas);
+		console.log("socket closed")
+		//socket.close();
+		// socket = null;
+	}
+}
 
 function selectTournament(size, socket, old_size, websocketLock) {
 	// Ajouter des nouveaux champs si nécessaire / Supprimer les champs vides en excès si nécessaire
@@ -213,14 +214,14 @@ async function sendMessage(data, socket, websocketLock) {
 	websocketLock = false;
 }
 
-function addScript(src, callback) {
-    let script = document.createElement('script');
-    script.src = src;
-    script.onload = callback;
-    document.head.appendChild(script);
-}
+// function addScript(src, callback) {
+//     let script = document.createElement('script');
+//     script.src = src;
+//     script.onload = callback;
+//     document.head.appendChild(script);
+// }
 
-function initSocket(socket, websocketLock) {
+function initTournamentSocket(socket, websocketLock) {
 
 	socket.onopen = async function (e) {
 		console.log("Alleluia, le socket est ouvert");
@@ -280,7 +281,12 @@ function initSocket(socket, websocketLock) {
 	};
 
 	socket.onclose = function (e) {
-		console.error('Oh non le socket fermé inopinément :', e);
+		//document.removeEventListener('click', e);
+		 //document.getElementById('btn1').removeEventListener('click', e);
+		// document.getElementById('btn3').removeEventListener('click', e);
+		// document.getElementById('btnValid').removeEventListener('click', e);
+		socket.close();
+		//console.error('Oh non le socket fermé inopinément :', e);
 	};
 
 }

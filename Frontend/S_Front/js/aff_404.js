@@ -8,7 +8,7 @@ function aff404()
 				<h1 class="fw-bold" data-translate="true">Erreur</h1>
 
 				<div class="canvas-container">
-					<canvas id="pongCanvas" class="w-100" height="400"></canvas>
+					<canvas id="404Canvas" class="w-100" height="400"></canvas>
 					<div id="replayBlock">
 						<h2 class="fw-bold" data-translate="true">Fichier introuvable</h2>
 						<div class="button-group">

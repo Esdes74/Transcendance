@@ -34,7 +34,7 @@ function initIndexPong()
 		gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
 		gameSettings.paddle2Y = gameSettings.paddle1Y;							
 
-	window.addEventListener('resize', resizeIndexCanvas);
+	//window.addEventListener('resize', resizeIndexCanvas);
 	gameSettings.printBall = true;
 		gameSettings.paddle1Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
 	        gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 2, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)

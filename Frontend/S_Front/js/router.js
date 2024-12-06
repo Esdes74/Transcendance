@@ -83,11 +83,9 @@ function addScript(src)
 function rootMyUrl()
 {
     let loc = window.location.pathname;
-	//WebSocket.close();
     if (pages[loc])
     {
        let page = pages[loc];
-       //document.title = page.title;
        if (!addScript(page.script))
 	 page.funct();
     }

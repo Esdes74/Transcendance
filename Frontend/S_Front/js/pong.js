@@ -169,9 +169,11 @@ function EventManager(socket, websocketLock) {
 function handleViewChange(socket) {
 	currentPath = window.location.pathname;
 
-	console.log(currentPath);
+	//console.log(currentPath);
 	if (currentPath !== '/pong') {
 		window.removeEventListener('resize', resizeCanvas);
+		window.removeEventListener('pageChanged', handleViewChange);
+		window.removeEventListener('popstate', handleViewChange);
 		console.log("socket closed")
 		socket.close();
 		socket = null;

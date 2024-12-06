@@ -8,7 +8,7 @@ function start_tournament(player_list)
 	docMain.innerHTML = `
 	<h1>Matchmaking</h1>
 	`
-	initSocket(socket, websocketLock);
+	initSocket(socket, websocketLock); // Ne pas appeler la fonction comme ca (probleme de fonctions avec meme noms)
 	console.log("hello !");
 	console.log("player_list : ", player_list);
 }
