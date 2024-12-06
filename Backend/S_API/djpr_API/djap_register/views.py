@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/06 17:46:28 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/06 18:01:59 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -297,6 +297,13 @@ def choose_verif(request):
 
 	if not username or not new_2fa:
 		return Response({"error": "Missing credentials"}, status=400)
+
+	if isinstance(new_2fa, str) and (new_2fa.lower() == 'true' or new_2fa.lower() == 'false'):
+		new_2fa = new_2fa.lower() == 'true'
+	elif isinstance(new_2fa, bool):
+		pass
+	else:
+		return Response({"error": "Wrong credentials"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/settings/choose_verif/"

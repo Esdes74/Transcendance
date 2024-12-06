@@ -54,6 +54,13 @@ def choose_verif(request):
 
 		if not username or not new_2fa:
 			return JsonResponse({"error": "Missing credentials"}, status=400)
+		
+		if isinstance(new_2fa, str) and (new_2fa.lower() == 'true' or new_2fa.lower() == 'false'):
+			new_2fa = new_2fa.lower() == 'true'
+		elif isinstance(new_2fa, bool):
+			pass
+		else:
+			return JsonResponse({"error": "Wrong credentials"}, status=400)
 
 		user = FullUser.objects.filter(username=username).first()
 		if (user == None):
