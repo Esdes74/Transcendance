@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/29 11:14:51 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/03 17:33:51 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/05 13:19:47 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,3 +44,9 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 	def __str__(self):
 		return f"UserProfile(user_id={self.user_id})"
+
+class FtTokenModel(models.Model):
+	token = models.CharField(max_length=250) # TODO: Voir si la taille est bonne (ou trop grosse etc...)
+
+	def __str__(self):
+		return self.value
