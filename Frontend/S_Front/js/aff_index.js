@@ -13,8 +13,8 @@ function affIndex()
 					<div id="replayBlock">
 						<h2 class="fw-bold" data-translate="true">Pour jouer, se connecter</h2>
 						<div class="button-group">
-						<button id="YES" class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="authentification">Se connecter</button>
-						<button id="BTH" class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="register">Créer un compte</button>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="authentification">Se connecter</button>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="register">Créer un compte</button>
 						</div>
 					</div>
 				</div>
