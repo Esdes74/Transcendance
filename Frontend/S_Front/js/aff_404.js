@@ -9,10 +9,10 @@ function aff404()
 
 				<div class="canvas-container">
 					<canvas id="pongCanvas" class="w-100" height="400"></canvas>
-					<div id="replayBlock">
+					<div class="replayBlock">
 						<h2 class="fw-bold" data-translate="true">Fichier introuvable</h2>
 						<div class="button-group">
-						<button id="404index" class="btn btn-outline-light m-2 fw-bold" data-translate="true">Revenir à l'accueil</button>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="">Revenir à l'accueil</button>
 						</div>
 					</div>
 				</div>
@@ -20,7 +20,7 @@ function aff404()
 		</div>
 	</div>
     `
-    document.getElementById("replayBlock").style.display = "block"
+    document.getElementsByClassName("replayBlock")[0].style.display = "block"
     if (!addScript("/js/404Pong.js"))
     {
 	init404Pong()
