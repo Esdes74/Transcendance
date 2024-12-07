@@ -14,7 +14,7 @@ function initIndexPong()
 		paddle1Dest: -1000,
 		paddle2Dest: -1000,
 		
-		ballRadius: 8,		
+		ballRadius: 0,
 		printBall: false,	
 		ballX: 0.5,
 		ballY: 0.5,					
@@ -23,11 +23,13 @@ function initIndexPong()
 		ballSpeedY: 0.012,
 	};
 
-		resizeIndexCanvas(gameSettings);
+	resizeIndexCanvas(gameSettings);
 	gameSettings.printBall = true;
-		gameSettings.paddle1Dest = gameSettings.canvas.height * 0.5 - gameSettings.paddleHeight / 2
-	        gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballSpeedX * gameSettings.canvas.width, gameSettings.ballSpeedY * gameSettings.canvas.height, 2, gameSettings.canvas.width, gameSettings.canvas.height, gameSettings.paddleHeight)
-        gameSettings.player2 = gameSettings.paddle2Dest / gameSettings.canvas.height
+	let height = gameSettings.canvas.height;
+	let width = gameSettings.canvas.width;
+	gameSettings.paddle1Dest = height * 0.5 - gameSettings.paddleHeight / 2
+	gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * width, gameSettings.ballY * height, gameSettings.ballSpeedX * width, gameSettings.ballSpeedY * height, 2, width, height, gameSettings.paddleHeight)
+        gameSettings.player2 = gameSettings.paddle2Dest / height
         gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
 
 	indexGameLoop(gameSettings);
@@ -54,7 +56,7 @@ function indexDraw(gameSettings)
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 	
-	ctx.setLineDash([15, 10]); // pointilles millieux de terrain
+	ctx.setLineDash([15, 10]);
 	ctx.beginPath();
 	ctx.moveTo(gameSettings.canvas.width / 2, 0);
 	ctx.lineTo(gameSettings.canvas.width / 2, gameSettings.canvas.height);
@@ -63,20 +65,16 @@ function indexDraw(gameSettings)
 	ctx.stroke();
 	ctx.setLineDash([]);
 	
-	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 2, gameSettings.canvas.width * 2/3, 2);		// ligne médiane de service
-	
-	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);		// ligne perpendiculaire a la lgine médiane du service sur l'extremité de gauche et qui monte jusquau terrain
-	ctx.fillRect(5 * gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de droite et qui monte jusquau terrain
-	ctx.fillRect(0, gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);							// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
-	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);						// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
-	
-	
+	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 2, gameSettings.canvas.width * 2/3, 2);
+	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);
+	ctx.fillRect(5 * gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);
+	ctx.fillRect(0, gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
+	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
 	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
-	
-		ctx.beginPath();
-		ctx.arc(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballRadius, 0, Math.PI * 2);
-		ctx.fill();
+	ctx.beginPath();
+	ctx.arc(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballRadius, 0, Math.PI * 2);
+	ctx.fill();
 }
 
 function indexGameLoop(gameSettings) {
