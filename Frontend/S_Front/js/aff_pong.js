@@ -14,12 +14,12 @@ function affPong()
 				</div>
 				<div class="canvas-container">
 					<canvas id="pongCanvas"></canvas>
-					<div id="replayBlock">
+					<div class="replayBlock">
 						<h2 id="winMessage"></h2>
 						<div class="button-group">
-							<button id="YES" class="btn btn-outline-light m-2" data-translate="true">Rejouer</button>
-							<button id="SETTING" class="btn btn-outline-light m-2" data-translate="true">Paramètres</button>
-							<button id="BTH" class="btn btn-outline-light m-2" data-translate="true">Retour à l'accueil</button>
+							<button class="btn btn-outline-light m-2" data-translate="true">Rejouer</button>
+							<button class="btn btn-outline-light m-2" data-translate="true">Paramètres</button>
+							<button class="btn btn-outline-light m-2" data-translate="true">Retour à l'accueil</button>
 						</div>
 					</div>
 				</div>
@@ -31,6 +31,7 @@ function affPong()
 	{
 		initPong()
 	}
+	getMainButtons()
 	tradNewPage()
 }
 

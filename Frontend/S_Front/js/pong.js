@@ -195,22 +195,8 @@ function gameOver(scorePlayer1, scorePlayer2, socket) {
 	}
 	winMessageElem.style.display = 'block';  // Rendre visible l'encadré
 
-	const replayBlockElem = document.getElementById('replayBlock');
+	const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
 	replayBlockElem.style.display = 'block';
-
-	document.getElementById('YES').addEventListener('click', function () {
-
-		location.reload(); // Recharger la page pour rejouer
-	});
-
-	document.getElementById('SETTING').addEventListener('click', function () {
-
-		window.location.href = 'settings.html'; // Rediriger vers la page des paramètres
-	});
-
-	document.getElementById('BTH').addEventListener('click', function () {
-		window.location.href = 'index.html'; // Rediriger vers la page d'accueil
-	});
 }
 
 //Fonction pour démarrer le compte à rebours

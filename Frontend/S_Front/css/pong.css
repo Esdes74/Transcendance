@@ -44,7 +44,7 @@ canvas {
 	padding: 20px;
 }
 
-#replayBlock {
+.replayBlock {
 	font-size: 20px;
 	text-align: center;
 
@@ -59,7 +59,7 @@ canvas {
 	border-radius: 10px;
 	color: white;
 	text-align: center;
-	z-index: 10; /* S'assurer que c'est au-dessus du canvas */
+	z-index: 10;
 	width: 300px;
 	height: auto;
 
@@ -72,7 +72,7 @@ canvas {
 	/* opacity: 1; Deviens complètement opaque (visible) */
   /* } */
 
-#replayBlock button {
+.replayBlock button {
 	font-size: 20px;
 	background: linear-gradient(120deg, rgba(153, 208, 238, 0), rgb(153, 208, 238));
 	border: 3px solid #fff;
