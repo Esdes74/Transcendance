@@ -26,6 +26,7 @@ function aff404()
 	init404Pong()
     }
     tradNewPage()
+    getMainButtons()
 }
 
 pages["/404"].funct = aff404

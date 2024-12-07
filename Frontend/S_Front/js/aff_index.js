@@ -26,10 +26,7 @@ function affIndex()
     if (!addScript("/js/indexPong.js"))
 	initIndexPong()
     tradNewPage()
-    let buttons = document.querySelectorAll('main button')
-    buttons.forEach( button => {
-	button.addEventListener("click", () => updatePage(button.value))
-    })
+    getMainButtons()
 }
 
 pages["/"].funct = affIndex

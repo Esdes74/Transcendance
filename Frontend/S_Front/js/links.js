@@ -1,17 +1,17 @@
-//const originalPushState = history.pushState;    
-
 function onPushState()
 {
     console.log("event dispatched");
     const event = new CustomEvent('pageChanged');
     document.dispatchEvent(event);
 }
-/*
-history.pushState = function (...args)
+
+function getMainButtons()
 {
-	originalPushState.apply(this, args);
-	onPushState();
-}*/
+    let buttons = document.querySelectorAll('main button')
+    buttons.forEach( button => {
+	button.addEventListener("click", () => updatePage(button.value))
+    })
+}
 
 function updatePage(value)
 {

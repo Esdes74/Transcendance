@@ -1,9 +1,3 @@
-function errorLink()
-{
-	history.pushState({pageID: ''}, '', '/');
-	rootMyUrl();
-}
-
 function init404Pong()
 {
 	const gameSettings = {
@@ -19,9 +13,6 @@ function init404Pong()
 
 
 	resize404Canvas(gameSettings);
-
-	const button = document.getElementById("404index");
-	button.addEventListener("click", errorLink);
 	loop404(gameSettings);
 }
 	
