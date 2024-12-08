@@ -1,3 +1,9 @@
+function callbackIndex()
+{
+    indexCanvas = document.getElementById("indexCanvas")
+    initAnimation(indexCanvas)
+}
+
 function affIndex()
 {
     let docMain = document.querySelector('main')
@@ -22,11 +28,7 @@ function affIndex()
 	</div>
     `
     document.getElementsByClassName("replayBlock")[0].style.display = "block"
-    if (!addScript("/js/indexPong.js"))
-	initIndexPong()
+    addScript("/js/indexPong.js", callbackIndex)
     tradNewPage()
     getMainButtons()
 }
-
-pages["/"].funct = affIndex
-affIndex()
