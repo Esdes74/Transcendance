@@ -1,3 +1,8 @@
+function registerCallback()
+{
+	loadRegister()
+}
+
 function affRegister()
 {
     let docMain = document.querySelector('main')
@@ -34,10 +39,6 @@ function affRegister()
         <div id="error-message" class="mt-3 text-danger"></div>
     </div>
     `
-    if (!addScript("/js/register.js"))
-	    loadRegister()
+    addScript("/js/register.js", registerCallback)
     tradNewPage()
 }
-
-pages["/register"].funct = affRegister
-affRegister()

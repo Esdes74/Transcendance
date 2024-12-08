@@ -1,3 +1,7 @@
+function callback404()
+{
+	init404Pong()
+}
 function aff404()
 {
     let docMain = document.querySelector('main')
@@ -21,13 +25,7 @@ function aff404()
 	</div>
     `
     document.getElementsByClassName("replayBlock")[0].style.display = "block"
-    if (!addScript("/js/404Pong.js"))
-    {
-	init404Pong()
-    }
+    addScript("/js/404Pong.js", callback404)
     tradNewPage()
     getMainButtons()
 }
-
-pages["/404"].funct = aff404
-aff404()

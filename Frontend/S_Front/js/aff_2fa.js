@@ -1,3 +1,8 @@
+function 2facallback()
+{
+	load2faLogin()
+}
+
 function aff2fa()
 {
     let docMain = document.querySelector('main')
@@ -13,10 +18,6 @@ function aff2fa()
 		</form>
 	</div>
     `
-	if (!addScript("/js/2fa.js"))
-		load2faLogin()
+	addScript("/js/2fa.js", 2facallback)
 	tradNewPage()
 }
-
-pages["/2fa"].funct = aff2fa
-aff2fa()

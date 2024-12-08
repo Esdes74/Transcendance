@@ -1,61 +1,3 @@
-let pages = {
-	"/": {
-		title: "Welcome",
-		script: "/js/aff_index.js",
-		funct: null
-	},
-	"/bravo": {
-		title: "Bravo!",
-		script: "/js/aff_bravo.js",
-		funct: null
-	},
-	"/authentification": {
-		title: "Authentification",
-		script: "/js/aff_authentification.js",
-		funct: null
-	},
-	"/register": {
-		title: "Register",
-		script: "/js/aff_register.js",
-		funct: null
-	},
-	"/pong": {
-		title: "Crazy Pong",
-		script: "/js/aff_pong.js",
-		funct: null
-	},
-	"/2fa": {
-		title: "2fa",
-		script: "/js/aff_2fa.js",
-		funct: null
-	},
-	"/play": {
-		title: "play",
-		script: "/js/aff_play.js",
-		funct: null
-	},
-	"/tournament": {
-		title: "tournament",
-		script: "/js/aff_tournament.js",
-		funct: null
-	},
-	"/ai": {
-		title: "AI Pong",
-		script: "/js/aff_ai.js",
-		funct: null
-	},
-	// "/matchmaking": {
-	// 	title: "matchmaking",
-	// 	script: "js/tournament.js",
-	// 	funct: null
-	// },	--> peut etre ?
-	"/404": {
-		title: "Error 404",
-		script: "/js/aff_404.js",
-		funct: null
-	}
-}
-
 function scriptAlreadyLoaded(url)
 {
 	url = "https://" + window.location.host + url
@@ -70,26 +12,97 @@ function scriptAlreadyLoaded(url)
 	return false
 }
 
-function addScript(src)
+function addScript(src, callback)
 {
 	if (scriptAlreadyLoaded(src))
+	{
+		callback()
 		return (false)
+	}
 	let scriptElement = document.createElement('script')
 	scriptElement.setAttribute("src", src)
+	scriptElement.onload = function() { callback() } 
 	document.body.appendChild(scriptElement)
 	return (true)
 }
 
 function rootMyUrl()
 {
+    let pages = {
+	"/": {
+		title: "Welcome",
+		script: "/js/aff_index.js",
+		callback: "affIndex"
+	},
+	"/bravo": {
+		title: "Bravo!",
+		script: "/js/aff_bravo.js",
+		callback: "affBravo"
+	},
+	"/authentification": {
+		title: "Authentification",
+		script: "/js/aff_authentification.js",
+		callback: "affAuthentification"
+	},
+	"/register": {
+		title: "Register",
+		script: "/js/aff_register.js",
+		callback: "affRegister"
+	},
+	"/pong": {
+		title: "Crazy Pong",
+		script: "/js/aff_pong.js",
+		callback: "affPong"
+	},
+	"/2fa": {
+		title: "2fa",
+		script: "/js/aff_2fa.js",
+		callback: "aff2fa"
+	},
+	"/play": {
+		title: "play",
+		script: "/js/aff_play.js",
+		callback: "affPlay"
+	},
+	"/tournament": {
+		title: "tournament",
+		script: "/js/aff_tournament.js",
+		callback: "affTournament"
+	},
+	"/ai": {
+		title: "AI Pong",
+		script: "/js/aff_ai.js",
+		callback: "affAI"
+	},
+	// "/matchmaking": {
+	// 	title: "matchmaking",
+	// 	script: "js/tournament.js",
+	// 	callback: null
+	// },	--> peut etre ?
+	"/404": {
+		title: "Error 404",
+		script: "/js/aff_404.js",
+		callback: "aff404"
+	}
+    }
+
+
     let loc = window.location.pathname;
-	//WebSocket.close();
     if (pages[loc])
     {
-       let page = pages[loc];
-       //document.title = page.title;
-       if (!addScript(page.script))
-	 page.funct();
+	let page = pages[loc];
+	if (scriptAlreadyLoaded(page.script))
+        {
+                window[page.callback]()
+                return (false)
+        }
+        let scriptElement = document.createElement('script')
+	scriptElement.setAttribute("src", page.script)
+	scriptElement.onload = function() {
+		window[page.callback]()
+	}
+        document.body.appendChild(scriptElement)
+        return (true)
     }
     else
     {

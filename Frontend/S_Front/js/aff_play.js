@@ -1,3 +1,8 @@
+function playCallback()
+{
+	loadPlayOptions()
+}
+
 function affPlay()
 {
     let docMain = document.querySelector('main')
@@ -33,10 +38,6 @@ function affPlay()
 			</div>
 		</div>
     `
-	if (!addScript("/js/playOptions.js"))
-		loadPlayOptions()
+	addScript("/js/playOptions.js", playCallback)
 	tradNewPage()
 }
-
-pages["/play"].funct = affPlay
-affPlay()

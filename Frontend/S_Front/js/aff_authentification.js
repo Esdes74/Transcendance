@@ -1,3 +1,8 @@
+function loginCallback()
+{
+	loadLogin()
+}
+
 function affAuthentification()
 {
 	let docMain = document.querySelector('main')
@@ -21,10 +26,6 @@ function affAuthentification()
 		</section>
 	</div>
 	`
-	if (!addScript("/js/login.js"))
-		loadLogin()
+	addScript("/js/login.js", loginCallback)
 	tradNewPage()
 }
-
-pages["/authentification"].funct = affAuthentification
-affAuthentification()

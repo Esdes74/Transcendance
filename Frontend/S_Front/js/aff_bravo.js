@@ -10,6 +10,3 @@ function affBravo()
     `
     tradNewPage()
 }
-
-pages["/bravo"].funct = affBravo
-affBravo()

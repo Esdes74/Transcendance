@@ -10,4 +10,3 @@ function loadPlayOptions()
 		})
 	})
 }
-loadPlayOptions()

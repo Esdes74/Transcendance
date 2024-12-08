@@ -1,3 +1,8 @@
+function pongCallback()
+{
+	initPong()
+}
+
 function affPong()
 {
     let docMain = document.querySelector('main')
@@ -27,13 +32,7 @@ function affPong()
 		</div>
 	</div>
 `	
-	if (!addScript("/js/pong.js"))
-	{
-		initPong()
-	}
+	addScript("/js/pong.js", pongCallback)
 	getMainButtons()
 	tradNewPage()
 }
-
-pages["/pong"].funct = affPong
-affPong()

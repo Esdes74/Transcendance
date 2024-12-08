@@ -1,7 +1,7 @@
-function initAnimation(myCanvas)
+function initAIPong()
 {		
 	const gameSettings = {
-		canvas: myCanvas,
+		canvas: document.getElementById('AICanvas'),
 		paddleWidth: 10,
 		paddleHeight: 0,
 		paddleBuffer: 0,
@@ -222,3 +222,5 @@ function randomizeResult(result, paddleHeight, height)
 		return (result)
 	return (value + result)
 }
+
+initAIPong();

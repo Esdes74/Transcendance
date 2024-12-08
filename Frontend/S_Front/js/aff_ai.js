@@ -1,3 +1,9 @@
+function callbackAI()
+{
+    AICanvas = document.getElementById("AICanvas")
+    initAnimation(AICanvas)
+}
+
 function affAI()
 {
     let docMain = document.querySelector('main')
@@ -9,13 +15,13 @@ function affAI()
 
 				<div class="canvas-container">
 					<!-- <div id="countdown" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 48px; color: white;"></div> -->
-					<canvas id="pongCanvas" class="w-100" height="400"></canvas>
-					<div id="replayBlock">
+					<canvas id="AICanvas" class="w-100" height="400"></canvas>
+					<div class="replayBlock">
 						<h2 class="fw-bold" data-translate="true">Difficulté</h2>
 						<div class="button-group">
-						<button id="YES" class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="authentification">Facile</button>
-						<button id="BTH" class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="register">Intermediaire</button>
-						<button id="OSCOUR" class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="OSCOUR">Pongiste Professionel</button>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="authentification">Facile</button>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="register">Intermediaire</button>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="OSCOUR">Pongiste Professionel</button>
 						</div>
 					</div>
 				</div>
@@ -23,11 +29,7 @@ function affAI()
 		</div>
 	</div>
     `
-    document.getElementById("replayBlock").style.display = "block"
-    if (!addScript("/js/indexPong.js"))
-	initIndexPong()
+    document.getElementsByClassName("replayBlock")[0].style.display = "block"
+    addScript("/js/indexPong.js", callbackAI)
     tradNewPage()
 }
-
-pages["/ai"].funct = affAI
-affAI()

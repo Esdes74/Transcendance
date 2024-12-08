@@ -188,13 +188,6 @@ async function sendMessage(data, socket, websocketLock) {
 	websocketLock = false;
 }
 
-function addScript(src, callback) {
-    let script = document.createElement('script');
-    script.src = src;
-    script.onload = callback;
-    document.head.appendChild(script);
-}
-
 function initSocket(socket, websocketLock) {
 
 	socket.onopen = async function (e) {
@@ -237,7 +230,7 @@ function initSocket(socket, websocketLock) {
 				// alert("Tournoi validé : " + data.player_list);
 				// appel du fichier tournament.js et de sa fonction start_tournament() :
 
-				addScript("js/tournament.js", function()
+				addScript("js/tournament.js", () =>
 				{
 					start_tournament(data.player_list);
 					// TODO: suppr la page actuelle et charger la nouvelle page
@@ -262,10 +255,6 @@ function initSocket(socket, websocketLock) {
 	// interdire de valider certains nom (nom vide, nom déjà validé, nom trop long, caractères spéciaux)
 	// inderdire de revenir a un mode de tournoi avec moins de participants que ceux déjà validés
 	
-pages["/tournament"].funct = affTournament
-affTournament()
-
-
 //	#########################################################################
 // 	#					 _______InputsContainer________						#
 // 	#					/				|				\					#
