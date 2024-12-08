@@ -44,6 +44,11 @@ let pages = {
 		script: "/js/aff_ai.js",
 		funct: null
 	},
+	// "/matchmaking": {
+	// 	title: "matchmaking",
+	// 	script: "js/tournament.js",
+	// 	funct: null
+	// },	--> peut etre ?
 	"/404": {
 		title: "Error 404",
 		script: "/js/aff_404.js",
@@ -78,6 +83,7 @@ function addScript(src)
 function rootMyUrl()
 {
     let loc = window.location.pathname;
+	//WebSocket.close();
     if (pages[loc])
     {
        let page = pages[loc];
