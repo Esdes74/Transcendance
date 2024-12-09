@@ -32,4 +32,19 @@ function affAI()
     document.getElementsByClassName("replayBlock")[0].style.display = "block"
     addScript("/js/indexPong.js", callbackAI)
     tradNewPage()
+    buttons = document.querySelectorAll('main button')
+    buttons.forEach( button => {
+	button.addEventListener("click", () => {
+	canvas = document.getElementById("AICanvas")
+	console.log(canvas.id)
+	parents = canvas.parentElement
+	canvas.remove()
+	let a = document.createElement("canvas")
+	a.id = "AICanvas"
+	a.class = "w-100"
+	a.height = 400
+	parents.append(a)
+	initAnimation(a)
+	})
+	})
 }
