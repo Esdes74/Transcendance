@@ -278,4 +278,3 @@ function pong_gameLoop(gameSettings, socket) {
 	if (socket.readyState === WebSocket.OPEN)
 		requestAnimationFrame(() => pong_gameLoop(gameSettings, socket));
 }
-initPong();
