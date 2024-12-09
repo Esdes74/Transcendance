@@ -5,8 +5,9 @@ function affTournament()
 
 	console.log(socket);
 	let docMain = document.querySelector('main')
+	console.log(docMain);
 	docMain.innerHTML = `
-	<h1>Organisation de Tournoi</h1>
+	<h1 class="display-1">Organisation de Tournoi</h1>
 	<div class="buttons">
 		<button id="btn1">Tournoi x3</button>
 		<button id="btn2">Tournoi x4</button>
@@ -17,19 +18,44 @@ function affTournament()
 		<button id="btnValid">Valider</button>
 	</div>
 	`
-	initSocket(socket, websocketLock);
-	document.getElementById('btn1').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
-	document.getElementById('btn2').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
-	document.getElementById('btn3').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
-	document.getElementById('btnValid').addEventListener('click', () => sendMessage({'file': 'aff', 'type': 'Valid'}, socket, websocketLock));
+	affTournament_initSocket(socket, websocketLock);
+	affTournament_EventManager(socket, websocketLock);
 }
 
-function selectTournament(size, socket, old_size, websocketLock) {
+function affTournament_EventManager(socket, websocketLock)
+{
+	document.getElementById('btn1').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
+	document.getElementById('btn2').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
+	document.getElementById('btn3').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
+	document.getElementById('btnValid').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'Valid'}, socket, websocketLock));
+
+	function affTournament_HandleViewChangeWrapper(event) {
+		affTournament_HandleViewChange(socket);
+		document.removeEventListener(event.type, affTournament_HandleViewChangeWrapper);
+	}
+
+	document.addEventListener('pageChanged', affTournament_HandleViewChangeWrapper);
+ 	document.addEventListener('popstate', affTournament_HandleViewChangeWrapper);
+}
+
+function affTournament_HandleViewChange(socket) {
+	let currentPath = window.location.pathname;
+
+	console.log(currentPath);
+	if (currentPath !== '/tournament') {
+		// window.removeEventListener('resize', resizeCanvas);
+		console.log("socket closed")
+		//socket.close();
+		// socket = null;
+	}
+}
+
+function affTournament_selectTournament(size, socket, old_size, websocketLock) {
 	// Ajouter des nouveaux champs si nécessaire / Supprimer les champs vides en excès si nécessaire
-	inputFieldsManagement(size, old_size, socket, websocketLock);
+	affTournament_inputFieldsManagement(size, old_size, socket, websocketLock);
 }
 
-function inputFieldsManagement(size, old_size, socket, websocketLock)
+function affTournament_inputFieldsManagement(size, old_size, socket, websocketLock)
 {
 	inputsContainer = document.getElementById('inputs');
 	console.log("inputsContainer = ", inputsContainer);
@@ -44,7 +70,7 @@ function inputFieldsManagement(size, old_size, socket, websocketLock)
 			while (document.getElementById(i))
 				i++;
 			
-			const input = createEmptyField(i, socket, websocketLock);
+			const input = affTournament_createEmptyField(i, socket, websocketLock);
 			
 			newDiv.appendChild(input);
 			inputsContainer.appendChild(newDiv);
@@ -68,7 +94,7 @@ function inputFieldsManagement(size, old_size, socket, websocketLock)
 }
 
 
-function createEmptyField(index, socket, websocketLock)
+function affTournament_createEmptyField(index, socket, websocketLock)
 {
 	const input = document.createElement('input');
 	input.type = 'text';
@@ -84,7 +110,7 @@ function createEmptyField(index, socket, websocketLock)
 		{
 			if (socket.readyState === WebSocket.OPEN)
 			{
-				sendMessage({
+				affTournament_sendMessage({
 					'file': 'aff',
 					'type': event.key,
 					'name': input.value,
@@ -97,7 +123,7 @@ function createEmptyField(index, socket, websocketLock)
 }
 
 
-function createPlayerContainer(index, socket, websocketLock)	// fonction appelée pour créer le playerContainer
+function affTournament_createPlayerContainer(index, socket, websocketLock)	// fonction appelée pour créer le playerContainer
 {
 	const input = document.getElementById(index);
 	const name = input.value; // Récupérer la valeur saisie
@@ -131,7 +157,7 @@ function createPlayerContainer(index, socket, websocketLock)	// fonction appelé
 		if (socket.readyState === WebSocket.OPEN)
 		{
 			console.log("playerContainer == : ", playerContainer);
-			sendMessage({
+			affTournament_sendMessage({
 				'file': 'aff',
 				'type': 'delete',
 				'name': name,
@@ -152,7 +178,7 @@ function createPlayerContainer(index, socket, websocketLock)	// fonction appelé
 
 
 
-function deletePlayerContainer(playerContainer, socket, websocketLock)
+function affTournament_deletePlayerContainer(playerContainer, socket, websocketLock)
 {
 	const newDiv = document.createElement('div');
 
@@ -162,7 +188,7 @@ function deletePlayerContainer(playerContainer, socket, websocketLock)
 	// 	i++;				
 				// --> obsolete car on peut réutiliser l'index de l'input supprimé
 
-	const newInput = createEmptyField(playerContainer.id, socket, websocketLock);
+	const newInput = affTournament_createEmptyField(playerContainer.id, socket, websocketLock);
 
 	console.log("Voici l'actuel playerContainer : ", playerContainer);
 
@@ -175,7 +201,7 @@ function deletePlayerContainer(playerContainer, socket, websocketLock)
 
 }
 
-async function sendMessage(data, socket, websocketLock) {
+async function affTournament_sendMessage(data, socket, websocketLock) {
 	if (websocketLock)
 	{
 		return;
@@ -188,7 +214,8 @@ async function sendMessage(data, socket, websocketLock) {
 	websocketLock = false;
 }
 
-function initSocket(socket, websocketLock) {
+
+function affTournament_initSocket(socket, websocketLock) {
 
 	socket.onopen = async function (e) {
 		console.log("Alleluia, le socket est ouvert");
@@ -203,26 +230,26 @@ function initSocket(socket, websocketLock) {
 			if (data.type === 'click')
 			{
 				console.log("click")
-				selectTournament(data.size, socket, data.old_size, websocketLock)
+				affTournament_selectTournament(data.size, socket, data.old_size, websocketLock)
 			}
 			else if (data.type === 'Enter')
 			{
 				console.log("Enter recu")
 				console.log("player_list du Enter : ", data.player_list);
-				createPlayerContainer(data.index, socket, websocketLock);
+				affTournament_createPlayerContainer(data.index, socket, websocketLock);
 			}
 			else if (data.type === 'delete')
 			{
 				console.log("delete recu")
 				playerContainer = document.getElementById(data.index);
-				deletePlayerContainer(playerContainer, socket, websocketLock);
+				affTournament_deletePlayerContainer(playerContainer, socket, websocketLock);
 			}
 			else if (data.type === 'error')
 			{
 				// console.error('Erreur :', data);
 				alert
 				(
-					`Oula : ${data.error} `
+					`Erreur : ${data.error} `
 				);
 			}
 			else if (data.type === 'Valid')
@@ -232,9 +259,9 @@ function initSocket(socket, websocketLock) {
 
 				addScript("js/tournament.js", () =>
 				{
-					start_tournament(data.player_list);
-					// TODO: suppr la page actuelle et charger la nouvelle page
-				});
+					tournament_start_tournament(data.player_list);
+				})
+
 			}
 			else
 			{
@@ -248,7 +275,12 @@ function initSocket(socket, websocketLock) {
 	};
 
 	socket.onclose = function (e) {
-		console.error('Oh non le socket fermé inopinément :', e);
+		//document.removeEventListener('click', e);
+		 //document.getElementById('btn1').removeEventListener('click', e);
+		// document.getElementById('btn3').removeEventListener('click', e);
+		// document.getElementById('btnValid').removeEventListener('click', e);
+		socket.close();
+		//console.error('Oh non le socket fermé inopinément :', e);
 	};
 
 }

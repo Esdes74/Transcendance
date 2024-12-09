@@ -1,7 +1,7 @@
 function init404Pong()
 {
 	const gameSettings = {
-		canvas: document.getElementById('pongCanvas'),
+		canvas: document.getElementById('404Canvas'),
 		
 		printBall: true,	
 		textX: 0.5,				
@@ -25,7 +25,7 @@ function resize404Canvas(gameSettings)
 
 function draw404(gameSettings)
 {
-	ctx = gameSettings.canvas.getContext('2d');
+	let ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 

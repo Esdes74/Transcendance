@@ -5,6 +5,7 @@ function loadPlayOptions()
 		card.addEventListener('click', function()
 		{
 			const link = card.getAttribute('link')
+			console.log("link : ", link);
 			history.pushState({pageID: link}, '', "/" + link)
 			rootMyUrl()
 		})

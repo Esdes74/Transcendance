@@ -23,19 +23,19 @@ function initPong() {
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
 	};
-	resizeCanvas(gameSettings)
+	pong_resizeCanvas(gameSettings)
 	console.log('Settings initialized');
 
-//	window.addEventListener('resize', resizeCanvas(gameSettings));
+//	window.addEventListener('resize', pong_resizeCanvas(gameSettings));
 	websocketLock = false;
 	let socket;
 	socket = new WebSocket("/ws/pong/");	// new WebSocket('wss://localhost:000/ws/pong/')
-	initSocket(socket, gameSettings);
-	EventManager(socket, websocketLock);
+	pong_initSocket(socket, gameSettings);
+	pong_EventManager(socket, websocketLock);
 }
 
 
-function resizeCanvas(gameSettings)								// Rendre responsive
+function pong_resizeCanvas(gameSettings)								// Rendre responsive
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
@@ -47,11 +47,11 @@ function resizeCanvas(gameSettings)								// Rendre responsive
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;			// Ecart des players au bord;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;	//player 1
 	gameSettings.paddle2Y = gameSettings.paddle1Y;
-	draw(gameSettings);
+	pong_draw(gameSettings);
 }
 
 
-async function sendMessage(data, socket, websocketLock) {
+async function pong_sendMessage(data, socket, websocketLock) {
 	if (websocketLock) {
 		return;
 	}
@@ -68,13 +68,13 @@ async function sendMessage(data, socket, websocketLock) {
 // ################################################################################################################ //
 
 
-function initSocket(socket, gameSettings) {
+function pong_initSocket(socket, gameSettings) {
 	/// Gestion de l'ouverture de la connexion WebSocket \\\
 
 	socket.onopen = async function (e) {
 		console.log("WebSocket is connected ouais");
 		// startCountdown(3, gameSettings);
-		gameLoop(gameSettings, socket);
+		pong_gameLoop(gameSettings, socket);
 	};
 
 
@@ -98,14 +98,14 @@ function initSocket(socket, gameSettings) {
 				console.log('scorePlayer1:', gameSettings.scorePlayer1);
 				console.log('scorePlayer2:', gameSettings.scorePlayer2);
 				if (gameSettings.scorePlayer1 >= 5 || gameSettings.scorePlayer2 >= 5)
-					gameOver(gameSettings.scorePlayer1, gameSettings.scorePlayer2, socket);
+					pong_gameOver(gameSettings.scorePlayer1, gameSettings.scorePlayer2, socket);
 			}
 		}
 		else if (data.type === 'pong.countdown')
 		{
 			gameSettings.countdownValue = data.value;
 			gameSettings.countdownActive = true;
-			draw(gameSettings);
+			pong_draw(gameSettings);
 			if (gameSettings.countdownValue <= 0)
 				gameSettings.countdownActive = false;
 		}
@@ -129,27 +129,27 @@ function initSocket(socket, gameSettings) {
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
-function keyPressed(e, socket, websocketLock, message) {
+function pong_keyPressed(e, socket, websocketLock, message) {
 	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
 		e.preventDefault()
 		console.log(`Key pressed: ${e.key}`);
-		sendMessage({
+		pong_sendMessage({
 			'type': message,
 			'key': e.key
 		}, socket, websocketLock);
 	}
 }
-function EventManager(socket, websocketLock) {
-	console.log('EventManager initialized');
+function pong_EventManager(socket, websocketLock) {
+	console.log('pong_EventManager initialized');
 
 	//Quand une touche est pressée, on envoie un message au serveur
-	document.addEventListener('keydown', e => keyPressed(e, socket, websocketLock, 'key.pressed'));
-	document.addEventListener('keyup', e => keyPressed(e, socket, websocketLock, 'key.released'));
+	document.addEventListener('keydown', e => pong_keyPressed(e, socket, websocketLock, 'key.pressed'));
+	document.addEventListener('keyup', e => pong_keyPressed(e, socket, websocketLock, 'key.released'));
 	//Quand une touche est relaché, on envoie un message au serveur
 	// document.addEventListener('keyup', e => {
 	// 	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
 	// 		console.log(`Key released: ${e.key}`);
-	// 		sendMessage({
+	// 		pong_sendMessage({
 	// 			'type': 'key.released',
 	// 			'key': e.key
 	// 		},socket, websocketLock);
@@ -157,12 +157,13 @@ function EventManager(socket, websocketLock) {
 	// });
 	//quand on change de page on ferme la connexion websocket
 
-	
-	//function handleViewChangeWrapper(event) {
-		//window.removeEventListener('resize', resizeCanvas);
-		//socket.close();
-	//	handleViewChange(socket);
-	//	document.removeEventListener(event.type, handleViewChangeWrapper);
+	function pong_handleViewChangeWrapper(event) {
+		pong_handleViewChange(socket);
+		document.removeEventListener(event.type, pong_handleViewChangeWrapper);
+	}
+
+	document.addEventListener('pageChanged', pong_handleViewChangeWrapper);
+	document.addEventListener('popstate', pong_handleViewChangeWrapper);
 
 	window.addEventListener('popstate', () => {
 		socket.close();
@@ -171,12 +172,14 @@ function EventManager(socket, websocketLock) {
 	//document.addEventListener('popstate', handleViewChangeWrapper);
 }
 
-function handleViewChange(socket) {
+function pong_handleViewChange(socket) {
 	currentPath = window.location.pathname;
 
-	console.log(currentPath);
+	//console.log(currentPath);
 	if (currentPath !== '/pong') {
-		window.removeEventListener('resize', resizeCanvas);
+		window.removeEventListener('resize', pong_resizeCanvas);
+		window.removeEventListener('pageChanged', pong_handleViewChange);
+		window.removeEventListener('popstate', pong_handleViewChange);
 		console.log("socket closed")
 		socket.close();
 		socket = null;
@@ -184,7 +187,7 @@ function handleViewChange(socket) {
 }
 
 
-function gameOver(scorePlayer1, scorePlayer2, socket) {
+function pong_gameOver(scorePlayer1, scorePlayer2, socket) {
 	socket.close();
 	const winMessageElem = document.getElementById('winMessage');
 	if (scorePlayer1 > scorePlayer2) {
@@ -221,7 +224,7 @@ function gameOver(scorePlayer1, scorePlayer2, socket) {
 
 
 // Dessiner players et ball
-function draw(gameSettings) {
+function pong_draw(gameSettings) {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
@@ -270,9 +273,9 @@ function draw(gameSettings) {
 }
 
 // Boucle du jeu
-function gameLoop(gameSettings, socket) {
-	draw(gameSettings);
+function pong_gameLoop(gameSettings, socket) {
+	pong_draw(gameSettings);
 	if (socket.readyState === WebSocket.OPEN)
-		requestAnimationFrame(() => gameLoop(gameSettings, socket));
+		requestAnimationFrame(() => pong_gameLoop(gameSettings, socket));
 }
 initPong();

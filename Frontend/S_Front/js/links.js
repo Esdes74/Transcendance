@@ -20,6 +20,9 @@ function updatePage(value)
     if (value === history.state.pageID || value === "expand")
     	return
     history.pushState({pageID: value}, '', "/" + value)
+    console.log("event dispatched");
+    const event = new CustomEvent('pageChanged');
+    document.dispatchEvent(event);
     console.log(history.state)
     rootMyUrl()
 }
