@@ -1,6 +1,6 @@
 function initPong() {
 
-	const gameSettings = {
+	const pong_gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
 		// paddle properties
 		paddleWidth: 0,							// Epaisseur players
@@ -23,31 +23,31 @@ function initPong() {
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
 	};
-	pong_resizeCanvas(gameSettings)
+	pong_resizeCanvas(pong_gameSettings)
 	console.log('Settings initialized');
 
-//	window.addEventListener('resize', pong_resizeCanvas(gameSettings));
+//	window.addEventListener('resize', pong_resizeCanvas(pong_gameSettings));
 	websocketLock = false;
 	let socket;
 	socket = new WebSocket("/ws/pong/");	// new WebSocket('wss://localhost:000/ws/pong/')
-	pong_initSocket(socket, gameSettings);
+	pong_initSocket(socket, pong_gameSettings);
 	pong_EventManager(socket, websocketLock);
 }
 
 
-function pong_resizeCanvas(gameSettings)								// Rendre responsive
+function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
 {
-	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
-	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
-	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;							// Epaisseur players
-	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;				// Taille de la ball
-	gameSettings.ballX = 0.5 * gameSettings.canvas.width;					// Placer la ball au milieu horizontal du gameSettings.canvas	en pourcentage
-	gameSettings.ballY = 0.5 * gameSettings.canvas.height;
-	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;		// Hauteur players
-	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;			// Ecart des players au bord;
-	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;	//player 1
-	gameSettings.paddle2Y = gameSettings.paddle1Y;
-	pong_draw(gameSettings);
+	pong_gameSettings.canvas.width = pong_gameSettings.canvas.clientWidth;
+	pong_gameSettings.canvas.height = pong_gameSettings.canvas.clientHeight;
+	pong_gameSettings.paddleWidth = 0.015 * pong_gameSettings.canvas.width;							// Epaisseur players
+	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;				// Taille de la ball
+	pong_gameSettings.ballX = 0.5 * pong_gameSettings.canvas.width;					// Placer la ball au milieu horizontal du pong_gameSettings.canvas	en pourcentage
+	pong_gameSettings.ballY = 0.5 * pong_gameSettings.canvas.height;
+	pong_gameSettings.paddleHeight = 0.3 * pong_gameSettings.canvas.height;		// Hauteur players
+	pong_gameSettings.paddleBuffer = 0.02 * pong_gameSettings.canvas.width;			// Ecart des players au bord;
+	pong_gameSettings.paddle1Y = (pong_gameSettings.canvas.height - pong_gameSettings.paddleHeight) / 2;	//player 1
+	pong_gameSettings.paddle2Y = pong_gameSettings.paddle1Y;
+	pong_draw(pong_gameSettings);
 }
 
 
@@ -68,13 +68,13 @@ async function pong_sendMessage(data, socket, websocketLock) {
 // ################################################################################################################ //
 
 
-function pong_initSocket(socket, gameSettings) {
+function pong_initSocket(socket, pong_gameSettings) {
 	/// Gestion de l'ouverture de la connexion WebSocket \\\
 
 	socket.onopen = async function (e) {
 		console.log("WebSocket is connected ouais");
-		// startCountdown(3, gameSettings);
-		pong_gameLoop(gameSettings, socket);
+		// startCountdown(3, pong_gameSettings);
+		pong_gameLoop(pong_gameSettings, socket);
 	};
 
 
@@ -85,29 +85,29 @@ function pong_initSocket(socket, gameSettings) {
 	socket.onmessage = function (e) {
 		const data = JSON.parse(e.data);
 		if (data.type === 'pong.update') {
-			gameSettings.paddle1Y = data.player1Y * gameSettings.canvas.height - gameSettings.paddleHeight / 2;
-			gameSettings.paddle2Y = data.player2Y * gameSettings.canvas.height - gameSettings.paddleHeight / 2;
-			gameSettings.ballX = data.ballX * gameSettings.canvas.width;
-			gameSettings.ballY = data.ballY * gameSettings.canvas.height;
-			gameSettings.scorePlayer1 = data.scorePlayer1;
-			gameSettings.scorePlayer2 = data.scorePlayer2;
-			gameSettings.scorePlayer1Elem.textContent = gameSettings.scorePlayer1;
-			gameSettings.scorePlayer2Elem.textContent = gameSettings.scorePlayer2;
-			gameSettings.printBall = data.action;
-			if (gameSettings.printBall == false) {
-				console.log('scorePlayer1:', gameSettings.scorePlayer1);
-				console.log('scorePlayer2:', gameSettings.scorePlayer2);
-				if (gameSettings.scorePlayer1 >= 5 || gameSettings.scorePlayer2 >= 5)
-					pong_gameOver(gameSettings.scorePlayer1, gameSettings.scorePlayer2, socket);
+			pong_gameSettings.paddle1Y = data.player1Y * pong_gameSettings.canvas.height - pong_gameSettings.paddleHeight / 2;
+			pong_gameSettings.paddle2Y = data.player2Y * pong_gameSettings.canvas.height - pong_gameSettings.paddleHeight / 2;
+			pong_gameSettings.ballX = data.ballX * pong_gameSettings.canvas.width;
+			pong_gameSettings.ballY = data.ballY * pong_gameSettings.canvas.height;
+			pong_gameSettings.scorePlayer1 = data.scorePlayer1;
+			pong_gameSettings.scorePlayer2 = data.scorePlayer2;
+			pong_gameSettings.scorePlayer1Elem.textContent = pong_gameSettings.scorePlayer1;
+			pong_gameSettings.scorePlayer2Elem.textContent = pong_gameSettings.scorePlayer2;
+			pong_gameSettings.printBall = data.action;
+			if (pong_gameSettings.printBall == false) {
+				console.log('scorePlayer1:', pong_gameSettings.scorePlayer1);
+				console.log('scorePlayer2:', pong_gameSettings.scorePlayer2);
+				if (pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5)
+					pong_gameOver(pong_gameSettings.scorePlayer1, pong_gameSettings.scorePlayer2, socket);
 			}
 		}
 		else if (data.type === 'pong.countdown')
 		{
-			gameSettings.countdownValue = data.value;
-			gameSettings.countdownActive = true;
-			pong_draw(gameSettings);
-			if (gameSettings.countdownValue <= 0)
-				gameSettings.countdownActive = false;
+			pong_gameSettings.countdownValue = data.value;
+			pong_gameSettings.countdownActive = true;
+			pong_draw(pong_gameSettings);
+			if (pong_gameSettings.countdownValue <= 0)
+				pong_gameSettings.countdownActive = false;
 		}
 	};
 
@@ -203,19 +203,19 @@ function pong_gameOver(scorePlayer1, scorePlayer2, socket) {
 }
 
 //Fonction pour démarrer le compte à rebours
-// function startCountdown(seconds, gameSettings)
+// function startCountdown(seconds, pong_gameSettings)
 // {
-// 	gameSettings.countdownActive = true;
-// 	gameSettings.countdownValue = seconds;
+// 	pong_gameSettings.countdownActive = true;
+// 	pong_gameSettings.countdownValue = seconds;
 
 // 	const interval = setInterval(() =>
 // 	{
-// 		gameSettings.countdownValue--;
-// 		if (gameSettings.countdownValue <= 0)
+// 		pong_gameSettings.countdownValue--;
+// 		if (pong_gameSettings.countdownValue <= 0)
 // 		{
 // 			clearInterval(interval);
-// 			gameSettings.countdownActive = false;
-// 			gameSettings.printBall = true;
+// 			pong_gameSettings.countdownActive = false;
+// 			pong_gameSettings.printBall = true;
 // 			console.log('GO !');
 // 		}
 // 	}, 1000);
@@ -224,58 +224,57 @@ function pong_gameOver(scorePlayer1, scorePlayer2, socket) {
 
 
 // Dessiner players et ball
-function pong_draw(gameSettings) {
-	ctx = gameSettings.canvas.getContext('2d');
-	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
+function pong_draw(pong_gameSettings) {
+	ctx = pong_gameSettings.canvas.getContext('2d');
+	ctx.clearRect(0, 0, pong_gameSettings.canvas.width, pong_gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 
 	// Ligne filet
-	ctx.setLineDash([1.5 * gameSettings.paddleWidth, gameSettings.paddleWidth]);														// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
+	ctx.setLineDash([1.5 * pong_gameSettings.paddleWidth, pong_gameSettings.paddleWidth]);														// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
 	ctx.beginPath();
-	ctx.moveTo(gameSettings.canvas.width / 2, 0);
-	ctx.lineTo(gameSettings.canvas.width / 2, gameSettings.canvas.height);
+	ctx.moveTo(pong_gameSettings.canvas.width / 2, 0);
+	ctx.lineTo(pong_gameSettings.canvas.width / 2, pong_gameSettings.canvas.height);
 	ctx.strokeStyle = 'white';
-	ctx.lineWidth = 0.3 * gameSettings.paddleWidth;
+	ctx.lineWidth = 0.3 * pong_gameSettings.paddleWidth;
 	ctx.stroke();
 	ctx.setLineDash([]);
 
-	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 2, gameSettings.canvas.width * 2 / 3, 2);		// ligne médiane de service
+	ctx.fillRect(pong_gameSettings.canvas.width / 6, pong_gameSettings.canvas.height / 2, pong_gameSettings.canvas.width * 2 / 3, 2);		// ligne médiane de service
 
-	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2 / 3);		// ligne perpendiculaire a la lgine médiane du service sur l'extremité de gauche et qui monte jusquau terrain
-	ctx.fillRect(5 * gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2 / 3);	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de droite et qui monte jusquau terrain
-	ctx.fillRect(0, gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);							// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
-	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);						// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
+	ctx.fillRect(pong_gameSettings.canvas.width / 6, pong_gameSettings.canvas.height / 6, 2, pong_gameSettings.canvas.height * 2 / 3);		// ligne perpendiculaire a la lgine médiane du service sur l'extremité de gauche et qui monte jusquau terrain
+	ctx.fillRect(5 * pong_gameSettings.canvas.width / 6, pong_gameSettings.canvas.height / 6, 2, pong_gameSettings.canvas.height * 2 / 3);	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de droite et qui monte jusquau terrain
+	ctx.fillRect(0, pong_gameSettings.canvas.height / 6, pong_gameSettings.canvas.width, 2);							// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
+	ctx.fillRect(0, 5 * pong_gameSettings.canvas.height / 6, pong_gameSettings.canvas.width, 2);						// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
 
 
 	// Players
-	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
-	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
+	ctx.fillRect(pong_gameSettings.paddleBuffer, pong_gameSettings.paddle1Y, pong_gameSettings.paddleWidth, pong_gameSettings.paddleHeight);
+	ctx.fillRect(pong_gameSettings.canvas.width - pong_gameSettings.paddleWidth - pong_gameSettings.paddleBuffer, pong_gameSettings.paddle2Y, pong_gameSettings.paddleWidth, pong_gameSettings.paddleHeight);
 
 	// Ball
-	if (gameSettings.printBall == true) {
+	if (pong_gameSettings.printBall == true) {
 		ctx.beginPath();
-		ctx.arc(gameSettings.ballX, gameSettings.ballY, gameSettings.ballRadius, 0, Math.PI * 2);
+		ctx.arc(pong_gameSettings.ballX, pong_gameSettings.ballY, pong_gameSettings.ballRadius, 0, Math.PI * 2);
 		ctx.fill();
 	}
 	// Dessiner le compte à rebours si actif
-	if (gameSettings.countdownActive) {
+	if (pong_gameSettings.countdownActive) {
 		ctx.strokeStyle = 'rgb(115, 171, 201)';										// Couleur du contour
-		ctx.lineWidth = 0.03 * gameSettings.canvas.width;															// Largeur du contour
-		ctx.strokeText(gameSettings.countdownValue, gameSettings.canvas.width / 2, gameSettings.canvas.height / 2);
-		ctx.font = `${0.1 * gameSettings.canvas.width}px Sans-serif`;
+		ctx.lineWidth = 0.03 * pong_gameSettings.canvas.width;															// Largeur du contour
+		ctx.strokeText(pong_gameSettings.countdownValue, pong_gameSettings.canvas.width / 2, pong_gameSettings.canvas.height / 2);
+		ctx.font = `${0.1 * pong_gameSettings.canvas.width}px Sans-serif`;
 		ctx.fillStyle = 'white';
 
 		// centrer en x et y
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
-		ctx.fillText(gameSettings.countdownValue, gameSettings.canvas.width / 2, gameSettings.canvas.height / 2);
+		ctx.fillText(pong_gameSettings.countdownValue, pong_gameSettings.canvas.width / 2, pong_gameSettings.canvas.height / 2);
 	}
 }
 
 // Boucle du jeu
-function pong_gameLoop(gameSettings, socket) {
-	pong_draw(gameSettings);
+function pong_gameLoop(pong_gameSettings, socket) {
+	pong_draw(pong_gameSettings);
 	if (socket.readyState === WebSocket.OPEN)
-		requestAnimationFrame(() => pong_gameLoop(gameSettings, socket));
+		requestAnimationFrame(() => pong_gameLoop(pong_gameSettings, socket));
 }
-initPong();
