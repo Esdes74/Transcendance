@@ -1,4 +1,4 @@
-function start_tournament(player_list)
+function tournament_start_tournament(player_list)
 {
 	let	socket = new WebSocket('/ws/Tournament/');
 	websocketLock = false;
@@ -8,16 +8,16 @@ function start_tournament(player_list)
 	docMain.innerHTML = `
 	<h1>Matchmaking</h1>
 	`
-	initSocket(socket, websocketLock); // Ne pas appeler la fonction comme ca (probleme de fonctions avec meme noms)
+	tournament_initSocket(socket, websocketLock); // Ne pas appeler la fonction comme ca (probleme de fonctions avec meme noms)
 	console.log("hello !");
 	console.log("player_list : ", player_list);
 }
 
-// function start_tournament(player_list) {
+// function tournament_start_tournament(player_list) {
 // }
 
 
-async function sendMessage(data, socket, websocketLock) {
+async function tournament_sendMessage(data, socket, websocketLock) {
 	if (websocketLock)
 	{
 		return;
@@ -30,7 +30,7 @@ async function sendMessage(data, socket, websocketLock) {
 	websocketLock = false;
 }
 
-function initSocket(socket) {
+function tournament_initSocket(socket) {
 	// Handle the WebSocket events
 	socket.onopen = function (e) {
 		console.log("WebSocket is open now.");
