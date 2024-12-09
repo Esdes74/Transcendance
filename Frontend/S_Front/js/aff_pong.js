@@ -5,7 +5,7 @@ function affPong()
     	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
-				<h1 class="mb-4">PONG</h1>
+				<h1 class="display-1">PONG</h1>
 
 				<!-- SCOREBOARD -->
 				<div class="score-board d-flex justify-content-around mb-3">

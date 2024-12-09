@@ -6,7 +6,7 @@ function tournament_start_tournament(player_list)
 	
 	let docMain = document.querySelector('main')
 	docMain.innerHTML = `
-	<h1>Matchmaking</h1>
+	<h1 class="display-1">Matchmaking</h1>
 	`
 	tournament_initSocket(socket, websocketLock); // Ne pas appeler la fonction comme ca (probleme de fonctions avec meme noms)
 	console.log("hello !");

@@ -7,7 +7,7 @@ function affTournament()
 	let docMain = document.querySelector('main')
 	console.log(docMain);
 	docMain.innerHTML = `
-	<h1>Organisation de Tournoi</h1>
+	<h1 class="display-1">Organisation de Tournoi</h1>
 	<div class="buttons">
 		<button id="btn1">Tournoi x3</button>
 		<button id="btn2">Tournoi x4</button>
@@ -249,19 +249,18 @@ function affTournament_initSocket(socket, websocketLock) {
 				// console.error('Erreur :', data);
 				alert
 				(
-					`Oula : ${data.error} `
+					`Erreur : ${data.error} `
 				);
 			}
 			else if (data.type === 'Valid')
 			{
 				// alert("Tournoi validé : " + data.player_list);
-				// appel du fichier tournament.js et de sa fonction start_tournament() :
-
-				addScript("js/tournament.js", function()
+				// appel du fichier tournament.js et de sa fonction tournament_start_tournament() :
+				if (!addScript("/js/tournament.js"))
 				{
-					start_tournament(data.player_list);
-					// TODO: suppr la page actuelle et charger la nouvelle page
-				});
+					tournament_start_tournament(data.player_list);
+				}
+
 			}
 			else
 			{
