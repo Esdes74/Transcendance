@@ -13,9 +13,6 @@ function tournament_start_tournament(player_list)
 	console.log("player_list : ", player_list);
 }
 
-// function tournament_start_tournament(player_list) {
-// }
-
 
 async function tournament_sendMessage(data, socket, websocketLock) {
 	if (websocketLock)
