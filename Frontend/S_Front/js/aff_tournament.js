@@ -45,7 +45,7 @@ function affTournament_HandleViewChange(socket) {
 	if (currentPath !== '/tournament') {
 		// window.removeEventListener('resize', resizeCanvas);
 		console.log("socket closed")
-		//socket.close();
+		socket.close();
 		// socket = null;
 	}
 }
@@ -260,6 +260,7 @@ function affTournament_initSocket(socket, websocketLock) {
 				addScript("js/tournament.js", () =>
 				{
 					tournament_start_tournament(data.player_list);
+					socket.close();
 				})
 
 			}
