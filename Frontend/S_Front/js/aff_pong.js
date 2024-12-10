@@ -1,6 +1,7 @@
 function pongCallback()
 {
-	initPong()
+	pongCanvas = document.getElementById("pongCanvas")
+	initPong(pongCanvas)
 }
 
 function affPong()

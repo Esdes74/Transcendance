@@ -1,7 +1,7 @@
-function initPong() {
+function initPong(myCanvas) {
 
 	const gameSettings = {
-		canvas: document.getElementById('pongCanvas'),
+		canvas: myCanvas,//document.getElementById('pongCanvas'),
 		// paddle properties
 		paddleWidth: 0,							// Epaisseur players
 		paddleHeight: 0,		// Hauteur players
@@ -31,7 +31,7 @@ function initPong() {
 	let socket;
 	socket = new WebSocket("/ws/pong/");	// new WebSocket('wss://localhost:000/ws/pong/')
 	pong_initSocket(socket, gameSettings);
-	pong_EventManager(socket, websocketLock);
+	pong_EventManager(socket, websocketLock, myCanvas.id);
 }
 
 
@@ -129,33 +129,23 @@ function pong_initSocket(socket, gameSettings) {
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
-function pong_keyPressed(e, socket, websocketLock, message) {
-	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
+function pong_keyPressed(e, socket, websocketLock, message, canvasID) {
+	if (socket.readyState === WebSocket.OPEN && ((canvasID === "pongCanvas" && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's'))
+		|| (canvasID === "AICanvas" && (e.key === 'w' || e.key === 's'))))
+	{
 		e.preventDefault()
-		console.log(`Key pressed: ${e.key}`);
 		pong_sendMessage({
 			'type': message,
 			'key': e.key
 		}, socket, websocketLock);
 	}
 }
-function pong_EventManager(socket, websocketLock) {
+
+function pong_EventManager(socket, websocketLock, canvasID) {
 	console.log('pong_EventManager initialized');
 
-	//Quand une touche est pressée, on envoie un message au serveur
-	document.addEventListener('keydown', e => pong_keyPressed(e, socket, websocketLock, 'key.pressed'));
-	document.addEventListener('keyup', e => pong_keyPressed(e, socket, websocketLock, 'key.released'));
-	//Quand une touche est relaché, on envoie un message au serveur
-	// document.addEventListener('keyup', e => {
-	// 	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
-	// 		console.log(`Key released: ${e.key}`);
-	// 		pong_sendMessage({
-	// 			'type': 'key.released',
-	// 			'key': e.key
-	// 		},socket, websocketLock);
-	// 	}
-	// });
-	//quand on change de page on ferme la connexion websocket
+	document.addEventListener('keydown', e => pong_keyPressed(e, socket, websocketLock, 'key.pressed', canvasID));
+	document.addEventListener('keyup', e => pong_keyPressed(e, socket, websocketLock, 'key.released', canvasID));
 
 	function pong_handleViewChangeWrapper(event) {
 		pong_handleViewChange(socket);
@@ -164,12 +154,6 @@ function pong_EventManager(socket, websocketLock) {
 
 	document.addEventListener('pageChanged', pong_handleViewChangeWrapper);
 	document.addEventListener('popstate', pong_handleViewChangeWrapper);
-
-	window.addEventListener('popstate', () => {
-		socket.close();
-	})
-	//document.addEventListener('pageChanged', handleViewChangeWrapper);
-	//document.addEventListener('popstate', handleViewChangeWrapper);
 }
 
 function pong_handleViewChange(socket) {
