@@ -7,12 +7,11 @@ function affPong()
 {
     let docMain = document.querySelector('main')
    	docMain.innerHTML = `
-    	<div class="container text-center my-5">
+	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<h1 class="display-1">PONG</h1>
 
-				<!-- SCOREBOARD -->
 				<div class="score-board d-flex justify-content-around mb-3">
 					<div id="scorePlayer1" class="fs-2">0</div> <!-- Score du joueur 1 -->
 					<div id="scorePlayer2" class="fs-2">0</div> <!-- Score du joueur 2 -->
