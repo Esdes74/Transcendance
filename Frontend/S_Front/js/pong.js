@@ -130,7 +130,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 function pong_keyPressed(e, socket, websocketLock, message) {
-	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's')) {
+	if (socket.readyState === WebSocket.OPEN /*&& (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's' || e.key ===||)*/) {
 		e.preventDefault()
 		console.log(`Key pressed: ${e.key}`);
 		pong_sendMessage({
