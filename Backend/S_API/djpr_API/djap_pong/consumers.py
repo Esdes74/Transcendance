@@ -7,6 +7,8 @@ class PongConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		await self.accept()
 
+		# INIT IA SERVICE (GL)
+		print("HELLO WORLD")
 		self.printball = False
 		self.keys = {}
 		self.send_task = asyncio.create_task(self.send_keys_periodically())
@@ -31,8 +33,17 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = True
+			#if (key == 'w'):
+			#	self.keys['ArrowUp'] = True
+			#else:
+			#	self.keys['ArrowDown'] = True
+
 		if type == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = False
+			#if (key == 'w'):
+			#	self.keys['ArrowUp'] = False
+			#else:
+			#	self.keys['ArrowDown'] = False
 
 
 	async def send_keys_periodically(self):
@@ -57,13 +68,18 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 	async def update_ball_position(self):
 		try:
+			i = 0
 			while self.printball == False:
 				response = await self.send_to_pong_service(json.dumps({'type': 'pong.ball'}))
 				data = json.loads(response)
 				if data.get('scorePlayer1') >= 5 or data.get('scorePlayer2') >= 5:
 					self.printball = True
+				if (i >= 1):
+					await self.ia_ask_position()
+					i = 0
 				await self.send(response)
 				await asyncio.sleep(0.01)
+				i += 0.01
 		# except asyncio.CancelledError:
 			# print("update_ball_position task was cancelled")
 		except Exception as e:
@@ -82,3 +98,26 @@ class PongConsumer(AsyncWebsocketConsumer):
 			response = await self.websocket.recv()
 
 		return response
+
+	async def ia_ask_position(self):
+		try:
+			response = await self.send_to_pong_service(json.dumps({'type': 'getDatas'}))
+			#send response to AI Service
+			#get AI response
+		
+			print(data.get('player2Y'), data.get('ballY'))
+			if (data.get('ballSpeedX') < 0):
+				self.keys['ArrowDown'] = False
+				self.keys['ArrowUp'] = False
+			elif (data.get('player2Y') > data.get('ballY') + 0.05):
+				print("TRUE")
+				self.keys['ArrowDown'] = False
+				self.keys['ArrowUp'] = True
+			elif (data.get('player2Y') < data.get('ballY') - 0.05):
+				print("FALSE")
+				self.keys['ArrowUp'] = False
+				self.keys['ArrowDown'] = True
+		except Exception as e:
+			print(f"Exception in update_ball_position: {e}")
+					
+

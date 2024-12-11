@@ -1,0 +1,16 @@
+			
+		
+			
+			FRONT
+	                  |   
+                          |
+			  |   
+                          |
+                         API
+		       /     \
+                      /       \
+	     game de pong       I.A
+					Toutes les secondes l'IA demande l'etat de la game
+					et renvoie une position d'objectif
+	
+

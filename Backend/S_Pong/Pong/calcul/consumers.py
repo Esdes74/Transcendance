@@ -90,6 +90,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			'player2Y': self.player2Y,
 			'ballX': self.ballX,
 			'ballY': self.ballY,
+			'ballSpeedX': self.ballSpeedX,
+			'ballSpeedY': self.ballSpeedY,
 			'scorePlayer1': self.scorePlayer1,
 			'scorePlayer2': self.scorePlayer2,
 			'action': self.action,
