@@ -79,7 +79,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 					i = 0
 				await self.send(response)
 				await asyncio.sleep(0.01)
-				i += 0.01
+				i += 0.05
 		# except asyncio.CancelledError:
 			# print("update_ball_position task was cancelled")
 		except Exception as e:
@@ -104,7 +104,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 			response = await self.send_to_pong_service(json.dumps({'type': 'getDatas'}))
 			#send response to AI Service
 			#get AI response
-		
+			data = json.loads(response)	
 			print(data.get('player2Y'), data.get('ballY'))
 			if (data.get('ballSpeedX') < 0):
 				self.keys['ArrowDown'] = False
