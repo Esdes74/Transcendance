@@ -1,4 +1,4 @@
-function initPong() {
+function initPong(player1 = null, player2 = null) {
 
 	const pong_gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
@@ -20,9 +20,19 @@ function initPong() {
 		scorePlayer1: 0,							// score player 1
 		scorePlayer2: 0,							// score player 2
 
+		// recup names
+		player1Name: document.getElementById('Player1').textContent,
+		player2Name: document.getElementById('Player2').textContent,
+
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
 	};
+	if (player1 !== null && player2 !== null)
+	{
+		pong_gameSettings.player1Name.textContent = player1;
+		pong_gameSettings.player2Name.textContent = player2;
+	}
+
 	pong_resizeCanvas(pong_gameSettings)
 	console.log('Settings initialized');
 

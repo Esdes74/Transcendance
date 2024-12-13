@@ -3,9 +3,9 @@ function tournament_start_tournament(player_list)
 	let	socket = new WebSocket('/ws/Tournament/');
 	websocketLock = false;
 	let docMain = document.querySelector('main')
+	// <button class="btn btn-outline-light m-2" id="start" data-translate="true">Start the Game (lance pong.js)</button>
 	docMain.innerHTML = `
 	<h1 class="display-1">Matchmaking</h1>
-	<button class="btn btn-outline-light m-2" id="start" data-translate="true">Start the Game (lance pong.js)</button>
 
 	<div id="algo">
 		<div class="container text-center">
@@ -21,12 +21,14 @@ function tournament_start_tournament(player_list)
 
 	tournoiSuisse(player_list, 3);
 
-	document.getElementById('start').addEventListener('click', function() {
-		addScript("/js/aff_pong.js", function() {
-			affPong();
-			socket.close();		//peut etre pas le fermer car besoin des données ("on a besoin de lui pour envoyer les scores")
-		});
-	});
+	// document.getElementById('start').addEventListener('click', function() {
+		
+	// 	addScript("/js/aff_pong.js", () => {
+	// 		affPong(player_list[0], player_list[1]);
+	// 		// envoyer les players et stocker les scores
+	// 		// socket.close();		//peut etre pas le fermer car besoin des données ("on a besoin de lui pour envoyer les scores")
+	// 	});
+	// });
 }
 
 
@@ -85,14 +87,28 @@ function tournoiSuisse(player_list, rondes)
 		matchsJoues[joueur] = [];
 	});
 
-	function jouerMatch(joueur1, joueur2) {
-		// Simule un match entre deux joueurs et retourne le gagnant
-		let gagnant = Math.random() < 0.5 ? joueur1 : joueur2;
-		scores[gagnant] += 1;
-		matchsJoues[joueur1].push(joueur2);
-		matchsJoues[joueur2].push(joueur1);
-		console.log(`Match : ${joueur1} vs ${joueur2} | Gagnant : ${gagnant}`);
+	function jouerMatch(joueur1, joueur2)
+	{
+		const startBtn = document.createElement('button');
+		startBtn.className = 'btn btn-outline-light m-2';
+		startBtn.textContent = 'Start Game !'; // Symbole de croix
+		divElement.appendChild(startBtn);
+	
+		startBtn.addEventListener('click', function()
+		{
+			addScript("/js/aff_pong.js", () =>
+			{
+				affPong(joueur1, joueur2);
+			});
+		});
 	}
+
+		// Simule un match entre deux joueurs et retourne le gagnant
+		// let gagnant = Math.random() < 0.5 ? joueur1 : joueur2;
+		// scores[gagnant] += 1;
+		// matchsJoues[joueur1].push(joueur2);
+		// matchsJoues[joueur2].push(joueur1);
+		// console.log(`Match : ${joueur1} vs ${joueur2} | Gagnant : ${gagnant}`);
 
 	// Jouer les matchs de la première ronde (pour random matchmaking)	(on fait juste une cpy de la player_list)
 	console.log("\n--- Ronde 1 ---");

@@ -1,16 +1,21 @@
-function pongCallback()
+function pongCallback(Player1, Player2)
 {
-	initPong()
+	initPong(Player1, Player2)
 }
 
-function affPong()
+function affPong(Player1 = 'Player1', Player2 = 'Player2')
 {
-    let docMain = document.querySelector('main')
-   	docMain.innerHTML = `
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
 	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<h1 class="display-1">PONG</h1>
+
+				<h1 class="d-flex justify-content-around mb-3">
+					<div id="Player1" class="fs-2">${Player1}</div> <!-- joueur 1 -->
+					<div id="Player2" class="fs-2">${Player2}</div> <!-- joueur 2 -->
+				</h1>
 
 				<div class="score-board d-flex justify-content-around mb-3">
 					<div id="scorePlayer1" class="fs-2">0</div> <!-- Score du joueur 1 -->
@@ -31,7 +36,7 @@ function affPong()
 		</div>
 	</div>
 `	
-	addScript("/js/pong.js", pongCallback)
+	addScript("/js/pong.js", () => pongCallback(Player1, Player2))
 	getMainButtons()
 	tradNewPage()
 }
