@@ -34,11 +34,10 @@ class CalculConsumer(AsyncWebsocketConsumer):
 
 		if data.get('type') == 'pong.move':
 			key = data['key']
-
-			if key == 'w':
+			if key == 'w' or key == 'W':
 				if self.player1Y - (self.playerHeight / 2) > 0:
 					self.player1Y = self.player1Y - 0.012
-			elif key == 's':
+			elif key == 's'or key == 'S':
 				if self.player1Y + (self.playerHeight / 2) < 1:
 					self.player1Y = self.player1Y + 0.012
 			elif key == 'ArrowUp':

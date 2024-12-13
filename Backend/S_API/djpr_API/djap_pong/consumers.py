@@ -28,10 +28,10 @@ class PongConsumer(AsyncWebsocketConsumer):
 		data = json.loads(text_data)
 		type = data.get('type', 'malformed request')
 		key = data.get('key', 'malformed request')
-
-		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
+		print("value :", key);
+		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
 			self.keys[key] = True
-		if type == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
+		if type == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
 			self.keys[key] = False
 
 
@@ -41,7 +41,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 				keys_copy = list(self.keys.items())
 				for k, value in keys_copy:
 					# print(f"keys : {self.keys}")
-					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown']:
+					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
 						response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
 						await self.send(response)
 				await asyncio.sleep(0.01)
