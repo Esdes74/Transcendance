@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/06 18:01:59 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/14 15:08:27 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -122,6 +122,7 @@ def create_view(request):
 def otp_verif(request):
 	password = request.data.get('password')
 	username = getattr(request, 'username', None)
+	print("bonjour")
 
 	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
@@ -217,7 +218,6 @@ def make_token(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-# TODO: A tester
 @auth_required
 @api_view(['POST'])
 def logout_view(request):
@@ -225,11 +225,10 @@ def logout_view(request):
 	json_response = logout(request, json_response)
 	return json_response
 
-# TODO: A tester
 @auth_required
 @api_view(['POST'])
 def delete(request):
-	username = request.data.get('username')
+	username = getattr(request, 'username', None)
 
 	if not username:
 		return Response({"error": "Missing credentials"}, status=400)
@@ -254,18 +253,18 @@ def delete(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-# TODO: A tester
 @auth_required
 @api_view(['POST'])
 def choose_lang(request):
-	username = request.data.get('username')
+	username = getattr(request, 'username', None)
 	new_lang = request.data.get('newLang')
 
 	if not username or not new_lang:
 		return Response({"error": "Missing credentials"}, status=400)
-	
-	if (new_lang != 'fr' != 'an' != 'es'):
-		return Response({"error": "Wong credentials"}, status=400)
+
+	print(new_lang)
+	if (new_lang != 'fr' and new_lang != 'an' and new_lang != 'es'):
+		return Response({"error": "Wrong credentials"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/settings/choose_lang/"
@@ -279,7 +278,7 @@ def choose_lang(request):
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
-			json_response = reset_cookie(request, response, json_response)
+			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
 			res = "Delete failed\n" + response.text
@@ -288,14 +287,15 @@ def choose_lang(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-# TODO: A tester
 @auth_required
 @api_view(['POST'])
 def choose_verif(request):
-	username = request.data.get('username')
+	username = getattr(request, 'username', None)
 	new_2fa = request.data.get('new2fa')
+	print(username)
+	print(new_2fa)
 
-	if not username or not new_2fa:
+	if not username or new_2fa == None:
 		return Response({"error": "Missing credentials"}, status=400)
 
 	if isinstance(new_2fa, str) and (new_2fa.lower() == 'true' or new_2fa.lower() == 'false'):
@@ -317,7 +317,7 @@ def choose_verif(request):
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
-			json_response = reset_cookie(request, response, json_response)
+			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
 			res = "Delete failed\n" + response.text
@@ -326,13 +326,13 @@ def choose_verif(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-# TODO: A tester
 @auth_required
 @api_view(['GET'])
 def get_lang(request):
-	username = request.query_params.get('username')
+	# username = request.query_params.get('username')
+	username = getattr(request, 'username', None)
 
-	if not username or not new_2fa:
+	if not username:
 		return Response({"error": "Missing credentials"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
@@ -346,7 +346,7 @@ def get_lang(request):
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
-			json_response = reset_cookie(request, response, json_response)
+			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
 			res = "Request failed\n" + response.text
@@ -355,13 +355,13 @@ def get_lang(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-# TODO: A tester
 @auth_required
 @api_view(['GET'])
 def get_verif(request):
-	username = request.query_params.get('username')
+	# username = request.query_params.get('username')
+	username = getattr(request, 'username', None)
 
-	if not username or not new_2fa:
+	if not username:
 		return Response({"error": "Missing credentials"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
@@ -375,7 +375,7 @@ def get_verif(request):
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
-			json_response = reset_cookie(request, response, json_response)
+			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
 			res = "Request failed\n" + response.text

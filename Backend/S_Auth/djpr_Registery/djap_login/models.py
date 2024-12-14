@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    models.py                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:26:29 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/06 17:01:38 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/14 15:37:46 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,4 +21,4 @@ class FullUser(AbstractUser):
 	phone_nb = PhoneNumberField(blank=True, null=True)
 	secret = models.CharField(max_length=32, blank=True, null=True)
 	language = models.CharField(max_length=2, blank=False, null=False, default='fr')
-	secu = secu = models.BooleanField(default=True)
+	secu = models.BooleanField(default=True)

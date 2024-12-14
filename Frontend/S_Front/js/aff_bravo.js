@@ -8,6 +8,8 @@ function affBravo()
 		<p>maintenant c'est finis pour cette techno</p>
 	</section>
 	`
+	if (!addScript("/js/bravo.js"))
+		loadBravoFnct()
 	tradNewPage()
 }
 
