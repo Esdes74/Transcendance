@@ -1,7 +1,7 @@
 function affTournament()
 {
 	let	socket = new WebSocket('/ws/Tournament/');
-	websocketLock = false;
+	let websocketLock = false;
 
 	console.log(socket);
 	let docMain = document.querySelector('main')
@@ -65,13 +65,13 @@ function affTournament_inputFieldsManagement(size, old_size, socket, websocketLo
 		while (old_size + n < size)
 		{
 			const newDiv = document.createElement('div');
-			
+
 			let i = 0;
 			while (document.getElementById(i))
 				i++;
-			
+
 			const input = affTournament_createEmptyField(i, socket, websocketLock);
-			
+
 			newDiv.appendChild(input);
 			inputsContainer.appendChild(newDiv);
 			n++;
@@ -185,7 +185,7 @@ function affTournament_deletePlayerContainer(playerContainer, socket, websocketL
 	// on créer un nouveau champ input avec un nouvel index
 	// let i = 1;
 	// while (document.getElementById(i))
-	// 	i++;				
+	// 	i++;
 				// --> obsolete car on peut réutiliser l'index de l'input supprimé
 
 	const newInput = affTournament_createEmptyField(playerContainer.id, socket, websocketLock);
@@ -259,8 +259,8 @@ function affTournament_initSocket(socket, websocketLock) {
 
 				addScript("js/tournament.js", () =>
 				{
-					tournament_start_tournament(data.player_list);
-					socket.close();
+					tournament_start_tournament(socket);
+					// socket.close();
 				})
 
 			}
@@ -287,7 +287,7 @@ function affTournament_initSocket(socket, websocketLock) {
 }
 	// interdire de valider certains nom (nom vide, nom déjà validé, nom trop long, caractères spéciaux)
 	// inderdire de revenir a un mode de tournoi avec moins de participants que ceux déjà validés
-	
+
 //	#########################################################################
 // 	#					 _______InputsContainer________						#
 // 	#					/				|				\					#

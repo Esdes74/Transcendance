@@ -23,12 +23,14 @@ function initPong(player1 = null, player2 = null) {
 		// recup names
 		player1Name: document.getElementById('Player1').textContent,
 		player2Name: document.getElementById('Player2').textContent,
+		istournament: false,
 
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
 	};
 	if (player1 !== null && player2 !== null)
 	{
+		pong_gameSettings.istournament = true;
 		pong_gameSettings.player1Name.textContent = player1;
 		pong_gameSettings.player2Name.textContent = player2;
 	}
@@ -108,7 +110,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 				console.log('scorePlayer1:', pong_gameSettings.scorePlayer1);
 				console.log('scorePlayer2:', pong_gameSettings.scorePlayer2);
 				if (pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5)
-					pong_gameOver(pong_gameSettings.scorePlayer1, pong_gameSettings.scorePlayer2, socket);
+					pong_gameOver(pong_gameSettings, socket);
 			}
 		}
 		else if (data.type === 'pong.countdown')
@@ -197,21 +199,34 @@ function pong_handleViewChange(socket) {
 }
 
 
-function pong_gameOver(scorePlayer1, scorePlayer2, socket) {
+function pong_gameOver(pong_gameSettings, socket) {
 	socket.close();
 	const winMessageElem = document.getElementById('winMessage');
-	if (scorePlayer1 > scorePlayer2) {
-		winMessageElem.textContent = 'Player 1 wins!';
+	if (pong_gameSettings.scorePlayer1 > pong_gameSettings.scorePlayer2) {
+		winMessageElem.textContent = pong_gameSettings.player1Name + ' wins!';
 	}
 	else {
-		winMessageElem.textContent = 'Player 2 wins!';
+		winMessageElem.textContent = pong_gameSettings.player2Name + ' wins!';
 	}
-	winMessageElem.style.display = 'block';  // Rendre visible l'encadré
 
-	const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
-	replayBlockElem.style.display = 'block';
+	if (!pong_gameSettings.istournament)
+	{
+		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+
+		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
+		replayBlockElem.style.display = 'block';
+	}
+	else
+	{
+
+		let winnerEvent = new CustomEvent('endGame', {
+			detail:{
+				message: pong_gameSettings.scorePlayer1,
+			}
+		});
+		document.dispatchEvent(winnerEvent);
+	}
 }
-
 //Fonction pour démarrer le compte à rebours
 // function startCountdown(seconds, pong_gameSettings)
 // {
