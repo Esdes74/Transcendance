@@ -3,23 +3,10 @@ services:
     build:
       context: ./django
       args:
+        - VOLUME=${DJANGO_WORKDIR_AI:-/home/AI}
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django_ai
-    command: ["uvicorn", "djap_ai.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
     ports:
       - "8005:8000"
     env_file:
       - .env
-    networks:
-      - backend
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $USER"]
-      start_period: 5s
-      retries: 10
-      interval: 15s
-      timeout: 10s
-    restart: on failure
-  
-networks:
-  backend:
-    external: true

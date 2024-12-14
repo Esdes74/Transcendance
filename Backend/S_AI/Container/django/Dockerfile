@@ -4,10 +4,10 @@ FROM python:3.12
 ARG VOLUME LAUNCH
 
 # Création de la variable d'environnement LAUNCH pour l'entrypoint ensuite
-ENV LAUNCH=$LAUNCH VOLUME=$VOLUME
+ENV VOLUME=$VOLUME LAUNCH=$LAUNCH
 
 # Création du répertoire de travaille
-RUN mkdir -p $VOLUME $LAUNCH
+RUN mkdir -p $LAUNCH $VOLUME
 
 # Suppression des fichiers .pyc générés par la compilation de pyhon
 ENV PYTHONDONTWRITEBYTEODE 1 
@@ -33,5 +33,5 @@ RUN pip install --no-cache-dir -r $VOLUME/requirements.txt
 COPY ./tools/launch.sh $LAUNCH/launch.sh
 RUN sed -i 's/\r$//g' $LAUNCH/launch.sh
 RUN chmod +x $LAUNCH/launch.sh
-
-ENTRYPOINT ["bash", "-c", "$LAUNCH/launch.sh"]
+CMD ["uvicorn", "AI.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+#ENTRYPOINT ["bash", "-c", "$LAUNCH/launch.sh"]
