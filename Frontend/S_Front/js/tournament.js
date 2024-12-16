@@ -1,7 +1,9 @@
-async function tournament_start_tournament(socket1)
+async function tournament_start_tournament(data)
 {
 
-	data = {}
+	data = {
+
+	}
 
 	const response = await fetch('/api/tournament/selectTournament/', {
 		method: 'POST',

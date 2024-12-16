@@ -1,9 +1,5 @@
 function affTournament()
 {
-	let	socket = new WebSocket('/ws/Tournament/');
-	let websocketLock = false;
-
-	console.log(socket);
 	let docMain = document.querySelector('main')
 	console.log(docMain);
 	docMain.innerHTML = `
@@ -18,45 +14,65 @@ function affTournament()
 		<button id="btnValid">Valider</button>
 	</div>
 	`
-	affTournament_initSocket(socket, websocketLock);
-	affTournament_EventManager(socket, websocketLock);
+	affTournament_EventManager();
 }
 
-function affTournament_EventManager(socket, websocketLock)
+function affTournament_EventManager()
 {
-	document.getElementById('btn1').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn1'}, socket, websocketLock));
-	document.getElementById('btn2').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn2'}, socket, websocketLock));
-	document.getElementById('btn3').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'click', 'btn': 'btn3'}, socket, websocketLock));
-	document.getElementById('btnValid').addEventListener('click', () => affTournament_sendMessage({'file': 'aff', 'type': 'Valid'}, socket, websocketLock));
+	document.getElementById('btn1').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn1'}, 'selectTournament'));
+	document.getElementById('btn2').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn2'}, 'selectTournament'));
+	document.getElementById('btn3').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn3'}, 'selectTournament'));
+	// document.getElementById('btnValid').addEventListener('click', () => affTournament_sendRequest({''}, 'validTournament'));
+}
 
-	function affTournament_HandleViewChangeWrapper(event) {
-		affTournament_HandleViewChange(socket);
-		document.removeEventListener(event.type, affTournament_HandleViewChangeWrapper);
+
+// Fonction qui envoie les requêtes à l'API
+async function affTournament_sendRequest(data, function_name)
+{
+
+	const response = await fetch('/api/tournament/'+ function_name + '/', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+		credentials: 'include'
+	});
+
+	const result = await response.json();
+	console.log('Réponse de l\'API :', result);
+	console.log('return = ', result.return);
+
+// equivalent du socket.onMessage
+	if (result.return == "selectTournament")
+	{
+		console.log("select recu")
+		affTournament_drawTournament(result.size, result.old_size);
+	}
+	
+	else if (result.return == "createPlayer")
+	{
+		console.log("enter recu")
+		affTournament_createPlayerContainer(result.index);
 	}
 
-	document.addEventListener('pageChanged', affTournament_HandleViewChangeWrapper);
- 	document.addEventListener('popstate', affTournament_HandleViewChangeWrapper);
-}
+	else if (result.return == "deletePlayer")
+	{
+		console.log("delete recu")
+		playerContainer = document.getElementById(result.index);
+		affTournament_deletePlayerContainer(playerContainer);
+	}
 
-function affTournament_HandleViewChange(socket) {
-	let currentPath = window.location.pathname;
-
-	console.log(currentPath);
-	if (currentPath !== '/tournament') {
-		// window.removeEventListener('resize', resizeCanvas);
-		console.log("socket closed")
-		socket.close();
-		// socket = null;
+	else if (result.return == "error")
+	{
+		alert(`Erreur : ${result.error} `);
 	}
 }
 
-function affTournament_selectTournament(size, socket, old_size, websocketLock) {
-	// Ajouter des nouveaux champs si nécessaire / Supprimer les champs vides en excès si nécessaire
-	affTournament_inputFieldsManagement(size, old_size, socket, websocketLock);
-}
 
-function affTournament_inputFieldsManagement(size, old_size, socket, websocketLock)
+function affTournament_drawTournament(size, old_size)
 {
+	console.log("drawTournament");
 	inputsContainer = document.getElementById('inputs');
 	console.log("inputsContainer = ", inputsContainer);
 	if (old_size < size)
@@ -70,7 +86,7 @@ function affTournament_inputFieldsManagement(size, old_size, socket, websocketLo
 			while (document.getElementById(i))
 				i++;
 
-			const input = affTournament_createEmptyField(i, socket, websocketLock);
+			const input = affTournament_createEmptyField(i);
 
 			newDiv.appendChild(input);
 			inputsContainer.appendChild(newDiv);
@@ -93,8 +109,7 @@ function affTournament_inputFieldsManagement(size, old_size, socket, websocketLo
 	}
 }
 
-
-function affTournament_createEmptyField(index, socket, websocketLock)
+function affTournament_createEmptyField(index)
 {
 	const input = document.createElement('input');
 	input.type = 'text';
@@ -105,25 +120,23 @@ function affTournament_createEmptyField(index, socket, websocketLock)
 	input.id = index;
 	input.className = 'input-field';  // Appliquer la classe CSS 'input-field'
 
-	input.addEventListener('keydown', function (event) {
+	input.addEventListener('keydown', async function (event) {
 		if (event.key === 'Enter')
 		{
-			if (socket.readyState === WebSocket.OPEN)
-			{
-				affTournament_sendMessage({
-					'file': 'aff',
-					'type': event.key,
-					'name': input.value,
-					'index': index,
-				}, socket, websocketLock);
-			}
+			affTournament_sendRequest({
+				'name': input.value,
+				'index': index
+			}, 'createPlayer');
 		}
 	});
 	return input;
 }
 
 
-function affTournament_createPlayerContainer(index, socket, websocketLock)	// fonction appelée pour créer le playerContainer
+
+// CREATE PLAYER CONTAINER
+
+function affTournament_createPlayerContainer(index)	// fonction appelée pour créer le playerContainer
 {
 	const input = document.getElementById(index);
 	const name = input.value; // Récupérer la valeur saisie
@@ -132,7 +145,6 @@ function affTournament_createPlayerContainer(index, socket, websocketLock)	// fo
 	const playerContainer = document.createElement('div');
 	playerContainer.id = index;
 
-	// playerContainer.className = 'name-container';	-> pas besoin car on peut le supp directement depuis le playerContainer
 	console.log("playerContainer = ", playerContainer);
 
 	// div qui contient le nom
@@ -154,42 +166,18 @@ function affTournament_createPlayerContainer(index, socket, websocketLock)	// fo
 
 	deleteBtn.addEventListener('click', function ()
 	{
-		if (socket.readyState === WebSocket.OPEN)
-		{
-			console.log("playerContainer == : ", playerContainer);
-			affTournament_sendMessage({
-				'file': 'aff',
-				'type': 'delete',
-				'name': name,
-				'index': index,
-			}, socket, websocketLock);
-		}
+		affTournament_sendRequest({
+			'name': name,
+			'index': index
+		}, 'deletePlayer');
 	});
 }
 
-// 				Exemple de playerContainer
-// ##########################################################
-// #			playerContainer		id = index				#
-// # 			nameDiv				participant i: name		#
-// # 			deleteBtn			×						#
-// ##########################################################
 
-
-
-
-
-function affTournament_deletePlayerContainer(playerContainer, socket, websocketLock)
+// DELETE PLAYER CONTAINER
+function affTournament_deletePlayerContainer(playerContainer)
 {
-	const newDiv = document.createElement('div');
-
-	// on créer un nouveau champ input avec un nouvel index
-	// let i = 1;
-	// while (document.getElementById(i))
-	// 	i++;
-				// --> obsolete car on peut réutiliser l'index de l'input supprimé
-
-	const newInput = affTournament_createEmptyField(playerContainer.id, socket, websocketLock);
-
+	const newInput = affTournament_createEmptyField(playerContainer.id);
 	console.log("Voici l'actuel playerContainer : ", playerContainer);
 
 	// on remplace le playerContainer par le div input
@@ -198,101 +186,4 @@ function affTournament_deletePlayerContainer(playerContainer, socket, websocketL
 		playerContainer.parentNode.replaceChild(newInput, playerContainer);
 	}
 	console.log("Voici le nouveau playerContainer : ", playerContainer);
-
 }
-
-async function affTournament_sendMessage(data, socket, websocketLock) {
-	if (websocketLock)
-	{
-		return;
-	}
-	websocketLock = true;
-	if (socket.readyState === WebSocket.OPEN)
-	{
-		socket.send(JSON.stringify(data));
-	}
-	websocketLock = false;
-}
-
-
-function affTournament_initSocket(socket, websocketLock) {
-
-	socket.onopen = async function (e) {
-		console.log("Alleluia, le socket est ouvert");
-	};
-
-
-	socket.onmessage = function (e)
-	{
-		const data = JSON.parse(e.data);
-		if (data.file === 'aff')
-		{
-			if (data.type === 'click')
-			{
-				console.log("click")
-				affTournament_selectTournament(data.size, socket, data.old_size, websocketLock)
-			}
-			else if (data.type === 'Enter')
-			{
-				console.log("Enter recu")
-				console.log("player_list du Enter : ", data.player_list);
-				affTournament_createPlayerContainer(data.index, socket, websocketLock);
-			}
-			else if (data.type === 'delete')
-			{
-				console.log("delete recu")
-				playerContainer = document.getElementById(data.index);
-				affTournament_deletePlayerContainer(playerContainer, socket, websocketLock);
-			}
-			else if (data.type === 'error')
-			{
-				// console.error('Erreur :', data);
-				alert
-				(
-					`Erreur : ${data.error} `
-				);
-			}
-			else if (data.type === 'Valid')
-			{
-				// alert("Tournoi validé : " + data.player_list);
-				// appel du fichier tournament.js et de sa fonction start_tournament() :
-
-				addScript("js/tournament.js", () =>
-				{
-					tournament_start_tournament(socket);
-					// socket.close();
-				})
-
-			}
-			else
-			{
-				console.error('Type de message inconnu :', data);
-			}
-		}
-	};
-
-	socket.onerror = function (e) {
-		console.error('ah bah là ya une erreur :', e);
-	};
-
-	socket.onclose = function (e) {
-		//document.removeEventListener('click', e);
-		 //document.getElementById('btn1').removeEventListener('click', e);
-		// document.getElementById('btn3').removeEventListener('click', e);
-		// document.getElementById('btnValid').removeEventListener('click', e);
-		socket.close();
-		//console.error('Oh non le socket fermé inopinément :', e);
-	};
-
-}
-	// interdire de valider certains nom (nom vide, nom déjà validé, nom trop long, caractères spéciaux)
-	// inderdire de revenir a un mode de tournoi avec moins de participants que ceux déjà validés
-
-//	#########################################################################
-// 	#					 _______InputsContainer________						#
-// 	#					/				|				\					#
-// 	#	PlayerContainer			PlayerContainer			NewDiv				#
-// 	#			|						|					\				#
-// 	#	nameDiv	+ deleteBtn		nameDiv	+ deleteBtn			name + id		#
-// 	#																		#
-// ##########################################################################
