@@ -1,5 +1,27 @@
-function tournament_start_tournament(socket1)
+async function tournament_start_tournament(socket1)
 {
+
+	data = {}
+
+	const response = await fetch('/api/tournament/selectTournament/', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+		credentials: 'include'
+	});
+
+
+	const result = await response.json();
+	console.log('Réponse de l\'API :', result);
+	if (result.number)
+
+
+
+
+
+	
 	websocketLock = false;
 	let docMain = document.querySelector('main')
 	// <button class="btn btn-outline-light m-2" id="start" data-translate="true">Start the Game (lance pong.js)</button>
