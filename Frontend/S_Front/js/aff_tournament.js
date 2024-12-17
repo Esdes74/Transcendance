@@ -14,7 +14,13 @@ function affTournament()
 		<button id="btnValid">Valider</button>
 	</div>
 	`
+	affTournament_init();
 	affTournament_EventManager();
+}
+
+function affTournament_init()
+{
+	affTournament_sendRequest({}, 'initDB');
 }
 
 function affTournament_EventManager()

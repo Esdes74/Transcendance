@@ -112,3 +112,22 @@ def deletePlayer(request):
 		return JsonResponse({"name": name, "index": index, "player_list": tournament.player_list, "fields": tournament.old_size, "return": "deletePlayer"}, status=200)
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def initDB(request):
+	print("Here we are in initDB")
+
+	if request.method == 'POST':
+
+		tournament, created = Tournament.objects.get_or_create(id=1)
+
+		tournament.player_registered = 0
+		tournament.size = 0
+		tournament.old_size = 0
+		tournament.champs_libre = 0
+		tournament.player_list = []
+		tournament.save()
+
+		return JsonResponse({"return": "initDB"}, status=200)
+
+	return JsonResponse({"error": "Invalid request method"}, status=405)
