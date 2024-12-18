@@ -131,3 +131,20 @@ def initDB(request):
 		return JsonResponse({"return": "initDB"}, status=200)
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def validTournament(request):
+	print("Here we are in validTournament")
+
+	if request.method == 'POST':
+
+		tournament, created = Tournament.objects.get_or_create(id=1)
+
+		if tournament.size == 0 or tournament.size == None:
+			return JsonResponse({"error": "Vous n'avez pas encore choisi la taille du tournoi !", "return": "error"}, status=400)
+		if tournament.player_registered != tournament.size:
+			return JsonResponse({"error": "Le nombre de joueur inscrit n'est pas égal au nombre de joueur attendu", "return": "error"}, status=400)
+
+		return JsonResponse({"player_list": tournament.player_list, "return": "validTournament"}, status=200)
+
+	return JsonResponse({"error": "Invalid request method"}, status=405)

@@ -5,5 +5,6 @@ urlpatterns = [
 	path('initDB/', views.initDB, name="initDB"),
 	path('selectTournament/', views.selectTournament, name="selectTournament"),
 	path('createPlayer/', views.createPlayer, name="createPlayer"),
-	path('deletePlayer/', views.deletePlayer, name="deletePlayer")
+	path('deletePlayer/', views.deletePlayer, name="deletePlayer"),
+	path('validTournament/', views.validTournament, name="validTournament"),
 ]

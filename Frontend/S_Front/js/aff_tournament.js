@@ -28,7 +28,7 @@ function affTournament_EventManager()
 	document.getElementById('btn1').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn1'}, 'selectTournament'));
 	document.getElementById('btn2').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn2'}, 'selectTournament'));
 	document.getElementById('btn3').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn3'}, 'selectTournament'));
-	// document.getElementById('btnValid').addEventListener('click', () => affTournament_sendRequest({''}, 'validTournament'));
+	document.getElementById('btnValid').addEventListener('click', () => affTournament_sendRequest({}, 'validTournament'));
 }
 
 
@@ -72,6 +72,14 @@ async function affTournament_sendRequest(data, function_name)
 	else if (result.return == "error")
 	{
 		alert(`Erreur : ${result.error} `);
+	}
+
+	else if (result.return == "validTournament")
+	{
+		addScript('/js/aff_tournament_bracket.js', () =>
+		{
+			affTournamentBracket_start(result.player_list);
+		});
 	}
 }
 

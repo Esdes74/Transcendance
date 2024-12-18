@@ -73,9 +73,23 @@ def initDB(request):
 	if request.method == 'POST':
 
 		response = requests.post('http://django-tournament:8000/tournament/initDB/', json={})
-		# try:
-		response_data = response.json()
-		# except ValueError:
-		# 	return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+		try:
+			response_data = response.json()
+		except ValueError:
+			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+		return JsonResponse(response_data, status=200)
+	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@api_view(['POST'])
+def validTournament(request):
+	print("Here we are in initDB")
+
+	if request.method == 'POST':
+
+		response = requests.post('http://django-tournament:8000/tournament/validTournament/', json={})
+		try:
+			response_data = response.json()
+		except ValueError:
+			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
