@@ -1,4 +1,4 @@
-function initPong(player1 = null, player2 = null, istournament) {
+function initPong(boolean) {
 
 	const pong_gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
@@ -23,13 +23,14 @@ function initPong(player1 = null, player2 = null, istournament) {
 		// recup names
 		player1Name: document.getElementById('Player1').textContent,
 		player2Name: document.getElementById('Player2').textContent,
+		istournament: boolean,
 
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
 	};
 	console.log('player1Name =', pong_gameSettings.player1Name);
 	console.log('player2Name =', pong_gameSettings.player2Name);
-	console.log('istournament =', istournament);
+	console.log('istournament =', pong_gameSettings.istournament);
 
 	pong_resizeCanvas(pong_gameSettings)
 	console.log('Settings initialized');
@@ -105,7 +106,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 			if (pong_gameSettings.printBall == false) {
 				console.log('scorePlayer1:', pong_gameSettings.scorePlayer1);
 				console.log('scorePlayer2:', pong_gameSettings.scorePlayer2);
-				if (pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5)
+				if (pong_gameSettings.scorePlayer1 >= 1 || pong_gameSettings.scorePlayer2 >= 1)
 					pong_gameOver(pong_gameSettings, socket);
 			}
 		}
@@ -195,7 +196,8 @@ function pong_handleViewChange(socket) {
 }
 
 
-function pong_gameOver(pong_gameSettings, socket) {
+function pong_gameOver(pong_gameSettings, socket)
+{
 	const winMessageElem = document.getElementById('winMessage');
 	if (pong_gameSettings.scorePlayer1 > pong_gameSettings.scorePlayer2) {
 		winMessageElem.textContent = pong_gameSettings.player1Name + ' wins!';
@@ -206,17 +208,44 @@ function pong_gameOver(pong_gameSettings, socket) {
 	
 	if (!pong_gameSettings.istournament)
 	{
-		socket.close();
 		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
 
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
 		replayBlockElem.style.display = 'block';
+
+		// Afficher les boutons "Rejouer", "Paramètres", "Retour à l'accueil"
+		const buttons = replayBlockElem.getElementsByClassName("btn");
+		for (let i = 0; i < buttons.length; i++)
+			buttons[i].style.display = 'inline-block';
+
+		// Masquer le bouton "Suivant"
+		document.getElementById("nextButton").style.display = 'none';
 	}
 	else
 	{
-		console.log('TOURNOI ?', pong_gameSettings.scorePlayer1);
-		// socket_sendMessage({}); //envoyer les scores
-		socket.close();
+		console.log('TOURNOI car ', pong_gameSettings.istournament);
+		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+
+		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
+		replayBlockElem.style.display = 'block';
+
+		// Masquer les boutons "Rejouer", "Paramètres", "Retour à l'accueil"
+		const buttons = replayBlockElem.getElementsByClassName("btn");
+		for (let i = 0; i < buttons.length; i++) {
+			if (buttons[i].id !== "nextButton") {
+				buttons[i].style.display = 'none';
+			}
+			buttons[i].addEventListener('click', () => {
+				// todo save la db pour garder le score
+				socket.close();
+			});
+		}
+	}
+}
+
+		// console.log('TOURNOI car ', pong_gameSettings.istournament);
+		// // socket_sendMessage({}); //envoyer les scores
+		// socket.close();
 
 
 
@@ -226,8 +255,6 @@ function pong_gameOver(pong_gameSettings, socket) {
 		// 	}
 		// });
 		// document.dispatchEvent(winnerEvent);
-	}
-}
 //Fonction pour démarrer le compte à rebours
 // function startCountdown(seconds, pong_gameSettings)
 // {

@@ -134,14 +134,13 @@ function readyState(joueur1, joueur2, divElement)
 
 	startBtn.addEventListener('click', async function()
 	{
-		result = affTournamentBracket_sendRequest({
+		result = await affTournamentBracket_sendRequest({
 			'joueur1': joueur1,
 			'joueur2': joueur2
 		}, 'startGame');
 		if (result == "startGame")
 		{
-			addScript('/js/pong.js');
-			affPong(joueur1, joueur2);
+			addScript('/js/aff_pong.js', () => affPong(joueur1, joueur2));
 		}
 	});
 }
@@ -164,7 +163,7 @@ async function affTournamentBracket_sendRequest(data, function_name)
 	});
 
 	const result = await response.json();
-	console.log('Réponse de l\'API :', result);
+	console.log('Réponse de l\'API :', result.return);
 	return result.return;
 }
 // document.getElementById('start').addEventListener('click', function() {

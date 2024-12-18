@@ -12,6 +12,7 @@ function affPong(Player1, Player2)
 
 	if (Player1 === undefined && Player2 === undefined)
 	{
+		console.log("Player1 et Player2 undefined")
 		Player1 = "Player1";
 		Player2 = "Player2";
 		tournoi = false;
@@ -38,10 +39,11 @@ function affPong(Player1, Player2)
 					<div class="replayBlock">
 						<h2 id="winMessage"></h2>
 						<div class="button-group">
-							<button class="btn btn-outline-light m-2" data-translate="true">Rejouer</button>
-							<button class="btn btn-outline-light m-2" data-translate="true">Paramètres</button>
-							<button class="btn btn-outline-light m-2" data-translate="true">Retour à l'accueil</button>
-						</div>
+							<button class="btn btn-outline-light m-2" data-translate="true" value="pong">Rejouer</button>
+							<button class="btn btn-outline-light m-2" data-translate="true" value="settings" >Paramètres</button>
+							<button class="btn btn-outline-light m-2" data-translate="true" value="index">Retour à l'accueil</button>
+							<button class="btn btn-outline-light m-2" id="nextButton" data-translate="true">Suivant</button>
+							</div>
 					</div>
 				</div>
 			</div>
@@ -49,7 +51,7 @@ function affPong(Player1, Player2)
 	</div>
 `	
 
-	addScript("/js/pong.js", () => initPong(Player1, Player2, tournoi))
+	addScript("/js/pong.js", () => initPong(tournoi))
 	// addScript("/js/pong.js", () => pongCallback(Player1, Player2))
 	getMainButtons()
 	tradNewPage()
