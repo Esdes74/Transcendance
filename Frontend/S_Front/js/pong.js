@@ -1,4 +1,4 @@
-function initPong(player1 = null, player2 = null) {
+function initPong(player1 = null, player2 = null, istournament) {
 
 	const pong_gameSettings = {
 		canvas: document.getElementById('pongCanvas'),
@@ -23,17 +23,13 @@ function initPong(player1 = null, player2 = null) {
 		// recup names
 		player1Name: document.getElementById('Player1').textContent,
 		player2Name: document.getElementById('Player2').textContent,
-		istournament: false,
 
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
 	};
-	if (player1 !== null && player2 !== null)
-	{
-		pong_gameSettings.istournament = true;
-		pong_gameSettings.player1Name.textContent = player1;
-		pong_gameSettings.player2Name.textContent = player2;
-	}
+	console.log('player1Name =', pong_gameSettings.player1Name);
+	console.log('player2Name =', pong_gameSettings.player2Name);
+	console.log('istournament =', istournament);
 
 	pong_resizeCanvas(pong_gameSettings)
 	console.log('Settings initialized');
@@ -218,6 +214,7 @@ function pong_gameOver(pong_gameSettings, socket) {
 	}
 	else
 	{
+		console.log('TOURNOI ?', pong_gameSettings.scorePlayer1);
 		// socket_sendMessage({}); //envoyer les scores
 		socket.close();
 

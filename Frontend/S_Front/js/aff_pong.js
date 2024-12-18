@@ -1,10 +1,22 @@
-function pongCallback(Player1, Player2)
-{
-	initPong(Player1, Player2)
-}
+// function pongCallback(Player1, Player2)
+// {
+// 	if (Player1 == 'null' && Player2 == 'null')
+// 		initPong("Player1", "Player2", false)
+// 	else
+// 		initPong(Player1, Player2, true)
+// }
 
-function affPong(Player1 = 'Player1', Player2 = 'Player2')
+function affPong(Player1, Player2)
 {
+	let tournoi = true;
+
+	if (Player1 === undefined && Player2 === undefined)
+	{
+		Player1 = "Player1";
+		Player2 = "Player2";
+		tournoi = false;
+	}
+
 	let docMain = document.querySelector('main')
 	docMain.innerHTML = `
 	<div class="container text-center my-5">
@@ -36,7 +48,9 @@ function affPong(Player1 = 'Player1', Player2 = 'Player2')
 		</div>
 	</div>
 `	
-	addScript("/js/pong.js", () => pongCallback(Player1, Player2))
+
+	addScript("/js/pong.js", () => initPong(Player1, Player2, tournoi))
+	// addScript("/js/pong.js", () => pongCallback(Player1, Player2))
 	getMainButtons()
 	tradNewPage()
 }
