@@ -148,3 +148,38 @@ def validTournament(request):
 		return JsonResponse({"player_list": tournament.player_list, "return": "validTournament"}, status=200)
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+# ############################################################################################################
+# aff_tournament_bracket.js
+# ############################################################################################################
+
+def startGame(request):
+	print("Here we are in startGame")
+
+	if request.method == 'POST':
+
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+		print("data : ", data)
+
+		return JsonResponse({"return": "startGame"}, status=200)
+
+	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+# def resumeGame(request):
+
+# 	if request.method == 'POST':
+
+# 		try:
+# 			data = json.loads(request.body)
+# 		except json.JSONDecodeError:
+# 			return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+# 		pong, created = Pong.objects.get_or_create(id=data.get('id'))
+
+# 	return JsonResponse({"error": "Invalid request method"}, status=405)

@@ -7,4 +7,5 @@ urlpatterns = [
 	path('createPlayer/', views.createPlayer, name='createPlayer'), # redirige vers la gestion du createPlayer
 	path('deletePlayer/', views.deletePlayer, name='deletePlayer'), # redirige vers la gestion du deletePlayer
 	path('validTournament/', views.validTournament, name='validTournament'), # redirige vers la gestion du validTournament
+	path('startGame/', views.startGame, name='startGame'), # redirige vers la gestion du startGame
 ]

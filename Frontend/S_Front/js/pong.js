@@ -200,7 +200,6 @@ function pong_handleViewChange(socket) {
 
 
 function pong_gameOver(pong_gameSettings, socket) {
-	socket.close();
 	const winMessageElem = document.getElementById('winMessage');
 	if (pong_gameSettings.scorePlayer1 > pong_gameSettings.scorePlayer2) {
 		winMessageElem.textContent = pong_gameSettings.player1Name + ' wins!';
@@ -208,9 +207,10 @@ function pong_gameOver(pong_gameSettings, socket) {
 	else {
 		winMessageElem.textContent = pong_gameSettings.player2Name + ' wins!';
 	}
-
+	
 	if (!pong_gameSettings.istournament)
 	{
+		socket.close();
 		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
 
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
@@ -218,13 +218,17 @@ function pong_gameOver(pong_gameSettings, socket) {
 	}
 	else
 	{
+		// socket_sendMessage({}); //envoyer les scores
+		socket.close();
 
-		let winnerEvent = new CustomEvent('endGame', {
-			detail:{
-				message: pong_gameSettings.scorePlayer1,
-			}
-		});
-		document.dispatchEvent(winnerEvent);
+
+
+		// let winnerEvent = new CustomEvent('endGame', {
+		// 	detail:{
+		// 		message: pong_gameSettings.scorePlayer1,
+		// 	}
+		// });
+		// document.dispatchEvent(winnerEvent);
 	}
 }
 //Fonction pour démarrer le compte à rebours
