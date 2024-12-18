@@ -7,8 +7,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		await self.accept()
 
-		# INIT IA SERVICE (GL)
-		print("HELLO WORLD")
 		self.printball = False
 		self.keys = {}
 		self.send_task = asyncio.create_task(self.send_keys_periodically())
@@ -19,6 +17,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 			await self.send(json.dumps({'type': 'pong.countdown', 'value': 3-i}))
 		self.update_ball_task = asyncio.create_task(self.update_ball_position())
 		self.websocket_lock = asyncio.Lock()
+		self.websocket_lock_2 = asyncio.Lock()
 
 	async def disconnect(self, close_code):
 		self.send_task.cancel()
@@ -99,22 +98,46 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 		return response
 
+	async def send_to_ai_service(self, data):
+
+		# Check if the WebSocket connection already exists
+		if not hasattr(self, 'websocketAI'):
+			uri = "ws://django-AI:8000/ws/AI/multiply"
+			self.websocketAI = await websockets.connect(uri)
+
+		# Send data using the existing or new WebSocket connection
+		async with self.websocket_lock_2:
+			await self.websocketAI.send(data)
+			response2 = await self.websocketAI.recv()
+			print(f"Réponse du service AI: {response2}")
+
+		return response2
+
 	async def ia_ask_position(self):
+		
+	#	try:
+	#		response2 = await self.send_to_ai_service(json.dumps({'type': 'prout'}))
+	#	except Exception as e:
+	#		print(f"Exception in send_to_ai_service: {e}")
+
 		try:
 			response = await self.send_to_pong_service(json.dumps({'type': 'getDatas'}))
 			#send response to AI Service
 			#get AI response
-			data = json.loads(response)	
-			print(data.get('player2Y'), data.get('ballY'))
-			if (data.get('ballSpeedX') < 0):
+			response_ai = await self.send_to_ai_service(response)
+			data = json.loads(response_ai)	
+			#print(data.get('player2Y'), data.get('ballY'))
+			#if (data.get('ballSpeedX') < 0):
+			if (data.get('Move') == "NoMove"):
 				self.keys['ArrowDown'] = False
 				self.keys['ArrowUp'] = False
-			elif (data.get('player2Y') > data.get('ballY') + 0.05):
-				print("TRUE")
+			#elif (data.get('player2Y') > data.get('ballY') + 0.05):
+			#	print("TRUE")
+			elif (data.get('Move') == "ArrowUp"):
 				self.keys['ArrowDown'] = False
 				self.keys['ArrowUp'] = True
-			elif (data.get('player2Y') < data.get('ballY') - 0.05):
-				print("FALSE")
+			#elif (data.get('player2Y') < data.get('ballY') - 0.05):
+			else:
 				self.keys['ArrowUp'] = False
 				self.keys['ArrowDown'] = True
 		except Exception as e:
