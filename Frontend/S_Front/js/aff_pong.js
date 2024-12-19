@@ -42,7 +42,7 @@ function affPong(Player1, Player2)
 							<button class="btn btn-outline-light m-2" data-translate="true" value="pong">Rejouer</button>
 							<button class="btn btn-outline-light m-2" data-translate="true" value="settings" >Paramètres</button>
 							<button class="btn btn-outline-light m-2" data-translate="true" value="index">Retour à l'accueil</button>
-							<button class="btn btn-outline-light m-2" id="nextButton" data-translate="true">Suivant</button>
+							<button class="btn btn-outline-light m-2" id="nextButton" data-translate="true" value="tournament_bracket">Suivant</button>
 							</div>
 					</div>
 				</div>
@@ -53,6 +53,5 @@ function affPong(Player1, Player2)
 
 	addScript("/js/pong.js", () => initPong(tournoi))
 	// addScript("/js/pong.js", () => pongCallback(Player1, Player2))
-	getMainButtons()
 	tradNewPage()
 }

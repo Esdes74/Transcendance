@@ -7,24 +7,25 @@ function onPushState()
 
 function getMainButtons()
 {
-    let buttons = document.querySelectorAll('main button')
-    buttons.forEach( button => {
-	button.addEventListener("click", () => updatePage(button.value))
-    })
+	let buttons = document.querySelectorAll('main button')
+	buttons.forEach( button => {
+		button.addEventListener("click", () => updatePage(button.value))
+		console.log("button : ", button.value)
+	})
 }
 
 function updatePage(value)
 {
-    if (value === "index")
+	if (value === "index")
 	value = ""
-    if (value === history.state.pageID || value === "expand")
-    	return
-    history.pushState({pageID: value}, '', "/" + value)
-    console.log("event dispatched");
-    const event = new CustomEvent('pageChanged');
-    document.dispatchEvent(event);
-    console.log(history.state)
-    rootMyUrl()
+	if (value === history.state.pageID || value === "expand")
+		return
+	history.pushState({pageID: value}, '', "/" + value)
+	console.log("event dispatched");
+	const event = new CustomEvent('pageChanged');
+	document.dispatchEvent(event);
+	console.log(history.state)
+	rootMyUrl()
 }
 
 function getLinks()

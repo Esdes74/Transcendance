@@ -61,11 +61,13 @@ function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
 
 
 async function pong_sendMessage(data, socket, websocketLock) {
+	console.log('sending message...');
 	if (websocketLock) {
 		return;
 	}
 	websocketLock = true;
 	if (socket.readyState === WebSocket.OPEN) {
+		console.log('OUI NORMAL websocketLock is true');
 		socket.send(JSON.stringify(data));
 	}
 
@@ -106,7 +108,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 			if (pong_gameSettings.printBall == false) {
 				console.log('scorePlayer1:', pong_gameSettings.scorePlayer1);
 				console.log('scorePlayer2:', pong_gameSettings.scorePlayer2);
-				if (pong_gameSettings.scorePlayer1 >= 1 || pong_gameSettings.scorePlayer2 >= 1)
+				if (pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5)
 					pong_gameOver(pong_gameSettings, socket);
 			}
 		}
@@ -139,7 +141,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
 function pong_keyPressed(e, socket, websocketLock, message) {
-	if (socket.readyState === WebSocket.OPEN /*&& (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's' || e.key ===||)*/) {
+	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S')) {
 		e.preventDefault()
 		console.log(`Key pressed: ${e.key}`);
 		pong_sendMessage({
@@ -216,7 +218,13 @@ function pong_gameOver(pong_gameSettings, socket)
 		// Afficher les boutons "Rejouer", "Paramètres", "Retour à l'accueil"
 		const buttons = replayBlockElem.getElementsByClassName("btn");
 		for (let i = 0; i < buttons.length; i++)
+		{
+
 			buttons[i].style.display = 'inline-block';
+			buttons[i].addEventListener('click', async () => {
+				redirectTo(buttons[i].value, socket);
+			});
+		}
 
 		// Masquer le bouton "Suivant"
 		document.getElementById("nextButton").style.display = 'none';
@@ -235,12 +243,34 @@ function pong_gameOver(pong_gameSettings, socket)
 			if (buttons[i].id !== "nextButton") {
 				buttons[i].style.display = 'none';
 			}
-			buttons[i].addEventListener('click', () => {
-				// todo save la db pour garder le score
-				socket.close();
-			});
 		}
+		console.log('bouton next. socket.readyState = ', socket.readyState);
+		console.log('bouton next. WebSocket.OPEN = ', WebSocket.OPEN);
+		nextBtn = document.getElementById('nextButton');
+		nextBtn.addEventListener('click', async () => {
+			redirectTo(nextBtn.value);
+		});
 	}
+}
+
+
+function redirectTo(path, socket)
+{
+	console.log('redirectTo path = ', path);
+	if (path === 'pong')
+		fct = () => affPong();
+	if (path === 'settings')
+		fct = () => affSettings();
+	if (path === 'index')
+	{
+		fct = () => affIndex();
+	}
+	if (path === 'tournament_bracket')
+	players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
+		fct = () => affTournamentBracket_start();
+
+	addScript("/js/aff_" + path + ".js", fct);
+	socket.close();
 }
 
 		// console.log('TOURNOI car ', pong_gameSettings.istournament);

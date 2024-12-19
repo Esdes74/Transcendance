@@ -74,11 +74,16 @@ function rootMyUrl()
 		script: "/js/aff_ai.js",
 		callback: "affAI"
 	},
-	// "/matchmaking": {
-	// 	title: "matchmaking",
-	// 	script: "js/tournament.js",
-	// 	callback: null
-	// },	--> peut etre ?
+	"/tournament_bracket": {
+		title: "tournament_bracket",
+		script: "js/aff_tournament_bracket.js",
+		callback: "affTournamentBracket_start"
+	},
+	"/settings": {
+		title: "settings",
+		script: "js/aff_settings.js",
+		callback: "affSettings"
+	},
 	"/404": {
 		title: "Error 404",
 		script: "/js/aff_404.js",

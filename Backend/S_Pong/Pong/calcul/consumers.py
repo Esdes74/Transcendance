@@ -2,7 +2,6 @@ import asyncio
 import websockets
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-# from .models import pongDB
 
 class CalculConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
@@ -28,17 +27,22 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		print(f">>>>>>> PHASE D'INITIALISATION : {self.player1Y}")
 
 	async def disconnect(self, close_code):
-		# pongDB, created = pongDB.objects.get_or_create(id=1)
-
-		# pongDB.scorePlayer1 = self.scorePlayer1
-		# pongDB.scorePlayer2 = self.scorePlayer2
-		# pongDB.save()
-		# print('Déconnecté et DB : ', pongDB)
 		pass
 	async def receive(self, text_data):
 		data = json.loads(text_data)
 
+		if data.get('type') == 'pong.saveDB':
+			print('DATA : ', data)
+			from .models import pongDB
+			pongDB, created = pongDB.objects.get_or_create(id=1)
+			pongDB.scorePlayer1 = self.scorePlayer1
+			pongDB.scorePlayer2 = self.scorePlayer2
+			pongDB.save()
+			print('DB : ', pongDB)
+		pass
+
 		if data.get('type') == 'pong.move':
+			print('DATA : ', data)
 			key = data['key']
 			if key == 'w' or key == 'W':
 				if self.player1Y - (self.playerHeight / 2) > 0:
