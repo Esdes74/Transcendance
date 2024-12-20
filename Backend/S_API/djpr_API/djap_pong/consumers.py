@@ -15,6 +15,8 @@ class PongConsumer(AsyncWebsocketConsumer):
 			if i != 0:
 				await asyncio.sleep(1)
 			await self.send(json.dumps({'type': 'pong.countdown', 'value': 3-i}))
+		self.ia_sleeptime = 0
+		self.ia_timing = 1
 		self.update_ball_task = asyncio.create_task(self.update_ball_position())
 		self.websocket_lock = asyncio.Lock()
 		self.websocket_lock_2 = asyncio.Lock()
@@ -73,12 +75,17 @@ class PongConsumer(AsyncWebsocketConsumer):
 				data = json.loads(response)
 				if data.get('scorePlayer1') >= 5 or data.get('scorePlayer2') >= 5:
 					self.printball = True
-				if (i >= 1):
+				if (i >= self.ia_sleeptime):
+					print("NOW")
 					await self.ia_ask_position()
 					i = 0
 				await self.send(response)
 				await asyncio.sleep(0.01)
-				i += 0.05
+				self.ia_timing -= 0.01
+				if (self.ia_timing <= 0):
+					self.keys['ArrowUp'] = False
+					self.keys['ArrowDown'] = False
+				i += 0.01
 		# except asyncio.CancelledError:
 			# print("update_ball_position task was cancelled")
 		except Exception as e:
@@ -115,31 +122,25 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 	async def ia_ask_position(self):
 		
-	#	try:
-	#		response2 = await self.send_to_ai_service(json.dumps({'type': 'prout'}))
-	#	except Exception as e:
-	#		print(f"Exception in send_to_ai_service: {e}")
-
 		try:
 			response = await self.send_to_pong_service(json.dumps({'type': 'getDatas'}))
-			#send response to AI Service
-			#get AI response
 			response_ai = await self.send_to_ai_service(response)
 			data = json.loads(response_ai)	
-			#print(data.get('player2Y'), data.get('ballY'))
-			#if (data.get('ballSpeedX') < 0):
 			if (data.get('Move') == "NoMove"):
+				print("ALED")
 				self.keys['ArrowDown'] = False
 				self.keys['ArrowUp'] = False
-			#elif (data.get('player2Y') > data.get('ballY') + 0.05):
-			#	print("TRUE")
 			elif (data.get('Move') == "ArrowUp"):
+				print("OSCOUR")
 				self.keys['ArrowDown'] = False
 				self.keys['ArrowUp'] = True
-			#elif (data.get('player2Y') < data.get('ballY') - 0.05):
 			else:
+				print("JETAIME")
 				self.keys['ArrowUp'] = False
 				self.keys['ArrowDown'] = True
+			self.ia_timing = data.get('Timing')
+			self.ia_sleeptime = data.get('SleepTime')
+			print(self.ia_sleeptime)
 		except Exception as e:
 			print(f"Exception in update_ball_position: {e}")
 					
