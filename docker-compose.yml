@@ -61,8 +61,7 @@ services:
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-Pong
     command: >
-      sh -c "python manage.py migrate &&
-             uvicorn Pong.asgi:application --host 0.0.0.0 --port 8000"
+      sh -c "uvicorn Pong.asgi:application --host 0.0.0.0 --port 8000"
     ports:
       - "127.0.0.1:8002:8000" #todo: restreindre l acces seulement au container
     volumes:

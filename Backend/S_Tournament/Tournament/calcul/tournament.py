@@ -6,13 +6,7 @@ def tournoi_suisse(n, rondes):
     scores = {joueur: 0 for joueur in joueurs}
     matchs_joués = {joueur: [] for joueur in joueurs}
 
-    def jouer_match(joueur1, joueur2):
-        """Simule un match entre deux joueurs et retourne le gagnant."""
-        gagnant = random.choice([joueur1, joueur2])
-        scores[gagnant] += 1
-        matchs_joués[joueur1].append(joueur2)
-        matchs_joués[joueur2].append(joueur1)
-        print(f"Match : {joueur1} vs {joueur2} | Gagnant : {gagnant}")
+    
 
     for ronde in range(1, rondes + 1):
         print(f"\n--- Ronde {ronde} ---")
@@ -30,10 +24,18 @@ def tournoi_suisse(n, rondes):
                     joueurs_restants.remove(joueur2)
                     break
 
-        # Jouer les matchs de la ronde
+  
+		def jouer_match(joueur1, joueur2):
+        """Simule un match entre deux joueurs et retourne le gagnant."""
+        gagnant = random.choice([joueur1, joueur2])
+        scores[gagnant] += 1
+        matchs_joués[joueur1].append(joueur2)
+        matchs_joués[joueur2].append(joueur1)
+        print(f"Match : {joueur1} vs {joueur2} | Gagnant : {gagnant}")
+
+		      # Jouer les matchs de la ronde
         for joueur1, joueur2 in pairs:
             jouer_match(joueur1, joueur2)
-
     # Afficher les scores finaux
     print("\n--- Résultats finaux ---")
     classement = sorted(scores.items(), key=lambda x: x[1], reverse=True)

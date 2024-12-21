@@ -7,5 +7,7 @@ urlpatterns = [
 	path('createPlayer/', views.createPlayer, name="createPlayer"),
 	path('deletePlayer/', views.deletePlayer, name="deletePlayer"),
 	path('validTournament/', views.validTournament, name="validTournament"),
-	path('startGame/', views.startGame, name="startGame"),
+	path('startTournament/', views.startTournament, name="startTournament"),
+	# path('startGame/', views.startGame, name="startGame"),
+	path('endGame/', views.endGame, name="endGame"),
 ]

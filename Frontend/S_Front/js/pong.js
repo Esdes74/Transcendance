@@ -222,7 +222,7 @@ function pong_gameOver(pong_gameSettings, socket)
 
 			buttons[i].style.display = 'inline-block';
 			buttons[i].addEventListener('click', async () => {
-				redirectTo(buttons[i].value, socket);
+				redirectTo(buttons[i].value, socket, pong_gameSettings);
 			});
 		}
 
@@ -244,17 +244,16 @@ function pong_gameOver(pong_gameSettings, socket)
 				buttons[i].style.display = 'none';
 			}
 		}
-		console.log('bouton next. socket.readyState = ', socket.readyState);
-		console.log('bouton next. WebSocket.OPEN = ', WebSocket.OPEN);
 		nextBtn = document.getElementById('nextButton');
 		nextBtn.addEventListener('click', async () => {
-			redirectTo(nextBtn.value);
+			affTournamentBracket_sendRequest({'player1': pong_gameSettings.player1Name, 'player2': pong_gameSettings.player2Name, 'score1': pong_gameSettings.scorePlayer1, 'score2': pong_gameSettings.scorePlayer2}, 'endGame');
 		});
 	}
 }
+// redirectTo(nextBtn.value, socket, pong_gameSettings);
 
 
-function redirectTo(path, socket)
+function redirectTo(path, socket, pong_gameSettings)
 {
 	console.log('redirectTo path = ', path);
 	if (path === 'pong')
@@ -266,8 +265,10 @@ function redirectTo(path, socket)
 		fct = () => affIndex();
 	}
 	if (path === 'tournament_bracket')
-	players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
-		fct = () => affTournamentBracket_start();
+	{
+		players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
+		fct = () => affTournamentBracket_start(players);
+	}
 
 	addScript("/js/aff_" + path + ".js", fct);
 	socket.close();
