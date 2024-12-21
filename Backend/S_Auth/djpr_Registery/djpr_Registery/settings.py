@@ -31,7 +31,7 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-Auth', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['django-Auth']
 
 # Settings d'envois d'e-mail
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4-k7=&x5wgff7^qlim)5(!$+q^41!e_q16n)05^gdz7r*wyi*y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-Tournament', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['django-tournament']	#  django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'django-tournament:8000'. You may need to add 'django-tournament' to ALLOWED_HOSTS.
 
 
 # Application definition
