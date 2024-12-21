@@ -24,24 +24,17 @@ class myConsumer(AsyncWebsocketConsumer):
 		ballSpeedX = data.get('ballSpeedX')
 		ballSpeedY = data.get('ballSpeedY')
 		if (ballSpeedX < 0):
-			sleepTime = ballPosX / (-100 * ballSpeedX) + 0.1
+			sleepTime = ballPosX / (-100 * ballSpeedX) + 0.01
 			if (sleepTime < 1):
 				sleepTime = 1
 		else:
-			sleepTime = (2 - ballPosX) / (100 * ballSpeedX) + 0.1
+			sleepTime = (2 - ballPosX) / (100 * ballSpeedX) + 0.01
 			if (sleepTime < 1):
 				sleepTime = 1
 		ballPos = self.calculatePaddlePos(ballPosX, ballPosY, ballSpeedX, ballSpeedY)
 		if (ballSpeedX < 0):
-			#if (ballPosX < 0.25):
-		#				predict movement here!
-			if (botPos < 0.5):
-				await self.send(text_data=json.dumps({'Move': 'ArrowDown', 'Timing': 0.5 - botPos, 'SleepTime': sleepTime}))
-			else:
-				await self.send(text_data=json.dumps({'Move': 'ArrowUp', 'Timing': botPos - 0.5, 'SleepTime': sleepTime}))
-		elif (botPos < ballPos + 0.05 and botPos > ballPos - 0.05):
 			await self.send(text_data=json.dumps({'Move': 'NoMove', 'Timing': 0, 'SleepTime': 1}))
-		elif (botPos > ballPos + 0.05):
+		elif (botPos > ballPos):
 			await self.send(text_data=json.dumps({'Move': 'ArrowUp', 'Timing': botPos - ballPos, 'SleepTime': sleepTime}))
 		else:
 			await self.send(text_data=json.dumps({'Move': 'ArrowDown', 'Timing': ballPos - botPos, 'SleepTime': sleepTime}))
@@ -54,12 +47,9 @@ class myConsumer(AsyncWebsocketConsumer):
 		value1 = self.interBot(ballX, ballY, ballSpeedX, ballSpeedY)
 		if (value1 != -1):
 			return (self.calculatePaddlePos(value1, 0.95, ballSpeedX, -ballSpeedY))
-	#	if (value2 != -1):
-	#		return (value2)#randomizeResult(value2))
-		value3 = self.interPaddle2(ballX, ballY, ballSpeedX, ballSpeedY)
+		value3 = self.interPaddle(ballX, ballY, ballSpeedX, ballSpeedY)
 		if (value3 != -1):
 			return (value3)
-			#return (randomizeResult(value3, paddleHeight, height))
 		return (0.5)
 
 	def interTop(self, ballX, ballY, ballSpeedX, ballSpeedY):
@@ -86,7 +76,7 @@ class myConsumer(AsyncWebsocketConsumer):
 			return (interX)
 		return (-1)
 
-	def interPaddle2(self, ballX, ballY, ballSpeedX, ballSpeedY):
+	def interPaddle(self, ballX, ballY, ballSpeedX, ballSpeedY):
 		if (ballSpeedX <= 0):
 			return (-1)
 		interY = (ballSpeedY * (0.95 - ballX)) / ballSpeedX + ballY

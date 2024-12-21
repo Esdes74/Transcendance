@@ -1,12 +1,12 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    routing.py                                            :+:      :+:    :+:    #
+#    routing.py                                         :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: tdutel <tdutel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/06 10:42:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/09/30 18:35:40 by tdutel           ###   ########.fr        #
+#    Updated: 2024/12/21 02:20:50 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,4 +21,5 @@ from . import consumers
 
 websocket_urlpatterns = [
     re_path(r'ws/pong/$', consumers.PongConsumer.as_asgi()),
+    re_path(r'ws/pong/ai', consumers.PongConsumer.as_asgi()),
 ]
