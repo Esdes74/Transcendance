@@ -112,10 +112,11 @@ services:
   ai_web:
     build:
       context: ./Backend/S_AI/Container/django
+      args:
+        - VOLUME=${DJANGO_WORKDIR_AI:-/home/AI}
     container_name: django-AI
-    command: ["uvicorn", "AI.asgi:application", "--log-level", "debug", "--host", "0.0.0.0", "--port", "8000"]
-    #ports:
-     # - "127.0.0.1:8009:8000"
+    volumes:
+      - ./Backend/S_AI/AI:${DJANGO_WORKDIR_AI:-/home/AI}
     env_file:
       - .env
     networks:
