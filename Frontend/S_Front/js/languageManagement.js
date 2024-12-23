@@ -70,11 +70,13 @@ async function returnToFrench(language)
 		invertedTrads[trads[key]] = key;
 	let elements = document.querySelectorAll('[data-translate="true"]')
 	elements.forEach( element => {
-		element.innerText = invertedTrads[element.innerText]
+		if (element.innerText in invertedTrads)
+			element.innerText = invertedTrads[element.innerText]
 	})
 	let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
 	placeholders.forEach( element => {
-		element.placeholder = invertedTrads[element.placeholder]
+		if (element.placeholder in invertedTrads)
+			element.placeholder = invertedTrads[element.placeholder]
 	})
 }
 
