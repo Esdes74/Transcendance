@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/14 15:08:27 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/26 13:23:30 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -212,7 +212,7 @@ def make_token(request):
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
-			res = "Stock failed\n" + response.text
+			res = "Making token failed\n" + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:

@@ -17,7 +17,6 @@ def stock(request):
 
 		save_state.save()
 
-		print(f"voici ce qui a été save = {save_state.state}")
 		return JsonResponse({"message": "Data succesfully created"}, status=201)
 
 def make_token(request):
@@ -51,6 +50,7 @@ def make_token(request):
 			'client_secret': secret,
 			'code': send_code,
 			'redirect_uri': "https://localhost:3000/bravocallback",
+			'state': send_state
 		}
 
 		try:
@@ -58,6 +58,7 @@ def make_token(request):
 			# Delete saved state from database
 			# TODO: Voir si la state doit etre supprimé systématiquement ou si elle doit etre gardée en cas d'échec
 			state.delete()
+
 
 			if response.status_code == 200:
 				token_data = response.json()

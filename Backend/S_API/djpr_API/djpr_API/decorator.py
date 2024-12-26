@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    decorator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 17:01:00 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/14 13:11:25 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/26 14:07:59 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
