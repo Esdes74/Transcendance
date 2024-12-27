@@ -9,7 +9,7 @@ async function loadBravoCallBack()
 			sendState: state,
 			sendCode: code
 		};
-	
+
 		try {
 			// Envoie les données à l'API
 			const response = await fetch('api/remote_oauth/make_token/', {
@@ -20,12 +20,12 @@ async function loadBravoCallBack()
 				body: JSON.stringify(data),
 				credentials: 'include'
 			});
-	
+
 			// Vérifie la réponse de l'API
 			if (response.ok) {
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result.message);
-	
+
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();

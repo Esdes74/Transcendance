@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/26 13:23:30 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/27 15:23:17 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ def login_view(request):
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
-				# TODO: Je pens qu'il faudra le passer en https et en secure
+				# TODO: Je pense qu'il faudra le passer en https et en secure
 				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
 
 				# Archivage du user_id pour l'identifier comme authentifié plus tard
@@ -72,13 +72,16 @@ def login_view(request):
 def create_view(request):
 	username = request.data.get('username')
 	password = request.data.get('password')
+	confirmed = request.data.get('confirmed')
 	pseudo = request.data.get('pseudo')
 	phone_nb = request.data.get('phone_nb')
 	mail = request.data.get('mail')
 
 	# Si je n'ai pas les champs obligatoires
-	if not username or not password or not pseudo:
+	if not username or not password or not confirmed or not pseudo:
 		return Response({"error": "Missing credentials"}, status=400)
+	if password != confirmed:
+		return Response({"error": "Password not confirmed"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/registery/create/"
@@ -205,9 +208,10 @@ def make_token(request):
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
-				json_response.set_cookie(key='42_token', value=token, httponly=True, samesite='Strict', max_age=3600)
-				new_token = FtTokenModel.objects.create(token=token)
-				new_token.save()
+				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+				# new_token = FtTokenModel.objects.create(token=token)
+				# new_token.save()
+				save_new_user(token)
 				return json_response
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)

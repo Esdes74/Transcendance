@@ -14,16 +14,17 @@ function loadRegister()
 		const phone_nb = document.getElementById('phone_nb').value;
 
 		// Vérification si le mdp est bien confirmé
-		if (password != confirmed_password)
-		{
-			alert('Password not confirmed');
-			return ;
-		}
+		// if (password != confirmed_password)
+		// {
+		// 	alert('Password not confirmed');
+		// 	return ;
+		// }
 
 		// Crée l'objet pour les données du formulaire
 		const data = {
 			username: username,
 			password: password,
+			confirmed: confirmed_password,
 			pseudo: pseudo,
 			mail: mail,
 			phone_nb: phone_nb,
@@ -39,14 +40,17 @@ function loadRegister()
 				body: JSON.stringify(data),
 				credentials: 'include'
 			});
-			
+
 			// Vérifie la réponse de l'API
 			if (response.ok) { // TODO: Gérer la réception des cookies 
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result.message);
 
 				// Redirige vers une autre page ou affiche un message de succès
-				updatePage("2fa")
+				if (result['2fa'])
+					updatePage("2fa");
+				else
+					updatePage("bravo");
 				// window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue

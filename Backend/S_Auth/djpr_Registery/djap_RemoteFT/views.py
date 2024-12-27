@@ -2,7 +2,9 @@ import os
 import requests
 from django.shortcuts import render
 from djap_RemoteFT.models import StateModel
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
+from .log_ft import log_ft
+from djap_login.models import FullUser
 
 def stock(request):
 	if (request.method == 'POST'):
@@ -59,12 +61,12 @@ def make_token(request):
 			# TODO: Voir si la state doit etre supprimé systématiquement ou si elle doit etre gardée en cas d'échec
 			state.delete()
 
-
 			if response.status_code == 200:
 				token_data = response.json()
 				token = token_data.get("access_token")
-				if token:
-					return JsonResponse({"message": "Token succesfully created", "token": token}, status=200)
+				user, token_jwt = log_ft(token)
+				if token_jwt and user:
+					return JsonResponse({"message": "Token succesfully created", "token": token_jwt, "language": user.language}, status=200)
 				else:
 					return JsonResponse({"error": "Token not found in response"}, status=500)
 			else:

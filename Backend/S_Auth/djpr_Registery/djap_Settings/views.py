@@ -4,7 +4,6 @@ import requests
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 
-# TODO: A tester
 def delete(request):
 	if (request.method == 'POST'):
 		username = request.POST.get('username')
@@ -24,7 +23,6 @@ def delete(request):
 		except Exception as e:
 			return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)
 
-# TODO: A tester
 def choose_lang(request):
 	if (request.method == 'POST'):
 		username = request.POST.get('username')
@@ -40,13 +38,12 @@ def choose_lang(request):
 		try:
 			user.language = new_lang
 			user.save()
-			return JsonResponse({"message": "Language update success"}, status=200)
+			return JsonResponse({"message": "Language updated successfully"}, status=200)
 		except IntegrityError as e:
 			return JsonResponse({"error": f"Changement failed: {str(e)}"}, status=400)
 		except Exception as e:
 			return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)
 
-# TODO: A tester
 def choose_verif(request):
 	if (request.method == 'POST'):
 		username = request.POST.get('username')
@@ -69,13 +66,12 @@ def choose_verif(request):
 		try:
 			user.secu = new_2fa
 			user.save()
-			return JsonResponse({"message": "Verification update success"}, status=200)
+			return JsonResponse({"message": "Verification updated successfully"}, status=200)
 		except IntegrityError as e:
 			return JsonResponse({"error": f"Changement failed: {str(e)}"}, status=400)
 		except Exception as e:
 			return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)
 
-# TODO: A tester
 def get_lang(request):
 	if (request.method == 'GET'):
 		username = request.GET.get('username')
@@ -95,7 +91,6 @@ def get_lang(request):
 		except Exception as e:
 			return JsonResponse({"error": f"Unexpected error: {str(e)}"}, status=500)
 
-# TODO: A tester
 def get_verif(request):
 	if (request.method == 'GET'):
 		username = request.GET.get('username')

@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 17:01:00 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/26 14:07:59 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/26 14:58:02 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,13 +58,11 @@ def jwt_required_2fa(view_func):
 			# Assigner les informations à la requête
 			# request.user = user # Retiree car provoque une erreure avec csrf
 			request.username = username
-			# print(request.COOKIES)
 
 		except (InvalidTokenError, DecodeError):
 			return JsonResponse({"detail": "Invalid or corrupted token"}, status=401)
 
 		# Appeler la vue d'origine
-		# print("au revoir")
 		return view_func(request, *args, **kwargs)
 
 	return _wrapped_2fa

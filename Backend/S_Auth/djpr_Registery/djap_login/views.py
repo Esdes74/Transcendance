@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/14 15:29:45 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/27 14:51:37 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ def login(request):
 			else:
 				token = generate_jwt_token_auth(user)
 			res = "Login Complete"
-			return JsonResponse({"message": res, "token": token, "2fa": user.secu}, status = 200)
+			return JsonResponse({"message": res, "token": token, "2fa": user.secu, "language": user.language}, status = 200)
 
 		except Exception as e:
 			return JsonResponse({"error": "Authentification failed"}, status=500)
@@ -77,7 +77,6 @@ def create(request):
 			user = FullUser.objects.create_user(
 				username=username,
 				password=password,
-				pseudo=pseudo,
 				phone_nb=phone_nb,
 				email=mail,
 				secret=otp_sec
@@ -89,7 +88,7 @@ def create(request):
 				# Génération du token temporaire et renvois
 				token = generate_temporary_token(user)
 				res = "Login Complete"
-				return JsonResponse({"message": res, "token": token}, status = 201)
+				return JsonResponse({"message": res, "token": token, "2fa": True, "language": "fr"}, status = 201)
 			else:
 				# si le user n'existe pas alors il y a une erreure et on renvois l'erreure
 				return JsonResponse({"error": "User creation failed"}, status=500)
@@ -124,14 +123,13 @@ def otp(request):
 			# Récupération du secret de l'utilisateur et vérification du code
 			otp_secret = user.secret
 			totp = pyotp.TOTP(otp_secret)
-			print(password)
 			if not totp.verify(password, valid_window=1):
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
 
 			# Génération du token temporaire et renvois
 			token = generate_jwt_token_auth(user)
 			res = "Login Complete"
-			return JsonResponse({"message": res, "token": token}, status = 200)
+			return JsonResponse({"message": res, "token": token, "language": user.language}, status = 200)
 
 		except Exception as e:
 			return JsonResponse({"error": "Authentification failed"}, status=500)
