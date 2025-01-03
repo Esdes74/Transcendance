@@ -10,6 +10,18 @@ function tradNewPage()
 	}
 }
 
+function tradDiv(div)
+{
+	let flag = document.getElementById("currentFlag")
+	if (currentFlag.getAttribute('data-language') !== "french")
+	{
+		let elements = div.querySelectorAll('[data-translate="true"]')
+		tradElements(elements)
+		let placeholders = div.querySelectorAll('[data-translate="placeholder"]')
+		tradPlaceholders(placeholders)
+	}
+}
+
 async function tradElements(elements)
 {
 	let currentFlag = document.getElementById("currentFlag")
@@ -113,4 +125,4 @@ function getFlags()
 	})
 }
 
-getFlags() 
+getFlags()
