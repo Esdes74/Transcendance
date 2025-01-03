@@ -157,6 +157,9 @@ function pong_EventManager(socket, websocketLock, canvasID) {
 
 	document.addEventListener('pageChanged', pong_handleViewChangeWrapper);
 	document.addEventListener('popstate', pong_handleViewChangeWrapper);
+	window.addEventListener('popstate', () => {
+		socket.close();
+	})
 }
 
 function pong_handleViewChange(socket) {
