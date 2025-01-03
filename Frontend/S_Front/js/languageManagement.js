@@ -26,9 +26,9 @@ async function tradElements(elements)
 	if (!response.ok)
 		console.error("Erreur:", response.status)
 	let trads = await response.json()
-	
 	elements.forEach( element => {
-				element.innerText = trads[element.innerText]
+		if (element.innerText in trads)
+                	element.innerText = trads[element.innerText]
 	})
 }
 
@@ -50,7 +50,8 @@ async function tradPlaceholders(elements)
 	let trads = await response.json()
 	
 	elements.forEach( element => {
-				element.placeholder = trads[element.placeholder]
+		if (element.placeholder in trads)
+                	element.placeholder = trads[element.placeholder]
 	})
 }
 
@@ -69,11 +70,13 @@ async function returnToFrench(language)
 		invertedTrads[trads[key]] = key;
 	let elements = document.querySelectorAll('[data-translate="true"]')
 	elements.forEach( element => {
-		element.innerText = invertedTrads[element.innerText]
+		if (element.innerText in invertedTrads)
+			element.innerText = invertedTrads[element.innerText]
 	})
 	let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
 	placeholders.forEach( element => {
-		element.placeholder = invertedTrads[element.placeholder]
+		if (element.placeholder in invertedTrads)
+			element.placeholder = invertedTrads[element.placeholder]
 	})
 }
 

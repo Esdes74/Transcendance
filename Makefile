@@ -30,7 +30,7 @@ NEUTRAL := '\e[0m'
 
 # Build les images et seulement les images
 all:
-	docker-compose -f $(DOCKER) up -d --build
+	docker compose -f $(DOCKER) up -d --build
 # docker-compose -f $(API_DOCKER) up -d --build
 # docker-compose -f $(AUTH_DOCKER) up -d --build
 # docker-compose -f $(FRONT_DOCKER) up -d --build
@@ -75,13 +75,13 @@ fclean: rmi builder_rm system_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
-	docker-compose -f $(DOCKER) down
+	docker compose -f $(DOCKER) down
 # docker-compose -f $(API_DOCKER) down
 # docker-compose -f $(AUTH_DOCKER) down
 # docker-compose -f $(FRONT_DOCKER) down
 
 down:
-	docker-compose -f $(DOCKER) down
+	docker compose -f $(DOCKER) down
 # docker-compose -f $(API_DOCKER) down
 # docker-compose -f $(AUTH_DOCKER) down
 # docker-compose -f $(FRONT_DOCKER) down

@@ -1,3 +1,8 @@
+function loginCallback()
+{
+	loadLogin()
+}
+
 function affAuthentification()
 {
 	let docMain = document.querySelector('main')
@@ -22,8 +27,7 @@ function affAuthentification()
 		</section>
 	</div>
 	`
-	if (!addScript("/js/login.js"))
-		loadLogin()
+	addScript("/js/login.js", loginCallback)
 	tradNewPage()
 	let buttons = document.querySelectorAll('main button')
 	buttons.forEach( button => {
@@ -31,6 +35,3 @@ function affAuthentification()
 	button.addEventListener("click", () => updatePage(button.value))
 	})
 }
-
-pages["/authentification"].funct = affAuthentification
-affAuthentification()

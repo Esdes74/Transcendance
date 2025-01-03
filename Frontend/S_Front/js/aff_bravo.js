@@ -12,6 +12,3 @@ function affBravo()
 		loadBravoFnct()
 	tradNewPage()
 }
-
-pages["/bravo"].funct = affBravo
-affBravo()

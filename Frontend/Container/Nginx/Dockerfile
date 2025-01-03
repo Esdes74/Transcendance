@@ -9,10 +9,8 @@ RUN mkdir -p $VOLUME
 
 #NGINX
 
-RUN	apt-get -y update
-RUN	apt-get -y upgrade
-RUN	apt-get -y install nginx
-RUN	apt-get -y install openssl
+RUN	apt-get -y update && apt-get -y upgrade
+RUN	apt-get -y install nginx && apt-get -y install openssl
 
 # Générer un certificat SSL auto-signé pour localhost et *.local
 RUN openssl req -x509 -nodes -out /etc/nginx/crt.pem -keyout /etc/nginx/privkey.pem \

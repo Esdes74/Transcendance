@@ -79,6 +79,36 @@ services:
       - pong_db
     restart: on-failure
 
+  tournament_web:
+    build:
+      context: ./Backend/S_Tournament/Container/django
+      args:
+        - VOLUME=${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
+        - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
+    container_name: django-Tournament
+    command: ["uvicorn", "Tournament.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "127.0.0.1:8003:8000"
+    volumes:
+      - ./Backend/S_Tournament/Tournament:${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
+    environment:
+      - POSTGRES_USER=${PSQL_USER:-default_us}
+      - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+      - POSTGRES_DB=${SQL_DATABASE_TOURNAMENT:-default_db}
+    env_file:
+      - .env
+    depends_on:
+#      pong_web:
+#        condition: "service_healthy"
+      tournament_psql:
+        condition: "service_healthy"
+#      api_psql:
+#        condition: "service_healthy" chaque service a sa db, aucun service n'a acces aux db des autres.
+    networks:
+      - backend
+      - tournament_db
+    restart: on-failure
+
   # Tous les conteneurs database contenant postgresql
   api_psql:
     container_name: postgreSQL-API
@@ -152,7 +182,31 @@ services:
       timeout: 10s
     restart: on-failure
 
-  # Conteneurs de front
+  tournament_psql:
+    container_name: postgreSQL-Tournament
+    build:
+      context: ./Backend/S_Tournament/Container/postgresql
+      args:
+        - POSTGRES_USER=${PSQL_USER:-default_us}
+        - POSTGRES_PASSWORD=${PSQL_PASS:-default_ps}
+        - POSTGRES_DB=${SQL_DATABASE_TOURNAMENT:-default_db}
+    volumes:
+      - Tournament_v:${PSQL_DATA_REPO}
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:5433:5432"
+    networks:
+      - tournament_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_TOURNAMENT"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      start_period: 15s
+      retries: 10
+      interval: 15s
+      timeout: 10s
+    restart: on-failure
+
+#   Conteneur de front
   front:
     build:
       context: ./Frontend/Container/Nginx
@@ -192,6 +246,10 @@ networks:
     name: pong_db
     driver: bridge
 
+  tournament_db:
+    name: tournament_db
+    driver: bridge
+
 # Volumes
 volumes:
   API_v:
@@ -205,3 +263,7 @@ volumes:
   Pong_v:
     driver: local
     name: Pong_v
+
+  Tournament_v:
+    driver: local
+    name: Tournament_v
