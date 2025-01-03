@@ -1,4 +1,4 @@
-function 2facallback()
+function twofacallback()
 {
 	load2faLogin()
 }
@@ -18,6 +18,6 @@ function aff2fa()
 		</form>
 	</div>
     `
-	addScript("/js/2fa.js", 2facallback)
+	addScript("/js/2fa.js", twofacallback)
 	tradNewPage()
 }
