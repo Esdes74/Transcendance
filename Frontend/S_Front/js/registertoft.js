@@ -27,6 +27,8 @@ async function loadRegisterToFT()
 			const result = await response.json();
 			console.log('Réponse de l\'API :', result);
 
+			uri = `https://api.intra.42.fr/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&state=${state}`;
+			window.location.assign(uri);
 		} else {
 			// Affiche un message d'erreur si la connexion échoue
 			const error = await response.json();
@@ -37,9 +39,6 @@ async function loadRegisterToFT()
 		console.error('Erreur lors de la connexion :', error);
 		alert('Une erreur est survenue. Veuillez réessayer.');
 	}
-
-	uri = `https://api.intra.42.fr/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&state=${state}`;
-	window.location.assign(uri);
 }
 
 function generateRandomString(length) {
