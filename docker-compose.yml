@@ -237,6 +237,7 @@ services:
     networks:
       - frontend
     restart: on-failure
+## rajouter un depends on...
 
 # Networks
 networks:

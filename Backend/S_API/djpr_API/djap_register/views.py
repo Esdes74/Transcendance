@@ -23,7 +23,10 @@ from .logout import logout
 from .reset_cookie import reset_cookie
 from rest_framework.permissions import AllowAny
 from djpr_API.decorator import jwt_required_2fa, auth_required, no_token_requiered, no_jwt_token_requiered, no_ft_token_requiered
+from django.shortcuts import get_object_or_404
 from djap_register.models import FtTokenModel
+from jwt.exceptions import InvalidTokenError, DecodeError
+from djap_register.models import UserProfile
 
 # TODO: Passer en GET
 @no_token_requiered

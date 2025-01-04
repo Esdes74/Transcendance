@@ -51,7 +51,7 @@ def make_token(request):
 			'client_id': uid,
 			'client_secret': secret,
 			'code': send_code,
-			'redirect_uri': "https://localhost:3000/bravocallback",
+			'redirect_uri': "https://z3r2p3:3000/bravocallback",
 			'state': send_state
 		}
 
