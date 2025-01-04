@@ -9,9 +9,7 @@ function loadRegister()
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
 		const confirmed_password = document.getElementById('confirmed-password').value;
-		const pseudo = document.getElementById('pseudo').value;
 		const mail = document.getElementById('mail').value;
-		const phone_nb = document.getElementById('phone_nb').value;
 
 		// Vérification si le mdp est bien confirmé
 		// if (password != confirmed_password)
@@ -25,9 +23,7 @@ function loadRegister()
 			username: username,
 			password: password,
 			confirmed: confirmed_password,
-			pseudo: pseudo,
 			mail: mail,
-			phone_nb: phone_nb,
 		};
 
 		try {

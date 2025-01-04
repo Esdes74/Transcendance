@@ -18,7 +18,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 class FullUser(AbstractUser):
 	realname = models.CharField(max_length=25, default=None, null=True)
 	email = models.EmailField(blank=True, null=True)
-	phone_nb = PhoneNumberField(blank=True, null=True)
 	secret = models.CharField(max_length=32, blank=True, null=True)
 	language = models.CharField(max_length=2, blank=False, null=False, default='fr')
 	secu = models.BooleanField(default=True)

@@ -29,6 +29,7 @@ RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
 # Build les images et seulement les images
+#	bash init.sh
 all:
 	docker compose -f $(DOCKER) up -d --build
 # docker-compose -f $(API_DOCKER) up -d --build

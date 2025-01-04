@@ -35,7 +35,7 @@ if not SECRET_KEY or not ALGO:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-API', FRONT_IP]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-API', FRONT_IP, 'z3r2p3']
 
 # # Paramétrage des CORS policies
 # CORS_ALLOWED_ORIGINS = [

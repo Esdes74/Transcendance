@@ -73,12 +73,10 @@ def create_view(request):
 	username = request.data.get('username')
 	password = request.data.get('password')
 	confirmed = request.data.get('confirmed')
-	pseudo = request.data.get('pseudo')
-	phone_nb = request.data.get('phone_nb')
 	mail = request.data.get('mail')
 
 	# Si je n'ai pas les champs obligatoires
-	if not username or not password or not confirmed or not pseudo:
+	if not username or not password or not confirmed :
 		return Response({"error": "Missing credentials"}, status=400)
 	if password != confirmed:
 		return Response({"error": "Password not confirmed"}, status=400)
@@ -88,8 +86,6 @@ def create_view(request):
 	payload = {
 		'username': username,
 		'password': password,
-		'pseudo': pseudo,
-		'phone_nb': phone_nb,
 		'mail': mail,
 	}
 
@@ -391,7 +387,6 @@ def get_verif(request):
 @auth_required
 @api_view(['GET'])
 def get_me(request):
-	# username = request.query_params.get('username')
 	username = getattr(request, 'username', None)
 
 	if not username:
@@ -416,3 +411,39 @@ def get_me(request):
 
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
+
+@api_view(['GET'])
+def is_logged(request):
+	token = request.COOKIES.get('jwt_token')
+
+	if not token:
+		return JsonResponse({"detail": "Not connected"}, status=201)
+
+	try:
+		# Décodage du token
+		decoded_token = jwt.decode(
+			token,
+			os.getenv('SECRET_KEY'),
+			algorithms=[os.getenv('ALGO')],
+			options={"verify_signature": True}
+		)
+
+		# Récupération des éléments à vérifier pour la validité du token
+		grade = decoded_token.get('grade')
+		username = decoded_token.get('username')
+		if (grade != 'auth' or not grade or not username):
+			return JsonResponse({"detail": "Unauthorized token"}, status=401)
+
+		# Récupération du user_id pour l'identification
+		user_id = decoded_token.get('user_id')
+		user_id = int(user_id)
+
+		# Charger l'utilisateur associé au token
+		user = get_object_or_404(UserProfile, user_id=user_id)
+
+		return JsonResponse({"detail": "Connected"}, status=201)
+
+	except InvalidTokenError:
+		return JsonResponse({"detail": "Invalid token"}, status=401)
+	except DecodeError:
+		return JsonResponse({"detail": "Token error"}, status=401)

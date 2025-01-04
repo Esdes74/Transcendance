@@ -60,12 +60,10 @@ def create(request):
 	if (request.method == 'POST') :
 		username = request.POST.get('username')
 		password = request.POST.get('password')
-		pseudo = request.POST.get('pseudo')
-		phone_nb = request.POST.get('phone_nb')
 		mail = request.POST.get('mail')
 
 		# Regarde si les identifiants sont donnés/recus
-		if not username or not password or not pseudo or not mail:
+		if not username or not password or not mail:
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		try:
@@ -77,7 +75,6 @@ def create(request):
 			user = FullUser.objects.create_user(
 				username=username,
 				password=password,
-				phone_nb=phone_nb,
 				email=mail,
 				secret=otp_sec
 			)
