@@ -1,3 +1,8 @@
+function registerToFTCallback()
+{
+	loadRegisterToFT()
+}
+
 function affRegisterToFT()
 {
 	let docMain = document.querySelector('main')
@@ -6,10 +11,9 @@ function affRegisterToFT()
 		<h1>Please wait until redirect to 42 connection</h1>
 	</div>
 	`
-	if (!addScript("/js/registertoft.js"))
-		loadRegisterToFT()
+	addScript("/js/registertoft.js", registerToFTCallback)
 	tradNewPage()
 }
 
-pages["/registertoft"].funct = affRegisterToFT
-affRegisterToFT()
+//pages["/registertoft"].funct = affRegisterToFT
+//affRegisterToFT()

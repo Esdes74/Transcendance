@@ -25,4 +25,5 @@ urlpatterns = [
 	path('get_verif/', views.get_verif, name='get_verif'), # renvois la valeur de la vérification choisie
 	path('stock/', views.stock, name='stock_state'), # redirige vers le stockage de state pour les requetes a l'api 42
 	path('make_token/', views.make_token, name='make_token'), # redirige vers la récupération du token pour les requetes a l'api 42
+	path('get_me/', views.get_me, name='get_me'), # renvois les infos de l'utilisateur en passant par le service auth
 ]

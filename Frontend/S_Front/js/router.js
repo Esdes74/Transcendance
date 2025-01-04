@@ -83,7 +83,17 @@ function rootMyUrl()
 		title: "Error 404",
 		script: "/js/aff_404.js",
 		callback: "aff404"
-	}
+	},
+	"/registertoft": {
+		title: "Remote Authentification",
+		script: "/js/aff_registertoft.js",
+		callback: "affRegisterToFT"
+	},
+	"/bravocallback": {
+		title: "Bravo Callback",
+		script: "/js/aff_bravoCallBack.js",
+		callback: "affBravoCallBack"
+	},
     }
 
 
@@ -106,13 +116,14 @@ function rootMyUrl()
     }
     else
     {
-	history.pushState({pageID: '404'}, '', "/404")
-	rootMyUrl()
+		console.log(loc)
+		history.pushState({pageID: '404'}, '', "/404")
+		rootMyUrl()
     }
 }
 
 var path = window.location.pathname
-history.replaceState({pageID: path.substring(1)}, '', path)
+history.pushState({pageID: path.substring(1)}, '', path)
 rootMyUrl()
 getLinks()
 document.body.style.display = 'block';

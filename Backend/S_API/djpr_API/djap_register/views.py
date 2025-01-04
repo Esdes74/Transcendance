@@ -387,3 +387,32 @@ def get_verif(request):
 
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
+
+@auth_required
+@api_view(['GET'])
+def get_me(request):
+	# username = request.query_params.get('username')
+	username = getattr(request, 'username', None)
+
+	if not username:
+		return Response({"error": "Missing credentials"}, status=400)
+
+	# Appeler un autre service pour gérer l'authentification
+	external_service_url = "http://django-Auth:8000/registery/get_me/"
+	params = {
+		'username': username,
+	}
+
+	try:
+		response = requests.get(external_service_url, params=params)#, headers=headers, cookies=request.COOKIES)
+
+		if response.status_code == 200:
+			json_response = JsonResponse(response.json(), status=200)
+			json_response = reset_cookie(request, json_response)
+			return json_response
+		else:
+			res = "Request failed\n" + response.text
+			return Response({"error": res}, status=response.status_code)
+
+	except requests.exceptions.RequestException as e:
+		return Response({"error": str(e)}, status=500)

@@ -133,3 +133,31 @@ def otp(request):
 
 		except Exception as e:
 			return JsonResponse({"error": "Authentification failed"}, status=500)
+
+def get_me(request):
+	if (request.method == 'GET') : # TODO: paser en GET
+		username = request.GET.get('username')
+
+		# Regarde si les identifiants sont donnés/recus
+		if not username :
+			return JsonResponse({"error": "Missings credentials"}, status = 400)
+
+		try:
+			# Authentification de l'utilisateurs avec les comptes prééxistans
+			user = FullUser.objects.filter(username=username).first()
+
+			# Si n'existe pas
+			if user is None:
+				return JsonResponse({"error": "Invalid Token"}, status=401)
+
+			# Génération du token temporaire et renvois
+			res = "Login Complete"
+			real = user.realname
+			name = user.username
+			mail = user.email
+			lang = user.language
+			secu = user.secu
+			return JsonResponse({"realname": real, "username": name, "email": mail, "language": lang, "secu": secu}, status = 200)
+
+		except Exception as e:
+			return JsonResponse({"error": "Request get_me failed"}, status=500)

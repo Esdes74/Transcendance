@@ -1,3 +1,8 @@
+function findname()
+{
+	loadBravoCallBack()
+}
+
 function affBravoCallBack()
 {
 	let docMain = document.querySelector('main')
@@ -8,10 +13,9 @@ function affBravoCallBack()
 		<p>maintenant c'est finis pour cette techno</p>
 	</section>
 	`
-	if (!addScript("/js/bravoCallBack.js"))
-		loadBravoCallBack()
+	addScript("/js/bravoCallBack.js", findname)
 	tradNewPage()
 }
 
-pages["/bravocallback"].funct = affBravoCallBack
-affBravoCallBack()
+//pages["/bravocallback"].funct = affBravoCallBack
+//affBravoCallBack()
