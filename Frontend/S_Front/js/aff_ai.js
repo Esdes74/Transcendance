@@ -86,8 +86,8 @@ function affAI()
 						<h2 class="fw-bold" data-translate="true"> Difficulté :</h2>
 						<div class="button-group">
 						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="easyMode">Facile</button>
-						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="normalMode">Intermediaire</button>
-						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="hardMode">Pongiste Professionnel</button>
+						<!--button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="normalMode">Intermediaire</button>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="hardMode">Pongiste Professionnel</button-->
 						</div>
 					</div>
 				</div>
