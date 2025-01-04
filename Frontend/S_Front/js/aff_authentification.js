@@ -22,10 +22,16 @@ function affAuthentification()
 		</form>
 		<div id="error-message" class="mt-3 text-danger"></div>
 		<section>
-			<button type="button" class="btn btn-dark" data-translate="true" value="Register"> Créer un compte</button>
+			<button type="button" class="btn btn-dark" data-translate="true" value="register"> Créer un compte</button>
+			<button type="button" class="btn btn-dark" data-translate="true" value="registertoft"> Connexion avec 42</button>
 		</section>
 	</div>
 	`
 	addScript("/js/login.js", loginCallback)
 	tradNewPage()
+	let buttons = document.querySelectorAll('main button')
+	buttons.forEach( button => {
+	if (button.type !== "submit")
+	button.addEventListener("click", () => updatePage(button.value))
+	})
 }

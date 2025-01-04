@@ -15,7 +15,7 @@ function getMainButtons()
 
 function updatePage(value)
 {
-    if (value === "index")
+	if (value === "index")
 	value = ""
     if (value === history.state.pageID || value === "expand")
     	return
@@ -29,8 +29,8 @@ function updatePage(value)
 
 function getLinks()
 {
-    let buttons = document.querySelectorAll("button")
-    buttons.forEach( button => {
-    	button.addEventListener("click", () => updatePage(button.value))
-    })
+	let buttons = document.querySelectorAll("button")
+	buttons.forEach( button => {
+		button.addEventListener("click", () => updatePage(button.value))
+	})
 }

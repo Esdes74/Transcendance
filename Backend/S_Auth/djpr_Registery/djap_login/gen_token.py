@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    gen_token.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/20 17:14:17 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/29 11:28:56 by eslamber         ###   ########.fr        #
+#    Updated: 2024/12/13 10:43:51 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,14 +48,17 @@ def generate_temporary_token(user):
 	}
 
 	# Génération du token
+	print("bonjour1")
 	token = jwt.encode(payload, SECRET_KEY, algorithm=ALGO)
 
 	# Génération du mot de passe temporaire envoyé
+	print("bonjour2")
 	otp_secret = user.secret
 	totp = pyotp.TOTP(otp_secret)
 	otp_code = totp.now()
 
 	# Envois du mot de passe par e-mail
+	print("bonjour3")
 	send_mail(
 		subject='2fa password',
 		message=f'Here is your 2fa password\nYou have less than 3 minutes to use this password\n{otp_code}',
@@ -64,4 +67,5 @@ def generate_temporary_token(user):
 		fail_silently=False,  # Si True, les erreurs d'envoi d'e-mail ne lèveront pas d'exceptions
 	)
 
+	print("bonjour4")
 	return token

@@ -6,14 +6,14 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/11/21 16:31:17 by eslamber         ###   ########.fr        #
+#    Updated: 2024/11/27 13:23:26 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
 
 # Attente que le conteneur front soit en ligne (ping)
-while ! nc -z front 443; do
+while ! nc -z Frontend 443; do
   echo "Attente que le conteneur front soit en ligne..."
   sleep 1
 done
@@ -23,10 +23,7 @@ FRONT_IP=$(getent hosts front | awk '{ print $1 }')
 export FRONT_IP
 
 # Tu peux maintenant utiliser l'IP comme une variable d'environnement ou la sauvegarder
-while ! pg_isready -h api_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
-	echo "attente du service postgresql"
-	sleep 1
-done
+# export NGINX_URL="https://$FRONT_IP"
 
 cd $VOLUME
 

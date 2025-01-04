@@ -6,9 +6,9 @@ function pongCallback()
 
 function affPong()
 {
-    let docMain = document.querySelector('main')
-   	docMain.innerHTML = `
-    	<div class="container text-center my-5">
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+		<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<h1 class="display-1">PONG</h1>

@@ -61,9 +61,9 @@ function manageButtons()
 
 function affAI()
 {
-    let docMain = document.querySelector('main')
-   	docMain.innerHTML = `
-       	<div class="container text-center my-5">
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+		<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<h1 class="mb-4 fw-bold" data-translate="true">Mode Solo</h1>

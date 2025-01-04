@@ -5,17 +5,17 @@ function playCallback()
 
 function affPlay()
 {
-    let docMain = document.querySelector('main')
-    docMain.innerHTML = `
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
 		<div class="container">
 			<div class="row margin py-4 my-2">
 			<div class="col-4">
 			<div class="card" link="pong" style="width: 18rem;">
-			  <img class="card-img-top" src="https://www.lunil.com/wp-content/uploads/2019/04/borne-arcade-Pong.jpg" alt="Card image cap">
-			  <div class="card-body">
-			    <h5 class="card-title text-center fw-bold">1v1 Mode</h5>
-			    <p class="card-text text-center">Affronte un ami dans ce mode 1v1 du Pong!</p>
-		  	</div>
+			<img class="card-img-top" src="https://www.lunil.com/wp-content/uploads/2019/04/borne-arcade-Pong.jpg" alt="Card image cap">
+			<div class="card-body">
+				<h5 class="card-title text-center fw-bold">Offline Mode</h5>
+				<p class="card-text text-center">Affronte un ami dans ce mode offline du Pong!</p>
+			</div>
 			</div>
 			</div>
 		    <div class="col-4">
@@ -27,12 +27,12 @@ function affPlay()
 		  	</div>  
 			</div>
 			</div>
-		    <div class="col-4">
+			<div class="col-4">
 			<div class="card" link="tournament" style="width: 18rem;">
-			  <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0Fvcq2MnC3WO3XAvW9I0T0lBg6Rii1NgC_g&s" alt="Card image cap">
-			  <div class="card-body">
-			    <h5 class="card-title text-center fw-bold">Tournament Mode</h5>
-			    <p class="card-text text-center">Affronte tes amis en tournoi de Pong!</p>
+			<img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0Fvcq2MnC3WO3XAvW9I0T0lBg6Rii1NgC_g&s" alt="Card image cap">
+			<div class="card-body">
+				<h5 class="card-title text-center fw-bold">Tournament Mode</h5>
+				<p class="card-text text-center">Affronte 7 autres joueurs en ligne au Pong!</p>
 			</div>
 			</div>
 			</div>

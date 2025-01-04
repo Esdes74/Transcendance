@@ -1,13 +1,13 @@
-function 2facallback()
+function twofacallback()
 {
 	load2faLogin()
 }
 
 function aff2fa()
 {
-    let docMain = document.querySelector('main')
-    docMain.innerHTML = `
-    <div class="container mt-5">
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+	<div class="container mt-5">
 		<h2>Connexion</h2>
 		<form id="loginForm">
 			<div class="form-group">
@@ -18,6 +18,6 @@ function aff2fa()
 		</form>
 	</div>
     `
-	addScript("/js/2fa.js", 2facallback)
+	addScript("/js/2fa.js", twofacallback)
 	tradNewPage()
 }

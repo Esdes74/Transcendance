@@ -18,5 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-	path('registery/', include('djap_login.urls'))
+	path('registery/', include('djap_login.urls')),
+	path('remoteft/', include('djap_RemoteFT.urls')),
+	path('settings/', include('djap_Settings.urls')),
 ]

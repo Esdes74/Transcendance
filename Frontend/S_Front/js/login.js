@@ -1,14 +1,5 @@
-function registerLink()
-{
-	history.pushState({pageID: 'Register'}, 'Register', '/register');
-	rootMyUrl();
-}
-
 function loadLogin()
 {
-		const button = document.querySelector('button[value="Register"]')	
-		if (button !== null)
-			button.addEventListener("click", registerLink);
 		const form = document.getElementById('loginForm');
 
 		form.addEventListener('submit', async (event) => {
@@ -38,10 +29,14 @@ function loadLogin()
 			// Vérifie la réponse de l'API
 			if (response.ok) { // TODO: Gérer la éception des cookies 
 				const result = await response.json();
-				console.log('Réponse de l\'API :', result);
+				console.log('Réponse de l\'API :', result.message);
 
 				// Redirige vers une autre page ou affiche un message de succès
-				window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
+				if (result['2fa'])
+					updatePage("2fa");
+				else
+					updatePage("bravo");
+				// window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();

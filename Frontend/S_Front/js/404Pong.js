@@ -34,20 +34,20 @@ function draw404(gameSettings)
 }
 
 function loop404(gameSettings) {
-    draw404(gameSettings);
-    gameSettings.textX += gameSettings.textSpeedX;
-    gameSettings.textY += gameSettings.textSpeedY;
-    if (gameSettings.textX <= 0)
-    {
-        gameSettings.textSpeedX *= -1
-    }
-    if (gameSettings.textX * gameSettings.canvas.width >= gameSettings.canvas.width - 55)
-    {
+	draw404(gameSettings);
+	gameSettings.textX += gameSettings.textSpeedX;
+	gameSettings.textY += gameSettings.textSpeedY;
+	if (gameSettings.textX <= 0)
+	{
+		gameSettings.textSpeedX *= -1
+	}
+	if (gameSettings.textX * gameSettings.canvas.width >= gameSettings.canvas.width - 55)
+	{
 	gameSettings.textSpeedX *= -1
-    }
-    if (gameSettings.textY * gameSettings.canvas.height <= 20 || gameSettings.textY >= 1)
-   	gameSettings.textSpeedY *= -1 
-  requestAnimationFrame(() => loop404(gameSettings));
+	}
+	if (gameSettings.textY * gameSettings.canvas.height <= 20 || gameSettings.textY >= 1)
+	gameSettings.textSpeedY *= -1 
+requestAnimationFrame(() => loop404(gameSettings));
 }
 
 init404Pong();

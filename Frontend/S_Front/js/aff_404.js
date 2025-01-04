@@ -4,9 +4,9 @@ function callback404()
 }
 function aff404()
 {
-    let docMain = document.querySelector('main')
-    docMain.innerHTML = `
-       	<div class="container text-center my-5">
+	let docMain = document.querySelector('main')
+	docMain.innerHTML = `
+		<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<h1 class="fw-bold" data-translate="true">Erreur</h1>

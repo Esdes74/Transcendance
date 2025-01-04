@@ -3,13 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Updated: 2024/10/23 19:50:54 by lmohin           ###   ########.fr        #
+#    Created: 2024/10/23 19:50:54 by lmohin            #+#    #+#              #
+#    Updated: 2024/12/12 11:26:18 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# Les volumes des bases de données sur la machine
 PONG_DB := /home/eslamber/data/Auth
 API_DB := /home/eslamber/data/API
 
@@ -103,6 +103,6 @@ system_rm:
 network_rm:
 	docker network rm $$(docker network ls | grep -vE 'NETWORK|DRIVER|ID|SERVER|SCOPE|bridge|host|none')	# Supprimer tous les réseaux
 
-re: rmi volume_rm builder_rm system_rm rm_dir all
+re: stop fclean all
 
 .PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean dir rm_dir down re build restart start sys sysall
