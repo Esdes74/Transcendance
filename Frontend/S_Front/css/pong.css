@@ -5,6 +5,11 @@ h1 {
 }
 
 
+.tooltip-inner {
+	font-weight: bold;
+	font-size: 15px;
+}
+
 canvas {
 	position: relative;
 	background-color: rgb(115, 171, 201);
@@ -71,6 +76,14 @@ canvas {
 }
 
 .button-group button {
-	width: 100%; /* Largeur égale pour les boutons */
+	width: 90%; /* Largeur égale pour les boutons */
 	margin: 10px 0; /* Espacement vertical entre les boutons */
+}
+
+.button-group span {
+	width: 90%;
+}
+
+.button-group span button {
+	width: 100%;
 }
