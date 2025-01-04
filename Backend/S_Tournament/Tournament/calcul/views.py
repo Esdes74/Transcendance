@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
-from .models import Tournament, Player
+from .models import Tournament
 import json
 # import pyotp	<-- danger
 
@@ -10,19 +10,14 @@ import json
 
 # SELECT TOURNAMENT
 def selectTournament(request):
-
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
+	tournament, created = Tournament.objects.get_or_create(id=1)
 	if request.method == 'POST':
-		try:
-			data = json.loads(request.body)
-		except json.JSONDecodeError:
-			return JsonResponse({"error": "Invalid JSON"}, status=400)
-
 		print("data : ", data)
 		btn = data.get('btn')
-
-		# Get or create a tournament instance
-		tournament, created = Tournament.objects.get_or_create(id=1)
-
 		if btn == 'btn1':
 			if tournament.player_registered > 3:
 				return JsonResponse({"error": "Vous avez déjà trop de joueurs inscrits", "return": "error"}, status=400)
@@ -55,14 +50,11 @@ def selectTournament(request):
 # CREATE PLAYER
 def createPlayer(request):
 	print("Here we are in createPlayer")
-
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
 	if request.method == 'POST':
-
-		try:
-			data = json.loads(request.body)
-		except json.JSONDecodeError:
-			return JsonResponse({"error": "Invalid JSON"}, status=400)
-
 		print("data : ", data)
 		name = data.get('name')
 		index = data.get('index')
@@ -91,14 +83,11 @@ def createPlayer(request):
 # DELETE PLAYER
 def deletePlayer(request):
 	print("Here we are in deletePlayer")
-
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
 	if request.method == 'POST':
-
-		try:
-			data = json.loads(request.body)
-		except json.JSONDecodeError:
-			return JsonResponse({"error": "Invalid JSON"}, status=400)
-
 		print("data : ", data)
 		name = data.get('name')
 		index = data.get('index')
@@ -116,37 +105,29 @@ def deletePlayer(request):
 
 def initDB(request):
 	print("Here we are in initDB")
-
+	tournament, created = Tournament.objects.get_or_create(id=1)
 	if request.method == 'POST':
-
-		tournament, created = Tournament.objects.get_or_create(id=1)
-
 		tournament.player_registered = 0
 		tournament.size = 0
 		tournament.old_size = 0
 		tournament.champs_libre = 0
 		tournament.player_list = []
 		tournament.save()
-
 		return JsonResponse({"return": "initDB"}, status=200)
-
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
 def validTournament(request):
 	print("Here we are in validTournament")
 
+
+	tournament, created = Tournament.objects.get_or_create(id=1)
 	if request.method == 'POST':
-
-		tournament, created = Tournament.objects.get_or_create(id=1)
-
 		if tournament.size == 0 or tournament.size == None:
 			return JsonResponse({"error": "Vous n'avez pas encore choisi la taille du tournoi !", "return": "error"}, status=400)
 		if tournament.player_registered != tournament.size:
 			return JsonResponse({"error": "Le nombre de joueur inscrit n'est pas égal au nombre de joueur attendu", "return": "error"}, status=400)
-
 		return JsonResponse({"player_list": tournament.player_list, "return": "validTournament"}, status=200)
-
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
@@ -155,58 +136,35 @@ def validTournament(request):
 # ############################################################################################################
 
 def startTournament(request):
-	from .models import Player
-	print("Here we are in startTournament")
-
+	#from .models import Player
+	# print("Here we are in startTournament")
 	if request.method == 'POST':
 		try:
 			data = json.loads(request.body)
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
-
 		rondes = 3
 		player_list = data.get('player_list')
-		# print("data : ", data)
+		print("data : ", data)
 		shuffle_list(player_list)
 		print("data : ", player_list)
-
 		#sauvegardes des joueurs
 		# player_instance = Player()
-
-		for i in player_list:
-			player_inst = Player.objects.create(name=player_list[i], winscore=0, game_played=0)
-			print("player_instance : ", player_inst.name)
-			player_inst.save()
-
+		# for i in player_list:
+		# 	player_inst = Player.objects.create(name=player_list[i], winscore=0, game_played=0)
+		# 	print("player_instance : ", player_inst.name)
+		# 	player_inst.save()
 		#afficher dans la console les joueurs sauvegardés\\
-		print("player_instance : ", player_list[0])
-		player = Player.objects.filter(name=player_list[0])
-		print("player : ", player)
+		# print("player_instance : ", player_list[0])
+		# player = Player.objects.filter(name=player_list[0])
+		# print("player : ", player)
 		# Pairer les joueurs
-		pairs = player_list
-		print("data : ", pairs)
-		pairs = split_into_pairs(pairs)
-		print("data : ", pairs)
-
-
-
-		return JsonResponse({"pairs": pairs}, status=200)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		# pairs = player_list
+		# print("data : ", pairs)
+		# pairs = split_into_pairs(pairs)
+		# print("data : ", pairs)
+		#return JsonResponse({"pairs": pairs}, status=200)
 		return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
-
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
@@ -228,11 +186,11 @@ def shuffle_list(array):
 	return array
 
 def split_into_pairs(joueurs):
-    pairs = []
-    for i in range(0, len(joueurs), 2):
-        pair = joueurs[i:i + 2]
-        pairs.append(pair)
-    return pairs
+	pairs = []
+	for i in range(0, len(joueurs), 2):
+		pair = joueurs[i:i + 2]
+		pairs.append(pair)
+	return pairs
 
 
 

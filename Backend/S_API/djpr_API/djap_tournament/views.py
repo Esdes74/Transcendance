@@ -13,13 +13,10 @@ import json
 @api_view(['POST'])
 def selectTournament(request):
 	print("Here we are in selectTournament")
-
+	data = json.loads(request.body)
+	response = requests.post('http://django-tournament:8000/tournament/selectTournament/', json=data)
 	if request.method == 'POST':
-
-		data = json.loads(request.body)
 		print("SELECT TOURNAMENT data : ", data)
-
-		response = requests.post('http://django-tournament:8000/tournament/selectTournament/', json=data)
 		try:
 			response_data = response.json()
 		except ValueError:
@@ -103,11 +100,8 @@ def validTournament(request):
 @api_view(['POST'])
 def startTournament(request):
 	print("Here we are in startTournament")
-
+	data = json.loads(request.body)
 	if request.method == 'POST':
-
-		data = json.loads(request.body)
-
 		response = requests.post('http://django-tournament:8000/tournament/startTournament/', json=data)
 		try:
 			response_data = response.json()

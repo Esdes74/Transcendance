@@ -35,8 +35,8 @@ function affTournament_EventManager()
 // Fonction qui envoie les requêtes à l'API
 async function affTournament_sendRequest(data, function_name)
 {
-
-	const response = await fetch('/api/tournament/'+ function_name + '/', {
+	const safeFunctionName = encodeURIComponent(function_name);
+	const response = await fetch(`/api/tournament/${safeFunctionName}/`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
