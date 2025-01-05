@@ -53,10 +53,6 @@ function rootMyUrl()
 		script: "/js/aff_2fa.js",
 		callback: "aff2fa"
 	},
-	"/play": {
-		script: "/js/aff_play.js",
-		callback: "affPlay"
-	},
 	"/tournament": {
 		script: "/js/aff_tournament.js",
 		callback: "affTournament"
