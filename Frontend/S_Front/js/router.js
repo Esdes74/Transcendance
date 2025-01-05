@@ -113,12 +113,13 @@ function rootMyUrl()
 function initiatePage()
 {
 	var path = window.location.pathname
-	history.pushState({pageID: path.substring(1)}, '', path)
+	//history.pushState({pageID: path.substring(1)}, '', path)
 	if (is_logged())
 	{
 		change_header()
 	}
 	rootMyUrl()
+	history.replaceState({pageID: path.substring(1)}, '', path)
 	getLinks()
 	document.body.style.display = 'block';
 	window.addEventListener('popstate', function (event)
