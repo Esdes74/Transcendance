@@ -5,8 +5,10 @@ function tradNewPage()
 		{
 		let elements = document.querySelectorAll('main [data-translate="true"]')
 		tradElements(elements)
-			let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
-			tradPlaceholders(placeholders)
+		let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
+		tradPlaceholders(placeholders)
+		let tooltips = document.querySelectorAll('[data-translate="tooltips"]')
+		tradTooltips(tooltips)
 	}
 }
 
@@ -19,7 +21,23 @@ function tradDiv(div)
 		tradElements(elements)
 		let placeholders = div.querySelectorAll('[data-translate="placeholder"]')
 		tradPlaceholders(placeholders)
+		let tooltips = div.querySelectorAll('[data-translate="tooltips"]')
+		tradTooltips(tooltips)
 	}
+}
+
+async function getTrads(language)
+{
+	let request
+	if (language === "spanish")
+		request = new Request("/json/fr_sp_trad.json")
+	if (language === "english")
+		request = new Request("/json/fr_en_trad.json")
+	let response = await fetch(request)
+	if (!response.ok)
+		console.error("Error:", response.status)
+	let trads = await response.json()
+	return (trads)
 }
 
 async function tradElements(elements)
@@ -28,16 +46,7 @@ async function tradElements(elements)
 	let language = currentFlag.getAttribute('data-language')
 	if (language === "french")
 		return
-	
-	let request;
-	if (language === "spanish")
-		request = new Request("/json/fr_sp_trad.json")
-	if (language === "english")
-		request = new Request("/json/fr_en_trad.json")
-	let response = await fetch(request)
-	if (!response.ok)
-		console.error("Erreur:", response.status)
-	let trads = await response.json()
+	let trads = await getTrads(language)
 	elements.forEach( element => {
 		if (element.innerText in trads)
                 	element.innerText = trads[element.innerText]
@@ -50,33 +59,30 @@ async function tradPlaceholders(elements)
 	let language = currentFlag.getAttribute('data-language')
 	if (language === "french")
 		return
-	
-	let request;
-	if (language === "spanish")
-		request = new Request("/json/fr_sp_trad.json")
-	if (language === "english")
-		request = new Request("/json/fr_en_trad.json")
-	let response = await fetch(request)
-	if (!response.ok)
-		console.error("Erreur:", response.status)
-	let trads = await response.json()
-	
+	let trads = await getTrads(language)
 	elements.forEach( element => {
 		if (element.placeholder in trads)
                 	element.placeholder = trads[element.placeholder]
 	})
 }
 
+async function tradTooltips(elements)
+{
+	let currentFlag = document.getElementById("currentFlag")
+	let language = currentFlag.getAttribute('data-language')
+	if (language === "french")
+		return
+	let trads = await getTrads(language)
+	elements.forEach( element => {
+		title = element.getAttribute('data-bs-original-title')
+		if (title in trads)
+			element.setAttribute('data-bs-original-title', trads[title])
+	})
+}
+
 async function returnToFrench(language)
 {
-	let request;
-	if (language === "english")
-		request = new Request("/json/fr_en_trad.json")
-	if (language === "spanish")
-		request = new Request("/json/fr_sp_trad.json")
-	let response = await fetch(request)
-	let trads = await response.json()
-	
+	let trads = await getTrads(language)
 	let invertedTrads = {};
 	for (let key in trads)
 		invertedTrads[trads[key]] = key;
@@ -90,31 +96,40 @@ async function returnToFrench(language)
 		if (element.placeholder in invertedTrads)
 			element.placeholder = invertedTrads[element.placeholder]
 	})
+	let tooltips = document.querySelectorAll('[data-translate="tooltips"]')
+	tooltips.forEach( element => {
+		title = element.getAttribute('data-bs-original-title')
+		if (title in invertedTrads)
+			element.setAttribute('data-bs-original-title', invertedTrads[title])
+		})
 }
 
-async function updateLanguage(flag)
+async function updateLanguage(clickedFlag)
 {
 	let currentFlag = document.getElementById("currentFlag")
-	if (flag.getAttribute('data-language') === currentFlag.getAttribute('data-language'))
+	if (clickedFlag.getAttribute('data-language') === currentFlag.getAttribute('data-language'))
 		return
-	let tmpAlt = flag.alt
-	let tmpValue = flag.getAttribute('data-language')
-	let tmpSrc = flag.src
+	let tmpAlt = clickedFlag.alt
+	let tmpValue = clickedFlag.getAttribute('data-language')
+	let tmpSrc = clickedFlag.src
 
-	flag.src = currentFlag.src
-	flag.alt = currentFlag.alt
-	flag.setAttribute('data-language', currentFlag.getAttribute('data-language'))
+	clickedFlag.src = currentFlag.src
+	clickedFlag.alt = currentFlag.alt
+	clickedFlag.setAttribute('data-language', currentFlag.getAttribute('data-language'))
 
 	currentFlag.alt = tmpAlt
 	currentFlag.src = tmpSrc
 	currentFlag.setAttribute('data-language', tmpValue)
 
-	if (flag.getAttribute('data-language') !== "french")
-		await returnToFrench(flag.getAttribute('data-language'))
+	if (clickedFlag.getAttribute('data-language') !== "french")
+		await returnToFrench(clickedFlag.getAttribute('data-language'))
+	
 	let elements = document.querySelectorAll('[data-translate="true"]')
 	tradElements(elements)
 	let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
 	tradPlaceholders(placeholders)
+	let tooltips = document.querySelectorAll('[data-translate="tooltips"]')
+	tradTooltips(tooltips)
 }
 
 function getFlags()
