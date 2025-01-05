@@ -124,6 +124,7 @@ function initiatePage()
 	document.body.style.display = 'block';
 	window.addEventListener('popstate', function (event)
 	{
+		cleanTooltips()
 		rootMyUrl()
 	}
 	)
