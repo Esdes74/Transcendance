@@ -44,41 +44,29 @@ function shiningButtons()
 	document.addEventListener('keydown', function(event) {
 		if (event.key === "w" || event.key === "W")
 		{
-			upDiv = (document.getElementById("keyup"))//.style.backgroundColor = 'red';
-			if (upDiv)
-			{	
-				upDiv.classList.remove('bg-dark')
-				upDiv.classList.add('bg-secondary')
-			}
+			upDiv = (document.getElementById("keyup"))
+			upDiv?.classList.remove('bg-dark')
+			upDiv?.classList.add('bg-secondary')
 		}
 		if (event.key === "s" || event.key === "S")
 		{
 			downDiv = (document.getElementById("keydown"))
-			if (downDiv)
-			{
-				downDiv.classList.remove('bg-dark')
-				downDiv.classList.add('bg-secondary')
-			}
+			downDiv?.classList.remove('bg-dark')
+			downDiv?.classList.add('bg-secondary')
 		}
 	})
 	document.addEventListener('keyup', function(event) {
 		if (event.key === "w" || event.key === "W")
 		{
 			upDiv = (document.getElementById("keyup"))
-			if (upDiv)
-			{
-				upDiv.classList.remove('bg-secondary')
-				upDiv.classList.add('bg-dark')
-			}
+			upDiv?.classList.remove('bg-secondary')
+			upDiv?.classList.add('bg-dark')
 		}
 		if (event.key === "s" || event.key === "S")
 		{
 			downDiv = (document.getElementById("keydown"))
-			if (downDiv)
-			{
-				downDiv.classList.remove('bg-secondary')
-				downDiv.classList.add('bg-dark')
-			}
+			downDiv?.classList.remove('bg-secondary')
+			downDiv?.classList.add('bg-dark')
 		}
 	})
 }
