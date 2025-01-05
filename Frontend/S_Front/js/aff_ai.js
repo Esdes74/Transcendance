@@ -39,6 +39,50 @@ function affReplayBlock()
 	})
 }
 
+function shiningButtons()
+{
+	document.addEventListener('keydown', function(event) {
+		if (event.key === "w" || event.key === "W")
+		{
+			upDiv = (document.getElementById("keyup"))//.style.backgroundColor = 'red';
+			if (upDiv)
+			{	
+				upDiv.classList.remove('bg-dark')
+				upDiv.classList.add('bg-secondary')
+			}
+		}
+		if (event.key === "s" || event.key === "S")
+		{
+			downDiv = (document.getElementById("keydown"))
+			if (downDiv)
+			{
+				downDiv.classList.remove('bg-dark')
+				downDiv.classList.add('bg-secondary')
+			}
+		}
+	})
+	document.addEventListener('keyup', function(event) {
+		if (event.key === "w" || event.key === "W")
+		{
+			upDiv = (document.getElementById("keyup"))
+			if (upDiv)
+			{
+				upDiv.classList.remove('bg-secondary')
+				upDiv.classList.add('bg-dark')
+			}
+		}
+		if (event.key === "s" || event.key === "S")
+		{
+			downDiv = (document.getElementById("keydown"))
+			if (downDiv)
+			{
+				downDiv.classList.remove('bg-secondary')
+				downDiv.classList.add('bg-dark')
+			}
+		}
+	})
+}
+
 function manageButtons()
 {
 	buttons = document.querySelectorAll('main button')
@@ -89,6 +133,24 @@ function affAI()
 						<!--button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="normalMode">Intermediaire</button>
 						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="hardMode">Pongiste Professionnel</button-->
 						</div>
+						<div class="container">
+							<div class="row mt-2 mb-2">
+								<div class="col-6 d-flex justify-content-end align-items-center fw-bold" data-translate="true">
+									Haut
+								</div>
+								<div id="keyup" class="col-2 border bg-dark d-flex justify-content-center align-items-center" style="height: 42.58px;">
+									w
+								</div>
+							</div>
+							<div class="row mb-2">
+								<div class="col-6 d-flex justify-content-end align-items-center fw-bold" data-translate="true">
+									Bas 
+								</div>
+								<div id="keydown" class="col-2 border bg-dark d-flex justify-content-center align-items-center" style="height: 42.58px;">
+									s
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -96,6 +158,7 @@ function affAI()
 	</div>
     `
     document.querySelector(".replayBlock").style.display = "block"
+    shiningButtons()
     addScript("/js/indexPong.js", callbackAI)
     tradNewPage()
     manageButtons()
