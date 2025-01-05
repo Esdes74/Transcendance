@@ -139,7 +139,11 @@ async function is_logged()
 
 		// Vérifie la réponse de l'API
 		if (response.ok) {
-			return true
+			let jsonResponse = await response.json()
+			if (jsonResponse['detail'] === "Not connected")
+				return false
+			else
+				return true
 		} else {
 			return false
 		}
