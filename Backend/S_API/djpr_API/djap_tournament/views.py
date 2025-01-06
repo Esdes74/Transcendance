@@ -100,6 +100,19 @@ def validTournament(request):
 # ############################################################################################################
 
 @api_view(['POST'])
+def startTournament(request):
+	print("Here we are in startTournament")
+	if request.method == 'POST':
+		data = json.loads(request.body)
+		response = requests.post('http://django-tournament:8000/tournament/startTournament/', json=data)
+		try:
+			response_data = response.json()
+		except ValueError:
+			return JsonResponse({"error": "Invalid response from internal API"}, status=500)	# verif les error500
+		return JsonResponse(response_data, status=200)
+	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@api_view(['POST'])
 def startGame(request):
 	print("Here we are in startGame")
 

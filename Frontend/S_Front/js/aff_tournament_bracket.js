@@ -1,4 +1,4 @@
-function affTournamentBracket_start(player_list)
+async function affTournamentBracket_start(player_list)
 {
 	let docMain = document.querySelector('main')
 	// <button class="btn btn-outline-light m-2" id="start" data-translate="true">Start the Game (lance pong.js)</button>
@@ -15,7 +15,19 @@ function affTournamentBracket_start(player_list)
 	`
 	console.log("hello !");
 	console.log("player_list : ", player_list);
-	tournoiSuisse(player_list, 3);
+	result = await affTournamentBracket_sendRequest({'player_list': player_list}, 'startTournament');
+	// tournoiSuisse(player_list, 3);
+	console.log("result : ", result);
+
+	const divElement = document.getElementById('algo');
+
+	result.pairs.forEach(pair => {
+		const current_game = document.createElement('div');
+		current_game.className = 'col';
+		current_game.textContent = pair[0] + " vs " + pair[1];
+		divElement.appendChild(current_game);
+		readyState(pair[0], pair[1], divElement);
+	});
 }
 
 
@@ -145,14 +157,10 @@ function readyState(joueur1, joueur2, divElement)
 	});
 }
 
-
-
-
-
 // Fonction qui envoie les requêtes à l'API
 async function affTournamentBracket_sendRequest(data, function_name)
 {
-
+	console.log('Envoi de la requête à l\'API :', data, "et la funciton name : ", function_name);
 	const response = await fetch('/api/tournament/'+ function_name + '/', {
 		method: 'POST',
 		headers: {
@@ -163,8 +171,6 @@ async function affTournamentBracket_sendRequest(data, function_name)
 	});
 
 	const result = await response.json();
-	console.log('Réponse de l\'API :', result.return);
-	return result.return;
+	console.log('Réponse de l\'API :', result);
+	return result;
 }
-// document.getElementById('start').addEventListener('click', function() {
-// }
