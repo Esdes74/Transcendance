@@ -68,5 +68,4 @@ async function affIndex()
 	addScript("/js/indexPong.js", callbackIndex)
 	tradNewPage()
 	getMainButtons()
-	console.log(await is_logged())
 }
