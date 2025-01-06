@@ -22,23 +22,20 @@ function affAuthentification()
 					<div class="replayBlock">
 						<form id="loginForm">
 							<div class="form-group">
-				<label for="username" class="mb-2" data-translate="true">Nom d'utilisateur</label>
+				<label for="username" class="mb-2 fw-bold" data-translate="true">Nom d'utilisateur</label>
 				<input type="text" class="form-control mb-3" id="username" data-translate="placeholder" placeholder="Entrez votre nom d'utilisateur" required>
 			</div>
 			<div class="form-group">
-				<label for="password" class="mb-2" data-translate="true">Mot de passe</label>
+				<label for="password" class="mb-2 fw-bold" data-translate="true">Mot de passe</label>
 				<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" required>
 			</div>
-			<button type="submit" class="btn btn-primary mb-2" data-translate="true">Se connecter</button>
+			<button type="submit" class="btn btn-primary mb-3" data-translate="true">Se connecter</button>
 		</form>
-		<div id="error-message" class="mt-3 text-danger"></div>
-		<div class="row">
-			<div class="col">
-				<button type="button" class="btn btn-dark" data-translate="true" value="register"> Créer un compte</button>
-			</div>
-			<div class="col">
-			<button type="button" class="btn btn-dark" data-translate="true" value="registertoft"> Connexion avec 42</button>
-			</div>
+		<p class="link-p fs-6 fw-bold text-white" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
+		<!--div id="error-message" class="mt-3 text-danger"></div-->
+		<!--div class="replayBlock row"-->
+				<!--button type="button" class="btn btn-dark mb-2" data-translate="true" value="register"> Créer un compte</button-->
+			<!--button type="button" class="btn btn-dark" data-translate="true" value="registertoft"> Connexion avec 42</button-->
 		</div>
 		</div>
 		</div>
@@ -50,6 +47,8 @@ function affAuthentification()
 	addScript("/js/loginPong.js", loginAnimationCallback)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	tradNewPage()
+	let registerParam = document.getElementById("register")
+	registerParam.addEventListener("click", () => updatePage(registerParam.id))
 	let buttons = document.querySelectorAll('main button')
 	buttons.forEach( button => {
 	if (button.type !== "submit")

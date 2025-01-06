@@ -121,6 +121,11 @@ section p {
 	transform: scale(1.05);
 }
 
+.link-p:hover {
+	transform: scale(1.08);
+	cursor: pointer;
+}
+
 .dropdown-menu {
 	--bs-dropdown-min-width: 72px;
 }

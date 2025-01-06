@@ -20,19 +20,19 @@ function loadAnimationLogin(myCanvas)
 		ballSpeedY: 0.012,
 	};
 
-	resizeIndexCanvas(gameSettings);
+	resizeLoginCanvas(gameSettings);
 	gameSettings.printBall = true;
 	let height = gameSettings.canvas.height;
 	let width = gameSettings.canvas.width;
         gameSettings.player2 = gameSettings.paddle2Dest / height
         gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
 
-	indexGameLoop(gameSettings);
+	loginLoop(gameSettings);
 }
 	
 	
 	
-function resizeIndexCanvas(gameSettings)
+function resizeLoginCanvas(gameSettings)
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
@@ -42,10 +42,10 @@ function resizeIndexCanvas(gameSettings)
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
 	gameSettings.paddle2Y = gameSettings.paddle1Y;
-	indexDraw(gameSettings);
+	loginDraw(gameSettings);
 }
 
-function indexDraw(gameSettings)
+function loginDraw(gameSettings)
 {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
@@ -72,6 +72,6 @@ function indexDraw(gameSettings)
 	ctx.fill();
 }
 
-function indexGameLoop(gameSettings) {
-	indexDraw(gameSettings);
+function loginLoop(gameSettings) {
+	loginDraw(gameSettings);
 }
