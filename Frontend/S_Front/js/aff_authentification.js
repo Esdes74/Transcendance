@@ -16,7 +16,7 @@ function affAuthentification()
 	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
-				<h1 class="mb-4 fw-bold" data-translate="true">Connexion</h1>
+				<h1 class="mb-5 fw-bold" data-translate="true">Connexion</h1>
 				<div class="canvas-container">
 					<canvas id="loginCanvas" class="w-100" height="400"></canvas>
 					<div class="replayBlock">
@@ -40,8 +40,11 @@ function affAuthentification()
 		</div>
 
 	`
+	/* Verifier egalement en back les donnees envoyees */
 	addScript("/js/login.js", loginCallback)
 	addScript("/js/loginPong.js", loginAnimationCallback)
+	forms = document.querySelectorAll('input')
+	setFormsAlert(forms)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	tradNewPage()
 	let registerParam = document.getElementById("register")
