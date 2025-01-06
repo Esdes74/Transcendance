@@ -100,8 +100,7 @@ function rootMyUrl()
 	}
 	else
 	{
-		console.log(loc)
-		history.pushState({pageID: '404'}, '', "/404")
+		history.replaceState({pageID: '404'}, '', "/404")
 		rootMyUrl()
 	}
 }
