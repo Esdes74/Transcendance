@@ -20,7 +20,7 @@ async function affIndex()
 					<button data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-translate="tooltips" data-bs-original-title="Affronte une IA au Pong!" class="btn btn-outline-light m-2 fw-bold" value="ai"><span data-translate="true">Solo</span></button>
 						<button data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-translate="tooltips" data-bs-original-title="1vs1 en local contre un ami!" class="btn btn-outline-light m-2 fw-bold" value="pong"><span data-translate="true">Duel</span></button>
 						<span id="tournament_span" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-translate="tooltips" data-bs-original-title="Connecte-toi pour créer un tournoi">
-							<button id="tournament" disabled class="btn btn-outline-light fw-bold" data-translate="true" value="tournament"><span data-translate="true">Tournoi</span> <i class="bi bi-exclamation-triangle m-2 fw-bold col-6"></i>
+							<button id="tournament" disabled class="btn btn-outline-light fw-bold" data-translate="true" value="tournament"><span data-translate="true">Tournoi</span> <i class="bi bi-exclamation-triangle fw-bold col-6"></i>
 							</button>
 						</span>
 						</div>
