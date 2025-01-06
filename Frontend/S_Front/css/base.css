@@ -24,7 +24,7 @@ h1 {
 }
 
 .navbar {
-	background-color: rgba(16, 55, 68, 0.679);
+	background: linear-gradient(to right, rgb(48, 99, 118) 0%, rgb(82, 147, 171) 50%, rgb(48,99,118) 100%) ! important;
 }
 
 /* Section principale */
