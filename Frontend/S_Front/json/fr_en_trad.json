@@ -3,6 +3,7 @@
 	"Réalisé par eslamber, lmohin, mwubneh, tdutel": "Made by eslamber, lmohin, mwubneh, tdutel",
 	"Bienvenue": "Welcome",
 	"JOUER": "PLAY",
+	"Jouer :": "Play :",
 	"SE CONNECTER": "LOGIN",
 	"Se connecter": "Login",
 	"Haut": "Up",
@@ -10,11 +11,11 @@
 	"Connecte-toi pour créer un tournoi": "Log-in to create tournament",
 	"Pong Majestueux": "Majestic Pong",
 	"Solo": "Solo",
+	"Duel": "Duel",
+	"Tournoi": "Tournament",
 	"1vs1 en local contre un ami!": "1vs1 locally against a friend!",
 	"Affronte une IA au Pong!": "Face against an AI in Pong!",
 	"Crée un tournoi de 3 à 8 joueurs": "Create a 3 to 8 players tournament",
-	"Duel": "Duel",
-	"Tournoi": "Tournament",	
 	"Créer un compte": "Register",
 	"PONG MAJESTUEUX": "MAJESTIC PONG",
 	"Erreur": "Error",
@@ -26,5 +27,7 @@
 	"Nom d'utilisateur": "Username",
 	"Mot de passe": "Password",
 	"Entrez votre nom d'utilisateur": "Enter your username",
-	"Entrez votre mot de passe": "Enter your password"
+	"Entrez votre mot de passe": "Enter your password",
+	"Pas de compte ? Inscrivez-vous": "No account ? Register",
+	"Connexion": "Login"
 }

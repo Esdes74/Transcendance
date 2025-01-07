@@ -21,5 +21,14 @@
 	"PONG MAJESTUEUX": "PONG MAJESTUOSO",
 	"Erreur": "Error",
 	"Fichier introuvable": "Página no encontrada",
-	"Revenir à l'accueil": "Volver al índice"
+	"Revenir à l'accueil": "Volver al índice",
+	"Paramètres": "Parámetros",
+        "Rejouer": "Otra partida",
+        "a gagné": "gano",
+        "Nom d'utilisateur": "Nombre de usuario",
+        "Mot de passe": "Contraseña",
+        "Entrez votre nom d'utilisateur": "Escribe tu nombre de usuario",
+        "Entrez votre mot de passe": "Escribe una contraseña",
+        "Pas de compte ? Inscrivez-vous": "¿Sin cuenta? Registro",
+        "Connexion": "Acceder"
 }
