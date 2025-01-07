@@ -63,8 +63,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			if self.action == False:				# Ici si l'action est en pause soit si goal
 				await asyncio.sleep(0.5)
 				self.action = True
-				self.ballSpeedX = 0.003 * self.nextService
-				self.ballSpeedY = 0.003
+				self.ballSpeedX = 0.03 * self.nextService
+				self.ballSpeedY = 0.03
 			self.ballX += self.ballSpeedX
 			self.ballY += self.ballSpeedY
 			if abs(self.ballSpeedX) >= self.max_speed:
@@ -79,10 +79,10 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			# Détection de collision avec les raquettes
 			if self.ballX <= self.player1X - 0.005 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
 				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
-				self.ballSpeedY = (self.ballY - self.player1Y) * 0.04 * self.acceleration		# Rebond en fonction de la position de la raquette
+				self.ballSpeedY = (self.ballY - self.player1Y) * 0.4 * self.acceleration		# Rebond en fonction de la position de la raquette
 			if self.ballX >= self.player2X + 0.005 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
 				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
-				self.ballSpeedY = (self.ballY - self.player2Y) * 0.04 * self.acceleration		# Rebond en fonction de la position de la raquette
+				self.ballSpeedY = (self.ballY - self.player2Y) * 0.4 * self.acceleration		# Rebond en fonction de la position de la raquette
 
 			# Réinitialiser la balle si elle sort du terrain
 			if self.ballX >= 1:				# Joueur 1 marque
