@@ -29,7 +29,7 @@ function affAuthentification()
 								<label for="password" class="mb-2 fw-bold" data-translate="true">Mot de passe</label>
 									<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" required>
 							</div>
-							<button type="submit" class="btn btn-primary mb-4" data-translate="true">Se connecter</button>
+							<button type="submit" class="btn btn-outline-light fw-bold mb-4" data-translate="true">Se connecter</button>
 						</form>
 						<p class="link-p fs-6 fw-bold text-white mb-0" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
 					</div>
