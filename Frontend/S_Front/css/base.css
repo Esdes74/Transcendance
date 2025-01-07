@@ -2,53 +2,14 @@
 @import url('tournament.css');
 
 body {
-	padding: 20px;
+/*	padding: 20px;*/
 	font-family: Arial, sans-serif;
-    	font-size: 16px;
-   	line-height: 1.5;
-   	color: #333;
+  	font-size: 16px;
     	background: linear-gradient(to right, #579CC2 0%, #B7E0F8 50%, #579CC2 100%) !important;
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	flex-direction: column;
-	/*position: fixed;*/
-	width: 100%;
-	min-height: 100vh;
-	margin: 0;
-}
-
-h1 {
-	color: white;
 }
 
 .navbar {
 	background: linear-gradient(to right, rgb(48, 99, 118) 0%, rgb(82, 147, 171) 50%, rgb(48,99,118) 100%) ! important;
-}
-
-/* Section principale */
-main {
-    margin-top: 20px;
-}
-
-section h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-section p {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    line-height: 1.6;
-}
-
-/* Cards */
-
-.card:hover {
-	box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-	transform: scale(1.02);
 }
 
 /* Buttons */
@@ -79,20 +40,4 @@ section p {
 
 .dropdown-menu {
 	--bs-dropdown-min-width: 72px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2rem;
-    }
-    
-    nav ul li {
-        display: block;
-        margin: 10px 0;
-    }
-    
-    .btn {
-        font-size: 1rem;
-    }
 }
