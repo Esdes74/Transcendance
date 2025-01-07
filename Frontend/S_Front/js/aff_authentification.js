@@ -22,23 +22,21 @@ function affAuthentification()
 					<div class="replayBlock">
 						<form id="loginForm">
 							<div class="form-group">
-				<label for="username" class="mb-2 fw-bold" data-translate="true">Nom d'utilisateur</label>
-				<input type="text" class="form-control mb-2" id="username" data-translate="placeholder" placeholder="Entrez votre nom d'utilisateur" required>
+								<label for="username" class="mb-2 fw-bold" data-translate="true">Nom d'utilisateur</label>
+									<input type="text" class="form-control mb-2" id="username" data-translate="placeholder" placeholder="Entrez votre nom d'utilisateur" required>
+							</div>
+							<div class="form-group">
+								<label for="password" class="mb-2 fw-bold" data-translate="true">Mot de passe</label>
+									<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" required>
+							</div>
+							<button type="submit" class="btn btn-primary mb-4" data-translate="true">Se connecter</button>
+						</form>
+						<p class="link-p fs-6 fw-bold text-white mb-0" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
+					</div>
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="password" class="mb-2 fw-bold" data-translate="true">Mot de passe</label>
-				<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" required>
-			</div>
-			<button type="submit" class="btn btn-primary mb-4" data-translate="true">Se connecter</button>
-		</form>
-		<p class="link-p fs-6 fw-bold text-white mb-0" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
-			<!--button type="button" class="btn btn-dark" data-translate="true" value="registertoft"> Connexion avec 42</button-->
 		</div>
-		</div>
-		</div>
-		</div>
-		</div>
-
+	</div>
 	`
 	addScript("/js/login.js", loginCallback)
 	addScript("/js/loginPong.js", loginAnimationCallback)
