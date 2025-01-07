@@ -12,6 +12,27 @@ function tradNewPage()
 	}
 }
 
+function setFormsAlert(forms)
+{
+	let language = document.getElementById("currentFlag").getAttribute('data-language')
+	forms.forEach( form => {
+		form.oninvalid = function(e) {
+			if (!e.target.validity.valid) 
+			{
+				if (language === "english")
+					e.target.setCustomValidity("Please fill out this field.")
+				else if (language === "spanish")
+					e.target.setCustomValidity("Por favor complete este campo.")
+				else
+					e.target.setCustomValidity("Veuillez remplir ce champ.")
+			}
+		}
+		form.oninput = function(e) {
+			e.target.setCustomValidity("")
+		}
+	})
+}
+
 function tradDiv(div)
 {
 	let flag = document.getElementById("currentFlag")
@@ -130,6 +151,8 @@ async function updateLanguage(clickedFlag)
 	tradPlaceholders(placeholders)
 	let tooltips = document.querySelectorAll('[data-translate="tooltips"]')
 	tradTooltips(tooltips)
+	let forms = document.querySelectorAll('input')
+	setFormsAlert(forms)
 }
 
 function getFlags()
