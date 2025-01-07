@@ -23,7 +23,7 @@ function affAuthentification()
 						<form id="loginForm">
 							<div class="form-group">
 								<label for="username" class="mb-2 fw-bold" data-translate="true">Nom d'utilisateur</label>
-									<input type="text" class="form-control mb-2" id="username" data-translate="placeholder" placeholder="Entrez votre nom d'utilisateur" required>
+									<input type="text" class="form-control mb-2" id="username" data-translate="placeholder" placeholder="Entrez votre nom d'utilisateur" required> 
 							</div>
 							<div class="form-group">
 								<label for="password" class="mb-2 fw-bold" data-translate="true">Mot de passe</label>

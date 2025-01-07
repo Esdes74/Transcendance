@@ -20,11 +20,11 @@ function setFormsAlert(forms)
 			if (!e.target.validity.valid) 
 			{
 				if (language === "english")
-					e.target.setCustomValidity("Please fill out this field.")
+					e.target.setCustomValidity("Invalid field.")
 				else if (language === "spanish")
-					e.target.setCustomValidity("Por favor complete este campo.")
+					e.target.setCustomValidity("Campo de texto no válido")
 				else
-					e.target.setCustomValidity("Veuillez remplir ce champ.")
+					e.target.setCustomValidity("Champ invalide.")
 			}
 		}
 		form.oninput = function(e) {
