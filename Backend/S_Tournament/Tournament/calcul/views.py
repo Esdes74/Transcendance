@@ -83,6 +83,11 @@ def createPlayer(request):
 		tournament.player_registered = tournament.player_registered + 1
 		tournament.old_size = tournament.old_size - tournament.player_registered
 		tournament.player_list.append(name)
+
+		player, created = Player.objects.get_or_create(name=name)
+		player.save()
+
+		tournament.players.add(player)
 		tournament.save()
 
 		return JsonResponse({"name": name, "index": index, "player_list": tournament.player_list, "fields": tournament.old_size, "return": "createPlayer"}, status=200)
@@ -107,6 +112,11 @@ def deletePlayer(request):
 		tournament, created = Tournament.objects.get_or_create(id=1)
 		tournament.player_registered -= 1
 		tournament.player_list.remove(name)
+
+		player, created = Player.objects.get_or_create(name=name)		# player = Player.objects.get(name=name)
+		tournament.players.remove(player)
+
+		player.delete()
 		tournament.save()
 
 		return JsonResponse({"name": name, "index": index, "player_list": tournament.player_list, "fields": tournament.old_size, "return": "deletePlayer"}, status=200)
@@ -127,6 +137,9 @@ def initDB(request):
 		tournament.champs_libre = 0
 		tournament.player_list = []
 		tournament.save()
+		tournament.players.clear()
+		player = Player.objects.all()
+		player.delete()
 
 		return JsonResponse({"return": "initDB"}, status=200)
 
@@ -172,7 +185,7 @@ def startGame(request):
 
 
 def startTournament(request):
-	#from .models import Player
+
 	print("Here we are in startTournament")
 	if request.method == 'POST':
 		try:
@@ -227,8 +240,66 @@ def endGame(request):
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-		print("data du endgame : ", data)
+		tournament, created = Tournament.objects.get_or_create(id=1)
+		print("tournament : ", tournament.player_list)
+		# player1, created = Player.objects.get_or_create(name=data.get('player1'))
+		# player2, created = Player.objects.get_or_create(name=data.get('player2'))
+		try:
+			player1 = Player.objects.get(name=data.get('player1'))
+			player2 = Player.objects.get(name=data.get('player2'))
+		except Player.DoesNotExist:
+			return JsonResponse({"error": "Player does not exist"}, status=400)		# a voir si bonne facon d'empecher le front fournir des noms de joueurs qui n'existent pas
 
-		return JsonResponse({"return": "endGame"}, status=200)
+
+		if data.get('winner') == "player1":
+			player1.score = player1.score + 1 + tournament.rounds
+		elif data.get('winner') == "player2":
+			player2.score = player2.score + 1 + tournament.rounds
+		
+		player1.match_played += 1
+		player2.match_played += 1
+		player1.save()
+		player2.save()
+		print("data du endgame : ", data)
+		print("player1 : ", player1.name + " " + str(player1.score) + " " + str(player1.match_played))
+		print("player2 : ", player2.name + " " + str(player2.score) + " " + str(player2.match_played))
+
+		return JsonResponse({"player_list": tournament.player_list, "return": "endGame"}, status=200)
+
+		# return JsonResponse({"return": "endGame"}, status=200)
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+
+
+def continueTournament(request):
+
+	print("continueTournament")
+	if request.method == 'POST':
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+		# player_list = data.get('player_list')	
+		# on creer game_max, le plus grand nombre de match_played parmi tous les joueurs
+		game_max = max([player.match_played for player in Player.objects.all()])
+		print("game_max : ", game_max)
+		# on creer une liste de joueurs qui ont un match_played inferieur a game_max
+		players_list = [player for player in Player.objects.all() if player.match_played < game_max]
+		# on creer une liste de char a partir de la liste de joueurs
+		player_list = [player.name for player in players_list]
+		print("player_list == ", player_list)
+		pairs = split_into_pairs(player_list)
+		print("data : ", pairs)
+
+		return JsonResponse({"pairs": pairs}, status=200)
+		#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
+	return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+# todo iportant : faire la diff entre player_list[] et players car l'un list de char, l'autre list de Player
+# donc peut etre revoir les verificaitons et methode dans start/continue_tournament

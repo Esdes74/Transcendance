@@ -271,11 +271,11 @@ async function redirectTo(path, socket, pong_gameSettings)
 		if (pong_gameSettings.scorePlayer1 < pong_gameSettings.scorePlayer2)
 			winner = pong_gameSettings.player2Name;
 		result = await affTournamentBracket_sendRequest({
-			'joueur1': pong_gameSettings.player1Name,
-			'joueur2':  pong_gameSettings.player2Name,
+			'player1': pong_gameSettings.player1Name,
+			'player2':  pong_gameSettings.player2Name,
 			'winner': winner,
-		}, 'EndGame');
-		let players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
+		}, 'endGame');
+		// let players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
 		fct = () => affTournamentBracket_return(result);
 	}
 	addScript("/js/aff_" + path + ".js", fct);
