@@ -9,4 +9,5 @@ urlpatterns = [
 	path('validTournament/', views.validTournament, name="validTournament"),
 	path('startGame/', views.startGame, name="startGame"),
 	path('startTournament/', views.startTournament, name="startTournament"),
+	path('endGame/', views.endGame, name="endGame"),
 ]

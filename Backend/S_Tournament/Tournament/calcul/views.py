@@ -181,20 +181,7 @@ def startTournament(request):
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 		rondes = 3
 		player_list = data.get('player_list')
-		#print("data : ", data)
 		shuffle_list(player_list)
-		#print("data : ", player_list)
-		#sauvegardes des joueurs
-		# player_instance = Player()
-		# for i in player_list:
-		# 	player_inst = Player.objects.create(name=player_list[i], winscore=0, game_played=0)
-		# 	print("player_instance : ", player_inst.name)
-		# 	player_inst.save()
-		#afficher dans la console les joueurs sauvegardés\\
-		# print("player_instance : ", player_list[0])
-		# player = Player.objects.filter(name=player_list[0])
-		# print("player : ", player)
-		#Pairer les joueurs
 		print("data : ", player_list)
 		pairs = split_into_pairs(player_list)
 		print("data : ", pairs)
@@ -230,20 +217,18 @@ def split_into_pairs(joueurs):
 
 # 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-# def endGame(request):
-# 	print("Here we are in endGame")
-#
-# 	if request.method == 'POST':
-#
-# 		try:
-# 			data = json.loads(request.body)
-# 		except json.JSONDecodeError:
-# 			return JsonResponse({"error": "Invalid JSON"}, status=400)
-#
-# 		print("data du endgame : ", data)
-#
-# 		return JsonResponse({"return": "endGame"}, status=200)
-#
-# 	return JsonResponse({"error": "Invalid request method"}, status=405)
+def endGame(request):
+	print("Here we are in endGame")
 
-#
+	if request.method == 'POST':
+
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+		print("data du endgame : ", data)
+
+		return JsonResponse({"return": "endGame"}, status=200)
+
+	return JsonResponse({"error": "Invalid request method"}, status=405)

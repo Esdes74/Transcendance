@@ -19,8 +19,8 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.scorePlayer2 = 0
 		self.ballX = 0.5
 		self.ballY = 0.5
-		self.ballSpeedX = 0.003
-		self.ballSpeedY = 0.003
+		self.ballSpeedX = 0.03
+		self.ballSpeedY = 0.03
 		self.max_speed = 0.02
 		self.acceleration = 1.1
 

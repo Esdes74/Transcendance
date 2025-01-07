@@ -9,4 +9,5 @@ urlpatterns = [
 	path('validTournament/', views.validTournament, name='validTournament'), # redirige vers la gestion du validTournament
 	path('startGame/', views.startGame, name='startGame'), # redirige vers la gestion du startGame
 	path('startTournament/', views.startTournament, name='startTournament'),
+	path('endGame/', views.endGame, name='endGame'),
 ]

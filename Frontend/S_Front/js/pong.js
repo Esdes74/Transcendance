@@ -248,15 +248,15 @@ function pong_gameOver(pong_gameSettings, socket)
 		console.log('bouton next. WebSocket.OPEN = ', WebSocket.OPEN);
 		nextBtn = document.getElementById('nextButton');
 		nextBtn.addEventListener('click', async () => {
-			redirectTo(nextBtn.value);
+			redirectTo(nextBtn.value, socket, pong_gameSettings);
 		});
 	}
 }
 
 
-function redirectTo(path, socket)
+async function redirectTo(path, socket, pong_gameSettings)
 {
-	console.log('redirectTo path = ', path);
+	let fct;
 	if (path === 'pong')
 		fct = () => affPong();
 	if (path === 'settings')
@@ -266,9 +266,18 @@ function redirectTo(path, socket)
 		fct = () => affIndex();
 	}
 	if (path === 'tournament_bracket')
-	players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
-		fct = () => affTournamentBracket_start();
-
+	{
+		let winner = pong_gameSettings.player1Name;
+		if (pong_gameSettings.scorePlayer1 < pong_gameSettings.scorePlayer2)
+			winner = pong_gameSettings.player2Name;
+		result = await affTournamentBracket_sendRequest({
+			'joueur1': pong_gameSettings.player1Name,
+			'joueur2':  pong_gameSettings.player2Name,
+			'winner': winner,
+		}, 'EndGame');
+		let players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
+		fct = () => affTournamentBracket_return(result);
+	}
 	addScript("/js/aff_" + path + ".js", fct);
 	socket.close();
 }
