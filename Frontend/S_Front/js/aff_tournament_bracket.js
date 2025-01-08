@@ -49,7 +49,7 @@ async function affTournamentBracket_return(player_list)
 	result = await affTournamentBracket_sendRequest({}, 'continueTournament');
 	if (result.return == "endTournament")
 	{
-		addScript('/js/tournament_leaderboard.js', () => aff_leaderboard(result.leaderboard));
+		addScript('/js/tournament_leaderboard.js', () => aff_leaderboard(result));
 		console.log("endTournament");
 		return;
 	}
@@ -78,6 +78,7 @@ function readyState(joueur1, joueur2, divElement)
 		}, 'startGame');
 		if (result.return == "startGame")
 		{
+			startBtn.removeEventListener('click', function(){});
 			addScript('/js/aff_pong.js', () => affPong(joueur1, joueur2));
 		}
 	});

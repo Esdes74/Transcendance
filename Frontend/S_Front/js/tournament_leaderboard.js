@@ -1,5 +1,5 @@
 
-async function aff_leaderboard(leaderboard)
+async function aff_leaderboard(result)
 {
 	let docMain = document.querySelector('main')
 	// <button class="btn btn-outline-light m-2" id="start" data-translate="true">Start the Game (lance pong.js)</button>
@@ -16,19 +16,10 @@ async function aff_leaderboard(leaderboard)
 	`
 
 	const divElement = document.getElementById('algo');
-	result = await affTournamentBracket_sendRequest({}, 'continueTournament');
-	if (result.return == "endTournament")
-	{
-		addScript('/js/tournament_leaderboard.js', () => leaderboard());
-		console.log("endTournament");
-		return;
-	}
-	console.log("NOUVEAU result : ", result);
-
-	leaderboard.forEach(player => {
+	result.leaderboard.forEach((player, index) => {
 		const current_game = document.createElement('div');
 		current_game.className = 'col';
-		current_game.textContent = player;
+		current_game.textContent = player + " : " + result.score[index];
 		divElement.appendChild(current_game);
 	});
 }
