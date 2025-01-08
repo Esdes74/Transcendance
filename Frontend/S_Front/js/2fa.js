@@ -44,4 +44,3 @@ function load2faLogin()
 		}
 	});
 }
-load2faLogin()
