@@ -30,16 +30,15 @@ function affRegister()
 					<input type="password" class="form-control mb-2" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" autocomplete="defaultpswd" required>
             		</div>
             		<div class="form-group">
-             			<label for="confirmed-password" class="mb-1 fw-bold">Confirmez mot de passe</label>
+             			<label for="confirmed-password" class="mb-1 fw-bold" data-translate="true">Confirmer le mot de passe</label>
               				<input type="password" class="form-control mb-2" id="confirmed-password" data-translate="placeholder" placeholder="Confirmez votre mot de passe" autocomplete="defaultpswd" required>
             		</div>
             		<div class="form-group">
             			<label for="mail" class="mb-1 fw-bold">E-Mail</label>
           			<input type="email" class="form-control mb-2" id="mail" data-translate="placeholder" placeholder="Entrez votre e-mail" required>
             		</div>
-            <button type="submit" class="btn btn-primary mt-2">Inscription</button>
+            <button type="submit" class="btn btn-primary mt-2" data-translate="true">S'inscrire</button>
         </form>
-        <!--div id="error-message" class="mt-3 text-danger"></div-->
     </div>
     `
 	addScript("/js/register.js", registerCallback)
