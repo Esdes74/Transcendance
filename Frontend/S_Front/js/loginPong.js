@@ -10,14 +10,6 @@ function loadAnimationLogin(myCanvas)
 		paddle2Y: 0,
 		player1: 0.5,
 		player2: 0.5,
-		
-		ballRadius: 0,
-		printBall: false,	
-		ballX: 0.5,
-		ballY: 0.5,					
-
-		ballSpeedX: 0.012,
-		ballSpeedY: 0.012,
 	};
 
 	resizeLoginCanvas(gameSettings);
@@ -37,7 +29,6 @@ function resizeLoginCanvas(gameSettings)
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
 	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;
-	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;
 	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
@@ -67,9 +58,6 @@ function loginDraw(gameSettings)
 	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
 	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
-	ctx.beginPath();
-	ctx.arc(gameSettings.ballX * gameSettings.canvas.width, gameSettings.ballY * gameSettings.canvas.height, gameSettings.ballRadius, 0, Math.PI * 2);
-	ctx.fill();
 }
 
 function loginLoop(gameSettings) {

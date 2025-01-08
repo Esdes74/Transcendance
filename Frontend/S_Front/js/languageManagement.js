@@ -16,6 +16,13 @@ function setFormsAlert(forms)
 {
 	let language = document.getElementById("currentFlag").getAttribute('data-language')
 	forms.forEach( form => {
+		if (language === "english")
+			form.setCustomValidity("Please fill this field.")
+		else if (language === "spanish")
+			form.setCustomValidity("Complete este campo.")
+		else
+			form.setCustomValidity("Veuillez remplir ce champ.")
+		//form.setCustomValidity("Invalid Prout")
 		form.oninvalid = function(e) {
 			if (!e.target.validity.valid) 
 			{
@@ -28,7 +35,12 @@ function setFormsAlert(forms)
 			}
 		}
 		form.oninput = function(e) {
-			e.target.setCustomValidity("")
+			if (language === "english")
+				e.target.setCustomValidity("Please fill this field.")
+			else if (language === "spanish")
+				e.target.setCustomValidity("Complete este campo.")
+			else
+				form.setCustomValidity("Veuillez remplir ce champ.")
 		}
 	})
 }

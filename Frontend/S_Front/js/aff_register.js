@@ -16,30 +16,29 @@ function affRegister()
     <div class="container text-center my-5">
         <div class="row justify-content-center">
 		<div class="col-md-8">
-			<h1 class="mb-5 fw-bold" data-translate="true">Creation de compte</h1>
+			<h1 class="mb-5 fw-bold" data-translate="true">Création de compte</h1>
 			<div class="canvas-container">
 			<canvas id="loginCanvas" class="w-100" height="400"></canvas>
-			<div class="replayBlock">	
+			<div class="replayBlock">
         			<form id="loginForm">
         			    <div class="form-group">
-                			<label for="username">Nom d'utilisateur</label>
-                				<input type="text" class="form-control" id="username" placeholder="Entrez votre nom d'utilisateur" required>
+                			<label for="username" class="mb-1 fw-bold" data-translate="true">Nom d'utilisateur</label>
+                				<input type="text" class="form-control mb-2" id="username" data-translate="placeholder" placeholder="Entrez votre nom d'utilisateur" required>
       				    </div>
             		<div class="form-group">
-             			<label for="password">Mot de passe</label>
-					<input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" autocomplete="defaultpswd" required>
+             			<label for="password" class="mb-1 fw-bold" data-translate="true">Mot de passe</label>
+					<input type="password" class="form-control mb-2" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" autocomplete="defaultpswd" required>
             		</div>
             		<div class="form-group">
-             			<label for="confirmed-password">Confirmation mot de passe</label>
-              				<input type="password" class="form-control" id="confirmed-password" placeholder="Confirmez votre mot de passe" autocomplete="defaultpswd" required>
+             			<label for="confirmed-password" class="mb-1 fw-bold" data-translate="true">Confirmer le mot de passe</label>
+              				<input type="password" class="form-control mb-2" id="confirmed-password" data-translate="placeholder" placeholder="Confirmez votre mot de passe" autocomplete="defaultpswd" required>
             		</div>
             		<div class="form-group">
-            			<label for="mail">E-Mail</label>
-          			<input type="email" class="form-control" id="mail" placeholder="Entrez votre e-mail" required>
+            			<label for="mail" class="mb-1 fw-bold">E-Mail</label>
+          			<input type="email" class="form-control mb-2" id="mail" data-translate="placeholder" placeholder="Entrez votre e-mail" required>
             		</div>
-            <button type="submit" class="btn btn-primary mt-2">rregister</button>
+            <button type="submit" class="btn btn-primary mt-2" data-translate="true">S'inscrire</button>
         </form>
-        <!--div id="error-message" class="mt-3 text-danger"></div-->
     </div>
     `
 	addScript("/js/register.js", registerCallback)
