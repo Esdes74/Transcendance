@@ -40,4 +40,3 @@ async function loadBravoCallBack()
 		console.error("Code non trouvé dans l'URL");
 	}
 }
-loadBravoCallBack()
