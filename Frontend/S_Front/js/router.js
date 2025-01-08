@@ -108,12 +108,14 @@ function rootMyUrl()
 function initiatePage()
 {
 	var path = window.location.pathname
+	var queryParams = window.location.search
+	var completeValue = path + queryParams
 	if (is_logged())
 	{
 		change_header()
 	}
 	rootMyUrl()
-	history.replaceState({pageID: path.substring(1)}, '', path)
+	history.replaceState({pageID: completeValue.substring(1)}, '', completeValue)
 	getLinks()
 	document.body.style.display = 'block';
 	window.addEventListener('popstate', function (event)
