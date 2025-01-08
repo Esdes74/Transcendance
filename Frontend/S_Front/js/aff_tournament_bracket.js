@@ -46,7 +46,7 @@ async function affTournamentBracket_return(player_list)
 
 	const divElement = document.getElementById('algo');
 	console.log("tournamentReturn player list : ", player_list);
-	result = await affTournamentBracket_sendRequest({'player_list': player_list}, 'continueTournament');
+	result = await affTournamentBracket_sendRequest({}, 'continueTournament');
 	console.log("NOUVEAU result : ", result);
 
 	result.pairs.forEach(pair => {

@@ -36,6 +36,7 @@ def selectTournament(request):
 			tournament.old_size = tournament.size
 			tournament.size = 4
 			tournament.champs_libre = tournament.size - tournament.player_registered
+			tournament.rounds_left = 2
 
 		elif btn == 'btn3':
 			if tournament.player_registered > 8:
@@ -43,6 +44,7 @@ def selectTournament(request):
 			tournament.old_size = tournament.size
 			tournament.size = 8
 			tournament.champs_libre = tournament.size - tournament.player_registered
+			tournament.rounds_left = 3
 
 		tournament.save()
 		return JsonResponse({"size": tournament.size, "old_size": tournament.old_size, "return": "selectTournament"}, status=200)
@@ -136,10 +138,12 @@ def initDB(request):
 		tournament.old_size = 0
 		tournament.champs_libre = 0
 		tournament.player_list = []
-		tournament.save()
 		tournament.players.clear()
+		tournament.curr_round = 1
+		tournament.rounds_left = 0
 		player = Player.objects.all()
 		player.delete()
+		tournament.save()
 
 		return JsonResponse({"return": "initDB"}, status=200)
 
@@ -252,9 +256,9 @@ def endGame(request):
 
 
 		if data.get('winner') == "player1":
-			player1.score = player1.score + 1 + tournament.rounds
+			player1.score = player1.score + 1 + tournament.rounds_left
 		elif data.get('winner') == "player2":
-			player2.score = player2.score + 1 + tournament.rounds
+			player2.score = player2.score + 1 + tournament.rounds_left
 		
 		player1.match_played += 1
 		player2.match_played += 1
@@ -283,16 +287,20 @@ def continueTournament(request):
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-		# player_list = data.get('player_list')	
+		tournament, created = Tournament.objects.get_or_create(id=1)
 		# on creer game_max, le plus grand nombre de match_played parmi tous les joueurs
-		game_max = max([player.match_played for player in Player.objects.all()])
-		print("game_max : ", game_max)
+		
+		# game_max = max([player.match_played for player in Player.objects.all()])
+		# print("game_max : ", game_max)
+		# players_list = [player for player in Player.objects.all() if player.match_played < game_max]
 		# on creer une liste de joueurs qui ont un match_played inferieur a game_max
-		players_list = [player for player in Player.objects.all() if player.match_played < game_max]
+		players_left = [player.name for player in Player.objects.all() if player.match_played < tournament.curr_round]
+		#  = [player.name for player in players_left]
 		# on creer une liste de char a partir de la liste de joueurs
-		player_list = [player.name for player in players_list]
-		print("player_list == ", player_list)
-		pairs = split_into_pairs(player_list)
+		print("player match played : ", [player.match_played for player in Player.objects.all()])
+		print("tournament.curr_round == ", tournament.curr_round)
+		print("players_left == ", players_left)
+		pairs = split_into_pairs(players_left)
 		print("data : ", pairs)
 
 		return JsonResponse({"pairs": pairs}, status=200)

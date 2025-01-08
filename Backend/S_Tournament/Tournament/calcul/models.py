@@ -12,7 +12,8 @@ class Tournament(models.Model):
 	champs_libre = models.IntegerField(default=0)
 	player_list = models.JSONField(default=list)
 
-	rounds = models.IntegerField(default=0)
+	curr_round = models.IntegerField(default=1)
+	rounds_left = models.IntegerField(default=0)
 	players = models.ManyToManyField(Player, related_name='players')
 
 	# tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='players')	
