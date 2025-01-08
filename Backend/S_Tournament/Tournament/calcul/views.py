@@ -255,9 +255,11 @@ def endGame(request):
 			return JsonResponse({"error": "Player does not exist"}, status=400)		# a voir si bonne facon d'empecher le front fournir des noms de joueurs qui n'existent pas
 
 
-		if data.get('winner') == "player1":
+		if data.get('winner') == player1.name:
+			print("player1 win")
 			player1.score = player1.score + 1 + tournament.rounds_left
-		elif data.get('winner') == "player2":
+		elif data.get('winner') == player2.name:
+			print("player2 win")
 			player2.score = player2.score + 1 + tournament.rounds_left
 		
 		player1.match_played += 1
@@ -288,20 +290,19 @@ def continueTournament(request):
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(id=1)
-		# on creer game_max, le plus grand nombre de match_played parmi tous les joueurs
-		
-		# game_max = max([player.match_played for player in Player.objects.all()])
-		# print("game_max : ", game_max)
-		# players_list = [player for player in Player.objects.all() if player.match_played < game_max]
-		# on creer une liste de joueurs qui ont un match_played inferieur a game_max
+
 		players_left = [player.name for player in Player.objects.all() if player.match_played < tournament.curr_round]
-		#  = [player.name for player in players_left]
-		# on creer une liste de char a partir de la liste de joueurs
+		if len(players_left) == 0:
+			tournament.curr_round += 1
+			tournament.rounds_left -= 1
+			tournament.save()
+			players_left = [player.name for player in Player.objects.all().order_by('-score')]
+			if tournament.rounds_left == 0:
+				return JsonResponse({"leaderboard": players_left, "return": "endTournament"}, status=200)
 		print("player match played : ", [player.match_played for player in Player.objects.all()])
 		print("tournament.curr_round == ", tournament.curr_round)
 		print("players_left == ", players_left)
 		pairs = split_into_pairs(players_left)
-		print("data : ", pairs)
 
 		return JsonResponse({"pairs": pairs}, status=200)
 		#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)

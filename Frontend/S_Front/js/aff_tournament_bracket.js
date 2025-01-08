@@ -47,6 +47,12 @@ async function affTournamentBracket_return(player_list)
 	const divElement = document.getElementById('algo');
 	console.log("tournamentReturn player list : ", player_list);
 	result = await affTournamentBracket_sendRequest({}, 'continueTournament');
+	if (result.return == "endTournament")
+	{
+		addScript('/js/tournament_leaderboard.js', () => aff_leaderboard(result.leaderboard));
+		console.log("endTournament");
+		return;
+	}
 	console.log("NOUVEAU result : ", result);
 
 	result.pairs.forEach(pair => {
