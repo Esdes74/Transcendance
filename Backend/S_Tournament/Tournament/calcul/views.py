@@ -188,6 +188,8 @@ def startTournament(request):
 		player_list = data.get('player_list')
 		shuffle_list(player_list)
 		pairs = split_into_pairs(player_list)
+		print("###############################################")
+		print("| BRACKET : ", pairs, " |")
 		return JsonResponse({"pairs": pairs}, status=200)
 		#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
@@ -244,9 +246,12 @@ def endGame(request):
 		player2.match_played += 1
 		player1.save()
 		player2.save()
-		print("data du endgame : ", data)
-		print("player1 : ", player1.name + " " + str(player1.score) + " " + str(player1.match_played))
-		print("player2 : ", player2.name + " " + str(player2.score) + " " + str(player2.match_played))
+		# print("data du endgame : ", data)
+		print("+------------------------------------------ -  -")
+		print("| Player " + player1.name + " : " + str(player1.score) + " | Player " + player2.name + " : " + str(player2.score))
+		print("| 		Winner : " + data.get('winner'))
+		# print("| Player " + player2.name + " : " + str(player2.score))
+		print("+------------------------------------------ -  -")
 
 		return JsonResponse({"player_list": tournament.player_list, "return": "endGame"}, status=200)
 
@@ -267,7 +272,6 @@ def continueTournament(request):
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(id=1)
-
 		players_left = [player.name for player in Player.objects.all() if player.match_played < tournament.curr_round]
 		if len(players_left) == 0:
 			tournament.curr_round += 1
@@ -277,10 +281,16 @@ def continueTournament(request):
 			if tournament.rounds_left == 0:
 				player_score = [player.score for player in Player.objects.all().order_by('-score')]
 				return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)
-		print("player match played : ", [player.match_played for player in Player.objects.all()])
-		print("tournament.curr_round == ", tournament.curr_round)
-		print("players_left == ", players_left)
+		print("+------------------------------------------ -  -")
+		print("| Current round : ", tournament.curr_round)
+		print("| Total Players : ", tournament.player_list)
+		print("+------------------------------------------ -  -")
+		print("| Players left : ", players_left)
+		# print("player match played : ", [player.match_played for player in Player.objects.all()])
+		# print("tournament.curr_round == ", tournament.curr_round)
+		# print("players_left == ", players_left)
 		pairs = split_into_pairs(players_left)
+		print("| match a faire : ", pairs)
 
 		return JsonResponse({"pairs": pairs}, status=200)
 		#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
