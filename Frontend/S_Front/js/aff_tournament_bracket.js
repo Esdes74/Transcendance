@@ -69,12 +69,11 @@ function readyState(joueur1, joueur2, divElement)
 	startBtn.className = 'btn btn-outline-light m-2';
 	startBtn.textContent = 'Start Game !'; // Symbole de croix
 	divElement.appendChild(startBtn);
-
 	startBtn.addEventListener('click', async function()
 	{
 		result = await affTournamentBracket_sendRequest({
-			'joueur1': joueur1,
-			'joueur2': joueur2
+			'player1': joueur1,
+			'player2': joueur2
 		}, 'startGame');
 		if (result.return == "startGame")
 		{

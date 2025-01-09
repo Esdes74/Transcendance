@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
-from .models import Tournament, Player
+from .models import Tournament, Player, Pair
 import json
 # import pyotp	<-- danger
 
@@ -127,17 +127,17 @@ def initDB(request):
 
 		tournament, created = Tournament.objects.get_or_create(id=1)
 
-		tournament.player_registered = 0
-		tournament.size = 0
-		tournament.old_size = 0
-		tournament.champs_libre = 0
-		tournament.player_list = []
-		tournament.players.clear()
-		tournament.curr_round = 1
-		tournament.rounds_left = 0
+		# tournament.player_registered = 0
+		# tournament.size = 0
+		# tournament.old_size = 0
+		# tournament.champs_libre = 0
+		# tournament.player_list = []
+		# tournament.players.clear()
+		# tournament.curr_round = 1
+		# tournament.rounds_left = 0
 		player = Player.objects.all()
 		player.delete()
-		tournament.save()
+		tournament.delete()
 
 		return JsonResponse({"return": "initDB"}, status=200)
 
@@ -173,6 +173,23 @@ def startGame(request):
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
+		player1 = data.get('player1')
+		player2 = data.get('player2')
+
+		# verifier la valeur de player 1 et 2 pour voir si ils existent et sinon renvoyer une erreur
+		try:
+			P1 = Player.objects.get(name=player1)
+			P2 = Player.objects.get(name=player2)
+		except Player.DoesNotExist:
+			return JsonResponse({"error": "Player does not exist"}, status=400)
+
+		# supprime la pair de joueur qui joue pour recup la taille de tournament.pairs plus tard dans continueTournament
+		tournament, created = Tournament.objects.get_or_create(id=1)
+		pair = Pair.objects.get(player1=Player.objects.get(name=player1), player2=Player.objects.get(name=player2))
+		tournament.pairs.remove(pair)
+		pair.delete()
+		tournament.save()
+
 		return JsonResponse({"return": "startGame"}, status=200)
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
@@ -203,9 +220,16 @@ def shuffle_list(array):
 
 def split_into_pairs(joueurs):
 	pairs = []
+	tournament, created = Tournament.objects.get_or_create(id=1)
 	for i in range(0, len(joueurs), 2):
 		pair = joueurs[i:i + 2]
 		pairs.append(pair)
+
+		player_pair, created = Pair.objects.get_or_create(player1=Player.objects.get(name=pair[0]), player2=Player.objects.get(name=pair[1]), index=i)
+		player_pair.save()
+		tournament.pairs.add(player_pair)
+		print("index : ", i)
+	tournament.save()
 	return pairs
 
 # def resumeGame(request):
@@ -272,29 +296,56 @@ def continueTournament(request):
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(id=1)
-		players_left = [player.name for player in Player.objects.all() if player.match_played < tournament.curr_round]
-		if len(players_left) == 0:
+
+		
+		if tournament.pairs.count() == 0:
 			tournament.curr_round += 1
 			tournament.rounds_left -= 1
 			tournament.save()
-			players_left = [player.name for player in Player.objects.all().order_by('-score')]
+			players_left = [player.name for player in tournament.players.all().order_by('-score')]
+			pairs = split_into_pairs(players_left)
 			if tournament.rounds_left == 0:
 				player_score = [player.score for player in Player.objects.all().order_by('-score')]
 				return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)
-		print("+------------------------------------------ -  -")
-		print("| Current round : ", tournament.curr_round)
-		print("| Total Players : ", tournament.player_list)
-		print("+------------------------------------------ -  -")
-		print("| Players left : ", players_left)
-		# print("player match played : ", [player.match_played for player in Player.objects.all()])
-		# print("tournament.curr_round == ", tournament.curr_round)
-		# print("players_left == ", players_left)
-		pairs = split_into_pairs(players_left)
-		print("| match a faire : ", pairs)
 
-		return JsonResponse({"pairs": pairs}, status=200)
-		#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
-	return JsonResponse({"error": "Invalid request method"}, status=405)
+			return JsonResponse({"pairs": pairs}, status=200)
+
+		return JsonResponse({"pairs": [[pair.player1.name, pair.player2.name] for pair in tournament.pairs.all()]}, status=200)
+
+
+
+
+
+
+
+
+
+
+
+
+	# 	# players_left = [player.name for player in Player.objects.all() if player.match_played < tournament.curr_round]
+	# 	# if len(players_left) == 0:
+	# 		tournament.curr_round += 1
+	# 		tournament.rounds_left -= 1
+	# 		tournament.save()
+	# 		players_left = [player.name for player in Player.objects.all().order_by('-score')]
+	# 		if tournament.rounds_left == 0:
+	# 			player_score = [player.score for player in Player.objects.all().order_by('-score')]
+	# 			return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)
+	# 	print("+------------------------------------------ -  -")
+	# 	print("| Current round : ", tournament.curr_round)
+	# 	print("| Total Players : ", tournament.player_list)
+	# 	print("+------------------------------------------ -  -")
+	# 	print("| Players left : ", players_left)
+	# 	# print("player match played : ", [player.match_played for player in Player.objects.all()])
+	# 	# print("tournament.curr_round == ", tournament.curr_round)
+	# 	# print("players_left == ", players_left)
+	# 	pairs = split_into_pairs(players_left)
+	# 	print("| match a faire : ", pairs)
+
+	# 	return JsonResponse({"pairs": pairs}, status=200)
+	# 	#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
+	# return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
 
