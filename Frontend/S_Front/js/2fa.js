@@ -1,8 +1,10 @@
 function load2faLogin()
 {
 	const form = document.getElementById('loginForm');
-
 	form.addEventListener('submit', async (event) => {
+		Array.from(form.elements).forEach(element => {
+			element.disabled = true;
+                })
 		event.preventDefault(); // Empêche le formulaire de se soumettre de manière traditionnelle
 
 		// Récupère les données du formulaire
@@ -41,6 +43,9 @@ function load2faLogin()
 		} catch (error) {
 			console.error('Erreur lors de la connexion :', error);
 			alert('Une erreur est survenue. Veuillez réessayer.');
-		}
+		}	
+		Array.from(form.elements).forEach(element => {
+			element.disabled = false;
+                })
 	});
 }

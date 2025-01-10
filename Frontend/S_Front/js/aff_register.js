@@ -37,7 +37,7 @@ function affRegister()
             			<label for="mail" class="mb-1 fw-bold">E-Mail</label>
           			<input type="email" class="form-control mb-2" id="mail" data-translate="placeholder" placeholder="Entrez votre e-mail" required>
             		</div>
-            <button type="submit" class="btn btn-primary mt-2" data-translate="true">S'inscrire</button>
+            		<button type="submit" class="btn btn-primary mt-2" data-translate="true">S'inscrire</button>
         </form>
     </div>
     `

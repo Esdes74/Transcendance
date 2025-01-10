@@ -22,7 +22,6 @@ function setFormsAlert(forms)
 			form.setCustomValidity("Complete este campo.")
 		else
 			form.setCustomValidity("Veuillez remplir ce champ.")
-		//form.setCustomValidity("Invalid Prout")
 		form.oninvalid = function(e) {
 			if (!e.target.validity.valid) 
 			{
@@ -35,12 +34,16 @@ function setFormsAlert(forms)
 			}
 		}
 		form.oninput = function(e) {
-			if (language === "english")
-				e.target.setCustomValidity("Please fill this field.")
-			else if (language === "spanish")
-				e.target.setCustomValidity("Complete este campo.")
-			else
-				form.setCustomValidity("Veuillez remplir ce champ.")
+			e.target.setCustomValidity("")
+			if (!e.target.validity.valid)
+			{
+				if (language === "english")
+					e.target.setCustomValidity("Invalid field.")
+				else if (language === "spanish")
+					e.target.setCustomValidity("Campo de texto no válido.")
+				else
+					e.target.setCustomValidity("Champ invalide.")
+			}
 		}
 	})
 }
