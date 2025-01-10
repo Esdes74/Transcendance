@@ -111,10 +111,13 @@ function affTournament_drawTournament(size, old_size)
 		const existingFields = Array.from(inputsContainer.children);
 		console.log("existingFields = ", existingFields);
 		let fieldsToRemove = old_size - size;
+		console.log("fieldsToRemove = ", fieldsToRemove);
 		for (let i = existingFields.length - 1; i >= 0 && fieldsToRemove > 0; i--) {
 			const field = existingFields[i];
 			const input = field.querySelector('input');
-			if (input && !input.value.trim()) {
+			console.log("LE INPUTinput = ", input);
+			if (input) {		//&& !input.value.trim()
+				console.log("field = ", field);
 				field.remove();
 				fieldsToRemove--;
 			}
