@@ -262,9 +262,9 @@ def endGame(request):
 		except Player.DoesNotExist:
 			return JsonResponse({"error": "Player does not exist"}, status=400)		# a voir si bonne facon d'empecher le front fournir des noms de joueurs qui n'existent pas
 		if data.get('winner') == player1.name:
-			player1.score = player1.score + 1 + tournament.rounds_left
+			player1.score = player1.score + 2 ** tournament.rounds_left
 		elif data.get('winner') == player2.name:
-			player2.score = player2.score + 1 + tournament.rounds_left
+			player2.score = player2.score + 2 ** tournament.rounds_left
 		
 		player1.match_played += 1
 		player2.match_played += 1
