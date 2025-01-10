@@ -14,6 +14,3 @@ function affRegisterToFT()
 	addScript("/js/registertoft.js", registerToFTCallback)
 	tradNewPage()
 }
-
-//pages["/registertoft"].funct = affRegisterToFT
-//affRegisterToFT()

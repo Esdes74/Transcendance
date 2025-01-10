@@ -29,57 +29,51 @@ function addScript(src, callback)
 function rootMyUrl()
 {
 	let pages = {
-	"/": {
-		script: "/js/aff_index.js",
-		callback: "affIndex"
-	},
-	"/bravo": {
-		script: "/js/aff_bravo.js",
-		callback: "affBravo"
-	},
-	"/authentification": {
-		script: "/js/aff_authentification.js",
-		callback: "affAuthentification"
-	},
-	"/register": {
-		script: "/js/aff_register.js",
-		callback: "affRegister"
-	},
-	"/pong": {
-		script: "/js/aff_pong.js",
-		callback: "affPong"
-	},
-	"/2fa": {
-		script: "/js/aff_2fa.js",
-		callback: "aff2fa"
-	},
-	"/tournament": {
-		script: "/js/aff_tournament.js",
-		callback: "affTournament"
-	},
-	"/ai": {
-		script: "/js/aff_ai.js",
-		callback: "affAI"
-	},
-	// "/matchmaking": {
-	// 	title: "matchmaking",
-	// 	script: "js/tournament.js",
-	// 	callback: null
-	// },	--> peut etre ?
-	"/404": {
-		script: "/js/aff_404.js",
-		callback: "aff404"
-	},
-	"/registertoft": {
-		script: "/js/aff_registertoft.js",
-		callback: "affRegisterToFT"
-	},
-	"/bravocallback": {
-		script: "/js/aff_bravoCallBack.js",
-		callback: "affBravoCallBack"
-	},
+		"/": {
+			script: "/js/aff_index.js",
+			callback: "affIndex"
+		},
+		"/bravo": {
+			script: "/js/aff_bravo.js",
+			callback: "affBravo"
+		},
+		"/authentification": {
+			script: "/js/aff_authentification.js",
+			callback: "affAuthentification"
+		},
+		"/register": {
+			script: "/js/aff_register.js",
+			callback: "affRegister"
+		},
+		"/pong": {
+			script: "/js/aff_pong.js",
+			callback: "affPong"
+		},
+		"/2fa": {
+			script: "/js/aff_2fa.js",
+			callback: "affRegisterToFT"
+		},
+		"/tournament": {
+			script: "/js/aff_tournament.js",
+			callback: "affTournament"
+		},
+		"/ai": {
+			script: "/js/aff_ai.js",
+			callback: "affAI"
+		},
+		"/404": {
+			script: "/js/aff_404.js",
+			callback: "aff404"
+		},
+		"/registertoft": {
+			script: "/js/aff_registertoft.js",
+			callback: "affRegisterToFT"
+		},
+		"/bravocallback": {
+			script: "/js/aff_bravoCallBack.js",
+			callback: "affBravoCallBack"
+		},
 	}
-
 
 	let loc = window.location.pathname;
 	if (pages[loc])
@@ -93,8 +87,8 @@ function rootMyUrl()
 			let scriptElement = document.createElement('script')
 		scriptElement.setAttribute("src", page.script)
 		scriptElement.onload = function() {
-		window[page.callback]()
-	}
+			window[page.callback]()
+		}
 		document.body.appendChild(scriptElement)
 		return (true)
 	}
@@ -129,7 +123,6 @@ function initiatePage()
 async function is_logged()
 {
 	try {
-		// Envoie les données à l'API
 		const response = await fetch('/api/auth/is_logged/', {
 			method: 'GET',
 			headers: {
@@ -138,7 +131,6 @@ async function is_logged()
 			credentials: 'include'
 		});
 
-		// Vérifie la réponse de l'API
 		if (response.ok) {
 			let jsonResponse = await response.json()
 			if (jsonResponse['detail'] === "Not connected")
@@ -149,7 +141,6 @@ async function is_logged()
 			return false
 		}
 	} catch (error) {
-		// console.error('Erreur cotee serveur', error);
 		return false
 	}
 }
