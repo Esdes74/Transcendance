@@ -11,6 +11,8 @@ function loadAnimationLogin(myCanvas)
 		paddle2Y: 0,
 		player1: 0.5,
 		player2: 0.5,
+		
+		stopAnim: false,
 	};
 
 	resizeLoginCanvas(gameSettings);
@@ -19,6 +21,15 @@ function loadAnimationLogin(myCanvas)
 	let width = gameSettings.canvas.width;
         gameSettings.player2 = gameSettings.paddle2Dest / height
         gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
+
+	window.addEventListener('popstate', (event) =>
+	{
+		gameSettings.stopAnim = true
+	})
+	document.addEventListener('pageChanged', (event) =>
+	{
+		gameSettings.stopAnim = true
+	})
 
 	loginLoop(gameSettings);
 }
@@ -66,7 +77,8 @@ function loginDraw(gameSettings)
 		ctx.fill();
 		tmpBallPosX += 0.1
 	}
-	requestAnimationFrame(() => loginLoop(gameSettings))
+	if (gameSettings.stopAnim === false)
+		requestAnimationFrame(() => loginLoop(gameSettings))
 }
 
 async function loginLoop(gameSettings) {

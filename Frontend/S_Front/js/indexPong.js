@@ -21,6 +21,8 @@ function initAnimation(myCanvas)
 
 		ballSpeedX: 0.012,
 		ballSpeedY: 0.012,
+		
+		stopAnim: false,
 	};
 
 	resizeIndexCanvas(gameSettings);
@@ -32,6 +34,14 @@ function initAnimation(myCanvas)
         gameSettings.player2 = gameSettings.paddle2Dest / height
         gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
 
+	window.addEventListener('popstate', (event) =>
+	{
+		gameSettings.stopAnim = true
+	})
+	document.addEventListener('pageChanged', (event) =>
+	{
+		gameSettings.stopAnim = true
+	})
 	indexGameLoop(gameSettings);
 }
 	
@@ -127,7 +137,8 @@ function indexGameLoop(gameSettings) {
 		gameSettings.paddle2Y = gameSettings.paddle2Dest
 	}
 
-	requestAnimationFrame(() => indexGameLoop(gameSettings));
+	if (gameSettings.stopAnim === false)
+		requestAnimationFrame(() => indexGameLoop(gameSettings));
 }
 
 function calculatePaddlePos(ballX, ballY, ballSpeedX, ballSpeedY, paddle, width, height, paddleHeight)

@@ -1,23 +1,39 @@
-function twofacallback()
+function twofaCallback()
 {
 	load2faLogin()
+}
+
+function twofaAnimationCallback()
+{
+	canvas = document.getElementById("loginCanvas")
+	loadAnimationLogin(canvas)
 }
 
 function aff2fa()
 {
 	let docMain = document.querySelector('main')
 	docMain.innerHTML = `
-	<div class="container mt-5">
-		<h2>Connexion</h2>
-		<form id="loginForm">
-			<div class="form-group">
-				<label for="password">Mot de passe</label>
-				<input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe" required>
+	<div class="container text-center my-5">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<h1 class="mb-5 fw-bold" data-translate="true">Double Authentification</h1>
+				<div class="canvas-container">
+				<canvas id="loginCanvas" class="w-100" height="400"></canvas>
+				<div class="replayBlock">
+				<form id="loginForm">
+					<div class="form-group">
+						<label for="password" class="mb-2 fw-bold" data-translate="true">Code envoyé sur votre boite mail</label>
+							<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez le code secret" required>
 			</div>
-			<button type="submit" class="btn btn-primary">Connexion</button>
+			<p class="link-p fs-6 fw-bold text-white mb-0" id="send-again" data-translate="true"> Renvoyer un nouveau code</p>
+			<button type="submit" class="btn btn-outline-light fw-bold mt-4">Valider</button>
 		</form>
 	</div>
     `
-	addScript("/js/2fa.js", twofacallback)
+	addScript("/js/2fa.js", twofaCallback)
+	addScript("/js/waitingPong.js", twofaAnimationCallback)
+	document.querySelector('.replayBlock').style.display = "block"
+	forms = document.querySelectorAll('input')
+	setFormsAlert(forms)
 	tradNewPage()
 }
