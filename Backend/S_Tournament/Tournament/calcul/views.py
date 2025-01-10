@@ -16,20 +16,20 @@ def selectTournament(request):
 			data = json.loads(request.body)
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
-#TODO Bouton 1 ?
+
 		btn = data.get('btn')
 
 		# Get or create a tournament instance
 		tournament, created = Tournament.objects.get_or_create(id=1)
 
-		if btn == 'btn1':
-			if tournament.player_registered > 3:
-				return JsonResponse({"error": "Vous avez déjà trop de joueurs inscrits", "return": "error"}, status=400)
-			tournament.old_size = tournament.size
-			tournament.size = 3
-			tournament.champs_libre = tournament.size - tournament.player_registered
+		# if btn == 'btn1':
+		# 	if tournament.player_registered > 3:
+		# 		return JsonResponse({"error": "Vous avez déjà trop de joueurs inscrits", "return": "error"}, status=400)
+		# 	tournament.old_size = tournament.size
+		# 	tournament.size = 3
+		# 	tournament.champs_libre = tournament.size - tournament.player_registered
 
-		elif btn == 'btn2':
+		if btn == 'btn1':
 			if tournament.player_registered > 4:
 				return JsonResponse({"error": "Vous avez déjà trop de joueurs inscrits", "return": "error"}, status=400)
 			tournament.old_size = tournament.size
@@ -37,7 +37,7 @@ def selectTournament(request):
 			tournament.champs_libre = tournament.size - tournament.player_registered
 			tournament.rounds_left = 2
 
-		elif btn == 'btn3':
+		elif btn == 'btn2':
 			if tournament.player_registered > 8:
 				return JsonResponse({"error": "Vous avez déjà trop de joueurs inscrits", "return": "error"}, status=400)
 			tournament.old_size = tournament.size
