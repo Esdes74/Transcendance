@@ -40,7 +40,7 @@ function affAuthentification()
 	`
 	/* Verifier egalement en back les donnees envoyees */
 	addScript("/js/login.js", loginCallback)
-	addScript("/js/loginPong.js", loginAnimationCallback)
+	addScript("/js/waitingPong.js", loginAnimationCallback)
 	forms = document.querySelectorAll('input')
 	setFormsAlert(forms)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"

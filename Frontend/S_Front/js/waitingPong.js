@@ -6,6 +6,7 @@ function loadAnimationLogin(myCanvas)
 		paddleHeight: 0,
 		paddleBuffer: 0,
 
+		ballPosX: 0.0012,
 		paddle1Y: 0,
 		paddle2Y: 0,
 		player1: 0.5,
@@ -50,7 +51,6 @@ function loginDraw(gameSettings)
 	ctx.lineWidth = 4;
 	ctx.stroke();
 	ctx.setLineDash([]);
-	
 	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 2, gameSettings.canvas.width * 2/3, 2);
 	ctx.fillRect(gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);
 	ctx.fillRect(5 * gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);
@@ -58,8 +58,22 @@ function loginDraw(gameSettings)
 	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
 	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
+	tmpBallPosX = 0.05
+	while (tmpBallPosX < gameSettings.ballPosX)
+	{
+		ctx.beginPath();
+		ctx.arc(tmpBallPosX * gameSettings.canvas.width, 0.5 * gameSettings.canvas.height, 0.012 * gameSettings.canvas.width, 0, Math.PI * 2);
+		ctx.fill();
+		tmpBallPosX += 0.1
+	}
+	requestAnimationFrame(() => loginLoop(gameSettings))
 }
 
-function loginLoop(gameSettings) {
+async function loginLoop(gameSettings) {
+	await new Promise(r => setTimeout(r, 1000));
+	if (gameSettings.ballPosX > 1)
+		gameSettings.ballPosX = 0.0012
+	else
+		gameSettings.ballPosX += 0.05
 	loginDraw(gameSettings);
 }

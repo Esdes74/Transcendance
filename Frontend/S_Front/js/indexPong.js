@@ -127,7 +127,7 @@ function indexGameLoop(gameSettings) {
 		gameSettings.paddle2Y = gameSettings.paddle2Dest
 	}
 
-requestAnimationFrame(() => indexGameLoop(gameSettings));
+	requestAnimationFrame(() => indexGameLoop(gameSettings));
 }
 
 function calculatePaddlePos(ballX, ballY, ballSpeedX, ballSpeedY, paddle, width, height, paddleHeight)

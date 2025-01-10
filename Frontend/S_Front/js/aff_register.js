@@ -37,12 +37,12 @@ function affRegister()
             			<label for="mail" class="mb-1 fw-bold">E-Mail</label>
           			<input type="email" class="form-control mb-2" id="mail" data-translate="placeholder" placeholder="Entrez votre e-mail" required>
             		</div>
-            		<button type="submit" class="btn btn-primary mt-2" data-translate="true">S'inscrire</button>
+            		<button type="submit" class="btn btn-outline-light fw-bold mt-2" data-translate="true">S'inscrire</button>
         </form>
     </div>
     `
 	addScript("/js/register.js", registerCallback)
-	addScript("/js/loginPong.js", registerAnimationCallback)
+	addScript("/js/waitingPong.js", registerAnimationCallback)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	forms = document.querySelectorAll('input')
 	setFormsAlert(forms)
