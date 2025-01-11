@@ -82,7 +82,7 @@ function loginDraw(gameSettings)
 }
 
 async function loginLoop(gameSettings) {
-	await new Promise(r => setTimeout(r, 1000));
+	await new Promise(r => setTimeout(r, 250));
 	if (gameSettings.ballPosX > 1)
 		gameSettings.ballPosX = 0.0012
 	else

@@ -51,7 +51,7 @@ function rootMyUrl()
 		},
 		"/2fa": {
 			script: "/js/aff_2fa.js",
-			callback: "affRegisterToFT"
+			callback: "aff2fa"
 		},
 		"/tournament": {
 			script: "/js/aff_tournament.js",
