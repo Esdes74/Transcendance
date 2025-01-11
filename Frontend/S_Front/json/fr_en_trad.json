@@ -35,5 +35,7 @@
 	"Entrez votre nom d'utilisateur": "Enter your username",
 	"Entrez votre mot de passe": "Enter your password",
 	"Pas de compte ? Inscrivez-vous": "No account ? Register",
-	"Connexion": "Login"
+	"Connexion": "Login",
+	"Erreur Serveur": "Server Error",
+	"Service Indisponible": "Service is unavailable"
 }

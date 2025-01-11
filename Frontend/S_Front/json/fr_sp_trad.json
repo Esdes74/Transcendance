@@ -36,5 +36,7 @@
 	"Entrez votre nom d'utilisateur": "Escribe tu nombre de usuario",
         "Entrez votre mot de passe": "Escribe una contraseña",
         "Pas de compte ? Inscrivez-vous": "¿Sin cuenta? Registro",
-        "Connexion": "Acceder"
+        "Connexion": "Acceder",
+	"Erreur Serveur": "Error Servidor",
+	"Service Indisponible": "Servicio No Disponible"
 }
