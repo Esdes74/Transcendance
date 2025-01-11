@@ -60,18 +60,12 @@ function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
 }
 
 
-async function pong_sendMessage(data, socket, websocketLock) {
-	console.log('sending message...');
-	if (websocketLock) {
-		return;
-	}
-	websocketLock = true;
-	if (socket.readyState === WebSocket.OPEN) {
+async function pong_sendMessage(data, socket) {
+	if (socket.readyState === WebSocket.OPEN)
+	{
 		console.log('OUI NORMAL websocketLock is true');
 		socket.send(JSON.stringify(data));
 	}
-
-	websocketLock = false;
 }
 
 // ################################################################################################################ //
@@ -140,16 +134,15 @@ function pong_initSocket(socket, pong_gameSettings) {
 // ################################################################################################################ //
 // 												Connexion WebSocket													//
 // ################################################################################################################ //
-function pong_keyPressed(e, socket, websocketLock, message) {
-	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S')) {
+function pong_keyPressed(e, socket, websocketLock, message)
+{
+	if (socket.readyState === WebSocket.OPEN && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S'))
+	{
 		e.preventDefault()
-		console.log(`Key pressed: ${e.key}`);
-		pong_sendMessage({
-			'type': message,
-			'key': e.key
-		}, socket, websocketLock);
+		pong_sendMessage({'type': message, 'key': e.key}, socket);
 	}
 }
+
 function pong_EventManager(socket, websocketLock) {
 	console.log('pong_EventManager initialized');
 
@@ -275,49 +268,15 @@ async function redirectTo(path, socket, pong_gameSettings)
 			'player2':  pong_gameSettings.player2Name,
 			'winner': winner,
 		}, 'endGame');
-		// let players = [pong_gameSettings.player1Name, pong_gameSettings.player2Name];
-		fct = () => affTournamentBracket_return(result);
+		fct = () => affTournamentBracket_start(null);
 	}
 	addScript("/js/aff_" + path + ".js", fct);
 	socket.close();
 }
 
-		// console.log('TOURNOI car ', pong_gameSettings.istournament);
-		// // socket_sendMessage({}); //envoyer les scores
-		// socket.close();
 
-
-
-		// let winnerEvent = new CustomEvent('endGame', {
-		// 	detail:{
-		// 		message: pong_gameSettings.scorePlayer1,
-		// 	}
-		// });
-		// document.dispatchEvent(winnerEvent);
-//Fonction pour démarrer le compte à rebours
-// function startCountdown(seconds, pong_gameSettings)
-// {
-// 	pong_gameSettings.countdownActive = true;
-// 	pong_gameSettings.countdownValue = seconds;
-
-// 	const interval = setInterval(() =>
-// 	{
-// 		pong_gameSettings.countdownValue--;
-// 		if (pong_gameSettings.countdownValue <= 0)
-// 		{
-// 			clearInterval(interval);
-// 			pong_gameSettings.countdownActive = false;
-// 			pong_gameSettings.printBall = true;
-// 			console.log('GO !');
-// 		}
-// 	}, 1000);
-// }
-
-
-
-// Dessiner players et ball
 function pong_draw(pong_gameSettings) {
-	ctx = pong_gameSettings.canvas.getContext('2d');
+	let ctx = pong_gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, pong_gameSettings.canvas.width, pong_gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 
@@ -357,7 +316,7 @@ function pong_draw(pong_gameSettings) {
 		ctx.font = `${0.1 * pong_gameSettings.canvas.width}px Sans-serif`;
 		ctx.fillStyle = 'white';
 
-		// centrer en x et y
+		// center  x and y
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
 		ctx.fillText(pong_gameSettings.countdownValue, pong_gameSettings.canvas.width / 2, pong_gameSettings.canvas.height / 2);

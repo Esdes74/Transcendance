@@ -294,10 +294,7 @@ def continueTournament(request):
 			data = json.loads(request.body)
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
-
 		tournament, created = Tournament.objects.get_or_create(id=1)
-
-		
 		if tournament.pairs.count() == 0:
 			tournament.curr_round += 1
 			tournament.rounds_left -= 1
@@ -307,22 +304,9 @@ def continueTournament(request):
 			if tournament.rounds_left == 0:
 				player_score = [player.score for player in Player.objects.all().order_by('-score')]
 				return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)
-
 			return JsonResponse({"pairs": pairs}, status=200)
-
 		return JsonResponse({"pairs": [[pair.player1.name, pair.player2.name] for pair in tournament.pairs.all()]}, status=200)
-
-
-
-
-
-
-
-
-
-
-
-
+	return JsonResponse({"error": "Invalid request method"}, status=405)
 	# 	# players_left = [player.name for player in Player.objects.all() if player.match_played < tournament.curr_round]
 	# 	# if len(players_left) == 0:
 	# 		tournament.curr_round += 1
@@ -345,7 +329,7 @@ def continueTournament(request):
 
 	# 	return JsonResponse({"pairs": pairs}, status=200)
 	# 	#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
-	# return JsonResponse({"error": "Invalid request method"}, status=405)
+
 
 
 
