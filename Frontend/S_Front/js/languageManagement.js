@@ -23,7 +23,6 @@ function setFormsAlert(forms)
 		else
 			form.setCustomValidity("Veuillez remplir ce champ.")
 		form.oninvalid = function(e) {
-			e.preventDefault()
 			if (!e.target.validity.valid) 
 			{
 				if (language === "english")
