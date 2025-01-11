@@ -47,5 +47,4 @@ function affAuthentification()
 	tradNewPage()
 	let registerParam = document.getElementById("register")
 	registerParam.addEventListener("click", () => updatePage(registerParam.id))
-	getMainButtons()
 }

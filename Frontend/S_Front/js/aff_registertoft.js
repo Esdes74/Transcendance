@@ -31,6 +31,7 @@ function affRegisterToFT()
 	addScript("/js/registertoft.js", registerToFTCallback)
 	addScript("/js/waitingPong.js", ftWaitAnimationCallback)
 	document.querySelector('.replayBlock').style.display = "block"
+	document.getElementById("redirect").addEventListener("click", () => registerToFTCallback)
 	tradNewPage()
 	getMainButtons()
 }
