@@ -32,8 +32,6 @@ function initExplodingPong(myCanvas)
 	loginLoop(gameSettings);
 }
 	
-	
-	
 function resizeExplodingCanvas(gameSettings)
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
