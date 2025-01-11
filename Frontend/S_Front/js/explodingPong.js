@@ -77,13 +77,13 @@ async function loginLoop(gameSettings) {
 		if (ball.PosX > 1 || ball.PosX < 0)
 		{
 			ball.SpeedX *= -1
-			if (gameSettings.balls.length < 142)
+			if (gameSettings.balls.length < 10042)
 				gameSettings.balls.push(new Ball(ball.PosX + ball.SpeedX, ball.PosY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
 		}
 		if (ball.PosY > 1 || ball.PosY < 0)
 		{
 			ball.SpeedY *= -1
-			if (gameSettings.balls.length < 142)
+			if (gameSettings.balls.length < 10042)
 				gameSettings.balls.push(new Ball(ball.PosX, ball.PosY + ball.SpeedY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
 		}
 	})
