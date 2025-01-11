@@ -1,4 +1,4 @@
-function affTournament()
+async function affTournament()
 {
 	let docMain = document.querySelector('main')
 	console.log(docMain);
@@ -13,13 +13,13 @@ function affTournament()
 		<button id="btnValid">Valider</button>
 	</div>
 	`
-	affTournament_init();
+	await affTournament_init();
 	affTournament_EventManager();
 }
 
-function affTournament_init()
+async function affTournament_init()
 {
-	affTournament_sendRequest({}, 'initDB');
+	await affTournament_sendRequest({}, 'initDB');
 }
 
 function affTournament_EventManager()
@@ -29,8 +29,6 @@ function affTournament_EventManager()
 	document.getElementById('btnValid').addEventListener('click', () => affTournament_sendRequest({}, 'validTournament'));
 }
 
-
-// Fonction qui envoie les requêtes à l'API
 async function affTournament_sendRequest(data, function_name)
 {
 
@@ -47,33 +45,32 @@ async function affTournament_sendRequest(data, function_name)
 	console.log('Réponse de l\'API :', result);
 	console.log('return = ', result.return);
 
-// equivalent du socket.onMessage
-	if (result.return == "selectTournament")
+	if (result.return === "selectTournament")
 	{
 		console.log("select recu")
 		affTournament_drawTournament(result.size, result.old_size);
 	}
 	
-	else if (result.return == "createPlayer")
+	else if (result.return === "createPlayer")
 	{
 		console.log("enter recu")
 		console.log("result.index = ", result.index);
 		affTournament_createPlayerContainer(result.index);
 	}
 
-	else if (result.return == "deletePlayer")
+	else if (result.return === "deletePlayer")
 	{
 		console.log("delete recu")
-		playerContainer = document.getElementById(result.index);
+		let playerContainer = document.getElementById(result.index);
 		affTournament_deletePlayerContainer(playerContainer);
 	}
 
-	else if (result.return == "error")
+	else if (result.return === "error")
 	{
 		alert(`Erreur : ${result.error} `);
 	}
 
-	else if (result.return == "validTournament")
+	else if (result.return === "validTournament")
 	{
 		addScript('/js/aff_tournament_bracket.js', () =>
 		{
@@ -86,7 +83,7 @@ async function affTournament_sendRequest(data, function_name)
 function affTournament_drawTournament(size, old_size)
 {
 	console.log("drawTournament");
-	inputsContainer = document.getElementById('inputs');
+	let inputsContainer = document.getElementById('inputs');
 	console.log("inputsContainer = ", inputsContainer);
 	if (old_size < size)
 	{
@@ -96,7 +93,7 @@ function affTournament_drawTournament(size, old_size)
 			const newDiv = document.createElement('div');
 
 			let i = 0;
-			while (document.getElementById(i))
+			while (document.getElementById(`${i}`))
 				i++;
 
 			const input = affTournament_createEmptyField(i);
@@ -129,23 +126,18 @@ function affTournament_createEmptyField(index)
 {
 	const div = document.createElement('div');
 	console.log("index = ", index);
-	// Input field
 	const input = document.createElement('input');
 	input.type = 'text';
 	input.minLength = 2;
 	input.maxLength = 8;
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
-	// input.id = index;
 	input.className = 'input-field';  // Appliquer la classe CSS 'input-field'
 
 	input.addEventListener('keydown', async function (event) {
 		if (event.key === 'Enter')
 		{
-			affTournament_sendRequest({
-				'name': input.value,
-				'index': index
-			}, 'createPlayer');
+			await affTournament_sendRequest({'name': input.value, 'index': index}, 'createPlayer');
 		}
 	});
 
@@ -154,14 +146,10 @@ function affTournament_createEmptyField(index)
 	valid.className = 'valid-btn';
 	valid.textContent = 'Valider';
 	// valid.id = index;
-	valid.addEventListener('click', function ()
+	valid.addEventListener('click', async function ()
 	{
-		affTournament_sendRequest({
-			'name': input.value,
-			'index': index
-		}, 'createPlayer');
+		await affTournament_sendRequest({'name': input.value, 'index': index}, 'createPlayer');
 	})
-
 	div.appendChild(input);
 	div.appendChild(valid);
 	div.id = index;
@@ -172,42 +160,32 @@ function affTournament_createEmptyField(index)
 
 
 // CREATE PLAYER CONTAINER
-
-function affTournament_createPlayerContainer(index)	// fonction appelée pour créer le playerContainer
+function affTournament_createPlayerContainer(index)
 {
 	const inputBtn = document.getElementById(index);
 	const input = inputBtn.querySelector('input');
-	const name = input.value; // Récupérer la valeur saisie
+	const name = input.value;
 
-	// Le playerContainer est une div qui contient le nom et le bouton de suppression
 	const playerContainer = document.createElement('div');
 	playerContainer.id = index;
 
-	console.log("input = ", input);
-
-	// div qui contient le nom
 	const nameDiv = document.createElement('div');
 	nameDiv.className = 'name';
 	nameDiv.textContent = `Participant : ${name}`;
 	playerContainer.appendChild(nameDiv);
 
-	// bouton de suppression
 	const deleteBtn = document.createElement('button');
 	deleteBtn.className = 'delete-btn';
 	deleteBtn.textContent = '×'; // Symbole de croix
 	playerContainer.appendChild(deleteBtn);
 
-	// on remplace le div input par le playerContainer
 	if (inputBtn.parentNode) {
 		inputBtn.parentNode.replaceChild(playerContainer, inputBtn);
 	}
 
-	deleteBtn.addEventListener('click', function ()
+	deleteBtn.addEventListener('click', async function ()
 	{
-		affTournament_sendRequest({
-			'name': name,
-			'index': index
-		}, 'deletePlayer');
+		await affTournament_sendRequest({'name': name, 'index': index}, 'deletePlayer');
 	});
 }
 
@@ -218,10 +196,8 @@ function affTournament_deletePlayerContainer(playerContainer)
 	const newInput = affTournament_createEmptyField(playerContainer.id);
 	console.log("Voici l'actuel playerContainer : ", playerContainer);
 
-	// on remplace le playerContainer par le div input
 	if (playerContainer.parentNode)
 	{
 		playerContainer.parentNode.replaceChild(newInput, playerContainer);
 	}
-	console.log("Voici le nouveau playerContainer : ", playerContainer);
 }
