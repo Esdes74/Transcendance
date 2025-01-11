@@ -65,6 +65,10 @@ function rootMyUrl()
 			script: "/js/aff_404.js",
 			callback: "aff404"
 		},
+		"/50X": {
+			script: "/js/aff_50X.js",
+			callback: "aff50X"
+		},
 		"/registertoft": {
 			script: "/js/aff_registertoft.js",
 			callback: "affRegisterToFT"

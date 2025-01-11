@@ -91,7 +91,6 @@ function indexGameLoop(gameSettings) {
 	indexDraw(gameSettings);
 	gameSettings.ballX += gameSettings.ballSpeedX;
 	gameSettings.ballY += gameSettings.ballSpeedY;
-	gameSettings.ballSpeedX
 	if (gameSettings.ballX <= 0.05)
 	{
 		gameSettings.ballSpeedX *= -1
