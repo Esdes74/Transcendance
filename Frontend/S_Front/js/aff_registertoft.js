@@ -16,12 +16,13 @@ function affRegisterToFT()
 	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
-				<h1 class="mb-5 fw-bold" data-translate="true">Authentification 42</h1>
+				<h1 class="mb-5 fw-bold" data-translate="true">Authentification avec 42</h1>
 				<div class="canvas-container">
 				<canvas id="loginCanvas" class="w-100" height="400"></canvas>
 				<div class="replayBlock">
-					<h5>Please wait until redirect to 42 connection</h1>
-					<h5>Not getting redirected ? click here </h5>
+					<p class="fs-5 fw-bold" data-translate="true">Attente de la redirection vers 42...</p>
+					<p class="link-p fs-6 fw-bold text-white" id="redirect" data-translate="true">Pas automatiquement redirigé ? Cliquez ici</p>
+					<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="">Revenir à l'accueil</button>
 				</div>
 			</div>
 		</div>
@@ -31,4 +32,5 @@ function affRegisterToFT()
 	addScript("/js/waitingPong.js", ftWaitAnimationCallback)
 	document.querySelector('.replayBlock').style.display = "block"
 	tradNewPage()
+	getMainButtons()
 }
