@@ -29,9 +29,13 @@ function affAuthentification()
 								<label for="password" class="mb-2 fw-bold" data-translate="true">Mot de passe</label>
 									<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" required>
 							</div>
-							<button type="submit" class="btn btn-outline-light fw-bold mb-4" data-translate="true">Se connecter</button>
+							<button type="submit" class="btn btn-outline-light fw-bold mb-3" data-translate="true">Se connecter</button>
 						</form>
-						<p class="link-p fs-6 fw-bold text-white mb-0" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
+						<p class="link-p fs-6 fw-bold text-white mb-2" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
+						<button id="registertoft" class="btn42 rounded d-flex align-items-center mx-auto text-white" style="background: rgb(41,45,57) !important">
+							<p class="fs-6 fw-bold me-1 mb-0" data-translate="true"> Connexion via </p>
+							<img draggable="false" style="height: 42px;" src="/png/42.png"></img>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -47,4 +51,6 @@ function affAuthentification()
 	tradNewPage()
 	let registerParam = document.getElementById("register")
 	registerParam.addEventListener("click", () => updatePage(registerParam.id))
+	let auth42Button = document.getElementById("registertoft")
+	auth42Button.addEventListener("click", () => updatePage(auth42Button.id))
 }
