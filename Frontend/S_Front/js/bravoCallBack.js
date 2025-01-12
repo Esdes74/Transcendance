@@ -25,16 +25,18 @@ async function loadBravoCallBack()
 			if (response.ok) {
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result.message);
-
+				history.replaceState({pageID: ''}, '', "/")
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();
-				console.error('Erreur :', error);
-				alert('Échec de la connexion : ' + JSON.stringify(error));
+				history.replaceState({pageID: '50X'}, '', "/50X")
+				rootMyUrl()
+				//console.error('Erreur :', error);
+				//alert('Échec de la connexion : ' + JSON.stringify(error));
 			}
 		} catch (error) {
 			console.error('Erreur lors de la connexion :', error);
-			alert('Une erreur est survenue. Veuillez réessayer.');
+			history.replaceState({pageID: '50X'}, '', "/50X")
 		}
 	} else {
 		console.error("Code non trouvé dans l'URL");
