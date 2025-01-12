@@ -19,7 +19,7 @@
 	"Créer un compte": "Register",
 	"PONG MAJESTUEUX": "MAJESTIC PONG",
 	"Erreur": "Error",
-	"Fichier introuvable": "Page not found",
+	"Page introuvable": "Page not found",
 	"Revenir à l'accueil": "Back to home",
 	"Paramètres": "Settings",
 	"Rejouer": "Replay",
@@ -37,5 +37,5 @@
 	"Pas de compte ? Inscrivez-vous": "No account ? Register",
 	"Connexion": "Login",
 	"Erreur Serveur": "Server Error",
-	"Service Indisponible": "Service is unavailable"
+	"Service Indisponible": "Service is unavailable"	
 }
