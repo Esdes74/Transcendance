@@ -38,5 +38,8 @@
         "Pas de compte ? Inscrivez-vous": "¿Sin cuenta? Registro",
         "Connexion": "Acceder",
 	"Erreur Serveur": "Error Servidor",
-	"Service Indisponible": "Servicio No Disponible"
+	"Service Indisponible": "Servicio No Disponible",
+	"Authentification avec 42": "autenticación con 42",
+	"Attente de la redirection vers 42...": "Esperando redirección al 42...",
+	"Pas automatiquement redirigé ? Cliquez ici": "¿No se redirige automáticamente? haga clic aquí"
 }
