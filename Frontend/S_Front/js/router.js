@@ -77,9 +77,11 @@ function rootMyUrl()
 			script: "/js/aff_bravoCallBack.js",
 			callback: "affBravoCallBack"
 		},
+		"/settings": {
+			script: "/js/aff_settings.js",
+			callback: "affSettings"
+		},
 	}
-
-	console.log("AH")
 	let loc = window.location.pathname;
 	if (pages[loc])
 	{
@@ -99,12 +101,13 @@ function rootMyUrl()
 	}
 	else
 	{
+		changeHeader()
 		history.replaceState({pageID: '404'}, '', "/404")
 		rootMyUrl()
 	}
 }
 
-function initiatePage()
+async function initiatePage()
 {
 	var path = window.location.pathname
 	var queryParams = window.location.search
@@ -118,9 +121,9 @@ function initiatePage()
 	)
 	rootMyUrl()
 	getLinks()
-	if (is_logged())
+	if (await is_logged())
 	{
-		change_header()
+		changeHeader()
 	}
 	document.body.style.display = 'block';
 }
@@ -135,14 +138,11 @@ async function is_logged()
 			},
 			credentials: 'include'
 		});
-
 		if (response.ok) {
 			let jsonResponse = await response.json()
-			if (jsonResponse['detail'] === "Not connected")
-				return false
-			else
-				return true
-		} else {
+			return (jsonResponse['detail'] !== "Not connected")
+		}
+		else {
 			return false
 		}
 	} catch (error) {
@@ -150,9 +150,11 @@ async function is_logged()
 	}
 }
 
-function change_header()
+function changeHeader()
 {
-
+	buttonToChange = document.getElementById("login-settings")
+	buttonToChange.value = "settings"
+	buttonToChange.innerText = "Paramètres"
 }
 
 initiatePage()
