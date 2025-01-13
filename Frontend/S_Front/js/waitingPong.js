@@ -22,7 +22,6 @@ function loadAnimationLogin(myCanvas)
 	let width = gameSettings.canvas.width;
         gameSettings.player2 = gameSettings.paddle2Dest / height
         gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
-
 	window.addEventListener('popstate', (event) =>
 	{
 		gameSettings.stopAnim = true
@@ -31,11 +30,8 @@ function loadAnimationLogin(myCanvas)
 	{
 		gameSettings.stopAnim = true
 	})
-
 	loginLoop(gameSettings);
 }
-	
-	
 	
 function resizeLoginCanvas(gameSettings)
 {
@@ -46,10 +42,9 @@ function resizeLoginCanvas(gameSettings)
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
 	gameSettings.paddle2Y = gameSettings.paddle1Y;
-	loginDraw(gameSettings);
 }
 
-function loginDraw(gameSettings)
+async function loginDraw(gameSettings)
 {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
@@ -80,6 +75,7 @@ function loginDraw(gameSettings)
 			ctx.fill();
 			tmpBallPosX += 0.1
 		}
+		await new Promise(r => setTimeout(r, 250))
 		if (gameSettings.stopAnim === false)
 			requestAnimationFrame(() => loginLoop(gameSettings))
 	}
@@ -93,13 +89,13 @@ function loginDraw(gameSettings)
 			ctx.fill();
 			tmpBallPosX -= 0.1
 		}
+		await new Promise(r => setTimeout(r, 250))
 		if (gameSettings.stopAnim === false)
 			requestAnimationFrame(() => loginLoop(gameSettings))
 	}
 }
 
-async function loginLoop(gameSettings) {
-	await new Promise(r => setTimeout(r, 250));
+function loginLoop(gameSettings) {
 	if (gameSettings.ballPosX > 1)
 	{
 		gameSettings.goRight = false

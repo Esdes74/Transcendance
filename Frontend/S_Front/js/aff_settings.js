@@ -1,7 +1,7 @@
 function callbackSettings()
 {
     indexCanvas = document.getElementById("indexCanvas")
-    initAnimation(indexCanvas)
+    initAnimationSettings(indexCanvas)
 }
 
 async function affSettings()
@@ -65,7 +65,7 @@ async function affSettings()
 		usernameSpan.innerText = `, ${name}`;
 	}
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
-	addScript("/js/indexPong.js", callbackSettings)
+	addScript("/js/settingsPong.js", callbackSettings)
 	tradNewPage()
 	getMainButtons()
 }

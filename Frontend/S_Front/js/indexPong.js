@@ -57,7 +57,6 @@ function resizeIndexCanvas(gameSettings)
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
 	gameSettings.paddle2Y = gameSettings.paddle1Y;
-	indexDraw(gameSettings);
 }
 
 function indexDraw(gameSettings)

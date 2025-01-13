@@ -1,24 +1,23 @@
-class Ball {
-	constructor(PosX, PosY, SpeedX, SpeedY)
-	{
-		this.PosX = PosX
-		this.PosY = PosY
-		this.SpeedX = SpeedX
-		this.SpeedY = SpeedY
-	}
-}
-
-function initExplodingPong(myCanvas)
+function initAnimationSettings(myCanvas)
 {		
 	const gameSettings = {
 		canvas: myCanvas,
-		balls: [],
-		ballRadius: 0,
+		paddleWidth: 10,
+		paddleHeight: 0,
+		paddleBuffer: 0,
+
+		paddle1Y: 0,
+		paddle2Y: 0,
+		player1: 0.5,
+		player2: 0.5,
+
 		stopAnim: false,
 	};
 
-	gameSettings.balls.push(new Ball(0.5, 0.5, 0.005, 0.008))
-	resizeExplodingCanvas(gameSettings);
+	resizeLoginCanvas(gameSettings);
+	let height = gameSettings.canvas.height;
+	let width = gameSettings.canvas.width;
+        gameSettings.player2 = gameSettings.paddle2Dest / height
 
 	window.addEventListener('popstate', (event) =>
 	{
@@ -29,17 +28,24 @@ function initExplodingPong(myCanvas)
 		gameSettings.stopAnim = true
 	})
 }
-	
-function resizeExplodingCanvas(gameSettings)
+
+function resizeLoginCanvas(gameSettings)
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
-	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;
+	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;
+	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
+	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
+	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
+	gameSettings.paddle2Y = gameSettings.paddle1Y;
 	loginDraw(gameSettings);
 }
 
 function loginDraw(gameSettings)
 {
+	console.log(Math.random() * 255)
+	console.log(Math.random() * 255)
+	console.log(Math.random() * 255)
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
@@ -57,33 +63,13 @@ function loginDraw(gameSettings)
 	ctx.fillRect(5 * gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);
 	ctx.fillRect(0, gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
 	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
-	gameSettings.balls.forEach(ball => {
-		ctx.beginPath()
-		ctx.arc(ball.PosX * gameSettings.canvas.width, ball.PosY * gameSettings.canvas.height, gameSettings.ballRadius, 0, Math.PI * 2)
-		ctx.fill()
-	})
+	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
+	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	if (gameSettings.stopAnim === false)
 		requestAnimationFrame(() => loginLoop(gameSettings))
 }
 
 async function loginLoop(gameSettings) {
-	let randomX = Math.random()
-	let randomY = Math.random()
-	gameSettings.balls.forEach(ball => {
-		ball.PosX += ball.SpeedX
-		ball.PosY += ball.SpeedY
-		if (ball.PosX > 1 || ball.PosX < 0)
-		{
-			ball.SpeedX *= -1
-			if (gameSettings.balls.length < 10042)
-				gameSettings.balls.push(new Ball(ball.PosX + ball.SpeedX, ball.PosY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
-		}
-		if (ball.PosY > 1 || ball.PosY < 0)
-		{
-			ball.SpeedY *= -1
-			if (gameSettings.balls.length < 10042)
-				gameSettings.balls.push(new Ball(ball.PosX, ball.PosY + ball.SpeedY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
-		}
-	})
-	loginDraw(gameSettings)
+	await new Promise(r => setTimeout(r, 1000));
+	loginDraw(gameSettings);
 }
