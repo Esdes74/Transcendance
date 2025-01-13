@@ -17,7 +17,7 @@ function initExplodingPong(myCanvas)
 		stopAnim: false,
 	};
 
-	gameSettings.balls.push(new Ball(0.5, 0.5, 0.005, 0.008))
+	gameSettings.balls.push(new Ball(0.5, 0.5, 0.008, 0.005))
 	resizeExplodingCanvas(gameSettings);
 
 	window.addEventListener('popstate', (event) =>
