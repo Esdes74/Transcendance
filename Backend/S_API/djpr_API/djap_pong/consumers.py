@@ -127,8 +127,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 		async with self.websocket_lock_AI:
 			await self.websocketAI.send(data)
 			response = await self.websocketAI.recv()
-			print(f"Réponse du service AI: {response}")
-
 		return response
 
 	async def ia_ask_position(self, text):
