@@ -15,14 +15,34 @@ async function affSettings()
 				<div class="canvas-container">
 					<canvas id="indexCanvas" class="w-100" height="400"></canvas>
 					<div class="replayBlock">
-						<h2 class="fw-bold" data-translate="true">Jouer :</h2>
-						<div class="button-group">
-					<button data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-translate="tooltips" data-bs-original-title="Affronte une IA au Pong!" class="btn btn-outline-light m-2 fw-bold" value="ai"><span data-translate="true">Solo</span></button>
-						<button data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-translate="tooltips" data-bs-original-title="1vs1 en local contre un ami!" class="btn btn-outline-light m-2 fw-bold" value="pong"><span data-translate="true">Duel</span></button>
-						<span id="tournament_span" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-translate="tooltips" data-bs-original-title="Connecte-toi pour créer un tournoi">
-							<button id="tournament" disabled class="btn btn-outline-light fw-bold" data-translate="true" value="tournament"><span data-translate="true">Tournoi</span> <i class="bi bi-exclamation-triangle fw-bold col-6"></i>
-							</button>
-						</span>
+						<div class="form-check form-switch px-0 mb-3">
+							<label class="form-check-label fw-bold fs-5" for="flexSwitchCheckDefault">Double Authentification</label>
+							<input class="form-check-input mx-1" type="checkbox" role="switch" id="flexSwitchCheckDefault"></input>
+						</div>
+						<hr/>
+						<div class="fw-bold fs-5 mb-2"> Langue de Preference</div>
+						<div class="row">
+						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
+							<img style="width: 42px; height: 30px" src="/png/french_flag.png"></img>
+							<div class="form-check d-flex justify-content-center">
+							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+							</div>
+						</div>
+						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
+							<img style="width: 42px; height: 30px" src="/png/english_flag.png"></img>
+							<div class="form-check d-flex justify-content-center">
+							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+							</div>
+						</div>
+						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
+							<img style="width: 42px; height: 30px" src="/png/spanish_flag.png"></img>	
+							<div class="form-check d-flex justify-content-center">
+						  	<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+							</div>
+						</div>
+						</div>
+						<hr/>
+						<button class="btn btn-outline-light fw-bold mt-2" data-translate="true"> Enregistrer</button>
 						</div>
 					</div>
 				</div>
@@ -30,42 +50,7 @@ async function affSettings()
 		</div>
 	</div>
     `
-        tooltipList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        tooltipList.forEach(function (tooltip) {
-            new bootstrap.Tooltip(tooltip) })
-
-	if (await is_logged())
-	{
-		tournamentButton = document.getElementById("tournament")
-		tournamentButton.disabled = false
-		tournamentButton.innerText = "Tournoi"
-		tournamentSpan = document.getElementById("tournament_span")
-		tournamentSpan.setAttribute('data-bs-original-title', "Crée un tournoi de 3 à 8 joueurs")
-		tradDiv(tournamentSpan)
-		let name = ""
-		try {
-			const response = await fetch('/api/auth/get_me/', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				credentials: 'include'
-			})
-			if (response.ok) {
-				let jsonResponse = await response.json()
-				name = jsonResponse["username"]	
-			}
-			else
-				console.log("error1")
-		}
-		catch (error) {
-			console.log("error2")
-		}
-		usernameSpan = document.getElementById("username")
-		usernameSpan.innerText = `, ${name}`;
-	}
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	addScript("/js/settingsPong.js", callbackSettings)
 	tradNewPage()
-	getMainButtons()
 }

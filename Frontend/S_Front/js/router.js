@@ -101,7 +101,6 @@ function rootMyUrl()
 	}
 	else
 	{
-		changeHeader()
 		history.replaceState({pageID: '404'}, '', "/404")
 		rootMyUrl()
 	}

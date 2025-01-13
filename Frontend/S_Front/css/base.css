@@ -40,3 +40,8 @@ body {
 .dropdown-menu {
 	--bs-dropdown-min-width: 72px;
 }
+
+hr {
+	height: 3px;
+	background-color: blue;
+}

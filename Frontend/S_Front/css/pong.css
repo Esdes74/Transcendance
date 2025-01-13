@@ -55,11 +55,8 @@ canvas {
 	color: white;
 	text-align: center;
 	z-index: 10;
-	width: 300px;
+	width: 320px;
 	height: auto;
-
-	border-radius: 10px;
-	color: white;
 }
 
 .replayBlock button {
