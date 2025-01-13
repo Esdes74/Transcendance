@@ -1,6 +1,5 @@
 function registerToFTCallback()
 {
-	console.log("Prout hihi")
 	loadRegisterToFT()
 }
 

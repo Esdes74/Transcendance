@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 19:50:54 by lmohin            #+#    #+#              #
-#    Updated: 2024/12/12 11:26:18 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/13 12:49:25 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,8 @@ RED := '\e[0;31m'
 NEUTRAL := '\e[0m'
 
 # Build les images et seulement les images
-#	bash init.sh
 all:
+	bash init.sh
 	docker compose -f $(DOCKER) up -d --build
 # docker-compose -f $(API_DOCKER) up -d --build
 # docker-compose -f $(AUTH_DOCKER) up -d --build

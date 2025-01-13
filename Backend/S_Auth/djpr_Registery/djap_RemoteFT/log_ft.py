@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/26 16:50:18 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/27 15:43:11 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/13 11:13:10 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,11 +55,10 @@ def create_ft_user(data):
 	username = data['login']
 	password = " "
 	pseudo = data['login']
-	phone_nb = data['phone']
 	email = data['email']
 
 	# Vérification de la récupération des données
-	if not username or not pseudo or not phone_nb or not email:
+	if not username or not pseudo or not email:
 		return None
 
 	user = FullUser.objects.filter(realname=username).first()
@@ -86,7 +85,6 @@ def create_ft_user(data):
 		realname=username,
 		username=generated_username,
 		password=password,
-		phone_nb=phone_nb,
 		email=email
 	)
 	user.save()

@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 17:01:00 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/26 14:58:02 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/13 11:24:12 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ def jwt_required_2fa(view_func):
 		# 	token = auth_header.split(' ')[1]
 		# else:
 		# 	# Récupérer le token depuis le cookie si Authorization est absent
-		token = request.COOKIES.get('jwt_token')
+		token = request.COOKIES.get('tfa_jwt_token')
 
 		if not token:
 			return JsonResponse({"detail": "Unauthorized"}, status=401)

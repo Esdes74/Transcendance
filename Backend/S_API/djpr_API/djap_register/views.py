@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/27 15:23:17 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/13 16:52:35 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,12 +50,17 @@ def login_view(request):
 
 		if response.status_code == 200:
 			token = response.json().get('token')
+			tfa = response.json().get('2fa')
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
 				# TODO: Je pense qu'il faudra le passer en https et en secure
-				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
+				if (tfa):
+					token_name = 'tfa_jwt_token'
+				else:
+					token_name = 'jwt_token'
+				json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
 
 				# Archivage du user_id pour l'identifier comme authentifié plus tard
 				save_new_user(token)
@@ -102,7 +107,7 @@ def create_view(request):
 				json_response = JsonResponse(response.json(), status=201)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
 				# TODO: Je pens qu'il faudra le passer en https et en secure
-				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
+				json_response.set_cookie(key='tfa_jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
 
 				# Archivage du user_id pour l'identifier comme authentifié plus tard
 				save_new_user(token)
@@ -124,7 +129,6 @@ def create_view(request):
 def otp_verif(request):
 	password = request.data.get('password')
 	username = getattr(request, 'username', None)
-	print("bonjour")
 
 	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
@@ -145,6 +149,7 @@ def otp_verif(request):
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
 				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
+				json_response.set_cookie(key='tfa_jwt_token', value=token, httponly=True, samesite='Strict', max_age=0)
 				return json_response
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
@@ -157,7 +162,7 @@ def otp_verif(request):
 
 @no_token_requiered
 @api_view(['POST'])
-def stock(request):
+def forty_two_auth(request):
 	send_state = request.data.get('sendState')
 
 	if not send_state:
@@ -165,7 +170,7 @@ def stock(request):
 	if (len(send_state) != 50):
 		return Response({"error": "Invald data format"}, status=400)
 
-	external_service_url = "http://django-Auth:8000/remoteft/stock/"
+	external_service_url = "http://django-Auth:8000/remoteft/forty_two_auth/"
 	payload = {
 		'sendState': send_state
 	}
@@ -174,9 +179,10 @@ def stock(request):
 		response = requests.post(external_service_url, data=payload)
 
 		if response.status_code == 201:
-			return Response({"message": "Data succesfully created"}, status=201)
+			uri = response.json().get('uri')
+			return Response({"message": "Data succesfully created", "uri": uri}, status=201)
 		else:
-			res = "Stock failed\n" + response.text
+			res = "Forty two authentification failed\n" + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:

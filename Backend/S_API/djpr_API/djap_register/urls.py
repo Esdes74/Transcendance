@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/06 10:42:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/06 16:39:56 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/13 14:15:21 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ urlpatterns = [
 	path('choose_verif/', views.choose_verif, name='choose_verif'), # redirige vers la mise en place du 2fa
 	path('get_lang/', views.get_lang, name='get_lang'), # renvois la valeur de la langue choisie
 	path('get_verif/', views.get_verif, name='get_verif'), # renvois la valeur de la vérification choisie
-	path('stock/', views.stock, name='stock_state'), # redirige vers le stockage de state pour les requetes a l'api 42
+	path('forty_two_auth/', views.forty_two_auth, name='stock_state'), # redirige vers le stockage de state pour les requetes a l'api 42
 	path('make_token/', views.make_token, name='make_token'), # redirige vers la récupération du token pour les requetes a l'api 42
 	path('get_me/', views.get_me, name='get_me'), # renvois les infos de l'utilisateur en passant par le service auth
 	path('is_logged/', views.is_logged, name='is_logged'), # test la connection du serveur

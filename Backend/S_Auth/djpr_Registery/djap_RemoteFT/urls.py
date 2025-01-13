@@ -18,6 +18,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-	path('stock/', views.stock, name="stock_state"),
+	path('forty_two_auth/', views.forty_two_auth, name="stock_state"),
 	path('make_token/', views.make_token, name="make_token"),
 ]

@@ -1,12 +1,13 @@
 import os
 import requests
+import urllib.parse
 from django.shortcuts import render
 from djap_RemoteFT.models import StateModel
 from django.http import JsonResponse
 from .log_ft import log_ft
 from djap_login.models import FullUser
 
-def stock(request):
+def forty_two_auth(request):
 	if (request.method == 'POST'):
 		send_state = request.POST.get('sendState')
 
@@ -19,12 +20,22 @@ def stock(request):
 
 		save_state.save()
 
-		return JsonResponse({"message": "Data succesfully created"}, status=201)
+		server_ip = os.getenv("SERVER_IP")
+		external_service_url = "https://api.intra.42.fr/oauth/authorize"
+		client_id = os.getenv("UID")
+		'redirect_uri' : urllib.parse.quote("https://" + server_ip + ":3000/bravocallback"),
+		response_type = "code"
+		scope = "public"
+
+		uri = f"https://api.intra.42.fr/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type={response_type}&scope={scope}&state={send_state}"
+
+		return JsonResponse({"message": "Data succesfully created", "uri": uri}, status=201)
 
 def make_token(request):
 	if (request.method == 'POST'):
 		send_state = request.POST.get('sendState')
 		send_code = request.POST.get('sendCode')
+		server_ip = os.getenv("SERVER_IP")
 
 		# TODO: Voir si il faut garder ces vérifs ci alors qu'on vérifie déjà la meme chose dans l'api
 		if not send_state or not send_code:
@@ -51,7 +62,7 @@ def make_token(request):
 			'client_id': uid,
 			'client_secret': secret,
 			'code': send_code,
-			'redirect_uri': "https://z3r2p3:3000/bravocallback",
+			'redirect_uri': "https://" + server_ip + ":3000/bravocallback",
 			'state': send_state
 		}
 
