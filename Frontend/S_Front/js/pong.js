@@ -243,8 +243,6 @@ async function redirectTo(path, socket, pong_gameSettings)
 	let fct;
 	if (path === 'pong')
 		fct = () => affPong();
-	if (path === 'settings')
-		fct = () => affSettings();
 	if (path === 'index')
 	{
 		fct = () => affIndex();

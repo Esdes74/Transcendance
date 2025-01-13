@@ -3,14 +3,14 @@ async function affTournament()
 	let docMain = document.querySelector('main')
 	console.log(docMain);
 	docMain.innerHTML = `
-	<h1 class="display-1">Organisation de Tournoi</h1>
+	<h1 class="display-1 justify-content-center align-items-center" data-translate="true">Organisation du tournoi</h1>
 	<div class="buttons">
-		<button id="btn1">Tournoi x4</button>
-		<button id="btn2">Tournoi x8</button>
+		<button id="btn1" data-translate="true">Tournoi ×4</button>
+		<button id="btn2" data-translate="true">Tournoi ×8</button>
 		</div>
 		<div class="inputs" id="inputs">
 		</div>
-		<button id="btnValid">Valider</button>
+		<button id="btnValid" data-translate="true" >Valider</button>
 	</div>
 	`
 	await affTournament_init();
@@ -153,8 +153,8 @@ function affTournament_createEmptyField(index)
 	})
 	div.appendChild(input);
 	div.appendChild(valid);
-	tradDiv(div);
 	div.id = index;
+	tradDiv(div);
 	console.log("div = ", div);
 	return div;
 }

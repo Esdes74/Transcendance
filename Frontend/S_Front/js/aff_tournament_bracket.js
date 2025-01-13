@@ -1,11 +1,31 @@
 function paringPrintLoop(pair)
 {
+	const algoDiv = document.getElementById('algo');
+	tradDiv(algoDiv);
+
+	// creation du texte VS
 	const current_game = document.createElement('div');
 	current_game.className = 'col';
 	current_game.textContent = pair[0] + " vs " + pair[1];
-	const divElement = document.getElementById('algo');
-	divElement.appendChild(current_game);
-	readyState(pair[0], pair[1], divElement);
+	current_game.setAttribute('data-translate', 'true');
+
+	// creation du btn VS
+	const startBtn = document.createElement('button');
+	startBtn.className = 'btn btn-outline-light m-2';
+	startBtn.textContent = 'Commencer';
+	startBtn.setAttribute('data-translate', 'true');
+	tradDiv(startBtn);
+
+	const newDiv = document.createElement('div');
+	newDiv.className = 'row';
+	newDiv.appendChild(current_game);
+	newDiv.appendChild(startBtn);
+
+	addEvent(pair[0], pair[1], startBtn);
+
+	algoDiv.appendChild(newDiv);
+	newDiv.style.border = '1px solid green';
+
 }
 
 async function affTournamentBracket_start(player_list)
@@ -27,14 +47,11 @@ async function affTournamentBracket_start(player_list)
 		}
 	}
 	result.pairs.forEach(pair => paringPrintLoop(pair));
+	tradNewPage();
 }
 
-function readyState(player1, player2, divElement)
+function addEvent(player1, player2, startBtn)
 {
-	const startBtn = document.createElement('button');
-	startBtn.className = 'btn btn-outline-light m-2';
-	startBtn.textContent = 'Start Game !';
-	divElement.appendChild(startBtn);
 	startBtn.addEventListener('click', async function()
 	{
 		let result = await affTournamentBracket_sendRequest({
@@ -65,14 +82,9 @@ async function affTournamentBracket_sendRequest(data, function_name)
 function getHTML()
 {
 	return (`
-	<h1 class="display-1">Matchmaking</h1>
+	<h1 class="display-1" data-translate="true">Déroulement des matchs</h1>
 
-	<div id="algo">
-		<div class="container text-center">
-			<div id="player-list" class="row row-cols-1 justify-content-center mt-2">
-
-			</div>
-		</div>
+	<div class="container text-center" id="algo" data-translate="true" >
 	</div>
 	`)
 }

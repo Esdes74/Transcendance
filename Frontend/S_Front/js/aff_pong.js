@@ -32,7 +32,7 @@ function affPong(Player1, Player2)
 						<h2 id="winMessage"></h2>
 						<div class="button-group">
 							<button class="btn btn-outline-light m-2" data-translate="true" value="pong">Rejouer</button>
-							<button class="btn btn-outline-light m-2" data-translate="true" value="settings" >Paramètres</button>
+
 							<button class="btn btn-outline-light m-2" data-translate="true" value="index">Retour à l'accueil</button>
 							<button class="btn btn-outline-light m-2" id="nextButton" data-translate="true" value="tournament_bracket">Suivant</button>
 							</div>

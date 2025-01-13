@@ -42,5 +42,13 @@
 	"Service Indisponible": "Servicio No Disponible",
 	"Authentification avec 42": "autenticación con 42",
 	"Attente de la redirection vers 42...": "Esperando redirección al 42...",
-	"Pas automatiquement redirigé ? Cliquez ici": "¿No se redirige automáticamente? haga clic aquí"
+	"Pas automatiquement redirigé ? Cliquez ici": "¿No se redirige automáticamente? haga clic aquí",
+	"Organisation du tournoi": "Organización de torneos",
+	"Tournoi ×4": "Torneo ×4",
+	"Tournoi ×8": "Torneo ×8",
+	"Pseudo du participant": "nombre del participante",
+	"Valider": "Validar",
+	"Déroulement des matchs": "Progreso de los partidos",
+	"Commencer": "¡Comenzar!"
+
 }

@@ -42,6 +42,11 @@
 	"Authentification avec 42": "42 authentification",
 	"Attente de la redirection vers 42...": "Waiting for redirection to 42...",
 	"Pas automatiquement redirigé ? Cliquez ici": "Not automatically redirected ? Click here",
+	"Organisation du tournoi": "Tournament organization",
 	"Pseudo du participant": "Participant's username",
-	"Valider": "Validate"
+	"Valider": "Validate",
+	"Tournoi ×4": "Tournament ×4",
+	"Tournoi ×8": "Tournament ×8",
+	"Déroulement des matchs": "Matchmaking",
+	"Commencer": "Start Game !"
 }

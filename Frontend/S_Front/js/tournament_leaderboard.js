@@ -8,9 +8,6 @@ async function aff_leaderboard(result)
 
 	<div id="algo">
 		<div class="container text-center">
-			<div id="player-list" class="row row-cols-1 justify-content-center mt-2">
-
-			</div>
 		</div>
 	</div>
 	`
