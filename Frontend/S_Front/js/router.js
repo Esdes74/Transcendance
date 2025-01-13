@@ -56,6 +56,10 @@ function rootMyUrl()
 		"/tournament": {
 			script: "/js/aff_tournament.js",
 			callback: "affTournament"
+		},	
+		"/tournament_bracket": {
+			script: "js/aff_tournament_bracket.js",
+			callback: "affTournamentBracket_start"
 		},
 		"/ai": {
 			script: "/js/aff_ai.js",

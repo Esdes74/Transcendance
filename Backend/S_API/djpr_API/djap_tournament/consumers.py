@@ -15,7 +15,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 	async def receive(self, text_data):
-		# print(text_data)
+		print("bliat", text_data)
 		data = json.loads(text_data)
 		# print("HEOO HEEOO C'EST MOI")
 		file = data.get('file', 'malformed request')
@@ -49,9 +49,10 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 		elif file == 'tournament':
-			pass
-
-
+			print(file)
+			msg = data.get('msg', 'malformed request')
+			response = await self.send_to_tournament_service(json.dumps({'file': 'tournament', 'msg': msg}))
+			await self.send(response)
 		else:
 			await self.send(json.dumps({'error': 'malformed request'}))
 

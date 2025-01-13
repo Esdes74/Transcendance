@@ -63,3 +63,7 @@ Activer des logs détaillés sur la validation des tokens pour identifier les mo
 Notes sur la sécurisation de l'api et des entrypoints
 j'utilise des décorateurs personnalisés pour savoir si le token jwt est bien envoyé dans la requete pour s'assurer que la requete ne vient pas de quelqu'un qui n'a pas le droit
 chat gpt aidera a créer des nouveaux décorateurs si il y a besoin
+
+
+
+//TODO " => WARN: LegacyKeyValueFormat: "ENV key=value" should be used instead of legacy "ENV key value" format (line 13)"
