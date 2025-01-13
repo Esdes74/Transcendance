@@ -28,11 +28,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 		data = json.loads(text_data)
 		type = data.get('type', 'malformed request')
 		key = data.get('key', 'malformed request')
-		print("LA VALUE ==", type)
-		if type == 'saveDB':
-			print('DATA DB : ', data)
-			await self.send_to_pong_service(json.dumps({'type': 'pong.saveDB'}))
-			pass
 
 		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
 			self.keys[key] = True
