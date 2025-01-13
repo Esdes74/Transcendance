@@ -43,9 +43,12 @@ function resizeLoginCanvas(gameSettings)
 
 function loginDraw(gameSettings)
 {
-	console.log(Math.random() * 255)
-	console.log(Math.random() * 255)
-	console.log(Math.random() * 255)
+	player1red = Math.random() * 255
+	player1green = Math.random() * 255
+	player1blue = Math.random() * 255
+	player2red = Math.random() * 255
+	player2green = Math.random() * 255
+	player2blue = Math.random() * 255
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
@@ -63,7 +66,9 @@ function loginDraw(gameSettings)
 	ctx.fillRect(5 * gameSettings.canvas.width / 6, gameSettings.canvas.height / 6, 2, gameSettings.canvas.height * 2/3);
 	ctx.fillRect(0, gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
 	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
+	ctx.fillStyle = `rgb(${player1red}, ${player1green}, ${player1blue})`
 	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
+	ctx.fillStyle = `rgb(${player2red}, ${player2green}, ${player2blue})`
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	if (gameSettings.stopAnim === false)
 		requestAnimationFrame(() => loginLoop(gameSettings))
