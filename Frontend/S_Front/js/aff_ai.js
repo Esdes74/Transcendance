@@ -7,7 +7,8 @@ function callbackAI()
 function other()
 {
 	AICanvas = document.getElementById("AICanvas")
-	initPong(AICanvas)
+
+	initPong(false, AICanvas)
 }
 
 function createReplayBlock()
@@ -104,8 +105,8 @@ function affAI()
 					<div id="scorePlayer2" class="fs-2">0</div>
 				</div>
 				<div class="score-names d-flex justify-content-between align-items-end">
-					<div id="namePlayer1" class="d-flex pb-0 mb-0 align-items-end">You</div>
-					<div id="namePlayer2" class="d-flex pb-0 mb-0 align-items-end">Bot</div>
+					<div id="Player1" class="d-flex pb-0 mb-0 align-items-end">You</div>
+					<div id="Player2" class="d-flex pb-0 mb-0 align-items-end">Bot</div>
 				</div>	
 				<div class="canvas-container p-0">
 					<canvas id="menuCanvas" class="w-100" height="400"></canvas>

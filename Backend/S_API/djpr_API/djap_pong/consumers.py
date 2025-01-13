@@ -41,9 +41,10 @@ class PongConsumer(AsyncWebsocketConsumer):
 		key = data.get('key', 'malformed request')
 		if (self.ai_enabled and key in ['ArrowUp', 'ArrowDown']):
 			return
+		if key in ['W', 'S']:
+			key = key.lower()
 		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = True
-
 		if type == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = False
 
@@ -56,7 +57,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown']:
 						response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
 						await self.send(response)
-				await asyncio.sleep(0.01)
+				await asyncio.sleep(0.005)
 		# except asyncio.CancelledError:
 		# 	print("send_keys_periodically task was cancelled")
 		except Exception as e:
@@ -81,8 +82,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 				#else:
 				#	await self.ia_ask_position("noDatas")
 				await self.send(response)
-				await asyncio.sleep(0.01)
-				#i += 0.01
+				await asyncio.sleep(0.005)
 		# except asyncio.CancelledError:
 			# print("update_ball_position task was cancelled")
 		except Exception as e:
@@ -127,8 +127,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 		async with self.websocket_lock_AI:
 			await self.websocketAI.send(data)
 			response = await self.websocketAI.recv()
-			print(f"Réponse du service AI: {response}")
-
 		return response
 
 	async def ia_ask_position(self, text):

@@ -158,17 +158,16 @@ class CalculConsumer(AsyncWebsocketConsumer):
 						'type': 'Valid',
 						'player_list': self.player_list
 					}))
-
 			else:
 				pass
 
-
-# FILE : tournament.js
-		if data.get('file') == 'tournament':
-			pass
-
-
-
+		elif data.get('file') == 'tournament':
+			if data.get('msg') == 'give_me_list':
+				print("on passe par la")
+				await self.send(text_data=json.dumps({
+					'file': 'tournament',
+					'player_list': self.player_list
+				}))
 
 	# async def send_to_tournamentConsumer(self, event):
 	# 	await self.send(text_data=json.dumps(event))

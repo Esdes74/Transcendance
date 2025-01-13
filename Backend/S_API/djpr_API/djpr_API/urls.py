@@ -23,5 +23,6 @@ from django.urls import path, include
 
 urlpatterns = [
 	path('api/auth/', include('djap_register.urls')), # rediriges vers l'app djap_register
+	path('api/tournament/', include('djap_tournament.urls')), # rediriges vers l'app djap_tournament
 	path('api/remote_oauth/', include('djap_register.urls')), # rediriges vers l'app djap_Remote_OAUTH
 ]

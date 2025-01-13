@@ -24,20 +24,20 @@ class myConsumer(AsyncWebsocketConsumer):
 		ballSpeedX = data.get('ballSpeedX')
 		ballSpeedY = data.get('ballSpeedY')
 		if (ballSpeedX < 0):
-			sleepTime = ballPosX / (-100 * ballSpeedX) + 0.01
+			sleepTime = ballPosX / (-200 * ballSpeedX) + 0.1
 			if (sleepTime < 1):
 				sleepTime = 1
 		else:
-			sleepTime = (2 - ballPosX) / (100 * ballSpeedX) + 0.01
+			sleepTime = (2 - ballPosX) / (200 * ballSpeedX) + 0.1
 			if (sleepTime < 1):
 				sleepTime = 1
 		ballPos = self.calculatePaddlePos(ballPosX, ballPosY, ballSpeedX, ballSpeedY)
 		if (ballSpeedX < 0):
 			await self.send(text_data=json.dumps({'Move': 'NoMove', 'Timing': 0, 'SleepTime': 1}))
 		elif (botPos > ballPos):
-			await self.send(text_data=json.dumps({'Move': 'ArrowUp', 'Timing': botPos - ballPos, 'SleepTime': sleepTime}))
+			await self.send(text_data=json.dumps({'Move': 'ArrowUp', 'Timing': (botPos - ballPos) / 2, 'SleepTime': sleepTime}))
 		else:
-			await self.send(text_data=json.dumps({'Move': 'ArrowDown', 'Timing': ballPos - botPos, 'SleepTime': sleepTime}))
+			await self.send(text_data=json.dumps({'Move': 'ArrowDown', 'Timing': (ballPos - botPos) / 2, 'SleepTime': sleepTime}))
 
 
 	def calculatePaddlePos(self, ballX, ballY, ballSpeedX, ballSpeedY):
