@@ -49,7 +49,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
 						response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
 						await self.send(response)
-				await asyncio.sleep(0.006)
+				await asyncio.sleep(0.01)
 		# except asyncio.CancelledError:
 		# 	print("send_keys_periodically task was cancelled")
 		except Exception as e:
@@ -68,7 +68,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 				if data.get('scorePlayer1') >= 5 or data.get('scorePlayer2') >= 5:
 					self.printball = True
 				await self.send(response)
-				await asyncio.sleep(0.006)
+				await asyncio.sleep(0.005)
 		# except asyncio.CancelledError:
 			# print("update_ball_position task was cancelled")
 		except Exception as e:
