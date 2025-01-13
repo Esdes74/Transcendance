@@ -26,6 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 ALGO = os.getenv('ALGO')
 FRONT_IP = os.getenv('FRONT_IP')
+SERVER_IP = os.getenv('SERVER_IP')
 # print(FRONT_IP)
 
 # Pour vérifier que la clée secrete soit bien définis
@@ -35,7 +36,7 @@ if not SECRET_KEY or not ALGO:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-API', FRONT_IP, 'z3r2p3']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-API', FRONT_IP, SERVER_IP]
 
 # # Paramétrage des CORS policies
 # CORS_ALLOWED_ORIGINS = [
