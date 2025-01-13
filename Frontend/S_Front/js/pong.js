@@ -103,7 +103,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 			if (pong_gameSettings.printBall == false) {
 				console.log('scorePlayer1:', pong_gameSettings.scorePlayer1);
 				console.log('scorePlayer2:', pong_gameSettings.scorePlayer2);
-				if (pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5)
+				if ((pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5))
 					pong_gameOver(pong_gameSettings, socket);
 			}
 		}
@@ -201,14 +201,15 @@ function pong_gameOver(pong_gameSettings, socket)
 
 			buttons[i].style.display = 'inline-block';
 			buttons[i].addEventListener('click', async () => {
-				redirectTo(buttons[i].value, socket);
+				redirectTo(buttons[i].value, socket, pong_gameSettings);
 			});
 		}
 
 		// Masquer le bouton "Suivant"
-		document.getElementById("nextButton").style.display = 'none';
+		if (document.getElementById("nextButton"))
+			document.getElementById("nextButton").style.display = 'none';
 	}
-	else
+	else if (pong_gameSettings.istournament)
 	{
 		console.log('TOURNOI car ', pong_gameSettings.istournament);
 		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
@@ -230,6 +231,10 @@ function pong_gameOver(pong_gameSettings, socket)
 			redirectTo(nextBtn.value, socket, pong_gameSettings);
 		});
 	}
+	// else if (pong_gameSettings.canvas.id === "AICanvas")
+	// {
+
+	// }
 }
 
 
@@ -256,6 +261,8 @@ async function redirectTo(path, socket, pong_gameSettings)
 		}, 'endGame');
 		fct = () => affTournamentBracket_start(null);
 	}
+	// if (path === 'ai')
+	// 	fct = () => affAI();
 	addScript("/js/aff_" + path + ".js", fct);
 	socket.close();
 }

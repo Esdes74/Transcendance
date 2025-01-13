@@ -130,6 +130,7 @@ function affTournament_createEmptyField(index)
 	input.type = 'text';
 	input.minLength = 2;
 	input.maxLength = 8;
+	input.setAttribute('data-translate', 'placeholder');
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
 	input.className = 'input-field';  // Appliquer la classe CSS 'input-field'
@@ -145,13 +146,14 @@ function affTournament_createEmptyField(index)
 	const valid = document.createElement('button');
 	valid.className = 'valid-btn';
 	valid.textContent = 'Valider';
-	// valid.id = index;
+	valid.setAttribute('data-translate', 'true');
 	valid.addEventListener('click', async function ()
 	{
 		await affTournament_sendRequest({'name': input.value, 'index': index}, 'createPlayer');
 	})
 	div.appendChild(input);
 	div.appendChild(valid);
+	tradDiv(div);
 	div.id = index;
 	console.log("div = ", div);
 	return div;

@@ -47,16 +47,16 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			key = data['key']
 			if key == 'w' or key == 'W':
 				if self.player1Y - (self.playerHeight / 2) > 0:
-					self.player1Y = self.player1Y - 0.012
+					self.player1Y = self.player1Y - 0.01
 			elif key == 's'or key == 'S':
 				if self.player1Y + (self.playerHeight / 2) < 1:
-					self.player1Y = self.player1Y + 0.012
+					self.player1Y = self.player1Y + 0.01
 			elif key == 'ArrowUp':
 				if self.player2Y - (self.playerHeight / 2) > 0:
-					self.player2Y = self.player2Y - 0.012
+					self.player2Y = self.player2Y - 0.01
 			elif key == 'ArrowDown':
 				if self.player2Y + (self.playerHeight / 2) < 1:
-					self.player2Y = self.player2Y + 0.012
+					self.player2Y = self.player2Y + 0.01
 			else:
 				print('key non reconnue')
 

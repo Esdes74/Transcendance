@@ -41,9 +41,11 @@ class PongConsumer(AsyncWebsocketConsumer):
 		key = data.get('key', 'malformed request')
 		if (self.ai_enabled and key in ['ArrowUp', 'ArrowDown']):
 			return
-		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
+		if key in ['W', 'S']:
+			key = key.lower()
+		if type == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = True
-		if type == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
+		if type == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
 			self.keys[key] = False
 
 	async def send_keys_periodically(self):
@@ -52,10 +54,10 @@ class PongConsumer(AsyncWebsocketConsumer):
 				keys_copy = list(self.keys.items())
 				for k, value in keys_copy:
 					# print(f"keys : {self.keys}")
-					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown', 'W', 'S']:
+					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown']:
 						response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
 						await self.send(response)
-				await asyncio.sleep(0.01)
+				await asyncio.sleep(0.005)
 		# except asyncio.CancelledError:
 		# 	print("send_keys_periodically task was cancelled")
 		except Exception as e:
