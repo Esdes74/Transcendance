@@ -14,6 +14,73 @@ async function logoutUser()
 		}
 }
 
+async function changeSecu(value)
+{
+	try {
+                const data = {
+                        new2fa: value,
+                }
+                const response = await fetch('/api/auth/choose_verif/', {
+                        method: 'POST',
+                        headers: {
+                                'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                        credentials: 'include'
+                })
+                if (response.ok) {
+                        let jsonResponse = await response.json()
+                        console.log(jsonResponse)
+                }
+                else
+                        updatePage("50X")
+        }
+        catch (error) {
+        	updatePage("50X")
+        }
+}
+
+async function changeFavLanguage(value)
+{
+	try {
+		data = {
+			newLang: value,
+		}
+		const response = await fetch('/api/auth/choose_lang/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+			credentials: 'include'
+		})
+		if (response.ok) {
+			let jsonResponse = await response.json()
+			console.log(jsonResponse)
+		}
+		else
+			updatePage("50X")
+	}
+	catch (error) {
+		updatePage("50X")
+	}
+}
+
+async function sendDatas(oldSecu, oldLang)
+{
+	newSecu = document.getElementById("flexSwitchCheckDefault").checked
+	if (oldSecu !== newSecu)
+		await (changeSecu(newSecu))
+	const radios = document.querySelectorAll('input[type="radio"]');
+	let newLang
+	radios.forEach( radio => {
+		if (radio.checked)
+			newLang = radio.id
+	})
+	if (oldLang !== newLang)
+		await (changeFavLanguage(newLang))
+}
+
 function callbackSettings()
 {
     indexCanvas = document.getElementById("indexCanvas")
@@ -41,24 +108,24 @@ async function affSettings()
 						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
 							<img class="border border-2 rounded" draggable=false style="width: 42px; height: 30px" src="/png/french_flag.png"></img>
 							<div class="form-check d-flex justify-content-center">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+							<input class="form-check-input" type="radio" name="flexRadioDefault" id="fr">
 							</div>
 						</div>
 						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
 							<img class="border border-2 rounded" draggable=false style="width: 42px; height: 30px" src="/png/english_flag.png"></img>
 							<div class="form-check d-flex justify-content-center">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" checked id="flexRadioDefault2">
+							<input class="form-check-input" type="radio" name="flexRadioDefault" id="an">
 							</div>
 						</div>
 						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
 							<img class="border border-2 rounded" draggable=false style="width: 42px; height: 30px" src="/png/spanish_flag.png"></img>	
 							<div class="form-check d-flex justify-content-center">
-						  	<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+						  	<input class="form-check-input" type="radio" name="flexRadioDefault" id="es">
 							</div>
 						</div>
 						</div>
 						<hr/>
-						<button class="btn btn-outline-light fw-bold fs-6 mt-2 mb-3" data-translate="true">Sauvegarder les Changements</button>	
+						<button class="btn btn-outline-light fw-bold fs-6 mt-2 mb-3" id="save-change" data-translate="true">Sauvegarder les Changements</button>	
 						<p class="mt-1 mb-0" id="logout"><span class="logout-btn fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-danger data-translate="true"> Se Deconnecter </span></p>
 						</div>
 					</div>
@@ -94,33 +161,12 @@ async function affSettings()
 	if (!twofa)
 		document.getElementById("flexSwitchCheckDefault").checked = false
 	if (language === "fr")
-		document.getElementById("flexRadioDefault1").checked = true
-	else if (language === "en")
-		document.getElementById("flexRadioDefault2").checked = true
+		document.getElementById("fr").checked = true
+	else if (language === "an")
+		document.getElementById("an").checked = true
 	else
-		document.getElementById("flexRadioDefault3").checked = true
-	/*try {
-		data = {
-			new2fa: false,
-		}
-		const response = await fetch('/api/auth/choose_verif/', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
-			credentials: 'include'
-		})
-		if (response.ok) {
-			let jsonResponse = await response.json()
-			console.log(jsonResponse)
-		}
-		else
-			console.log("error1")
-	}
-	catch (error) {
-		console.log("error2")
-	}*/
+		document.getElementById("es").checked = true
+	document.getElementById("save-change").addEventListener("click", () => sendDatas(twofa, language))
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
 	await addScript("/js/settingsPong.js", callbackSettings)
