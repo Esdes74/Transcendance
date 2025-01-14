@@ -30,10 +30,8 @@ function load2faLogin()
 			if (response.ok) { // TODO: Gérer la éception des cookies 
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result.message);
-
-				// Redirige vers une autre page ou affiche un message de succès
+				changeHeader()
 				updatePage("")
-				// window.location.href = '/bravo.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();
