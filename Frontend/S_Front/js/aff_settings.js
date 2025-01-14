@@ -5,17 +5,12 @@ async function logoutUser()
 			method: 'POST'
 		}) 
 		if (response.ok) {
-			history.pushState({pageID: ''}, '', "")
-			rootMyUrl()
+			updatePage("")
 		}
 		else
-		{
-			history.pushState({pageID: '50X'}, '', "/50X")
-			rootMyUrl()
-		}
+			updatePage("50X")
 	} catch (error) {
-			history.pushState({pageID: '50X'}, '', "/50X")
-			rootMyUrl()
+			updatePage("50X")
 		}
 }
 
