@@ -199,13 +199,14 @@ function affTournament_createPlayerContainer(index)
 	playerContainer.id = index;
 
 	const nameDiv = document.createElement('div');
-	nameDiv.className = 'name bubble';
-	nameDiv.textContent = `Participant : ${name}`;
+	nameDiv.className = 'rounded-pill mx-auto';
+	nameDiv.textContent = `${name}`;
 	
 	const deleteBtn = document.createElement('button');
-	deleteBtn.className = 'delete-btn d-flex justify-content-center rounded-pill';
+	deleteBtn.className = 'delete-btn rounded-pill px-4';
 	deleteBtn.textContent = '×'; // Symbole de croix
 
+	playerContainer.className = 'd-flex align-items-center my-3 player-container rounded-pill';
 	playerContainer.appendChild(nameDiv);
 	playerContainer.appendChild(deleteBtn);
 

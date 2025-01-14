@@ -19,7 +19,6 @@ function paringPrintLoop(pair)
 
 	const newDiv = document.createElement('div');
 	newDiv.className = 'p-2 rounded-pill m-5 d-inline-block bubble';
-	newDiv.id = 'newDiv'
 	newDiv.appendChild(current_game);
 	newDiv.appendChild(startBtn);
 

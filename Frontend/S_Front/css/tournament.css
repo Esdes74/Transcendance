@@ -1,13 +1,6 @@
-#newDiv {
-	/* background-color: rgba(16, 55, 68, 0.679); */
-	background: linear-gradient(45deg, rgba(16, 55, 68, 0.679), rgb(153, 208, 238));
+.player-container {
 	border: 2px solid white;
-}
-
-.bubble {
-	width: 300px; /* Fixe une largeur uniforme pour toutes les bulles */
-	max-width: 100%; /* Empêche de dépasser le conteneur parent */
-	text-align: center; /* Centre le texte à l'intérieur */
+	background: linear-gradient(45deg, rgba(16, 55, 68, 0.679), rgb(153, 208, 238));
 }
 
 .input-field {
@@ -19,7 +12,7 @@
 	color: white;
 }
 
-  .tournament-btn {
+.tournament-btn {
 	background: linear-gradient(120deg, rgba(153, 208, 238, 0), rgb(153, 208, 238));
     color: white;
     font-size: 1.1rem;
@@ -29,9 +22,24 @@
 .tournament-btn:hover {
     background-color: #0056b3;
 	transform: scale(1.01)
-	
+
 }
+
+.delete-btn {
+	color: white;
+	border : 0px solid !important;
+	background: transparent !important;
+  }
 
 #btnValid {
 	width : 80%;
+}
+
+
+.bubble {
+	width: 300px; /* Fixe une largeur uniforme pour toutes les bulles */
+	max-width: 100%; /* Empêche de dépasser le conteneur parent */
+	text-align: center; /* Centre le texte à l'intérieur */
+	border: 2px solid white;
+	background: linear-gradient(45deg, rgba(16, 55, 68, 0.679), rgb(153, 208, 238));
 }
