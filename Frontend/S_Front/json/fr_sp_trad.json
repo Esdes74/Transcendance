@@ -49,6 +49,7 @@
 	"Pseudo du participant": "nombre del participante",
 	"Valider": "Validar",
 	"Déroulement des matchs": "Progreso de los partidos",
-	"Commencer": "¡Comenzar!"
-
+	"Commencer !": "¡Comenzar!",
+	"Mode Duel": "Modo Duelo",
+	"Mode Solo": "Modo Solo"
 }

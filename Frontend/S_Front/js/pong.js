@@ -180,16 +180,17 @@ function pong_handleViewChange(socket) {
 function pong_gameOver(pong_gameSettings, socket)
 {
 	const winMessageElem = document.getElementById('winMessage');
+	const winMsg = document.getElementById('WinMsg');
 	if (pong_gameSettings.scorePlayer1 > pong_gameSettings.scorePlayer2) {
-		winMessageElem.textContent = pong_gameSettings.player1Name + ' wins!';
+		winMessageElem.textContent = pong_gameSettings.player1Name;
 	}
 	else {
-		winMessageElem.textContent = pong_gameSettings.player2Name + ' wins!';
+		winMessageElem.textContent = pong_gameSettings.player2Name;
 	}
-	
 	if (!pong_gameSettings.istournament)
 	{
 		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+		winMsg.style.display = 'block';
 
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
 		replayBlockElem.style.display = 'block';
