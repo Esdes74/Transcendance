@@ -49,7 +49,7 @@ function loadRegister()
 				if (result['2fa'])
 					updatePage("2fa");
 				else
-					updatePage("bravo");
+					updatePage("");
 				// window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
