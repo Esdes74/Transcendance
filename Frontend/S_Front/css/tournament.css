@@ -9,3 +9,29 @@
 	max-width: 100%; /* Empêche de dépasser le conteneur parent */
 	text-align: center; /* Centre le texte à l'intérieur */
 }
+
+.input-field {
+	border: 3px solid white;
+	/* background-color: rgb(153, 208, 238) */
+}
+
+.input-field::placeholder {
+	color: white;
+}
+
+  .tournament-btn {
+	background: linear-gradient(120deg, rgba(153, 208, 238, 0), rgb(153, 208, 238));
+    color: white;
+    font-size: 1.1rem;
+	border: 2px solid #fff;
+  }
+
+.tournament-btn:hover {
+    background-color: #0056b3;
+	transform: scale(1.01)
+	
+}
+
+#btnValid {
+	width : 80%;
+}

@@ -1,18 +1,40 @@
+function callbackTournament()
+{
+	indexCanvas = document.getElementById("tournamentCanvas")
+	initAnimation(indexCanvas)
+}
+
 async function affTournament()
 {
 	let docMain = document.querySelector('main')
 	console.log(docMain);
 	docMain.innerHTML = `
-	<h1 class="display-1 justify-content-center align-items-center" data-translate="true">Organisation du tournoi</h1>
-	<div class="buttons">
-		<button id="btn1" data-translate="true">Tournoi ×4</button>
-		<button id="btn2" data-translate="true">Tournoi ×8</button>
+
+	<div class="container text-center my-5">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<h1 class="mb-5 fw-bold"><span data-translate="true">Organisation du tournoi</h1>
+			<div class="canvas-container">
+				<canvas id="tournamentCanvas" class="w-100" height="400"></canvas>
+				<div class="replayBlock">
+				<div class="buttons d-flex justify-content-center mb-3">
+					<button id="btn1" class="tournament-btn rounded mx-2" data-translate="true">Tournoi ×4</button>
+					<button id="btn2" class="tournament-btn rounded mx-2" data-translate="true">Tournoi ×8</button>
+					</div>
+					<div class="inputs" id="inputs">
+					</div>
+					<button id="btnValid" class="tournament-btn rounded mt-3" data-translate="true" >Valider</button>
+				</div>
+					
+				</div>
+			</div>
 		</div>
-		<div class="inputs" id="inputs">
-		</div>
-		<button id="btnValid" data-translate="true" >Valider</button>
 	</div>
-	`
+</div>
+
+`
+	addScript('/js/indexPong.js', callbackTournament);
+	document.querySelector(".replayBlock").style.display = "block"
 	await affTournament_init();
 	affTournament_EventManager();
 }
@@ -130,10 +152,14 @@ function affTournament_createEmptyField(index)
 	input.type = 'text';
 	input.minLength = 2;
 	input.maxLength = 8;
+	input.size = 15;
+	input.style.borderColor = 'white';
+	input.style.backgroundColor = 'transparent';
+	// input.style.filter = 'blur(2px)';
 	input.setAttribute('data-translate', 'placeholder');
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
-	input.className = 'input-field';  // Appliquer la classe CSS 'input-field'
+	input.className = 'input-field rounded mx-2 ';  // Appliquer la classe CSS 'input-field'
 
 	input.addEventListener('keydown', async function (event) {
 		if (event.key === 'Enter')
@@ -144,13 +170,14 @@ function affTournament_createEmptyField(index)
 
 	// Valid button
 	const valid = document.createElement('button');
-	valid.className = 'valid-btn';
+	valid.className = 'tournament-btn rounded';
 	valid.textContent = 'Valider';
 	valid.setAttribute('data-translate', 'true');
 	valid.addEventListener('click', async function ()
 	{
 		await affTournament_sendRequest({'name': input.value, 'index': index}, 'createPlayer');
 	})
+	div.className = 'd-flex justify-content-center rounded mt-2 mb-2';
 	div.appendChild(input);
 	div.appendChild(valid);
 	div.id = index;
@@ -172,13 +199,14 @@ function affTournament_createPlayerContainer(index)
 	playerContainer.id = index;
 
 	const nameDiv = document.createElement('div');
-	nameDiv.className = 'name';
+	nameDiv.className = 'name bubble';
 	nameDiv.textContent = `Participant : ${name}`;
-	playerContainer.appendChild(nameDiv);
-
+	
 	const deleteBtn = document.createElement('button');
-	deleteBtn.className = 'delete-btn';
+	deleteBtn.className = 'delete-btn d-flex justify-content-center rounded-pill';
 	deleteBtn.textContent = '×'; // Symbole de croix
+
+	playerContainer.appendChild(nameDiv);
 	playerContainer.appendChild(deleteBtn);
 
 	if (inputBtn.parentNode) {
