@@ -33,25 +33,25 @@ async function affSettings()
 					<div class="replayBlock">
 						<div class="form-check form-switch px-0 mb-3">
 							<label class="form-check-label fw-bold fs-5" for="flexSwitchCheckDefault">Double Authentification</label>
-							<input class="form-check-input mx-1" type="checkbox" role="switch" id="flexSwitchCheckDefault"></input>
+							<input class="form-check-input mx-1" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked></input>
 						</div>
 						<hr/>
 						<div class="fw-bold fs-5 mb-2"> Langue de Preference</div>
 						<div class="row">
 						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
-							<img style="width: 42px; height: 30px" src="/png/french_flag.png"></img>
+							<img class="border border-2 rounded" draggable=false style="width: 42px; height: 30px" src="/png/french_flag.png"></img>
 							<div class="form-check d-flex justify-content-center">
 							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
 							</div>
 						</div>
 						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
-							<img style="width: 42px; height: 30px" src="/png/english_flag.png"></img>
+							<img class="border border-2 rounded" draggable=false style="width: 42px; height: 30px" src="/png/english_flag.png"></img>
 							<div class="form-check d-flex justify-content-center">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+							<input class="form-check-input" type="radio" name="flexRadioDefault" checked id="flexRadioDefault2">
 							</div>
 						</div>
 						<div class="col-4 d-flex flex-column justify-content-center align-items-center"> 
-							<img style="width: 42px; height: 30px" src="/png/spanish_flag.png"></img>	
+							<img class="border border-2 rounded" draggable=false style="width: 42px; height: 30px" src="/png/spanish_flag.png"></img>	
 							<div class="form-check d-flex justify-content-center">
 						  	<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
 							</div>
@@ -67,6 +67,38 @@ async function affSettings()
 		</div>
 	</div>
     `
+	if (!await is_logged())
+		updatePage("50X")
+	let twofa
+	let language
+	try {
+		const response = await fetch('/api/auth/get_me/', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include'
+		})
+		if (response.ok) {
+			let jsonResponse = await response.json()
+			console.log(jsonResponse)
+			twofa = jsonResponse["secu"]
+			language = jsonResponse["language"]
+		}
+		else
+			console.log("error1")
+	}
+	catch (error) {
+		console.log("error2")
+	}
+	if (!twofa)
+		document.getElementById("flexSwitchCheckDefault").checked = false
+	if (language === "fr")
+		document.getElementById("flexRadioDefault1").checked = true
+	else if (language === "en")
+		document.getElementById("flexRadioDefault2").checked = true
+	else
+		document.getElementById("flexRadioDefault3").checked = true
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
 	await addScript("/js/settingsPong.js", callbackSettings)
