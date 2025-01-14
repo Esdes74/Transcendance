@@ -37,6 +37,11 @@ body {
 	text-decoration: underline;
 }
 
+.logout-btn:hover {
+	color: black !important;
+	user-select: none;
+}
+
 .dropdown-menu {
 	--bs-dropdown-min-width: 72px;
 }

@@ -1,6 +1,6 @@
 function initAnimationSettings(myCanvas)
 {		
-	const gameSettings = {
+	let gameSettings = {
 		canvas: myCanvas,
 		paddleWidth: 10,
 		paddleHeight: 0,

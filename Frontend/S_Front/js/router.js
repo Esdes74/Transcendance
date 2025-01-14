@@ -12,7 +12,7 @@ function scriptAlreadyLoaded(url)
 	return false
 }
 
-function addScript(src, callback)
+async function addScript(src, callback)
 {
 	if (scriptAlreadyLoaded(src))
 	{
@@ -21,7 +21,7 @@ function addScript(src, callback)
 	}
 	let scriptElement = document.createElement('script')
 	scriptElement.setAttribute("src", src)
-	scriptElement.onload = function() { callback() } 
+	scriptElement.onload = await function() { callback() } 
 	document.body.appendChild(scriptElement)
 	return (true)
 }

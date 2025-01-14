@@ -33,7 +33,8 @@ async function affIndex()
         tooltipList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltipList.forEach(function (tooltip) {
             new bootstrap.Tooltip(tooltip) })
-
+	addScript("/js/indexPong.js", callbackIndex)
+	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	if (await is_logged())
 	{
 		tournamentButton = document.getElementById("tournament")
@@ -64,8 +65,6 @@ async function affIndex()
 		usernameSpan = document.getElementById("username")
 		usernameSpan.innerText = `, ${name}`;
 	}
-	document.querySelectorAll('.replayBlock')[0].style.display = "block"
-	addScript("/js/indexPong.js", callbackIndex)
 	tradNewPage()
 	getMainButtons()
 }

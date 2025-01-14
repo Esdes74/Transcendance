@@ -35,10 +35,10 @@ function resizeExplodingCanvas(gameSettings)
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
 	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;
-	loginDraw(gameSettings);
+	explodingDraw(gameSettings);
 }
 
-function loginDraw(gameSettings)
+function explodingDraw(gameSettings)
 {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
@@ -63,10 +63,10 @@ function loginDraw(gameSettings)
 		ctx.fill()
 	})
 	if (gameSettings.stopAnim === false)
-		requestAnimationFrame(() => loginLoop(gameSettings))
+		requestAnimationFrame(() => explodingLoop(gameSettings))
 }
 
-async function loginLoop(gameSettings) {
+function explodingLoop(gameSettings) {
 	let randomX = Math.random()
 	let randomY = Math.random()
 	gameSettings.balls.forEach(ball => {
@@ -85,5 +85,5 @@ async function loginLoop(gameSettings) {
 				gameSettings.balls.push(new Ball(ball.PosX, ball.PosY + ball.SpeedY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
 		}
 	})
-	loginDraw(gameSettings)
+	explodingDraw(gameSettings)
 }

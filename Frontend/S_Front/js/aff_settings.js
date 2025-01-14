@@ -1,3 +1,24 @@
+async function logoutUser()
+{
+	try {
+		const response = await fetch('/api/auth/logout/', {
+			method: 'POST'
+		}) 
+		if (response.ok) {
+			history.pushState({pageID: ''}, '', "")
+			rootMyUrl()
+		}
+		else
+		{
+			history.pushState({pageID: '50X'}, '', "/50X")
+			rootMyUrl()
+		}
+	} catch (error) {
+			history.pushState({pageID: '50X'}, '', "/50X")
+			rootMyUrl()
+		}
+}
+
 function callbackSettings()
 {
     indexCanvas = document.getElementById("indexCanvas")
@@ -42,7 +63,8 @@ async function affSettings()
 						</div>
 						</div>
 						<hr/>
-						<button class="btn btn-outline-light fw-bold mt-2" data-translate="true"> Enregistrer</button>
+						<button class="btn btn-outline-light fw-bold fs-6 mt-2 mb-3" data-translate="true">Sauvegarder les Changements</button>	
+						<p class="mt-1 mb-0" id="logout"><span class="logout-btn fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-danger data-translate="true"> Se Deconnecter </span></p>
 						</div>
 					</div>
 				</div>
@@ -51,6 +73,7 @@ async function affSettings()
 	</div>
     `
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
-	addScript("/js/settingsPong.js", callbackSettings)
+	document.getElementById('logout').addEventListener("click", () => logoutUser())
+	await addScript("/js/settingsPong.js", callbackSettings)
 	tradNewPage()
 }
