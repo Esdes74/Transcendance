@@ -84,7 +84,7 @@ function rootMyUrl()
 		"/settings": {
 			script: "/js/aff_settings.js",
 			callback: "affSettings"
-		},
+		}
 	}
 	let loc = window.location.pathname;
 	if (pages[loc])
