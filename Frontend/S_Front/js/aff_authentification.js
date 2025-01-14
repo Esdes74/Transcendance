@@ -31,7 +31,7 @@ function affAuthentification()
 							</div>
 							<button type="submit" class="btn btn-outline-light fw-bold mb-3" data-translate="true">Se connecter</button>
 						</form>
-						<p class="link-p fs-6 fw-bold text-white mb-2" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
+						<p class="link-p fs-6 fw-bold text-white mb-3" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
 						<button id="registertoft" class="btn42 rounded d-flex align-items-center mx-auto text-white" style="background: rgb(41,45,57) !important">
 							<p class="fs-6 fw-bold me-1 mb-0" data-translate="true"> Connexion via </p>
 							<img draggable="false" style="height: 42px;" src="/png/42.png"></img>
