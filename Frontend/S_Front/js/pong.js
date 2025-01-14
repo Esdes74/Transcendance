@@ -35,7 +35,7 @@ function initPong(boolean, myCanvas) {
 	pong_resizeCanvas(pong_gameSettings)
 	console.log('Settings initialized');
 
-//	window.addEventListener('resize', pong_resizeCanvas(pong_gameSettings));
+	window.addEventListener('resize', function() { pong_resizeCanvas(pong_gameSettings)});
 	let socket;
 	if (myCanvas.id === "AICanvas")
 		socket = new WebSocket("/ws/pong/ai/");	// new WebSocket('wss://localhost:000/ws/pong/')

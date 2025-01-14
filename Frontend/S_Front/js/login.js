@@ -31,16 +31,16 @@ function loadLogin()
 			});
 
 			// Vérifie la réponse de l'API
-			if (response.ok) { // TODO: Gérer la éception des cookies 
+			if (response.ok) {
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result.message);
-
-				// Redirige vers une autre page ou affiche un message de succès
 				if (result['2fa'])
 					updatePage("2fa");
 				else
-					updatePage("bravo");
-				// window.location.href = '/2fa.html'; // Remplace par l'URL de redirection souhaitée
+				{
+					changeHeader()
+					updatePage("");
+				}
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();

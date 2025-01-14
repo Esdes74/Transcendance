@@ -99,6 +99,28 @@ async function affSettings()
 		document.getElementById("flexRadioDefault2").checked = true
 	else
 		document.getElementById("flexRadioDefault3").checked = true
+	/*try {
+		data = {
+			new2fa: false,
+		}
+		const response = await fetch('/api/auth/choose_verif/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+			credentials: 'include'
+		})
+		if (response.ok) {
+			let jsonResponse = await response.json()
+			console.log(jsonResponse)
+		}
+		else
+			console.log("error1")
+	}
+	catch (error) {
+		console.log("error2")
+	}*/
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
 	await addScript("/js/settingsPong.js", callbackSettings)
