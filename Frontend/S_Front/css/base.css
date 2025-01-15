@@ -6,6 +6,7 @@ body {
 	font-family: Arial, sans-serif;
   	font-size: 16px;
     	background: linear-gradient(to right, #579CC2 0%, #B7E0F8 50%, #579CC2 100%) !important;
+	/* centrer */
 }
 
 .navbar {
@@ -17,6 +18,7 @@ body {
     background: linear-gradient(120deg, rgba(153, 208, 238, 0), rgb(153, 208, 238));
     color: white;
     font-size: 1.1rem;
+	border: 2px solid #fff;
 }
 
 .btn42:hover {
@@ -48,5 +50,5 @@ body {
 
 hr {
 	height: 3px;
-	background-color: blue;
+	background-color: rgb(59, 130, 151);
 }
