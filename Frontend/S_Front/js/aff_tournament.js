@@ -1,7 +1,7 @@
 function callbackTournament()
 {
-	indexCanvas = document.getElementById("tournamentCanvas")
-	initAnimation(indexCanvas)
+	tournamentCanvas = document.getElementById("tournamentCanvas")
+	initAnimation(tournamentCanvas)
 }
 
 async function affTournament()
@@ -9,30 +9,26 @@ async function affTournament()
 	let docMain = document.querySelector('main')
 	console.log(docMain);
 	docMain.innerHTML = `
-
 	<div class="container text-center my-5">
-	<div class="row justify-content-center">
-		<div class="col-md-8">
-			<h1 class="mb-5 fw-bold"><span data-translate="true">Organisation du tournoi</h1>
-			<div class="canvas-container">
-				<canvas id="tournamentCanvas" class="w-100" height="400"></canvas>
-				<div class="replayBlock">
-				<div class="buttons d-flex justify-content-center mb-3">
-					<button id="btn1" class="tournament-btn rounded mx-2" data-translate="true">Tournoi ×4</button>
-					<button id="btn2" class="tournament-btn rounded mx-2" data-translate="true">Tournoi ×8</button>
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<h1 class="mb-5 fw-bold"><span data-translate="true">Organisation du tournoi</span></h1>
+				<div class="canvas-container">
+					<canvas id="tournamentCanvas" class="w-100" height="400"></canvas>
+					<div class="replayBlock">
+						<div class="buttons d-flex justify-content-center mb-3">
+							<button id="btn1" class="tournament-btn rounded mx-2" data-translate="true">Tournoi ×4</button>
+							<button id="btn2" class="tournament-btn rounded mx-2" data-translate="true">Tournoi ×8</button>
+						</div>
+						<div class="inputs" id="inputs">
+						</div>
+						<button id="btnValid" class="tournament-btn rounded mt-3" data-translate="true" >Valider</button>
 					</div>
-					<div class="inputs" id="inputs">
-					</div>
-					<button id="btnValid" class="tournament-btn rounded mt-3" data-translate="true" >Valider</button>
-				</div>
-					
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
-`
+	`
 	addScript('/js/indexPong.js', callbackTournament);
 	document.querySelector(".replayBlock").style.display = "block"
 	await affTournament_init();

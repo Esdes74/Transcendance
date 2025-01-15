@@ -42,7 +42,7 @@ async function affTournamentBracket_start(player_list)
 		console.log("wai on continue bien !")
 		result = await affTournamentBracket_sendRequest({}, 'continueTournament');
 		if (result.return === "endTournament") {
-			addScript('/js/tournament_leaderboard.js', () => aff_leaderboard(result));
+			addScript('/js/aff_tournament_leaderboard.js', () => aff_leaderboard(result));
 			console.log("endTournament");
 			return;
 		}
