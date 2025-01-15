@@ -126,7 +126,7 @@ async function initiatePage()
 	getLinks()
 	if (await is_logged())
 	{
-		changeHeader()
+		await changeHeader()
 	}
 	document.body.style.display = 'block';
 }
@@ -154,11 +154,51 @@ async function is_logged()
 	}
 }
 
-function changeHeader()
+async function changeHeader()
 {
 	buttonToChange = document.getElementById("login-settings")
 	buttonToChange.value = "settings"
 	buttonToChange.innerText = "Paramètres"
+	try {
+		const response = await fetch('/api/auth/get_lang/', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include'
+		})
+		if (response.ok) {
+			let jsonResponse = await response.json()
+			lang = jsonResponse['message']
+			if (lang === "an")
+			{
+				flag = document.querySelector('img[data-language="english"]')
+				await updateLanguage(flag)
+			}
+			if (lang === "fr")
+			{
+				flag = document.querySelector('img[data-language="french"]')
+				await updateLanguage(flag)
+			}
+			if (lang === "es")
+			{
+				flag = document.querySelector('img[data-language="spanish"]')
+				await updateLanguage(flag)
+			}
+		}
+		else {
+			updatePage("50X")
+		}
+	} catch (error) {
+		updatePage("50X")
+	}
+}
+
+function logoutHeader()
+{
+	buttonToChange = document.getElementById("login-settings")
+	buttonToChange.value = "authentification"
+	buttonToChange.innerText = "Se connecter"
 }
 
 initiatePage()

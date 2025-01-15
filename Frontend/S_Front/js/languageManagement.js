@@ -69,11 +69,15 @@ async function getTrads(language)
 		request = new Request("/json/fr_sp_trad.json")
 	if (language === "english")
 		request = new Request("/json/fr_en_trad.json")
-	let response = await fetch(request)
-	if (!response.ok)
-		console.error("Error:", response.status)
-	let trads = await response.json()
-	return (trads)
+	try
+	{
+		let response = await fetch(request)
+		if (!response.ok)
+			console.error("Error:", response.status, response.statusText);
+		let trads = await response.json()
+		return (trads)
+	} catch (error) {
+	}
 }
 
 async function tradElements(elements)
@@ -83,6 +87,8 @@ async function tradElements(elements)
 	if (language === "french")
 		return
 	let trads = await getTrads(language)
+	if (typeof trads === 'undefined')
+		return
 	elements.forEach( element => {
 		if (element.innerText in trads)
                 	element.innerText = trads[element.innerText]
@@ -96,6 +102,8 @@ async function tradPlaceholders(elements)
 	if (language === "french")
 		return
 	let trads = await getTrads(language)
+	if (typeof trads === 'undefined')
+                return
 	elements.forEach( element => {
 		if (element.placeholder in trads)
                 	element.placeholder = trads[element.placeholder]
@@ -109,6 +117,8 @@ async function tradTooltips(elements)
 	if (language === "french")
 		return
 	let trads = await getTrads(language)
+	if (typeof trads === 'undefined')
+                return
 	elements.forEach( element => {
 		title = element.getAttribute('data-bs-original-title')
 		if (title in trads)
@@ -119,6 +129,8 @@ async function tradTooltips(elements)
 async function returnToFrench(language)
 {
 	let trads = await getTrads(language)
+	if (typeof trads === 'undefined')
+                return
 	let invertedTrads = {};
 	for (let key in trads)
 		invertedTrads[trads[key]] = key;

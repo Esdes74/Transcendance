@@ -5,6 +5,7 @@ async function logoutUser()
 			method: 'POST'
 		}) 
 		if (response.ok) {
+			logoutHeader()
 			updatePage("")
 		}
 		else
