@@ -13,6 +13,7 @@ async function aff_leaderboard(result)
 	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
+			<h1 class="mb-5 fw-bold" data-translate="true">Fin du tournoi</h1>
 			<div class="canvas-container">
 			<canvas id="LeaderboardCanvas" class="w-100" height="400"></canvas>
 			<div class="replayBlock">
@@ -20,21 +21,13 @@ async function aff_leaderboard(result)
 						<div id="ladder">
 						</div>
 
-						<button id="btnValid" class="tournament-btn rounded mt-3" data-translate="true" >Valider</button>
+						<button id="bthBtn" class="tournament-btn rounded mt-3" data-translate="true" >Revenir à l'accueil</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	`
-	// <div class="text-center table border p-2">
-	// 	<table class="table">
-	// 		<h5 data-translate="true">Leaderboard</h5>
-	// 		<tbody id="ladder" class="table-group-divider">
-
-	// 		</tbody>
-	// 	</table>
-	// </div>
 
 	addScript('/js/indexPong.js', callbackLeaderboard);
 	document.querySelector(".replayBlock").style.display = "block"
@@ -64,16 +57,7 @@ async function aff_leaderboard(result)
 
 		ladderDiv.appendChild(playerContainer);
 	});
+	bthBtn.addEventListener('click', function() {
+		addScript('/js/aff_index.js', affIndex);
+	});
 }
-
-
-		// const thPlayer = document.createElement('th');
-		// thPlayer.scope = 'row';
-		// thPlayer.textContent = player;
-
-		// const tdScore = document.createElement('td');
-		// tdScore.textContent = result.score[index];
-
-		// const trElement = document.createElement('tr');
-		// trElement.appendChild(thPlayer);
-		// trElement.appendChild(tdScore);
