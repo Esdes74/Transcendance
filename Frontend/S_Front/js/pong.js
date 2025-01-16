@@ -33,9 +33,13 @@ function initPong(boolean, myCanvas) {
 	console.log('istournament =', pong_gameSettings.istournament);
 
 	pong_resizeCanvas(pong_gameSettings)
+	// pong_draw(pong_gameSettings);
 	console.log('Settings initialized');
 
-	window.addEventListener('resize', function() { pong_resizeCanvas(pong_gameSettings)});
+	// window.addEventListener('resize', pong_resizeCanvas(pong_gameSettings));
+	window.addEventListener('resize', function() {
+		pong_resizeCanvas(pong_gameSettings);
+	});
 	let socket;
 	if (myCanvas.id === "AICanvas")
 		socket = new WebSocket("/ws/pong/ai/");	// new WebSocket('wss://localhost:000/ws/pong/')
@@ -180,16 +184,17 @@ function pong_handleViewChange(socket) {
 function pong_gameOver(pong_gameSettings, socket)
 {
 	const winMessageElem = document.getElementById('winMessage');
+	const winMsg = document.getElementById('WinMsg');
 	if (pong_gameSettings.scorePlayer1 > pong_gameSettings.scorePlayer2) {
-		winMessageElem.textContent = pong_gameSettings.player1Name + ' wins!';
+		winMessageElem.textContent = pong_gameSettings.player1Name;
 	}
 	else {
-		winMessageElem.textContent = pong_gameSettings.player2Name + ' wins!';
+		winMessageElem.textContent = pong_gameSettings.player2Name;
 	}
-	
 	if (!pong_gameSettings.istournament)
 	{
 		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+		winMsg.style.display = 'block';
 
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
 		replayBlockElem.style.display = 'block';
@@ -243,8 +248,6 @@ async function redirectTo(path, socket, pong_gameSettings)
 	let fct;
 	if (path === 'pong')
 		fct = () => affPong();
-	if (path === 'settings')
-		fct = () => affSettings();
 	if (path === 'index')
 	{
 		fct = () => affIndex();
@@ -270,6 +273,9 @@ async function redirectTo(path, socket, pong_gameSettings)
 
 function pong_draw(pong_gameSettings) {
 	let ctx = pong_gameSettings.canvas.getContext('2d');
+	// console.log('gamesettings width =', pong_gameSettings.canvas.width);
+	// console.log('gamesettings CLIENT =', pong_gameSettings.canvas.clientWidth);
+	// let ctx = document.getElementById(pong_gameSettings.canvas.id).getContext('2d');
 	ctx.clearRect(0, 0, pong_gameSettings.canvas.width, pong_gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 
