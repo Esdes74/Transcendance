@@ -1,20 +1,3 @@
-async function logoutUser()
-{
-	try {
-		const response = await fetch('/api/auth/logout/', {
-			method: 'POST'
-		}) 
-		if (response.ok) {
-			logoutHeader()
-			updatePage("")
-		}
-		else
-			updatePage("50X")
-	} catch (error) {
-			updatePage("50X")
-		}
-}
-
 async function changeSecu(value)
 {
 	try {

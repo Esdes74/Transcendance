@@ -39,6 +39,11 @@ function rootMyUrl(isLogged)
 			callback: "affDenied",
 			logged: "no condition",
 		},
+		"/duplicate": {
+			script: "/js/aff_duplicate.js",
+			callback: "affDuplicate",
+			logged: "no condition",
+		},
 		"/authentification": {
 			script: "/js/aff_authentification.js",
 			callback: "affAuthentification",
@@ -98,7 +103,7 @@ function rootMyUrl(isLogged)
 			script: "/js/aff_settings.js",
 			callback: "affSettings",
 			logged: "must",
-		}
+		},
 	}
 	let loc = window.location.pathname;
 	if (pages[loc])
@@ -112,7 +117,7 @@ function rootMyUrl(isLogged)
 		}
 		if (page.logged === "must not" && isLogged)
 		{
-			history.replaceState({pageID: ''}, '', "/")
+			history.replaceState({pageID: 'duplicate'}, '', "/duplicate")
 			rootMyUrl(isLogged)
 			return (false)
 		}
@@ -230,6 +235,23 @@ function logoutHeader()
 	buttonToChange = document.getElementById("login-settings")
 	buttonToChange.value = "authentification"
 	buttonToChange.innerText = "Se connecter"
+}
+
+async function logoutUser()
+{
+        try {
+                const response = await fetch('/api/auth/logout/', {
+                        method: 'POST'
+                })
+                if (response.ok) {
+                        logoutHeader()
+                        updatePage("")
+                }
+                else
+                        updatePage("50X")
+        } catch (error) {
+                        updatePage("50X")
+                }
 }
 
 initiatePage()
