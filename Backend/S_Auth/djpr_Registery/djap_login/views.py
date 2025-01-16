@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/27 14:51:37 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/16 14:18:51 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,7 +120,7 @@ def otp(request):
 			# Récupération du secret de l'utilisateur et vérification du code
 			otp_secret = user.secret
 			totp = pyotp.TOTP(otp_secret)
-			if not totp.verify(password, valid_window=1):
+			if not totp.verify(password, valid_window=2):
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
 
 			# Génération du token temporaire et renvois
