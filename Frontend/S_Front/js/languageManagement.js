@@ -73,10 +73,11 @@ async function getTrads(language)
 	{
 		let response = await fetch(request)
 		if (!response.ok)
-			console.error("Error:", response.status, response.statusText);
+			return
 		let trads = await response.json()
 		return (trads)
 	} catch (error) {
+		return
 	}
 }
 

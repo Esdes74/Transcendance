@@ -210,7 +210,6 @@ async function is_logged()
 		});
 		if (response.ok) {
 			let jsonResponse = await response.json()
-			console.log(jsonResponse)
 			return (jsonResponse['detail'] !== "Not connected")
 		}
 		else {
