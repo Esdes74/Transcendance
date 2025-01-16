@@ -57,29 +57,56 @@ async function changeFavLanguage(value)
 		})
 		if (response.ok) {
 			let jsonResponse = await response.json()
-			console.log(jsonResponse)
+			return (true)
 		}
 		else
+		{
 			updatePage("50X")
+			return (false)
+		}
 	}
 	catch (error) {
 		updatePage("50X")
+		return (false)
 	}
 }
 
-async function sendDatas(oldSecu, oldLang)
+async function sendDatas(settings)
 {
 	newSecu = document.getElementById("flexSwitchCheckDefault").checked
-	if (oldSecu !== newSecu)
+	if (settings["twofa"] !== newSecu)
+	{
 		await (changeSecu(newSecu))
+		settings["twofa"] = newSecu
+	}
 	const radios = document.querySelectorAll('input[type="radio"]');
 	let newLang
 	radios.forEach( radio => {
 		if (radio.checked)
 			newLang = radio.id
 	})
-	if (oldLang !== newLang)
-		await (changeFavLanguage(newLang))
+	if (settings["language"] !== newLang)
+	{
+		if (await (changeFavLanguage(newLang)))
+		{
+			if (newLang === "fr")
+			{
+				flag = document.querySelector('img[data-language="french"]')
+				await updateLanguage(flag)
+			}
+			if (newLang === "an")
+			{
+				flag = document.querySelector('img[data-language="english"]')
+				await updateLanguage(flag)
+			}
+			if (newLang === "es")
+			{
+				flag = document.querySelector('img[data-language="spanish"]')
+				await updateLanguage(flag)
+			}
+		}
+		settings["language"] = newLang
+	}
 }
 
 function callbackSettings()
@@ -137,8 +164,7 @@ async function affSettings()
     `
 	if (!await is_logged())
 		updatePage("50X")
-	let twofa
-	let language
+	let settings = {}
 	try {
 		const response = await fetch('/api/auth/get_me/', {
 			method: 'GET',
@@ -149,9 +175,8 @@ async function affSettings()
 		})
 		if (response.ok) {
 			let jsonResponse = await response.json()
-			console.log(jsonResponse)
-			twofa = jsonResponse["secu"]
-			language = jsonResponse["language"]
+			settings["twofa"] = jsonResponse["secu"]
+			settings["language"] = jsonResponse["language"]
 		}
 		else
 			console.log("error1")
@@ -159,15 +184,15 @@ async function affSettings()
 	catch (error) {
 		console.log("error2")
 	}
-	if (!twofa)
+	if (!settings["twofa"])
 		document.getElementById("flexSwitchCheckDefault").checked = false
-	if (language === "fr")
+	if (settings["language"] === "fr")
 		document.getElementById("fr").checked = true
-	else if (language === "an")
+	else if (settings["language"] === "an")
 		document.getElementById("an").checked = true
 	else
 		document.getElementById("es").checked = true
-	document.getElementById("save-change").addEventListener("click", () => sendDatas(twofa, language))
+	document.getElementById("save-change").addEventListener("click", () => sendDatas(settings))
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
 	await addScript("/js/settingsPong.js", callbackSettings)
