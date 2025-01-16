@@ -23,6 +23,14 @@ class Tournament(models.Model):
 	players = models.ManyToManyField(Player, related_name='players')
 	pairs = models.ManyToManyField(Pair, related_name='pairs')
 
+	username = models.CharField(
+	max_length=150,
+	unique=True,
+	default=None,
+	blank=True,
+	null=True
+	)
+
 	# tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='players')	
 
 # # ici les paires de 2 players
@@ -30,3 +38,4 @@ class Tournament(models.Model):
 
 
 # git stash : 6518405
+
