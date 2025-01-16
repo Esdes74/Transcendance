@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/06 10:42:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/13 14:15:21 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/16 20:22:55 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,4 +27,5 @@ urlpatterns = [
 	path('make_token/', views.make_token, name='make_token'), # redirige vers la récupération du token pour les requetes a l'api 42
 	path('get_me/', views.get_me, name='get_me'), # renvois les infos de l'utilisateur en passant par le service auth
 	path('is_logged/', views.is_logged, name='is_logged'), # test la connection du serveur
+	path('refresh_2fa/', views.refresh_2fa, name='refresh_2fa'), # test la connection du serveur
 ]

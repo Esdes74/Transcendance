@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/13 16:52:35 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/16 20:32:51 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,9 +58,10 @@ def login_view(request):
 				# TODO: Je pense qu'il faudra le passer en https et en secure
 				if (tfa):
 					token_name = 'tfa_jwt_token'
+					json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
 				else:
 					token_name = 'jwt_token'
-				json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
+					json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=3600)
 
 				# Archivage du user_id pour l'identifier comme authentifié plus tard
 				save_new_user(token)
@@ -456,3 +457,43 @@ def is_logged(request):
 		return JsonResponse({"detail": "Invalid token"}, status=401)
 	except DecodeError:
 		return JsonResponse({"detail": "Token error"}, status=401)
+
+@jwt_required_2fa
+@api_view(['POST'])
+def refresh_2fa(request):
+	username = getattr(request, 'username', None)
+
+	if not username:
+		return Response({"error": "Missing credentials"}, status=400)
+
+	# Appeler un autre service pour gérer l'authentification
+	external_service_url = "http://django-Auth:8000/registery/refresh_2fa/"
+	payload = {
+		'username': username
+	}
+
+	try:
+		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+
+		if response.status_code == 200:
+			token = response.json().get('token')
+			if token:
+				# Créez la réponse JSON avec le token
+				json_response = JsonResponse(response.json(), status=200)
+				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
+				# TODO: Je pense qu'il faudra le passer en https et en secure
+				token_name = 'tfa_jwt_token'
+				json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
+
+				# Archivage du user_id pour l'identifier comme authentifié plus tard
+				save_new_user(token)
+
+				return json_response
+			else:
+				return JsonResponse({"error": "Token not found in response"}, status=500)
+		else:
+			res = "Login failed\n" + response.text
+			return Response({"error": res}, status=response.status_code)
+
+	except requests.exceptions.RequestException as e:
+		return Response({"error": str(e)}, status=500)

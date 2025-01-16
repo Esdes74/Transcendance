@@ -22,4 +22,5 @@ urlpatterns = [
 	path('create/', views.create, name="profile_creation"),
 	path('2fa/', views.otp, name="profile_creation"),
 	path('get_me/', views.get_me, name="get_me"),
+	path('refresh_2fa/', views.refresh_2fa, name="refresh_2fa"),
 ]

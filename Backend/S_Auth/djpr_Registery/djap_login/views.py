@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/16 14:18:51 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/16 20:33:13 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -158,3 +158,32 @@ def get_me(request):
 
 		except Exception as e:
 			return JsonResponse({"error": "Request get_me failed"}, status=500)
+
+def refresh_2fa(request):
+	if (request.method == 'POST') : # TODO: paser en GET
+		username = request.POST.get('username')
+
+		# Regarde si les identifiants sont donnés/recus
+		if not username:
+			return JsonResponse({"error": "Missings credentials"}, status = 400)
+
+		try:
+			# Authentification de l'utilisateurs avec les comptes prééxistans
+			user = FullUser.objects.filter(username=username).first()
+
+			# Si n'existe pas
+			if user is None:
+				return JsonResponse({"error": "Invalid Credentials"}, status=401)
+
+			# Création du secret et ajout dans la base de donnée
+			otp_sec = pyotp.random_base32()
+			user.secret = otp_sec
+			user.save()
+
+			# Génération du token temporaire et renvois
+			token = generate_temporary_token(user)
+			res = "2fa refreshed"
+			return JsonResponse({"message": res, "token": token}, status = 200)
+
+		except Exception as e:
+			return JsonResponse({"error": "Authentification failed"}, status=500)
