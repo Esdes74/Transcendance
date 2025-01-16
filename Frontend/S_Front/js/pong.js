@@ -250,7 +250,8 @@ async function redirectTo(path, socket, pong_gameSettings)
 		fct = () => affPong();
 	if (path === 'index')
 	{
-		fct = () => affIndex();
+		updatePage("");
+		return;
 	}
 	if (path === 'tournament_bracket')
 	{
