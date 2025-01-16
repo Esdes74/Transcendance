@@ -86,7 +86,7 @@ def createPlayer(request):
 		tournament.old_size = tournament.old_size - tournament.player_registered
 		tournament.player_list.append(name)
 
-		player, created = Player.objects.get_or_create(name=name)
+		player, created = Player.objects.get_or_create(name=name, from_Tournament=username)
 		player.save()
 
 		tournament.players.add(player)
@@ -114,7 +114,7 @@ def deletePlayer(request):
 		tournament.player_registered -= 1
 		tournament.player_list.remove(name)
 
-		player, created = Player.objects.get_or_create(name=name)		# player = Player.objects.get(name=name)
+		player, created = Player.objects.get_or_create(name=name, from_Tournament=username)		# player = Player.objects.get(name=name)
 		tournament.players.remove(player)
 
 		player.delete()
@@ -146,7 +146,7 @@ def initDB(request):
 		# tournament.players.clear()
 		# tournament.curr_round = 1
 		# tournament.rounds_left = 0
-		player = Player.objects.all()
+		player = Player.objects.filter(from_Tournament=username)
 		player.delete()
 		tournament.delete()
 
@@ -197,8 +197,8 @@ def startGame(request):
 
 		# verifier la valeur de player 1 et 2 pour voir si ils existent et sinon renvoyer une erreur
 		try:
-			P1 = Player.objects.get(name=player1)
-			P2 = Player.objects.get(name=player2)
+			P1 = Player.objects.get(name=player1, from_Tournament=username)
+			P2 = Player.objects.get(name=player2, from_Tournament=username)
 		except Player.DoesNotExist:
 			return JsonResponse({"error": "Player does not exist"}, status=400)
 
@@ -246,7 +246,7 @@ def split_into_pairs(joueurs, username):
 		pair = joueurs[i:i + 2]
 		pairs.append(pair)
 
-		player_pair, created = Pair.objects.get_or_create(player1=Player.objects.get(name=pair[0]), player2=Player.objects.get(name=pair[1]), index=i)
+		player_pair, created = Pair.objects.get_or_create(player1=Player.objects.get(name=pair[0], from_Tournament=username), player2=Player.objects.get(name=pair[1], from_Tournament=username), index=i)
 		player_pair.save()
 		tournament.pairs.add(player_pair)
 		print("index : ", i)
@@ -280,8 +280,8 @@ def endGame(request):
 
 		tournament, created = Tournament.objects.get_or_create(username=username)
 		try:
-			player1 = Player.objects.get(name=data.get('player1'))
-			player2 = Player.objects.get(name=data.get('player2'))
+			player1 = Player.objects.get(name=data.get('player1'), from_Tournament=username)
+			player2 = Player.objects.get(name=data.get('player2'), from_Tournament=username)
 		except Player.DoesNotExist:
 			return JsonResponse({"error": "Player does not exist"}, status=400)		# a voir si bonne facon d'empecher le front fournir des noms de joueurs qui n'existent pas
 		if data.get('winner') == player1.name:
@@ -304,7 +304,13 @@ def endGame(request):
 
 
 
-
+# plutot quavoir un uid et une list des uid dans le Tournament[username], on pourrait avoir un attribut 
+# dans les players qui prend le username en parametre et qui permet de savoir chaque player a 
+# quelle tournament ils appartiennt avec username comme on a fait et genre :tu vois le truc ?
+# les tournois sont déjà nommé avec username et username cest un charfield
+# cest ce quon a fait ce matin pour les differencier
+# ca ferait que quand on get_or_create le client il faudra fournir 2 choses : (name=name, appartient_a=username)
+# je pense, en tout cas je la sens bien cette idée
 
 def continueTournament(request):
 
@@ -324,7 +330,7 @@ def continueTournament(request):
 			players_left = [player.name for player in tournament.players.all().order_by('-score')]
 			pairs = split_into_pairs(players_left, username)
 			if tournament.rounds_left == 0:
-				player_score = [player.score for player in Player.objects.all().order_by('-score')]
+				player_score = [player.score for player in Player.objects.filter(from_Tournament=username).order_by('-score')]
 				return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)
 			return JsonResponse({"pairs": pairs}, status=200)
 		return JsonResponse({"pairs": [[pair.player1.name, pair.player2.name] for pair in tournament.pairs.all()]}, status=200)
@@ -357,3 +363,18 @@ def continueTournament(request):
 
 # todo iportant : faire la diff entre player_list[] et players car l'un list de char, l'autre list de Player
 # donc peut etre revoir les verificaitons et methode dans start/continue_tournament
+
+
+# oui au final jai ajouté une condition dans tous les get en rapport avec le player comme ca :
+# et en fait pour le score cest normal quil etait dupliqué car on prenait Player.objects.all() a la place de
+# 																		Player.objects.filter(from_Tournament=username)
+# dans player_score		et ducoup bah les scores triés par ordre décroissant, yavait aussi les scores de lautres tournois
+
+
+# ducoup normalement cest good tout ca !
+
+
+# et aussi on avait pas eu le cas précis tout a lheure, mais a mon avis ca aurait pose probleme davoir les memes player
+# et ducoup avec ce fix on fait dune pierre 2 coups
+# bah jai justement fait gagner lun et perdre lautre 
+# donc je vais voir ca ouais

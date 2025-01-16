@@ -4,6 +4,7 @@ class Player(models.Model):
 	name = models.CharField(max_length=100)
 	score = models.IntegerField(default=0)
 	match_played = models.IntegerField(default=0)
+	from_Tournament = models.CharField(max_length=100, default="")
 
 class Pair(models.Model):
 	player1 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player1')
