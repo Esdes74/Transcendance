@@ -20,7 +20,8 @@ function loadDuplicatePong(myCanvas)
 	gameSettings.printBall = true;
 	let height = gameSettings.canvas.height;
 	let width = gameSettings.canvas.width;
-        gameSettings.player2 = gameSettings.paddle2Dest / height
+	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player1;
+	gameSettings.paddle2Y = gameSettings.paddle1Y;
 	window.addEventListener('popstate', (event) =>
 	{
 		gameSettings.stopAnim = true
@@ -49,6 +50,9 @@ function loadDuplicatePong(myCanvas)
 			gameSettings.downPress = false
 		}
 	})
+	window.addEventListener('resize', function() {
+		resizeDuplicateCanvas(gameSettings)
+	})
 	duplicateLoop(gameSettings);
 }
 
@@ -59,8 +63,9 @@ function resizeDuplicateCanvas(gameSettings)
 	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;
 	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
-	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
-	gameSettings.paddle2Y = gameSettings.paddle1Y;
+	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player1;
+        gameSettings.paddle2Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player2;
+	duplicateDraw(gameSettings)
 }
 
 function duplicateDraw(gameSettings)
@@ -68,7 +73,8 @@ function duplicateDraw(gameSettings)
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
-	
+	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player1;
+        gameSettings.paddle2Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player2;
 	ctx.setLineDash([15, 10]);
 	ctx.beginPath();
 	ctx.moveTo(gameSettings.canvas.width / 2, 0);
@@ -84,20 +90,20 @@ function duplicateDraw(gameSettings)
 	ctx.fillRect(0, 5 * gameSettings.canvas.height / 6, gameSettings.canvas.width, 2);
 	ctx.fillRect(gameSettings.paddleBuffer, gameSettings.paddle1Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
-	if (gameSettings.stopAnim !== true)
-		requestAnimationFrame(() => duplicateLoop(gameSettings))
 }
 
 function duplicateLoop(gameSettings) {
 	if (gameSettings.upPress === true && gameSettings.paddle1Y > 0)
 	{
-		gameSettings.paddle1Y -= 8
-		gameSettings.paddle2Y -= 8
+		gameSettings.player1 -= 0.03
+		gameSettings.player2 -= 0.03
 	}
 	if (gameSettings.downPress === true && gameSettings.paddle1Y < gameSettings.canvas.height - gameSettings.paddleHeight)
 	{
-		gameSettings.paddle1Y += 8
-		gameSettings.paddle2Y += 8
+		gameSettings.player1 += 0.03
+		gameSettings.player2 += 0.03
 	}
 	duplicateDraw(gameSettings);
+	if (gameSettings.stopAnim !== true)
+		requestAnimationFrame(() => duplicateLoop(gameSettings))
 }

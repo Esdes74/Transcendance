@@ -31,7 +31,7 @@ function drawDenied(gameSettings)
 	ctx.fillText("?", gameSettings.canvas.width * gameSettings.textX, gameSettings.canvas.height * gameSettings.textY)
 }
 
-async function loopDenied(gameSettings) {
+function loopDenied(gameSettings) {
 	drawDenied(gameSettings);
 	requestAnimationFrame(() => loopDenied(gameSettings));
 }
