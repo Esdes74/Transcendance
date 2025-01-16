@@ -49,5 +49,3 @@ function loop404(gameSettings) {
 	gameSettings.textSpeedY *= -1 
 requestAnimationFrame(() => loop404(gameSettings));
 }
-
-init404Pong();
