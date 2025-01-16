@@ -66,5 +66,5 @@ async function affIndex()
 		usernameSpan.innerText = `, ${name}`;
 	}
 	tradNewPage()
-	getMainButtons()
+	getLinks()
 }

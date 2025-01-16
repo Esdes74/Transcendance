@@ -25,5 +25,5 @@ function affDenied()
     document.getElementsByClassName("replayBlock")[0].style.display = "block"
     addScript("/js/deniedPong.js", callbackDenied)
     tradNewPage()
-    getMainButtons()
+    getLinks()
 }

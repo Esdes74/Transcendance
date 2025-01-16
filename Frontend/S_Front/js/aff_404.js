@@ -25,5 +25,5 @@ function aff404()
     document.getElementsByClassName("replayBlock")[0].style.display = "block"
     addScript("/js/404Pong.js", callback404)
     tradNewPage()
-    getMainButtons()
+    getLinks()
 }

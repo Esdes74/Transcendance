@@ -12,6 +12,37 @@ function scriptAlreadyLoaded(url)
 	return false
 }
 
+function getLinks()
+{
+	let buttons = document.querySelectorAll("button")
+	buttons.forEach( button => {
+		button.addEventListener("click", () => updatePage(button.value))
+	})
+}
+
+async function updatePage(value)
+{
+	if (value === "index")
+	value = ""
+	if (value === history.state.pageID || value === "expand")
+		return
+	cleanTooltips()
+	history.pushState({pageID: value}, '', "/" + value)
+	const event = new CustomEvent('pageChanged');
+	document.dispatchEvent(event);
+	if (await is_logged())
+		rootMyUrl(true)
+	else
+		rootMyUrl(false)
+}
+
+function cleanTooltips()
+{
+    let tooltips = document.querySelectorAll('.tooltip')
+    tooltips.forEach( tooltip => {
+	tooltip.remove()})
+}
+
 async function addScript(src, callback)
 {
 	if (scriptAlreadyLoaded(src))
@@ -248,7 +279,7 @@ async function logoutUser()
                         updatePage("")
                 }
                 else
-                        updatePage("50X")
+                	updatePage("50X")
         } catch (error) {
                         updatePage("50X")
                 }

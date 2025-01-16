@@ -33,5 +33,5 @@ function affRegisterToFT()
 	document.querySelector('.replayBlock').style.display = "block"
 	document.getElementById("redirect").addEventListener("click", () => registerToFTCallback())
 	tradNewPage()
-	getMainButtons()
+	getLinks()
 }

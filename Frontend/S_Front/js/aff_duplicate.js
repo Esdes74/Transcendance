@@ -28,5 +28,5 @@ function affDuplicate()
     document.getElementById('logout').addEventListener("click", () => logoutUser())
     addScript("/js/duplicatePong.js", callbackDuplicate)
     tradNewPage()
-    getMainButtons()
+    getLinks()
 }

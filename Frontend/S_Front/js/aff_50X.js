@@ -28,5 +28,5 @@ function aff50X()
     document.getElementsByClassName("replayBlock")[0].style.display = "block"
     addScript("/js/explodingPong.js", callback50X)
     tradNewPage()
-    getMainButtons()
+    getLinks()
 }
