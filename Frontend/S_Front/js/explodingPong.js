@@ -19,7 +19,6 @@ function initExplodingPong(myCanvas)
 
 	gameSettings.balls.push(new Ball(0.5, 0.5, 0.008, 0.005))
 	resizeExplodingCanvas(gameSettings);
-
 	window.addEventListener('popstate', (event) =>
 	{
 		gameSettings.stopAnim = true
@@ -28,6 +27,10 @@ function initExplodingPong(myCanvas)
 	{
 		gameSettings.stopAnim = true
 	})
+	window.addEventListener('resize', function() {
+		resizeExplodingCanvas(gameSettings)
+	})
+	explodingLoop(gameSettings)
 }
 	
 function resizeExplodingCanvas(gameSettings)
@@ -62,8 +65,6 @@ function explodingDraw(gameSettings)
 		ctx.arc(ball.PosX * gameSettings.canvas.width, ball.PosY * gameSettings.canvas.height, gameSettings.ballRadius, 0, Math.PI * 2)
 		ctx.fill()
 	})
-	if (gameSettings.stopAnim === false)
-		requestAnimationFrame(() => explodingLoop(gameSettings))
 }
 
 function explodingLoop(gameSettings) {
@@ -86,4 +87,6 @@ function explodingLoop(gameSettings) {
 		}
 	})
 	explodingDraw(gameSettings)
+	if (gameSettings.stopAnim === false)
+		requestAnimationFrame(() => explodingLoop(gameSettings))
 }
