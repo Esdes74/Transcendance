@@ -35,6 +35,8 @@ async function affTournament()
 	affTournament_EventManager();
 }
 
+// TODO:fix bug claasement de fin callback	+ verification avec des try except dans le js si le client a été déconnecté (duplicate page si un dans tournoi et l'autres logout)
+
 async function affTournament_init()
 {
 	await affTournament_sendRequest({}, 'initDB');
@@ -50,50 +52,55 @@ function affTournament_EventManager()
 async function affTournament_sendRequest(data, function_name)
 {
 
-	const response = await fetch('/api/tournament/'+ function_name + '/', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-		credentials: 'include'
-	});
-
-	const result = await response.json();
-	console.log('Réponse de l\'API :', result);
-	console.log('return = ', result.return);
-
-	if (result.return === "selectTournament")
+	try
 	{
-		console.log("select recu")
-		affTournament_drawTournament(result.size, result.old_size);
-	}
-	
-	else if (result.return === "createPlayer")
-	{
-		console.log("enter recu")
-		console.log("result.index = ", result.index);
-		affTournament_createPlayerContainer(result.index);
-	}
-
-	else if (result.return === "deletePlayer")
-	{
-		console.log("delete recu")
-		let playerContainer = document.getElementById(result.index);
-		affTournament_deletePlayerContainer(playerContainer);
-	}
-
-	else if (result.return === "error")
-	{
-		alert(`Erreur : ${result.error} `);
-	}
-
-	else if (result.return === "validTournament")
-	{
-		addScript('/js/aff_tournament_bracket.js', () =>
-		{
-			affTournamentBracket_start(result.player_list);
+		const response = await fetch('/api/tournament/'+ function_name + '/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+			credentials: 'include'
 		});
+		
+		const result = await response.json();
+		console.log('Réponse de l\'API :', result);
+		console.log('return = ', result.return);
+		
+		if (result.return === "selectTournament")
+		{
+			console.log("select recu")
+			affTournament_drawTournament(result.size, result.old_size);
+		}
+	
+		else if (result.return === "createPlayer")
+		{
+			console.log("enter recu")
+			console.log("result.index = ", result.index);
+			affTournament_createPlayerContainer(result.index);
+		}
+	
+		else if (result.return === "deletePlayer")
+		{
+			console.log("delete recu")
+			let playerContainer = document.getElementById(result.index);
+			affTournament_deletePlayerContainer(playerContainer);
+		}
+	
+		else if (result.return === "error")
+		{
+			alert(`Erreur : ${result.error} `);
+		}
+
+		else if (result.return === "validTournament")
+		{
+			addScript('/js/aff_tournament_bracket.js', () =>
+			{
+				affTournamentBracket_start(result.player_list);
+			});
+		}
+	} catch (error) {
+		alert("Une erreur est survenue lors de la requête");
 	}
 }
 

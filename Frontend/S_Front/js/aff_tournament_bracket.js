@@ -69,15 +69,21 @@ function addEvent(player1, player2, startBtn)
 
 async function affTournamentBracket_sendRequest(data, function_name)
 {
-	const response = await fetch('/api/tournament/'+ function_name + '/', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-		credentials: 'include'
-	});
-	return (await response.json());
+	try {
+
+		const response = await fetch('/api/tournament/'+ function_name + '/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+			credentials: 'include'
+		});
+		return (await response.json());
+	}
+	catch (error) {
+		console.error('Erreur lors de la requête :', error);
+	}
 }
 
 function getHTML()
