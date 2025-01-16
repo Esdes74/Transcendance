@@ -27,8 +27,8 @@ function aff2fa()
 			<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez le code secret" required>
 			</div>
 
-			<button type="submit" class="btn btn-outline-light fw-bold mb-3">Valider</button>
-			<p class="link-p fs-6 fw-bold text-white mb-0" id="send-again" data-translate="true"> Renvoyer un nouveau code</p>	
+			<button type="submit" class="btn btn-outline-light fw-bold mb-3" data-translate="true">Valider</button>
+			<p class="link-p fs-6 fw-bold text-white mb-0" id="send-again" data-translate="true"> Envoyer un nouveau code</p>	
 		</form>
 	</div>
     `

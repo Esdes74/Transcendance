@@ -53,5 +53,10 @@
 	"Mode Duel": "Modo Duelo",
 	"Mode Solo": "Modo Solo",
 	"Résultats": "Resultados",
-	"Fin du tournoi": "Fin del torneo"
+	"Fin du tournoi": "Fin del torneo",
+	"Code envoyé sur votre boite mail": "Código enviado a tu buzón",
+        "Le code expirera dans 3 minutes.": "El código caducará en 3 minutos.",
+        "Entrez le code secret": "Escribe el código secreto",
+        "Valider": "Validar",
+        "Envoyer un nouveau code": "Enviar un nuevo código"
 }

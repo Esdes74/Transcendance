@@ -15,7 +15,7 @@
 	"Tournoi": "Tournament",
 	"1vs1 en local contre un ami!": "1vs1 locally against a friend!",
 	"Affronte une IA au Pong!": "Face against an AI in Pong!",
-	"Crée un tournoi de 3 à 8 joueurs": "Create a 3 to 8 players tournament",
+	"Crée un tournoi de 4 à 8 joueurs": "Create a 4 to 8 players tournament",
 	"Créer un compte": "Register",
 	"PONG MAJESTUEUX": "MAJESTIC PONG",
 	"Erreur": "Error",
@@ -52,5 +52,10 @@
 	"Mode Duel": "Duo Mode",
 	"Mode Solo": "Solo Mode",
 	"Résultats": "Leaderboard",
-	"Fin du tournoi": "End of the tournament"
+	"Fin du tournoi": "End of the tournament",
+	"Code envoyé sur votre boite mail": "Code sent to your mailbox",
+	"Le code expirera dans 3 minutes.": "The code will expire in 3 minutes",
+	"Entrez le code secret": "Enter the secret code",
+	"Valider": "Validate",
+	"Envoyer un nouveau code": "Resend a new code"
 }
