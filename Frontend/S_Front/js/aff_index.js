@@ -41,7 +41,7 @@ async function affIndex()
 		tournamentButton.disabled = false
 		tournamentButton.innerText = "Tournoi"
 		tournamentSpan = document.getElementById("tournament_span")
-		tournamentSpan.setAttribute('data-bs-original-title', "Crée un tournoi de 3 à 8 joueurs")
+		tournamentSpan.setAttribute('data-bs-original-title', "Crée un tournoi de 4 à 8 joueurs")
 		tradDiv(tournamentSpan)
 		let name = ""
 		try {
