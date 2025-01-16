@@ -30,6 +30,10 @@ function loadAnimationLogin(myCanvas)
 	{
 		gameSettings.stopAnim = true
 	})
+	window.addEventListener('resize', function() {
+		resizeLoginCanvas(gameSettings)
+		loginDraw(gameSettings)
+	})
 	loginLoop(gameSettings);
 }
 	
@@ -75,9 +79,6 @@ async function loginDraw(gameSettings)
 			ctx.fill();
 			tmpBallPosX += 0.1
 		}
-		await new Promise(r => setTimeout(r, 250))
-		if (gameSettings.stopAnim === false)
-			requestAnimationFrame(() => loginLoop(gameSettings))
 	}
 	else
 	{
@@ -89,13 +90,10 @@ async function loginDraw(gameSettings)
 			ctx.fill();
 			tmpBallPosX -= 0.1
 		}
-		await new Promise(r => setTimeout(r, 250))
-		if (gameSettings.stopAnim === false)
-			requestAnimationFrame(() => loginLoop(gameSettings))
 	}
 }
 
-function loginLoop(gameSettings) {
+async function loginLoop(gameSettings) {
 	if (gameSettings.ballPosX > 1)
 	{
 		gameSettings.goRight = false
@@ -108,5 +106,8 @@ function loginLoop(gameSettings) {
 	}
 	else
 		gameSettings.ballPosX += (gameSettings.goRight ? 1 : -1) * 0.05
-	loginDraw(gameSettings);
+	loginDraw(gameSettings)
+	await new Promise(r => setTimeout(r, 250))
+	if (gameSettings.stopAnim === false)
+		requestAnimationFrame(() => loginLoop(gameSettings))
 }
