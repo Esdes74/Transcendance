@@ -21,7 +21,7 @@ function cleanTooltips()
 	tooltip.remove()})
 }
 
-function updatePage(value)
+async function updatePage(value)
 {
 	if (value === "index")
 	value = ""
@@ -29,11 +29,12 @@ function updatePage(value)
 		return
 	cleanTooltips()
 	history.pushState({pageID: value}, '', "/" + value)
-	console.log("event dispatched");
 	const event = new CustomEvent('pageChanged');
 	document.dispatchEvent(event);
-	console.log(history.state)
-	rootMyUrl()
+	if (await is_logged())
+		rootMyUrl(true)
+	else
+		rootMyUrl(false)
 }
 
 function getLinks()

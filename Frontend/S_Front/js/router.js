@@ -26,70 +26,96 @@ async function addScript(src, callback)
 	return (true)
 }
 
-function rootMyUrl()
+function rootMyUrl(isLogged)
 {
 	let pages = {
 		"/": {
 			script: "/js/aff_index.js",
-			callback: "affIndex"
+			callback: "affIndex",
+			logged: "no condition",
 		},
-		"/bravo": {
-			script: "/js/aff_bravo.js",
-			callback: "affBravo"
+		"/denied": {
+			script: "/js/aff_denied.js",
+			callback: "affDenied",
+			logged: "no condition",
 		},
 		"/authentification": {
 			script: "/js/aff_authentification.js",
-			callback: "affAuthentification"
+			callback: "affAuthentification",
+			logged: "must not",
 		},
 		"/register": {
 			script: "/js/aff_register.js",
-			callback: "affRegister"
+			callback: "affRegister",
+			logged: "must not",
 		},
 		"/pong": {
 			script: "/js/aff_pong.js",
-			callback: "affPong"
+			callback: "affPong",
+			logged: "no condition",
 		},
 		"/2fa": {
 			script: "/js/aff_2fa.js",
-			callback: "aff2fa"
+			callback: "aff2fa",
+			logged: "must not",
 		},
 		"/tournament": {
 			script: "/js/aff_tournament.js",
-			callback: "affTournament"
+			callback: "affTournament",
+			logged: "must",
 		},	
 		"/tournament_bracket": {
 			script: "js/aff_tournament_bracket.js",
-			callback: "affTournamentBracket_start"
+			callback: "affTournamentBracket_start",
+			logged: "must",
 		},
 		"/ai": {
 			script: "/js/aff_ai.js",
-			callback: "affAI"
+			callback: "affAI",
+			logged: "no condition",
 		},
 		"/404": {
 			script: "/js/aff_404.js",
-			callback: "aff404"
+			callback: "aff404",
+			logged: "no condition",
 		},
 		"/50X": {
 			script: "/js/aff_50X.js",
-			callback: "aff50X"
+			callback: "aff50X",
+			logged: "no condition",
 		},
 		"/registertoft": {
 			script: "/js/aff_registertoft.js",
-			callback: "affRegisterToFT"
+			callback: "affRegisterToFT",
+			logged: "must not",
 		},
 		"/bravocallback": {
 			script: "/js/aff_bravoCallBack.js",
-			callback: "affBravoCallBack"
+			callback: "affBravoCallBack",
+			logged: "must not",
 		},
 		"/settings": {
 			script: "/js/aff_settings.js",
-			callback: "affSettings"
+			callback: "affSettings",
+			logged: "must",
 		}
 	}
 	let loc = window.location.pathname;
 	if (pages[loc])
 	{
 		let page = pages[loc];
+		if (page.logged === "must" && !isLogged)
+		{
+			history.replaceState({pageID: 'denied'}, '', "/denied")
+			rootMyUrl(isLogged)
+			return (false)
+		}
+		if (page.logged === "must not" && isLogged)
+		{
+			history.replaceState({pageID: ''}, '', "/")
+			rootMyUrl(isLogged)
+			return (false)
+		}
 		if (scriptAlreadyLoaded(page.script))
 			{
 					window[page.callback]()
@@ -106,7 +132,7 @@ function rootMyUrl()
 	else
 	{
 		history.replaceState({pageID: '404'}, '', "/404")
-		rootMyUrl()
+		rootMyUrl(isLogged)
 	}
 }
 
@@ -116,18 +142,23 @@ async function initiatePage()
 	var queryParams = window.location.search
 	var completeValue = path + queryParams
 	history.replaceState({pageID: completeValue.substring(1)}, '', completeValue)
-	window.addEventListener('popstate', function (event)
+	window.addEventListener('popstate', async function (event)
 	{
+	
 		cleanTooltips()
-		rootMyUrl()
-	}
-	)
-	rootMyUrl()
-	getLinks()
+		if (await is_logged())
+			rootMyUrl(true)
+		else
+			rootMyUrl(false)
+	})
 	if (await is_logged())
 	{
 		await changeHeader()
+		rootMyUrl(true)
 	}
+	else
+		rootMyUrl(false)
+	getLinks()
 	document.body.style.display = 'block';
 }
 
