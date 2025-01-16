@@ -22,6 +22,7 @@ function affReplayBlock()
 	menu = document.querySelector(".replayBlock")
 	menu.innerHTML = `<div class="button-group">
                                                 <h2 id="winMessage"></h2>
+												<h2 id=WinMsg data-translate="true">a gagné</h2>
                                                 <div class="button-group">
                                                 <button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Replay</Button>
                                                 <button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Change Difficulty</button>
