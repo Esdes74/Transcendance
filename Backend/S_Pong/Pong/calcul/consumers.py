@@ -35,7 +35,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		# if data.get('type') == 'pong.saveDB':
 		# 	print('DATA : ', data)
 		# 	from .models import pongDB
-		# 	pongDB, created = pongDB.objects.get_or_create(id=1)
+		# 	pongDB, created = pongDB.objects.get_or_create(username=username)
 		# 	pongDB.scorePlayer1 = self.scorePlayer1
 		# 	pongDB.scorePlayer2 = self.scorePlayer2
 		# 	pongDB.save()

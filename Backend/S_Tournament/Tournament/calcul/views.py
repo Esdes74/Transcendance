@@ -18,9 +18,10 @@ def selectTournament(request):
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
 		btn = data.get('btn')
+		username = data.get('username')
 
 		# Get or create a tournament instance
-		tournament, created = Tournament.objects.get_or_create(id=1)
+		tournament, created = Tournament.objects.get_or_create(username=username)
 
 		# if btn == 'btn1':
 		# 	if tournament.player_registered > 3:
@@ -65,7 +66,9 @@ def createPlayer(request):
 
 		name = data.get('name')
 		index = data.get('index')
-		tournament, created = Tournament.objects.get_or_create(id=1)
+		username = data.get('username')
+
+		tournament, created = Tournament.objects.get_or_create(username=username)
 
 		if len(name) == 0:
 			return JsonResponse({"error": "Le champs est vide !", "return": "error"}, status=400)
@@ -105,8 +108,9 @@ def deletePlayer(request):
 		name = data.get('name')
 		index = data.get('index')
 		nameContainer = data.get('nameContainer')
+		username = data.get('username')
 
-		tournament, created = Tournament.objects.get_or_create(id=1)
+		tournament, created = Tournament.objects.get_or_create(username=username)
 		tournament.player_registered -= 1
 		tournament.player_list.remove(name)
 
@@ -125,7 +129,14 @@ def initDB(request):
 
 	if request.method == 'POST':
 
-		tournament, created = Tournament.objects.get_or_create(id=1)
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+		username = data.get('username')
+
+		tournament, created = Tournament.objects.get_or_create(username=username)
 
 		# tournament.player_registered = 0
 		# tournament.size = 0
@@ -148,7 +159,14 @@ def validTournament(request):
 
 	if request.method == 'POST':
 
-		tournament, created = Tournament.objects.get_or_create(id=1)
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+		
+		username = data.get('username')
+
+		tournament, created = Tournament.objects.get_or_create(username=username)
 
 		if tournament.size == 0 or tournament.size == None:
 			return JsonResponse({"error": "Vous n'avez pas encore choisi la taille du tournoi !", "return": "error"}, status=400)
@@ -175,6 +193,7 @@ def startGame(request):
 
 		player1 = data.get('player1')
 		player2 = data.get('player2')
+		username = data.get('username')
 
 		# verifier la valeur de player 1 et 2 pour voir si ils existent et sinon renvoyer une erreur
 		try:
@@ -184,8 +203,8 @@ def startGame(request):
 			return JsonResponse({"error": "Player does not exist"}, status=400)
 
 		# supprime la pair de joueur qui joue pour recup la taille de tournament.pairs plus tard dans continueTournament
-		tournament, created = Tournament.objects.get_or_create(id=1)
-		pair = Pair.objects.get(player1=Player.objects.get(name=player1), player2=Player.objects.get(name=player2))
+		tournament, created = Tournament.objects.get_or_create(username=username)
+		pair = Pair.objects.get(player1=P1, player2=P2)
 		tournament.pairs.remove(pair)
 		pair.delete()
 		tournament.save()
@@ -202,13 +221,15 @@ def startTournament(request):
 			data = json.loads(request.body)
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
+
 		player_list = data.get('player_list')
+		username = data.get('username')
+
 		shuffle_list(player_list)
-		pairs = split_into_pairs(player_list)
+		pairs = split_into_pairs(player_list, username)
 		print("###############################################")
 		print("| BRACKET : ", pairs, " |")
 		return JsonResponse({"pairs": pairs}, status=200)
-		#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 def shuffle_list(array):
@@ -218,9 +239,9 @@ def shuffle_list(array):
 		array[i], array[j] = array[j], array[i]
 	return array
 
-def split_into_pairs(joueurs):
+def split_into_pairs(joueurs, username):
 	pairs = []
-	tournament, created = Tournament.objects.get_or_create(id=1)
+	tournament, created = Tournament.objects.get_or_create(username=username)
 	for i in range(0, len(joueurs), 2):
 		pair = joueurs[i:i + 2]
 		pairs.append(pair)
@@ -255,7 +276,9 @@ def endGame(request):
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-		tournament, created = Tournament.objects.get_or_create(id=1)
+		username = data.get('username')
+
+		tournament, created = Tournament.objects.get_or_create(username=username)
 		try:
 			player1 = Player.objects.get(name=data.get('player1'))
 			player2 = Player.objects.get(name=data.get('player2'))
@@ -270,16 +293,12 @@ def endGame(request):
 		player2.match_played += 1
 		player1.save()
 		player2.save()
-		# print("data du endgame : ", data)
 		print("+------------------------------------------ -  -")
 		print("| Player " + player1.name + " : " + str(player1.score) + " | Player " + player2.name + " : " + str(player2.score))
 		print("| 		Winner : " + data.get('winner'))
-		# print("| Player " + player2.name + " : " + str(player2.score))
 		print("+------------------------------------------ -  -")
 
 		return JsonResponse({"player_list": tournament.player_list, "return": "endGame"}, status=200)
-
-		# return JsonResponse({"return": "endGame"}, status=200)
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -294,13 +313,16 @@ def continueTournament(request):
 			data = json.loads(request.body)
 		except json.JSONDecodeError:
 			return JsonResponse({"error": "Invalid JSON"}, status=400)
-		tournament, created = Tournament.objects.get_or_create(id=1)
+
+		username = data.get('username')
+
+		tournament, created = Tournament.objects.get_or_create(username=username)
 		if tournament.pairs.count() == 0:
 			tournament.curr_round += 1
 			tournament.rounds_left -= 1
 			tournament.save()
 			players_left = [player.name for player in tournament.players.all().order_by('-score')]
-			pairs = split_into_pairs(players_left)
+			pairs = split_into_pairs(players_left, username)
 			if tournament.rounds_left == 0:
 				player_score = [player.score for player in Player.objects.all().order_by('-score')]
 				return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)

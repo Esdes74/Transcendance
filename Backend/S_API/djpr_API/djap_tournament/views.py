@@ -6,16 +6,19 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework.permissions import AllowAny
-from djpr_API.decorator import jwt_required_2fa
+from djpr_API.decorator import jwt_required_2fa, auth_required
 import json
 
 # Select Tournament is here to select the number of players in the tournament
+@auth_required
 @api_view(['POST'])
 def selectTournament(request):
 	print("Here we are in selectTournament")
 
 	data = json.loads(request.body)
-	print("SELECT TOURNAMENT data : ", data)
+	username = getattr(request, 'username', None)
+	data['username'] = username
+	print("SELECT TOURNAMENT USERNAME : ", username)
 
 	if request.method == 'POST':
 
@@ -31,12 +34,16 @@ def selectTournament(request):
 
 
 # Create Player is here to create a player in the tournament
+@auth_required
 @api_view(['POST'])
 def createPlayer(request):
 	print("Here we are in createPlayer")
 
 	data = json.loads(request.body)
-	print("CREATE PLAYER data : ", data)
+	username = getattr(request, 'username', None)
+	data['username'] = username
+	print("SELECT TOURNAMENT USERNAME : ", data['username'])
+
 	if request.method == 'POST':
 
 		response = requests.post('http://django-tournament:8000/tournament/createPlayer/', json=data)
@@ -49,11 +56,14 @@ def createPlayer(request):
 
 
 # deletePlayer is here to delete a player in the tournament
+@auth_required
 @api_view(['POST'])
 def deletePlayer(request):
 	print("Here we are in deletePlayer")
 
 	data = json.loads(request.body)
+	username = getattr(request, 'username', None)
+	data['username'] = username
 	print("DELETE PLAYER data : ", data)
 
 	if request.method == 'POST':
@@ -66,13 +76,19 @@ def deletePlayer(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@auth_required
 @api_view(['POST'])
 def initDB(request):
 	print("Here we are in initDB")
 
+	data = json.loads(request.body)
+	username = getattr(request, 'username', None)
+	data['username'] = username
+	print("SELECT TOURNAMENT USERNAME : ", username)
+
 	if request.method == 'POST':
 
-		response = requests.post('http://django-tournament:8000/tournament/initDB/', json={})
+		response = requests.post('http://django-tournament:8000/tournament/initDB/', json=data)
 		try:
 			response_data = response.json()
 		except ValueError:
@@ -80,13 +96,19 @@ def initDB(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@auth_required
 @api_view(['POST'])
 def validTournament(request):
 	print("Here we are in initDB")
 
+	data = json.loads(request.body)
+	username = getattr(request, 'username', None)
+	data['username'] = username
+	print("VALID TOURNAMENT data : ", data)
+
 	if request.method == 'POST':
 
-		response = requests.post('http://django-tournament:8000/tournament/validTournament/', json={})
+		response = requests.post('http://django-tournament:8000/tournament/validTournament/', json=data)
 		try:
 			response_data = response.json()
 		except ValueError:
@@ -99,11 +121,17 @@ def validTournament(request):
 # aff_tournament_bracket.js
 # ############################################################################################################
 
+@auth_required
 @api_view(['POST'])
 def startTournament(request):
 	print("Here we are in startTournament")
+
 	if request.method == 'POST':
+
 		data = json.loads(request.body)
+		username = getattr(request, 'username', None)
+		data['username'] = username
+
 		response = requests.post('http://django-tournament:8000/tournament/startTournament/', json=data)
 		try:
 			response_data = response.json()
@@ -112,14 +140,16 @@ def startTournament(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@auth_required
 @api_view(['POST'])
 def startGame(request):
 	print("Here we are in startGame")
 
-	data = json.loads(request.body)
-	print("START GAME data : ", data)
-
 	if request.method == 'POST':
+
+		data = json.loads(request.body)
+		username = getattr(request, 'username', None)
+		data['username'] = username
 
 		response = requests.post('http://django-tournament:8000/tournament/startGame/', json=data)
 		try:
@@ -129,14 +159,16 @@ def startGame(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@auth_required
 @api_view(['POST'])
 def endGame(request):
 	print("Here we are in endGame")
 
-	data = json.loads(request.body)
-	print("END GAME data : ", data)
-
 	if request.method == 'POST':
+
+		data = json.loads(request.body)
+		username = getattr(request, 'username', None)
+		data['username'] = username
 
 		response = requests.post('http://django-tournament:8000/tournament/endGame/', json=data)
 		try:
@@ -146,14 +178,16 @@ def endGame(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@auth_required
 @api_view(['POST'])
 def continueTournament(request):
 	print("Here we are in continueTournament")
 
-	data = json.loads(request.body)
-	print("CONTINUE TOURNAMENT data : ", data)
-
 	if request.method == 'POST':
+
+		data = json.loads(request.body)
+		username = getattr(request, 'username', None)
+		data['username'] = username
 
 		response = requests.post('http://django-tournament:8000/tournament/continueTournament/', json=data)
 		try:
