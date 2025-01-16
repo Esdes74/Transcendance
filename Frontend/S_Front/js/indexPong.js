@@ -33,7 +33,8 @@ function initAnimation(myCanvas)
 	gameSettings.paddle2Dest = calculatePaddlePos(gameSettings.ballX * width, gameSettings.ballY * height, gameSettings.ballSpeedX * width, gameSettings.ballSpeedY * height, 2, width, height, gameSettings.paddleHeight)
         gameSettings.player2 = gameSettings.paddle2Dest / height
         gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
-
+	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2
+	gameSettings.paddle2Y = gameSettings.paddle1Y
 	window.addEventListener('popstate', (event) =>
 	{
 		gameSettings.stopAnim = true
@@ -41,6 +42,9 @@ function initAnimation(myCanvas)
 	document.addEventListener('pageChanged', (event) =>
 	{
 		gameSettings.stopAnim = true
+	})
+	window.addEventListener('resize', function() {
+		resizeIndexCanvas(gameSettings)
 	})
 	indexGameLoop(gameSettings);
 }
@@ -55,8 +59,6 @@ function resizeIndexCanvas(gameSettings)
 	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;
 	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
-	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
-	gameSettings.paddle2Y = gameSettings.paddle1Y;
 }
 
 function indexDraw(gameSettings)
