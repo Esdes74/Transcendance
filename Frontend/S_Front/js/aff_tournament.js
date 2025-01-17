@@ -65,34 +65,39 @@ async function affTournament_sendRequest(data, function_name)
 		
 		const result = await response.json();
 		console.log('Réponse de l\'API :', result);
-		console.log('return = ', result.return);
 		
-		if (result.return === "selectTournament")
+		if (result.detail === 'Unauthorized')
+		{
+			updatePage("denied");
+			return;
+		}
+
+		else if (result.return && result.return === "selectTournament")
 		{
 			console.log("select recu")
 			affTournament_drawTournament(result.size, result.old_size);
 		}
 	
-		else if (result.return === "createPlayer")
+		else if (result.return && result.return === "createPlayer")
 		{
 			console.log("enter recu")
 			console.log("result.index = ", result.index);
 			affTournament_createPlayerContainer(result.index);
 		}
 	
-		else if (result.return === "deletePlayer")
+		else if (result.return && result.return === "deletePlayer")
 		{
 			console.log("delete recu")
 			let playerContainer = document.getElementById(result.index);
 			affTournament_deletePlayerContainer(playerContainer);
 		}
 	
-		else if (result.return === "error")
+		else if (result.return && result.return === "error" || result.error)
 		{
 			alert(`Erreur : ${result.error} `);
 		}
 
-		else if (result.return === "validTournament")
+		else if (result.return && result.return === "validTournament")
 		{
 			addScript('/js/aff_tournament_bracket.js', () =>
 			{
@@ -100,7 +105,7 @@ async function affTournament_sendRequest(data, function_name)
 			});
 		}
 	} catch (error) {
-		alert("Une erreur est survenue lors de la requête");
+		alert("Une erreur est survenue lors de la requête :", error);
 	}
 }
 

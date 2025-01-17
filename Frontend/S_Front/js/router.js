@@ -99,11 +99,6 @@ function rootMyUrl(isLogged)
 			script: "/js/aff_tournament.js",
 			callback: "affTournament",
 			logged: "must",
-		},	
-		"/tournament_bracket": {
-			script: "js/aff_tournament_bracket.js",
-			callback: "affTournamentBracket_start",
-			logged: "must",
 		},
 		"/ai": {
 			script: "/js/aff_ai.js",

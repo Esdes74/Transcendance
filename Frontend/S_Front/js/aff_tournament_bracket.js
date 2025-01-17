@@ -44,15 +44,15 @@ async function affTournamentBracket_start(player_list)
 		result = await affTournamentBracket_sendRequest({'player_list': player_list}, 'startTournament');
 	else
 	{
-		console.log("wai on continue bien !")
 		result = await affTournamentBracket_sendRequest({}, 'continueTournament');
-		if (result.return === "endTournament") {
+		if (result.return && result.return === "endTournament") {
 			addScript('/js/aff_tournament_leaderboard.js', () => {callbackTournamentBraquet(result)});
 			console.log("endTournament");
 			return;
 		}
 	}
-	result.pairs.forEach(pair => paringPrintLoop(pair));
+	if (result.pairs)
+		result.pairs.forEach(pair => paringPrintLoop(pair));
 	tradNewPage();
 }
 
@@ -64,7 +64,7 @@ function addEvent(player1, player2, startBtn)
 			'player1': player1,
 			'player2': player2
 		}, 'startGame');
-		if (result.return === "startGame")
+		if (result.return && result.return === "startGame")
 		{
 			startBtn.removeEventListener('click', function(){});
 			addScript('/js/aff_pong.js', () => affPong(player1, player2));
@@ -84,7 +84,13 @@ async function affTournamentBracket_sendRequest(data, function_name)
 			body: JSON.stringify(data),
 			credentials: 'include'
 		});
-		return (await response.json());
+		const result = await response.json();
+
+		if (result.detail === 'Unauthorized')
+		{
+			updatePage("denied");
+		}
+		return (result);
 	}
 	catch (error) {
 		console.error('Erreur lors de la requête :', error);

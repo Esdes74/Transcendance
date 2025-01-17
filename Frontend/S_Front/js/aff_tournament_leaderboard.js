@@ -58,6 +58,6 @@ async function aff_leaderboard(result)
 		ladderDiv.appendChild(playerContainer);
 	});
 	bthBtn.addEventListener('click', function() {
-		addScript('/js/aff_index.js', affIndex);
+		updatePage("");
 	});
 }
