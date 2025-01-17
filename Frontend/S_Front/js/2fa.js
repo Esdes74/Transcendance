@@ -5,18 +5,12 @@ function load2faLogin()
 		Array.from(form.elements).forEach(element => {
 			element.disabled = true;
                 })
-		event.preventDefault(); // Empêche le formulaire de se soumettre de manière traditionnelle
-
-		// Récupère les données du formulaire
+		event.preventDefault();
 		const password = document.getElementById('password').value;
-
-		// Crée l'objet pour les données du formulaire
 		const data = {
 			password: password
 		};
-
 		try {
-			// Envoie les données à l'API
 			const response = await fetch('/api/auth/2fa/', {
 				method: 'POST',
 				headers: {
@@ -25,22 +19,24 @@ function load2faLogin()
 				body: JSON.stringify(data),
 				credentials: 'include'
 			});
-
-			// Vérifie la réponse de l'API
-			if (response.ok) { // TODO: Gérer la éception des cookies 
-				const result = await response.json();
-				console.log('Réponse de l\'API :', result.message);
+			if (response.ok)
+			{
 				changeHeader()
 				updatePage("")
-			} else {
-				// Affiche un message d'erreur si la connexion échoue
-				const error = await response.json();
-				console.error('Erreur :', error);
-				alert('Échec de la connexion : ' + JSON.stringify(error));
+			}
+			else if (response.status >= 500 && response.status < 600)
+				updatePage("50X")
+			else {
+				prout = document.getElementById('prout')
+                		prout.innerText = "Code Invalide !"
+				tradElements([prout])
+				prout.style.padding = '4px'
+                		await new Promise(r => setTimeout(r, 3000))
+                		prout.innerText = ""
+                		prout.style.padding = '0px'
 			}
 		} catch (error) {
-			console.error('Erreur lors de la connexion :', error);
-			alert('Une erreur est survenue. Veuillez réessayer.');
+			updatePage("50X")
 		}
 		Array.from(form.elements).forEach(element => {
 			element.disabled = false;

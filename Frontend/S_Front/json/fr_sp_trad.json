@@ -58,5 +58,6 @@
         "Le code expirera dans 3 minutes.": "El código caducará en 3 minutos.",
         "Entrez le code secret": "Escribe el código secreto",
         "Valider": "Validar",
-        "Envoyer un nouveau code": "Enviar un nuevo código"
+        "Envoyer un nouveau code": "Enviar un nuevo código",
+	"Code Invalide !": "código no válido !"
 }
