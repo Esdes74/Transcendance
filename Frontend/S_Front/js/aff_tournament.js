@@ -1,3 +1,5 @@
+var uuid;
+
 function callbackTournament()
 {
 	tournamentCanvas = document.getElementById("tournamentCanvas")
@@ -44,9 +46,9 @@ async function affTournament_init()
 
 function affTournament_EventManager()
 {
-	document.getElementById('btn1').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn1'}, 'selectTournament'));
-	document.getElementById('btn2').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn2'}, 'selectTournament'));
-	document.getElementById('btnValid').addEventListener('click', () => affTournament_sendRequest({}, 'validTournament'));
+	document.getElementById('btn1').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn1', 'uuid':uuid}, 'selectTournament'));
+	document.getElementById('btn2').addEventListener('click', () => affTournament_sendRequest({'btn': 'btn2', 'uuid':uuid}, 'selectTournament'));
+	document.getElementById('btnValid').addEventListener('click', () => affTournament_sendRequest({'uuid':uuid}, 'validTournament'));
 }
 
 async function affTournament_sendRequest(data, function_name)
@@ -70,6 +72,12 @@ async function affTournament_sendRequest(data, function_name)
 		{
 			updatePage("denied");
 			return;
+		}
+
+		if (result.return && result.return === "initDB")
+		{
+			console.log("initDB recu uuid")
+			uuid = result.uuid
 		}
 
 		else if (result.return && result.return === "selectTournament")
@@ -101,7 +109,7 @@ async function affTournament_sendRequest(data, function_name)
 		{
 			addScript('/js/aff_tournament_bracket.js', () =>
 			{
-				affTournamentBracket_start(result.player_list);
+				affTournamentBracket_start(result.player_list, uuid);
 			});
 		}
 	} catch (error) {
@@ -172,7 +180,7 @@ function affTournament_createEmptyField(index)
 	input.addEventListener('keydown', async function (event) {
 		if (event.key === 'Enter')
 		{
-			await affTournament_sendRequest({'name': input.value, 'index': index}, 'createPlayer');
+			await affTournament_sendRequest({'name': input.value, 'index': index, 'uuid':uuid}, 'createPlayer');
 		}
 	});
 
@@ -183,7 +191,7 @@ function affTournament_createEmptyField(index)
 	valid.setAttribute('data-translate', 'true');
 	valid.addEventListener('click', async function ()
 	{
-		await affTournament_sendRequest({'name': input.value, 'index': index}, 'createPlayer');
+		await affTournament_sendRequest({'name': input.value, 'index': index, 'uuid':uuid}, 'createPlayer');
 	})
 	div.className = 'd-flex justify-content-center rounded mt-2 mb-2';
 	div.appendChild(input);
@@ -224,7 +232,7 @@ function affTournament_createPlayerContainer(index)
 
 	deleteBtn.addEventListener('click', async function ()
 	{
-		await affTournament_sendRequest({'name': name, 'index': index}, 'deletePlayer');
+		await affTournament_sendRequest({'name': name, 'index': index, 'uuid':uuid}, 'deletePlayer');
 	});
 }
 

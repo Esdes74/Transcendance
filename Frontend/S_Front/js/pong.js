@@ -1,4 +1,4 @@
-function initPong(boolean, myCanvas) {
+function initPong(boolean, myCanvas, uuid) {
 
 	const pong_gameSettings = {
 		canvas: myCanvas,//document.getElementById('pongCanvas'),
@@ -27,6 +27,8 @@ function initPong(boolean, myCanvas) {
 
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
 		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
+
+		uuid : uuid
 	};
 	console.log('player1Name =', pong_gameSettings.player1Name);
 	console.log('player2Name =', pong_gameSettings.player2Name);
@@ -262,8 +264,9 @@ async function redirectTo(path, socket, pong_gameSettings)
 			'player1': pong_gameSettings.player1Name,
 			'player2':  pong_gameSettings.player2Name,
 			'winner': winner,
+			'uuid': pong_gameSettings.uuid
 		}, 'endGame');
-		fct = () => affTournamentBracket_start(null);
+		fct = () => affTournamentBracket_start(null, pong_gameSettings.uuid);
 	}
 	// if (path === 'ai')
 	// 	fct = () => affAI();

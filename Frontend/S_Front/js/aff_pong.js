@@ -1,4 +1,4 @@
-function affPong(Player1, Player2)
+function affPong(Player1, Player2, uuid)
 {
 	let tournoi = true;
 
@@ -8,6 +8,7 @@ function affPong(Player1, Player2)
 		Player1 = "Player1";
 		Player2 = "Player2";
 		tournoi = false;
+		uuid = null;
 	}
 
 	let docMain = document.querySelector('main')
@@ -44,7 +45,7 @@ function affPong(Player1, Player2)
 	</div>
 `	
 	pongCanvas = document.getElementById("pongCanvas")
-	addScript("/js/pong.js", () => initPong(tournoi, pongCanvas))
+	addScript("/js/pong.js", () => initPong(tournoi, pongCanvas, uuid))
 	// addScript("/js/pong.js", () => pongCallback(Player1, Player2))
 	tradNewPage()
 }

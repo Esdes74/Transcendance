@@ -8,7 +8,7 @@ function other()
 {
 	AICanvas = document.getElementById("AICanvas")
 
-	initPong(false, AICanvas)
+	initPong(false, AICanvas, null)
 }
 
 function createReplayBlock()

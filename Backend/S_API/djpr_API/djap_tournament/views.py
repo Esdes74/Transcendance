@@ -18,6 +18,7 @@ def selectTournament(request):
 	data = json.loads(request.body)
 	username = getattr(request, 'username', None)
 	data['username'] = username
+	# data['uuid']= data.get('uuid', None)
 	print("SELECT TOURNAMENT USERNAME : ", username)
 
 	if request.method == 'POST':
@@ -42,6 +43,7 @@ def createPlayer(request):
 	data = json.loads(request.body)
 	username = getattr(request, 'username', None)
 	data['username'] = username
+	# data['uuid']= data.get('uuid', None)
 	print("SELECT TOURNAMENT USERNAME : ", data['username'])
 
 	if request.method == 'POST':
@@ -64,6 +66,7 @@ def deletePlayer(request):
 	data = json.loads(request.body)
 	username = getattr(request, 'username', None)
 	data['username'] = username
+	# data['uuid']= data.get('uuid', None)
 	print("DELETE PLAYER data : ", data)
 
 	if request.method == 'POST':
@@ -84,6 +87,7 @@ def initDB(request):
 	data = json.loads(request.body)
 	username = getattr(request, 'username', None)
 	data['username'] = username
+	# data['uuid']= data.get('uuid', None)
 	print("SELECT TOURNAMENT USERNAME : ", username)
 
 	if request.method == 'POST':
@@ -104,6 +108,7 @@ def validTournament(request):
 	data = json.loads(request.body)
 	username = getattr(request, 'username', None)
 	data['username'] = username
+	# data['uuid']= data.get('uuid', None)
 	print("VALID TOURNAMENT data : ", data)
 
 	if request.method == 'POST':
@@ -131,6 +136,7 @@ def startTournament(request):
 		data = json.loads(request.body)
 		username = getattr(request, 'username', None)
 		data['username'] = username
+		# data['uuid']= data.get('uuid', None)
 
 		response = requests.post('http://django-tournament:8000/tournament/startTournament/', json=data)
 		try:
@@ -150,6 +156,7 @@ def startGame(request):
 		data = json.loads(request.body)
 		username = getattr(request, 'username', None)
 		data['username'] = username
+		# data['uuid']= data.get('uuid', None)
 
 		response = requests.post('http://django-tournament:8000/tournament/startGame/', json=data)
 		try:
@@ -169,6 +176,7 @@ def endGame(request):
 		data = json.loads(request.body)
 		username = getattr(request, 'username', None)
 		data['username'] = username
+		# data['uuid']= data.get('uuid', None)
 
 		response = requests.post('http://django-tournament:8000/tournament/endGame/', json=data)
 		try:
@@ -188,6 +196,7 @@ def continueTournament(request):
 		data = json.loads(request.body)
 		username = getattr(request, 'username', None)
 		data['username'] = username
+		# data['uuid']= data.get('uuid', None)
 
 		response = requests.post('http://django-tournament:8000/tournament/continueTournament/', json=data)
 		try:

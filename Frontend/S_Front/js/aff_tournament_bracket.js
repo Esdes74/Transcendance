@@ -3,7 +3,7 @@ function callbackTournamentBraquet(result)
 	aff_leaderboard(result)
 }
 
-function paringPrintLoop(pair)
+function paringPrintLoop(pair, uuid)
 {
 	const algoDiv = document.getElementById('algo');
 	tradDiv(algoDiv);
@@ -27,24 +27,24 @@ function paringPrintLoop(pair)
 	newDiv.appendChild(current_game);
 	newDiv.appendChild(startBtn);
 
-	addEvent(pair[0], pair[1], startBtn);
+	addEvent(pair[0], pair[1], startBtn, uuid);
 
 	algoDiv.appendChild(newDiv);
 	newDiv.style.border = '3px solid white';
 
 }
 
-async function affTournamentBracket_start(player_list)
+async function affTournamentBracket_start(player_list, uuid)
 {
 	let docMain = document.querySelector('main')
 	docMain.innerHTML = getHTML();
 	let result;
 
 	if (player_list !== null)
-		result = await affTournamentBracket_sendRequest({'player_list': player_list}, 'startTournament');
+		result = await affTournamentBracket_sendRequest({'player_list': player_list, 'uuid': uuid}, 'startTournament');
 	else
 	{
-		result = await affTournamentBracket_sendRequest({}, 'continueTournament');
+		result = await affTournamentBracket_sendRequest({'uuid': uuid}, 'continueTournament');
 		if (result.return && result.return === "endTournament") {
 			addScript('/js/aff_tournament_leaderboard.js', () => {callbackTournamentBraquet(result)});
 			console.log("endTournament");
@@ -52,22 +52,23 @@ async function affTournamentBracket_start(player_list)
 		}
 	}
 	if (result.pairs)
-		result.pairs.forEach(pair => paringPrintLoop(pair));
+		result.pairs.forEach(pair => paringPrintLoop(pair, uuid));
 	tradNewPage();
 }
 
-function addEvent(player1, player2, startBtn)
+function addEvent(player1, player2, startBtn, uuid)
 {
 	startBtn.addEventListener('click', async function()
 	{
 		let result = await affTournamentBracket_sendRequest({
 			'player1': player1,
-			'player2': player2
+			'player2': player2,
+			 'uuid': uuid
 		}, 'startGame');
 		if (result.return && result.return === "startGame")
 		{
 			startBtn.removeEventListener('click', function(){});
-			addScript('/js/aff_pong.js', () => affPong(player1, player2));
+			addScript('/js/aff_pong.js', () => affPong(player1, player2, uuid));
 		}
 	});
 }

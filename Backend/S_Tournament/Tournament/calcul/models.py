@@ -5,6 +5,7 @@ class Player(models.Model):
 	score = models.IntegerField(default=0)
 	match_played = models.IntegerField(default=0)
 	from_Tournament = models.CharField(max_length=100, default="")
+	from_uuid = models.CharField(default=None, blank=False, null=False, max_length=40)
 
 class Pair(models.Model):
 	player1 = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='player1')
@@ -26,11 +27,11 @@ class Tournament(models.Model):
 
 	username = models.CharField(
 	max_length=150,
-	unique=True,
 	default=None,
-	blank=True,
-	null=True
+	blank=False,
+	null=False
 	)
+	uuid = models.CharField(unique=True, default=None, blank=False,	null=False, max_length=40)
 
 	# tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='players')	
 
