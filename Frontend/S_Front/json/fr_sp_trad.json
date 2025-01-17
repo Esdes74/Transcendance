@@ -60,5 +60,6 @@
         "Valider": "Validar",
         "Envoyer un nouveau code": "Enviar un nuevo código",
 	"Code Invalide !": "Código no válido !",
-	"Mail Réenvoyé !": "Mail enviado !"
+	"Mail Réenvoyé !": "Mail enviado !",
+	"Double Authentification": "Doble Autenticación"
 }

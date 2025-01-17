@@ -52,7 +52,7 @@ function load2faLogin()
 			await affMessage("Erreur", true)
 		}
 		else
-			await affMessage("Mail Réenvoyé", false)
+			await affMessage("Mail Réenvoyé !", false)
 		document.getElementById('send-again').style.pointerEvents = 'auto'
 	}
 	catch (error) {
