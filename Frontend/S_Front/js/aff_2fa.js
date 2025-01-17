@@ -25,7 +25,7 @@ function aff2fa()
 						<label for="password" class="mb-3 fw-bold" data-translate="true">Code envoyé sur votre boite mail</label>
 						<div class="mb-3 fs-6 fw-bold text-white" data-translate="true">Le code expirera dans 3 minutes.</div>
 						<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez le code secret" required>
-						<p class="mt-2"><span class="bg-danger text-white rounded fw-bold fs-7" id="prout" data-translate="true"></span></p>
+						<p class="mt-2"><span class="text-white rounded fw-bold fs-7" id="error-message" data-translate="true"></span></p>
 					</div>
 					<button type="submit" class="btn btn-outline-light fw-bold mb-3" data-translate="true">Valider</button>
 				</form>
@@ -37,7 +37,5 @@ function aff2fa()
 	document.querySelector('.replayBlock').style.display = "block"
 	forms = document.querySelectorAll('input')
 	setFormsAlert(forms)
-	document.getElementById('send-again').addEventListener('click', async function () {
-	})
 	tradNewPage()
 }

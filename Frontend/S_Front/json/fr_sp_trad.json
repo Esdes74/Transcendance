@@ -59,5 +59,6 @@
         "Entrez le code secret": "Escribe el código secreto",
         "Valider": "Validar",
         "Envoyer un nouveau code": "Enviar un nuevo código",
-	"Code Invalide !": "código no válido !"
+	"Code Invalide !": "Código no válido !",
+	"Mail Réenvoyé !": "Mail enviado !"
 }
