@@ -32,16 +32,6 @@ class CalculConsumer(AsyncWebsocketConsumer):
 	async def receive(self, text_data):
 		data = json.loads(text_data)
 
-		# if data.get('type') == 'pong.saveDB':
-		# 	print('DATA : ', data)
-		# 	from .models import pongDB
-		# 	pongDB, created = pongDB.objects.get_or_create(username=username)
-		# 	pongDB.scorePlayer1 = self.scorePlayer1
-		# 	pongDB.scorePlayer2 = self.scorePlayer2
-		# 	pongDB.save()
-		# 	print('DB : ', pongDB)
-		# pass
-
 		if data.get('type') == 'pong.move':
 			print('DATA : ', data)
 			key = data['key']
@@ -78,10 +68,10 @@ class CalculConsumer(AsyncWebsocketConsumer):
 				self.ballSpeedY = abs(self.ballSpeedY)
 
 			# Détection de collision avec les raquettes
-			if self.ballX <= self.player1X - 0.005 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
+			if self.ballX <= self.player1X - 0.005 and self.ballY + 0.03 > self.player1Y - (self.playerHeight / 2) and self.ballY - 0.03 < self.player1Y + (self.playerHeight / 2):
 				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
 				self.ballSpeedY = (self.ballY - self.player1Y) * 0.05 * self.acceleration		# Rebond en fonction de la position de la raquette
-			if self.ballX >= self.player2X + 0.005 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
+			if self.ballX >= self.player2X + 0.005 and self.ballY + 0.03 > self.player2Y - (self.playerHeight / 2) and self.ballY - 0.03	 < self.player2Y + (self.playerHeight / 2):
 				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
 				self.ballSpeedY = (self.ballY - self.player2Y) * 0.05 * self.acceleration		# Rebond en fonction de la position de la raquette
 
