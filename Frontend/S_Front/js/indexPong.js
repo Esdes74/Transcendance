@@ -57,7 +57,7 @@ function resizeIndexCanvas(gameSettings)
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
 	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;
 	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;
-	gameSettings.paddleHeight = 0.2 * gameSettings.canvas.height;
+	gameSettings.paddleHeight = 0.25 * gameSettings.canvas.height;
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 }
 
@@ -204,10 +204,10 @@ function interPaddle1(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	if (ballSpeedX >= 0)
 		return (-1)
 	let interY = (ballSpeedY * (0.05 * width + 8 - ballX)) / ballSpeedX + ballY
-	if (interY >= height - 8 - 0.15 * height)
-		return (height - 8 - 0.15 * height)
-	if (interY <= 8 + 0.15 * height)
-		return (8 + 0.15 * height)
+	if (interY >= 0.875 * height)
+		return (0.875 * height)
+	if (interY <= 0.125 * height)
+		return (0.125 * height)
 	return (interY)
 }
 
@@ -216,20 +216,20 @@ function interPaddle2(ballX, ballY, ballSpeedX, ballSpeedY, width, height)
 	if (ballSpeedX <= 0)
 		return (-1)
 	let interY = (ballSpeedY * (0.95 * width - 8 - ballX)) / ballSpeedX + ballY
-	if (interY >= height - 8 - 0.15 * height)
-		return (height - 8 - 0.15 * height)
-	if (interY <= 8 + 0.15 * height)
-		return (8 + 0.15 * height)
+	if (interY >= 0.875 * height)
+		return (0.875 * height)
+	if (interY <= 0.125 * height)
+		return (0.125 * height)
 	return (interY)
 }
 
 function randomizeResult(result, paddleHeight, height)
 {
 	let random = Math.random()
-	if (result === 8 + 0.15 * height || result === height - 8 - 0.15 * height)
+	if (result === 0.125 * height || result === 0.875 * height)
 		return (result + 4 * random - 2)
-	let value = (paddleHeight - 40) * random - ((paddleHeight - 40) / 2)
-	if (value + result < 8 + 0.15 * height || value + result > height - 8 - 0.15 * height)
+	let value = (paddleHeight / 2) * random - ((paddleHeight / 2) / 2)
+	if (value + result < 0.125 * height || value + result > 0.875 * height)
 		return (result)
 	return (value + result)
 }

@@ -61,7 +61,7 @@ function resizeDuplicateCanvas(gameSettings)
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
 	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;
-	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
+	gameSettings.paddleHeight = 0.25 * gameSettings.canvas.height;
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player1;
         gameSettings.paddle2Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player2;
