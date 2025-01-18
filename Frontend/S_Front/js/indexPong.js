@@ -57,7 +57,7 @@ function resizeIndexCanvas(gameSettings)
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
 	gameSettings.paddleWidth = 0.015 * gameSettings.canvas.width;
 	gameSettings.ballRadius = 0.012 * gameSettings.canvas.width;
-	gameSettings.paddleHeight = 0.3 * gameSettings.canvas.height;
+	gameSettings.paddleHeight = 0.2 * gameSettings.canvas.height;
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 }
 

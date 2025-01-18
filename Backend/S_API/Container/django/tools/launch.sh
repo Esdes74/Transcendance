@@ -6,17 +6,11 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2024/11/27 13:23:26 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/18 18:57:07 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/bin/bash
-
-# Attente que le conteneur front soit en ligne (ping)
-while ! nc -z Frontend 443; do
-  echo "Attente que le conteneur front soit en ligne..."
-  sleep 1
-done
 
 # Maintenant, récupère l'adresse IP
 FRONT_IP=$(getent hosts front | awk '{ print $1 }')

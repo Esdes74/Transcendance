@@ -8,8 +8,8 @@ services:
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-API
     command: ["uvicorn", "djpr_API.asgi:application", "--host", "0.0.0.0", "--port", "8000"] 
-    ports:
-      - "127.0.0.1:8000:8000" #todo: restreindre l acces seulement au container
+#    ports:
+ #     - "127.0.0.1:8000:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_API/djpr_API:${DJANGO_WORKDIR_API:-/home/API}
     environment:
@@ -26,7 +26,7 @@ services:
       - frontend
       - api_db
     restart: on-failure
-  
+
   auth_web:
     build:
       context: ./Backend/S_Auth/Container/django
@@ -35,8 +35,8 @@ services:
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-Auth
     command: python manage.py runserver 0.0.0.0:8000 
-    ports:
-      - "127.0.0.1:7999:8000" #todo: restreindre l acces seulement au container
+#    ports:
+ #     - "127.0.0.1:7999:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_Auth/djpr_Registery:${DJANGO_WORKDIR_AUTH:-/home/Auth}
     environment:
@@ -63,8 +63,8 @@ services:
     command: >
       sh -c "python manage.py migrate &&
              uvicorn Pong.asgi:application --host 0.0.0.0 --port 8000"
-    ports:
-      - "127.0.0.1:8002:8000" #todo: restreindre l acces seulement au container
+  #  ports:
+  #    - "127.0.0.1:8002:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_Pong/Pong:${DJANGO_WORKDIR_PONG:-/home/Pong_back}
     environment:
@@ -89,8 +89,8 @@ services:
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-Tournament
     command: ["uvicorn", "Tournament.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
-    ports:
-      - "127.0.0.1:8003:8000" #todo: restreindre l acces seulement au container
+  #  ports:
+  #    - "127.0.0.1:8003:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_Tournament/Tournament:${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
     environment:
@@ -138,8 +138,8 @@ services:
       - API_v:${PSQL_DATA_REPO}
     env_file:
       - .env
-    ports:
-      - "127.0.0.1:5432:5432" #todo: restreindre l acces seulement au container
+  #  ports:
+  #    - "127.0.0.1:5432:5432" #todo: restreindre l acces seulement au container
     networks:
       - api_db
     healthcheck:
@@ -162,8 +162,8 @@ services:
       - Auth_v:${PSQL_DATA_REPO}
     env_file:
       - .env
-    ports:
-      - "127.0.0.1:5431:5432" #todo: restreindre l acces seulement au container
+  #  ports:
+  #    - "127.0.0.1:5431:5432" #todo: restreindre l acces seulement au container
     networks:
       - auth_db
     healthcheck:
@@ -210,8 +210,8 @@ services:
       - Tournament_v:${PSQL_DATA_REPO}
     env_file:
       - .env
-    ports:
-      - "127.0.0.1:5433:5432" #todo: restreindre l acces seulement au container
+  #  ports:
+  #    - "127.0.0.1:5433:5432" #todo: restreindre l acces seulement au container
     networks:
       - tournament_db
     healthcheck:
@@ -239,8 +239,7 @@ services:
     networks:
       - frontend
     restart: on-failure
-## rajouter un depends on...
-
+ 
 # Networks
 networks:
   backend:

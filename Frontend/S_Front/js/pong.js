@@ -60,7 +60,7 @@ function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
 	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;				// Taille de la ball
 	pong_gameSettings.ballX = 0.5 * pong_gameSettings.canvas.width;					// Placer la ball au milieu horizontal du pong_gameSettings.canvas	en pourcentage
 	pong_gameSettings.ballY = 0.5 * pong_gameSettings.canvas.height;
-	pong_gameSettings.paddleHeight = 0.3 * pong_gameSettings.canvas.height;		// Hauteur players
+	pong_gameSettings.paddleHeight = 0.25 * pong_gameSettings.canvas.height;		// Hauteur players
 	pong_gameSettings.paddleBuffer = 0.02 * pong_gameSettings.canvas.width;			// Ecart des players au bord;
 	pong_gameSettings.paddle1Y = (pong_gameSettings.canvas.height - pong_gameSettings.paddleHeight) / 2;	//player 1
 	pong_gameSettings.paddle2Y = pong_gameSettings.paddle1Y;
