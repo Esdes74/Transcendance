@@ -17,7 +17,11 @@ function initExplodingPong(myCanvas)
 		stopAnim: false,
 	};
 
-	gameSettings.balls.push(new Ball(0.5, 0.5, 0.008, 0.005))
+	let randomX = Math.random()
+        let randomY = Math.random()
+	let randomXDir = Math.random() > 0.5 ? 1 : -1
+	let randomYDir = Math.random() > 0.5 ? 1 : -1
+	gameSettings.balls.push(new Ball(0.5, 0.5, randomXDir * (randomX + 0.5) / 200, randomYDir * (randomY + 0.5) / 200))
 	resizeExplodingCanvas(gameSettings);
 	window.addEventListener('popstate', (event) =>
 	{
@@ -45,8 +49,7 @@ function explodingDraw(gameSettings)
 {
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
-	ctx.fillStyle = 'white';
-	
+	ctx.fillStyle = 'white';	
 	ctx.setLineDash([15, 10]);
 	ctx.beginPath();
 	ctx.moveTo(gameSettings.canvas.width / 2, 0);
@@ -75,15 +78,17 @@ function explodingLoop(gameSettings) {
 		ball.PosY += ball.SpeedY
 		if (ball.PosX > 1 || ball.PosX < 0)
 		{
+			startPosX = ball.PosX > 1 ? 0.99 : 0.01
 			ball.SpeedX *= -1
 			if (gameSettings.balls.length < 10042)
-				gameSettings.balls.push(new Ball(ball.PosX + ball.SpeedX, ball.PosY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
+				gameSettings.balls.push(new Ball(startPosX, ball.PosY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
 		}
 		if (ball.PosY > 1 || ball.PosY < 0)
 		{
+			startPosY = ball.PosY > 1 ? 0.99 : 0.01
 			ball.SpeedY *= -1
 			if (gameSettings.balls.length < 10042)
-				gameSettings.balls.push(new Ball(ball.PosX, ball.PosY + ball.SpeedY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
+				gameSettings.balls.push(new Ball(ball.PosX, startPosY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
 		}
 	})
 	explodingDraw(gameSettings)

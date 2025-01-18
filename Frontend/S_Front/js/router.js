@@ -68,12 +68,12 @@ function rootMyUrl(isLogged)
 		"/denied": {
 			script: "/js/aff_denied.js",
 			callback: "affDenied",
-			logged: "no condition",
+			logged: "must not",
 		},
 		"/duplicate": {
 			script: "/js/aff_duplicate.js",
 			callback: "affDuplicate",
-			logged: "no condition",
+			logged: "must",
 		},
 		"/authentification": {
 			script: "/js/aff_authentification.js",
