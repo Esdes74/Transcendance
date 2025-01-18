@@ -19,7 +19,7 @@
 	"Créer un compte": "Register",
 	"PONG MAJESTUEUX": "MAJESTIC PONG",
 	"Erreur": "Error",
-	"Page introuvable": "Page not found",
+	"Page Introuvable": "Page Not Found",
 	"Revenir à l'accueil": "Back to home",
 	"Paramètres": "Settings",
 	"Rejouer": "Replay",
@@ -57,7 +57,7 @@
 	"Le code expirera dans 3 minutes.": "The code will expire in 3 minutes",
 	"Entrez le code secret": "Enter the secret code",
 	"Valider": "Validate",
-	"Envoyer un nouveau code": "Resend a new code",
+	"Envoyer un nouveau code": "Send a new code",
 	"Code Invalide !": "Invalid Code",
 	"Mail Réenvoyé !": "Mail Resent !",
 	"Double Authentification": "Double Authentication"
