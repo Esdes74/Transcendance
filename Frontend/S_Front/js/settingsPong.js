@@ -8,16 +8,11 @@ function initAnimationSettings(myCanvas)
 
 		paddle1Y: 0,
 		paddle2Y: 0,
-		player1: 0.5,
-		player2: 0.5,
 
 		stopAnim: false,
 	};
 
 	resizeLoginCanvas(gameSettings);
-	let height = gameSettings.canvas.height;
-	let width = gameSettings.canvas.width;
-        gameSettings.player2 = gameSettings.paddle2Dest / height
 
 	window.addEventListener('popstate', (event) =>
 	{

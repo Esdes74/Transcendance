@@ -9,19 +9,13 @@ function loadAnimationLogin(myCanvas)
 		ballPosX: 0.0512,
 		paddle1Y: 0,
 		paddle2Y: 0,
-		player1: 0.5,
-		player2: 0.5,
+		
 		goRight: true,	
 
 		stopAnim: false,
 	};
 
 	resizeLoginCanvas(gameSettings);
-	gameSettings.printBall = true;
-	let height = gameSettings.canvas.height;
-	let width = gameSettings.canvas.width;
-        gameSettings.player2 = gameSettings.paddle2Dest / height
-        gameSettings.paddle2Dest -= gameSettings.paddleHeight / 2
 	window.addEventListener('popstate', (event) =>
 	{
 		gameSettings.stopAnim = true

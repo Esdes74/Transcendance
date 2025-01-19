@@ -6,7 +6,6 @@ function loadDuplicatePong(myCanvas)
 		paddleHeight: 0,
 		paddleBuffer: 0,
 
-		ballPosX: 0.0512,
 		paddle1Y: 0,
 		paddle2Y: 0,
 		player1: 0.5,
@@ -18,8 +17,6 @@ function loadDuplicatePong(myCanvas)
 
 	resizeDuplicateCanvas(gameSettings);
 	gameSettings.printBall = true;
-	let height = gameSettings.canvas.height;
-	let width = gameSettings.canvas.width;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) * gameSettings.player1;
 	gameSettings.paddle2Y = gameSettings.paddle1Y;
 	window.addEventListener('popstate', (event) =>
@@ -32,23 +29,15 @@ function loadDuplicatePong(myCanvas)
 	})
 	document.addEventListener('keydown', e => {
 		if (e.key === 'W' || e.key === 'w' || e.key === 'ArrowUp')
-		{
 			gameSettings.upPress = true
-		}
 		if (e.key === 'S' || e.key === 's' || e.key === 'ArrowDown')
-		{
 			gameSettings.downPress = true
-		}
 	})
 	document.addEventListener('keyup', e => {
 		if (e.key === 'W' || e.key === 'w' || e.key === 'ArrowUp')
-		{
 			gameSettings.upPress = false
-		}
 		if (e.key === 'S' || e.key === 's' || e.key === 'ArrowDown')
-		{
 			gameSettings.downPress = false
-		}
 	})
 	window.addEventListener('resize', function() {
 		resizeDuplicateCanvas(gameSettings)
