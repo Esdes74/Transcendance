@@ -59,9 +59,11 @@
 	"Entrez le code secret": "Enter the secret code",
 	"Valider": "Validate",
 	"Envoyer un nouveau code": "Send a new code",
-	"Code Invalide !": "Invalid Code",
+	"Code Invalide !": "Invalid Code !",
 	"Mail Réenvoyé !": "Mail Resent !",
 	"Double Authentification": "Double Authentication",
 	"Accès Refusé": "Access Denied",
-	"Erreur 401": "Error 401"
+	"Erreur 401": "Error 401",
+	"Se Déconnecter": "Log Out",
+	"Vous êtes déjà connecté !": "You are already logged in !"
 }

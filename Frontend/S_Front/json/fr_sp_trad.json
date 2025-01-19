@@ -60,9 +60,11 @@
 	"Entrez le code secret": "Escribe el código secreto",
 	"Valider": "Validar",
 	"Envoyer un nouveau code": "Enviar un nuevo código",
-	"Code Invalide !": "Código no válido !",
-	"Mail Réenvoyé !": "Mail enviado !",
+	"Code Invalide !": "¡Código no válido!",
+	"Mail Réenvoyé !": "¡Mail enviado!",
 	"Double Authentification": "Doble Autenticación",
 	"Accès Refusé": "Acceso denegado",
-	"Erreur 401": "Error 401"
+	"Erreur 401": "Error 401",
+	"Se Déconnecter": "Cerrar Sesión",
+	"Vous êtes déjà connecté !": "¡Ya has iniciado sesión!"
 }

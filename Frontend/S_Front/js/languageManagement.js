@@ -93,8 +93,6 @@ async function tradElements(elements)
 	elements.forEach( element => {
 		if (element.innerText in trads)
                 	element.innerText = trads[element.innerText]
-		else
-			console.log(trads[element.innerText])
 	})
 }
 
