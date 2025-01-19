@@ -37,10 +37,7 @@ function loadLogin()
 				if (result['2fa'])
 					updatePage("2fa");
 				else
-				{
-					changeHeader()
 					updatePage("");
-				}
 			} else {
 				// Affiche un message d'erreur si la connexion échoue
 				const error = await response.json();

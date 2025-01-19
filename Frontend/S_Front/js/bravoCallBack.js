@@ -25,7 +25,6 @@ async function loadBravoCallBack()
 			if (response.ok) {
 				const result = await response.json();
 				console.log('Réponse de l\'API :', result.message);
-				changeHeader()
 				updatePage("")
 			} else {
 				// Affiche un message d'erreur si la connexion échoue

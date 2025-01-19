@@ -3,14 +3,22 @@ function initDeniedPong()
 	const gameSettings = {
 		canvas: document.getElementById('DeniedCanvas'),
 		
-		printBall: true,
 		textX: -0.04,
 		textY: 0.04,
+		stopAnim: false,
 	};
 
 	resizeDeniedCanvas(gameSettings);
 	let ctx = gameSettings.canvas.getContext('2d');
         ctx.translate(gameSettings.canvas.clientWidth / 2, gameSettings.canvas.clientHeight / 5)
+	window.addEventListener('popstate', (event) =>
+	{
+		gameSettings.stopAnim = true
+	})
+	document.addEventListener('pageChanged', (event) =>
+	{
+		gameSettings.stopAnim = true
+	})
 	loopDenied(gameSettings);
 }
 	
@@ -27,11 +35,12 @@ function drawDenied(gameSettings)
 	ctx.fillStyle = 'white';
 
 	ctx.font = "bold 100px Arial";
-	ctx.rotate((0.1))
+	ctx.rotate((0.05))
 	ctx.fillText("?", gameSettings.canvas.width * gameSettings.textX, gameSettings.canvas.height * gameSettings.textY)
 }
 
 function loopDenied(gameSettings) {
 	drawDenied(gameSettings);
-	requestAnimationFrame(() => loopDenied(gameSettings));
+	if (gameSettings.stopAnim === false)
+		requestAnimationFrame(() => loopDenied(gameSettings));
 }

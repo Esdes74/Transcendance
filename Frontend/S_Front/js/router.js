@@ -68,7 +68,7 @@ function rootMyUrl(isLogged)
 		"/denied": {
 			script: "/js/aff_denied.js",
 			callback: "affDenied",
-			logged: "must not",
+			logged: "no condition",
 		},
 		"/duplicate": {
 			script: "/js/aff_duplicate.js",
@@ -183,10 +183,7 @@ async function initiatePage()
 			rootMyUrl(false)
 	})
 	if (await is_logged())
-	{
-		await changeHeader()
 		rootMyUrl(true)
-	}
 	else
 		rootMyUrl(false)
 	getLinks()
@@ -205,12 +202,20 @@ async function is_logged()
 		});
 		if (response.ok) {
 			let jsonResponse = await response.json()
-			return (jsonResponse['detail'] !== "Not connected")
+			if (jsonResponse['detail'] === "Not connected")
+			{
+				logoutHeader()
+				return false
+			}
+			changeHeader()
+			return true
 		}
 		else {
+			logoutHeader()
 			return false
 		}
 	} catch (error) {
+		changeHeader()
 		return false
 	}
 }
@@ -218,6 +223,8 @@ async function is_logged()
 async function changeHeader()
 {
 	buttonToChange = document.getElementById("login-settings")
+	if (buttonToChange.value === "settings")
+		return
 	buttonToChange.value = "settings"
 	buttonToChange.innerText = "Paramètres"
 	try {
@@ -264,19 +271,17 @@ function logoutHeader()
 
 async function logoutUser()
 {
-        try {
-                const response = await fetch('/api/auth/logout/', {
-                        method: 'POST'
-                })
-                if (response.ok) {
-                        logoutHeader()
-                        updatePage("")
-                }
-                else
-                	updatePage("50X")
-        } catch (error) {
-                        updatePage("50X")
-                }
+	try {
+		const response = await fetch('/api/auth/logout/', {
+			method: 'POST'
+		})
+		if (response.ok)
+			updatePage("")
+		else
+			updatePage("50X")
+	} catch (error) {
+		updatePage("50X")
+	}
 }
 
 initiatePage()

@@ -20,10 +20,7 @@ function load2faLogin()
 				credentials: 'include'
 			});
 			if (response.ok)
-			{
-				changeHeader()
 				updatePage("")
-			}
 			else if (response.status >= 500 && response.status < 600)
 				updatePage("50X")
 			else {
