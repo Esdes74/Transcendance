@@ -61,5 +61,7 @@
         "Envoyer un nouveau code": "Enviar un nuevo código",
 	"Code Invalide !": "Código no válido !",
 	"Mail Réenvoyé !": "Mail enviado !",
-	"Double Authentification": "Doble Autenticación"
+	"Double Authentification": "Doble Autenticación",
+	"Accès Refusé": "Acceso denegado",
+        "Erreur 401": "Error 401"
 }
