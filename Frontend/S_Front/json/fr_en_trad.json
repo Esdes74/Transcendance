@@ -1,6 +1,6 @@
 {
 	"Projet ft_transcendance": "ft_transcendance Project",
-	"Réalisé par eslamber, lmohin, mwubneh, tdutel": "Made by eslamber, lmohin, mwubneh, tdutel",
+	"Réalisé par eslamber, tdutel, mwubneh, lmohin": "Made by eslamber, tdutel, mwubneh, lmohin",
 	"Bienvenue": "Welcome",
 	"JOUER": "PLAY",
 	"Jouer :": "Play :",
@@ -21,6 +21,7 @@
 	"Erreur": "Error",
 	"Page Introuvable": "Page Not Found",
 	"Revenir à l'accueil": "Back to home",
+	"PARAMÈTRES": "SETTINGS",
 	"Paramètres": "Settings",
 	"Rejouer": "Replay",
 	"a gagné": "wins",

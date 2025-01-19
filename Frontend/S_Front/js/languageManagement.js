@@ -3,7 +3,7 @@ function tradNewPage()
 	let flag = document.getElementById("currentFlag")
 		if (currentFlag.getAttribute('data-language') !== "french")
 		{
-		let elements = document.querySelectorAll('main [data-translate="true"]')
+		let elements = document.querySelectorAll('[data-translate="true"]')
 		tradElements(elements)
 		let placeholders = document.querySelectorAll('[data-translate="placeholder"]')
 		tradPlaceholders(placeholders)
@@ -93,6 +93,8 @@ async function tradElements(elements)
 	elements.forEach( element => {
 		if (element.innerText in trads)
                 	element.innerText = trads[element.innerText]
+		else
+			console.log(trads[element.innerText])
 	})
 }
 
