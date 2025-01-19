@@ -65,5 +65,6 @@
 	"Accès Refusé": "Access Denied",
 	"Erreur 401": "Error 401",
 	"Se Déconnecter": "Log Out",
-	"Vous êtes déjà connecté !": "You are already logged in !"
+	"Vous êtes déjà connecté !": "You are already logged in !",
+	"Identifiant ou mot de passe invalide": "Invalid username or password"
 }

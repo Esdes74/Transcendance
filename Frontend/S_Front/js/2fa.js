@@ -53,6 +53,7 @@ function load2faLogin()
 		document.getElementById('send-again').style.pointerEvents = 'auto'
 	}
 	catch (error) {
+		updatePage("50X")
 	}
 	})
 }

@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/16 20:33:13 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/19 22:33:06 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ def login(request):
 
 		# Regarde si les identifiants sont donnés/recus
 		if not username or not password :
-			return JsonResponse({"error": "Missings credentials"}, status = 400)
+			return JsonResponse({"error": "Missings Credentials"}, status = 400)
 
 		try:
 			# Authentification de l'utilisateurs avec les comptes prééxistans

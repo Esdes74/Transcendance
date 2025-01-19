@@ -66,5 +66,6 @@
 	"Accès Refusé": "Acceso denegado",
 	"Erreur 401": "Error 401",
 	"Se Déconnecter": "Cerrar Sesión",
-	"Vous êtes déjà connecté !": "¡Ya has iniciado sesión!"
+	"Vous êtes déjà connecté !": "¡Ya has iniciado sesión!",
+	"Identifiant ou mot de passe invalide": "Nombre de usuario o contraseña no válidos"
 }
