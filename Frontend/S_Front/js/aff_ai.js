@@ -13,8 +13,7 @@ function other()
 
 function createReplayBlock()
 {
-	myDiv = createElement(div)
-	
+	myDiv = createElement(div)	
 }
 
 function affReplayBlock()
@@ -22,10 +21,10 @@ function affReplayBlock()
 	menu = document.querySelector(".replayBlock")
 	menu.innerHTML = `<div class="button-group">
                                                 <h2 id="winMessage"></h2>
-												<h2 id=WinMsg data-translate="true">a gagné</h2>
+						<h2 id="WinMsg" data-translate="true">a gagné</h2>
                                                 <div class="button-group">
                                                 <button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Replay</Button>
-                                                <button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Change Difficulty</button>
+                                                <!--button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Change Difficulty</button-->
    			</div>`
 	tradDiv(menu)
 	replayButtons = document.querySelectorAll('main button')
@@ -112,9 +111,8 @@ function affAI()
 				<div class="canvas-container p-0">
 					<canvas id="menuCanvas" class="w-100" height="400"></canvas>
 					<div class="replayBlock">
-						<h2 class="fw-bold" data-translate="true"> Difficulté :</h2>
+						<h2 class="fw-bold" data-translate="true">Touches</h2>
 						<div class="button-group">
-						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="easyMode">Facile</button>
 						<!--button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="normalMode">Intermediaire</button>
 						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="hardMode">Pongiste Professionnel</button-->
 						</div>
@@ -136,6 +134,7 @@ function affAI()
 								</div>
 							</div>
 						</div>
+						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="easyMode">Lancer la partie</button>
 					</div>
 				</div>
 			</div>

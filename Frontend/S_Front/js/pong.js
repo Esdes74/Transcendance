@@ -193,7 +193,14 @@ function pong_gameOver(pong_gameSettings, socket)
 	else {
 		winMessageElem.textContent = pong_gameSettings.player2Name;
 	}
-	if (!pong_gameSettings.istournament)
+	if (pong_gameSettings.canvas.id === "AICanvas")
+	{
+		winMessageElem.style.display = 'block'
+		winMsg.style.display = 'block';
+		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
+                replayBlockElem.style.display = 'block';	
+	}	
+	else if (!pong_gameSettings.istournament)
 	{
 		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
 		winMsg.style.display = 'block';
@@ -238,10 +245,6 @@ function pong_gameOver(pong_gameSettings, socket)
 			redirectTo(nextBtn.value, socket, pong_gameSettings);
 		});
 	}
-	// else if (pong_gameSettings.canvas.id === "AICanvas")
-	// {
-
-	// }
 }
 
 
