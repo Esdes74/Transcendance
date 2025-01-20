@@ -37,8 +37,6 @@ async function affTournament()
 	affTournament_EventManager();
 }
 
-// TODO:fix bug claasement de fin callback	+ verification avec des try except dans le js si le client a été déconnecté (duplicate page si un dans tournoi et l'autres logout)
-
 async function affTournament_init()
 {
 	await affTournament_sendRequest({}, 'initDB');
@@ -171,7 +169,6 @@ function affTournament_createEmptyField(index)
 	input.size = 15;
 	input.style.borderColor = 'white';
 	input.style.backgroundColor = 'transparent';
-	// input.style.filter = 'blur(2px)';
 	input.setAttribute('data-translate', 'placeholder');
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;

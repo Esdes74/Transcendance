@@ -5,9 +5,6 @@ from django.db import IntegrityError
 from .models import Tournament, Player, Pair
 import json
 from uuid import uuid4
-# import pyotp	<-- danger
-
-# Create your views here.
 
 # SELECT TOURNAMENT
 def selectTournament(request):
@@ -24,13 +21,6 @@ def selectTournament(request):
 
 		# Get or create a tournament instance
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
-
-		# if btn == 'btn1':
-		# 	if tournament.player_registered > 3:
-		# 		return JsonResponse({"error": "Vous avez déjà trop de joueurs inscrits", "return": "error"}, status=400)
-		# 	tournament.old_size = tournament.size
-		# 	tournament.size = 3
-		# 	tournament.champs_libre = tournament.size - tournament.player_registered
 
 		if btn == 'btn1':
 			if tournament.player_registered > 4:
@@ -98,6 +88,7 @@ def createPlayer(request):
 		return JsonResponse({"name": name, "index": index, "player_list": tournament.player_list, "fields": tournament.old_size, "return": "createPlayer"}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
+
 # DELETE PLAYER
 def deletePlayer(request):
 
@@ -143,14 +134,6 @@ def initDB(request):
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
-		# tournament.player_registered = 0
-		# tournament.size = 0
-		# tournament.old_size = 0
-		# tournament.champs_libre = 0
-		# tournament.player_list = []
-		# tournament.players.clear()
-		# tournament.curr_round = 1
-		# tournament.rounds_left = 0
 		player = Player.objects.filter(from_Tournament=username, from_uuid=uuid)
 		player.delete()
 		tournament.delete()
@@ -202,14 +185,12 @@ def startGame(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		# verifier la valeur de player 1 et 2 pour voir si ils existent et sinon renvoyer une erreur
 		try:
 			P1 = Player.objects.get(name=player1, from_Tournament=username, from_uuid=uuid)
 			P2 = Player.objects.get(name=player2, from_Tournament=username, from_uuid=uuid)
 		except Player.DoesNotExist:
 			return JsonResponse({"error": "Player does not exist"}, status=400)
 
-		# supprime la pair de joueur qui joue pour recup la taille de tournament.pairs plus tard dans continueTournament
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 		pair = Pair.objects.get(player1=P1, player2=P2)
 		tournament.pairs.remove(pair)
@@ -235,8 +216,6 @@ def startTournament(request):
 
 		shuffle_list(player_list)
 		pairs = split_into_pairs(player_list, username, uuid)
-		print("###############################################")
-		print("| BRACKET : ", pairs, " |")
 		return JsonResponse({"pairs": pairs}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -261,19 +240,6 @@ def split_into_pairs(joueurs, username, uuid):
 	tournament.save()
 	return pairs
 
-# def resumeGame(request):
-
-# 	if request.method == 'POST':
-
-# 		try:
-# 			data = json.loads(request.body)
-# 		except json.JSONDecodeError:
-# 			return JsonResponse({"error": "Invalid JSON"}, status=400)
-
-# 		pong, created = Pong.objects.get_or_create(id=data.get('id'))
-
-
-# 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 def endGame(request):
 
@@ -302,24 +268,11 @@ def endGame(request):
 		player2.match_played += 1
 		player1.save()
 		player2.save()
-		print("+------------------------------------------ -  -")
-		print("| Player " + player1.name + " : " + str(player1.score) + " | Player " + player2.name + " : " + str(player2.score))
-		print("| 		Winner : " + data.get('winner'))
-		print("+------------------------------------------ -  -")
 
 		return JsonResponse({"player_list": tournament.player_list, "return": "endGame"}, status=200)
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
-
-# plutot quavoir un uid et une list des uid dans le Tournament[username], on pourrait avoir un attribut 
-# dans les players qui prend le username en parametre et qui permet de savoir chaque player a 
-# quelle tournament ils appartiennt avec username comme on a fait et genre :tu vois le truc ?
-# les tournois sont déjà nommé avec username et username cest un charfield
-# cest ce quon a fait ce matin pour les differencier
-# ca ferait que quand on get_or_create le client il faudra fournir 2 choses : (name=name, appartient_a=username)
-# je pense, en tout cas je la sens bien cette idée
 
 def continueTournament(request):
 
@@ -342,49 +295,6 @@ def continueTournament(request):
 			if tournament.rounds_left == 0:
 				player_score = [player.score for player in Player.objects.filter(from_Tournament=username, from_uuid=uuid).order_by('-score')]
 				return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)
-			return JsonResponse({"pairs": pairs}, status=200)
-		return JsonResponse({"pairs": [[pair.player1.name, pair.player2.name] for pair in tournament.pairs.all()]}, status=200)
+			return JsonResponse({"pairs": pairs, "round": tournament.curr_round}, status=200)
+		return JsonResponse({"pairs": [[pair.player1.name, pair.player2.name] for pair in tournament.pairs.all()], "round": tournament.curr_round}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
-	# 	# players_left = [player.name for player in Player.objects.all() if player.match_played < tournament.curr_round]
-	# 	# if len(players_left) == 0:
-	# 		tournament.curr_round += 1
-	# 		tournament.rounds_left -= 1
-	# 		tournament.save()
-	# 		players_left = [player.name for player in Player.objects.all().order_by('-score')]
-	# 		if tournament.rounds_left == 0:
-	# 			player_score = [player.score for player in Player.objects.all().order_by('-score')]
-	# 			return JsonResponse({"leaderboard": players_left, "score" : player_score, "return": "endTournament"}, status=200)
-	# 	print("+------------------------------------------ -  -")
-	# 	print("| Current round : ", tournament.curr_round)
-	# 	print("| Total Players : ", tournament.player_list)
-	# 	print("+------------------------------------------ -  -")
-	# 	print("| Players left : ", players_left)
-	# 	# print("player match played : ", [player.match_played for player in Player.objects.all()])
-	# 	# print("tournament.curr_round == ", tournament.curr_round)
-	# 	# print("players_left == ", players_left)
-	# 	pairs = split_into_pairs(players_left)
-	# 	print("| match a faire : ", pairs)
-
-	# 	return JsonResponse({"pairs": pairs}, status=200)
-	# 	#return JsonResponse({"player_list": data.get('player_list'), "return": "startTournament"}, status=200)
-
-
-
-
-# todo iportant : faire la diff entre player_list[] et players car l'un list de char, l'autre list de Player
-# donc peut etre revoir les verificaitons et methode dans start/continue_tournament
-
-
-# oui au final jai ajouté une condition dans tous les get en rapport avec le player comme ca :
-# et en fait pour le score cest normal quil etait dupliqué car on prenait Player.objects.all() a la place de
-# 																		Player.objects.filter(from_Tournament=username)
-# dans player_score		et ducoup bah les scores triés par ordre décroissant, yavait aussi les scores de lautres tournois
-
-
-# ducoup normalement cest good tout ca !
-
-
-# et aussi on avait pas eu le cas précis tout a lheure, mais a mon avis ca aurait pose probleme davoir les memes player
-# et ducoup avec ce fix on fait dune pierre 2 coups
-# bah jai justement fait gagner lun et perdre lautre 
-# donc je vais voir ca ouais

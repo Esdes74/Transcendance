@@ -38,13 +38,20 @@ async function affTournamentBracket_start(player_list, uuid)
 {
 	let docMain = document.querySelector('main')
 	docMain.innerHTML = getHTML();
+	curr_round = 1;
+	roundDiv = document.getElementById('round')
 	let result;
 
 	if (player_list !== null)
+	{
+		roundDiv.textContent = roundDiv.textContent + ` ${curr_round}`;
 		result = await affTournamentBracket_sendRequest({'player_list': player_list, 'uuid': uuid}, 'startTournament');
+	}
 	else
 	{
 		result = await affTournamentBracket_sendRequest({'uuid': uuid}, 'continueTournament');
+		curr_round = result.round;
+		roundDiv.textContent = roundDiv.textContent + ` ${curr_round}`;
 		if (result.return && result.return === "endTournament") {
 			addScript('/js/aff_tournament_leaderboard.js', () => {callbackTournamentBraquet(result)});
 			console.log("endTournament");
@@ -102,6 +109,7 @@ function getHTML()
 {
 	return (`
 	<h1 class="display-1 text-center" data-translate="true">Déroulement des matchs</h1>
+	<h1 class="display-1 text-center" data-translate="true" id="round">Tour</h1>
 
 	<div class="container text-center" id="algo" data-translate="true" >
 	</div>

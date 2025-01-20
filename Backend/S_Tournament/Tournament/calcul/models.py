@@ -33,11 +33,3 @@ class Tournament(models.Model):
 	)
 	uuid = models.CharField(unique=True, default=None, blank=False,	null=False, max_length=40)
 
-	# tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='players')	
-
-# # ici les paires de 2 players
-# 	tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='pairs')
-
-
-# git stash : 6518405
-

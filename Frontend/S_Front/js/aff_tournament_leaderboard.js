@@ -57,6 +57,7 @@ async function aff_leaderboard(result)
 
 		ladderDiv.appendChild(playerContainer);
 	});
+	tradNewPage();
 	bthBtn.addEventListener('click', function() {
 		updatePage("");
 	});
