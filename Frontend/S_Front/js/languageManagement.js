@@ -1,8 +1,8 @@
 function tradNewPage()
 {	
 	let flag = document.getElementById("currentFlag")
-		if (currentFlag.getAttribute('data-language') !== "french")
-		{
+	if (currentFlag.getAttribute('data-language') !== "french")
+	{
 		let elements = document.querySelectorAll('[data-translate="true"]')
 		tradElements(elements)
 		let placeholders = document.querySelectorAll('[data-translate="placeholder"]')

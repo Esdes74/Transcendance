@@ -66,5 +66,9 @@
 	"Erreur 401": "Error 401",
 	"Se Déconnecter": "Log Out",
 	"Vous êtes déjà connecté !": "You are already logged in !",
-	"Identifiant ou mot de passe invalide": "Invalid username or password"
+	"Identifiant ou mot de passe invalide": "Invalid username or password",
+	"Paramètres Utilisateur": "User Settings",
+	"Langue de Préférence": "Language Preference",
+	"Sauvegarder les Changements": "Save Changes",
+	"Sauvegarde Effectuée !": "Save Done !"
 }
