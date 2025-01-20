@@ -1,101 +1,12 @@
-async function changeSecu(value)
+function callbackSettingsPong()
 {
-	try {
-                const data = {
-                        new2fa: value,
-                }
-                const response = await fetch('/api/auth/choose_verif/', {
-                        method: 'POST',
-                        headers: {
-                                'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                        credentials: 'include'
-                })
-                if (response.ok) {
-                        let jsonResponse = await response.json()
-                        console.log(jsonResponse)
-                }
-                else
-                        updatePage("50X")
-        }
-        catch (error) {
-        	updatePage("50X")
-        }
-}
-
-async function changeFavLanguage(value)
-{
-	try {
-		data = {
-			newLang: value,
-		}
-		const response = await fetch('/api/auth/choose_lang/', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
-			credentials: 'include'
-		})
-		if (response.ok) {
-			let jsonResponse = await response.json()
-			return (true)
-		}
-		else
-		{
-			updatePage("50X")
-			return (false)
-		}
-	}
-	catch (error) {
-		updatePage("50X")
-		return (false)
-	}
-}
-
-async function sendDatas(settings)
-{
-	newSecu = document.getElementById("flexSwitchCheckDefault").checked
-	if (settings["twofa"] !== newSecu)
-	{
-		await (changeSecu(newSecu))
-		settings["twofa"] = newSecu
-	}
-	const radios = document.querySelectorAll('input[type="radio"]');
-	let newLang
-	radios.forEach( radio => {
-		if (radio.checked)
-			newLang = radio.id
-	})
-	if (settings["language"] !== newLang)
-	{
-		if (await (changeFavLanguage(newLang)))
-		{
-			if (newLang === "fr")
-			{
-				flag = document.querySelector('img[data-language="french"]')
-				await updateLanguage(flag)
-			}
-			if (newLang === "an")
-			{
-				flag = document.querySelector('img[data-language="english"]')
-				await updateLanguage(flag)
-			}
-			if (newLang === "es")
-			{
-				flag = document.querySelector('img[data-language="spanish"]')
-				await updateLanguage(flag)
-			}
-		}
-		settings["language"] = newLang
-	}
+	indexCanvas = document.getElementById("indexCanvas")	
+	initAnimationSettings(indexCanvas)
 }
 
 function callbackSettings()
 {
-    indexCanvas = document.getElementById("indexCanvas")
-    initAnimationSettings(indexCanvas)
+	initSettings()
 }
 
 async function affSettings()
@@ -145,39 +56,9 @@ async function affSettings()
 		</div>
 	</div>
     `
-	if (!await is_logged())
-		updatePage("50X")
-	let settings = {}
-	try {
-		const response = await fetch('/api/auth/get_me/', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include'
-		})
-		if (response.ok) {
-			let jsonResponse = await response.json()
-			settings["twofa"] = jsonResponse["secu"]
-			settings["language"] = jsonResponse["language"]
-		}
-		else
-			console.log("error1")
-	}
-	catch (error) {
-		console.log("error2")
-	}
-	if (!settings["twofa"])
-		document.getElementById("flexSwitchCheckDefault").checked = false
-	if (settings["language"] === "fr")
-		document.getElementById("fr").checked = true
-	else if (settings["language"] === "an")
-		document.getElementById("an").checked = true
-	else
-		document.getElementById("es").checked = true
-	document.getElementById("save-change").addEventListener("click", () => sendDatas(settings))
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
-	await addScript("/js/settingsPong.js", callbackSettings)
+	addScript("/js/settings.js", callbackSettings)
+	addScript("/js/settingsPong.js", callbackSettingsPong)
 	tradNewPage()
 }
