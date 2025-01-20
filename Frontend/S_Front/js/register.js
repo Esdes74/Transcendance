@@ -32,7 +32,10 @@ function loadRegister()
 					updatePage("2fa");
 				else
 					updatePage("");
-			} else {
+			} else if (response.status >= 500 && response.status < 600)
+				updatePage("50X")
+
+			else {
 				const error = await response.json();
 				if (error["detail"] === "Unauthorized")
 				{
