@@ -18,8 +18,13 @@ async function loadRegisterToFT()
 		if (response.ok) {
 			const result = await response.json();
 			window.location.assign(result.uri);
-		} else {
+		} else if (response.status >= 500 && response.status < 600)
 			updatePage("50X")
+		else
+		{
+			history.replaceState({pageID: 'duplicate'}, '', "/duplicate")
+			changeHeader()
+			rootMyUrl(true)
 		}
 	} catch (error) {
 		updatePage("50X")
