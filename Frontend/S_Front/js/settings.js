@@ -71,7 +71,8 @@ async function changeFavLanguage(value)
 
 async function sendDatas(settings)
 {
-	document.getElementById("save-change").disabled = true
+	buttonDisabled = document.getElementById("save-change")
+	buttonDisabled.disabled = true
 	newSecu = document.getElementById("flexSwitchCheckDefault").checked
 	if (settings["twofa"] !== newSecu)
 	{
@@ -107,7 +108,7 @@ async function sendDatas(settings)
 		settings["language"] = newLang
 	}
 	await affValidationMessage()
-	document.getElementById("save-change").disabled = false
+	buttonDisabled.disabled = false
 }
 
 async function initSettings()
