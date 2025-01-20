@@ -60,4 +60,3 @@ async function affLoginMessage(message)
 	myMessage.innerText = ""
 	myMessage.style.padding = '0px'
 }
-
