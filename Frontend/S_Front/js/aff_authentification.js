@@ -41,8 +41,6 @@ function affAuthentification()
 	`
 	addScript("/js/login.js", loginCallback)
 	addScript("/js/waitingPong.js", loginAnimationCallback)
-	forms = document.querySelectorAll('input')
-	setFormsAlert(forms)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	tradNewPage()
 	let registerLink = document.getElementById("register")

@@ -12,42 +12,6 @@ function tradNewPage()
 	}
 }
 
-function setFormsAlert(forms)
-{
-	let language = document.getElementById("currentFlag").getAttribute('data-language')
-	forms.forEach( form => {
-		if (language === "english")
-			form.setCustomValidity("Please fill this field.")
-		else if (language === "spanish")
-			form.setCustomValidity("Complete este campo.")
-		else
-			form.setCustomValidity("Veuillez remplir ce champ.")
-		form.oninvalid = function(e) {
-			if (!e.target.validity.valid) 
-			{
-				if (language === "english")
-					e.target.setCustomValidity("Invalid field.")
-				else if (language === "spanish")
-					e.target.setCustomValidity("Campo de texto no válido")
-				else
-					e.target.setCustomValidity("Champ invalide.")
-			}
-		}
-		form.oninput = function(e) {
-			e.target.setCustomValidity("")
-			if (!e.target.validity.valid)
-			{
-				if (language === "english")
-					e.target.setCustomValidity("Invalid field.")
-				else if (language === "spanish")
-					e.target.setCustomValidity("Campo de texto no válido.")
-				else
-					e.target.setCustomValidity("Champ invalide.")
-			}
-		}
-	})
-}
-
 function tradDiv(div)
 {
 	let flag = document.getElementById("currentFlag")
@@ -179,8 +143,6 @@ async function updateLanguage(clickedFlag)
 	tradPlaceholders(placeholders)
 	let tooltips = document.querySelectorAll('[data-translate="tooltips"]')
 	tradTooltips(tooltips)
-	let forms = document.querySelectorAll('input')
-	setFormsAlert(forms)
 }
 
 function getFlags()

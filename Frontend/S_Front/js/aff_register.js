@@ -41,7 +41,5 @@ function affRegister()
 	addScript("/js/register.js", registerCallback)
 	addScript("/js/waitingPong.js", registerAnimationCallback)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
-	forms = document.querySelectorAll('input')
-	setFormsAlert(forms)
 	tradNewPage()
 }

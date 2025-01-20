@@ -35,7 +35,5 @@ function aff2fa()
 	addScript("/js/2fa.js", twofaCallback)
 	addScript("/js/waitingPong.js", twofaAnimationCallback)
 	document.querySelector('.replayBlock').style.display = "block"
-	forms = document.querySelectorAll('input')
-	setFormsAlert(forms)
 	tradNewPage()
 }
