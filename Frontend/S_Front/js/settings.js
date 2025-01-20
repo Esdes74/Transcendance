@@ -71,6 +71,7 @@ async function changeFavLanguage(value)
 
 async function sendDatas(settings)
 {
+	document.getElementById("save-change").disabled = true
 	newSecu = document.getElementById("flexSwitchCheckDefault").checked
 	if (settings["twofa"] !== newSecu)
 	{
@@ -105,6 +106,8 @@ async function sendDatas(settings)
 		}
 		settings["language"] = newLang
 	}
+	await affValidationMessage()
+	document.getElementById("save-change").disabled = false
 }
 
 async function initSettings()
@@ -148,4 +151,15 @@ async function initSettings()
 	else
 		document.getElementById("es").checked = true
 	document.getElementById("save-change").addEventListener("click", () => sendDatas(settings))
+}
+
+async function affValidationMessage()
+{
+	myMessage = document.getElementById('validation-message')
+	myMessage.innerText = "Sauvegarde Effectuée !"
+	tradElements([myMessage])
+	myMessage.style.padding = '4px'
+	await new Promise (r => setTimeout(r, 3000))
+	myMessage.innerText = ""
+	myMessage.style.padding = '0px'
 }

@@ -47,7 +47,8 @@ async function affSettings()
 						</div>
 						</div>
 						<hr/>
-						<button class="btn btn-outline-light fw-bold fs-6 mt-2 mb-3" id="save-change" data-translate="true">Sauvegarder les Changements</button>	
+						<button class="btn btn-outline-light fw-bold fs-6 mt-2 mb-2" id="save-change" data-translate="true">Sauvegarder les Changements</button>	
+						<p class="my-0 py-1"><span class="bg-success text-white rounded fw-bold" id="validation-message" data-translate="true"></span></p>
 						<p class="mt-1 mb-0" id="logout"><span class="logout-btn fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-danger data-translate="true"> Se Deconnecter </span></p>
 						</div>
 					</div>
