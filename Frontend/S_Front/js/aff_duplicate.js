@@ -23,9 +23,10 @@ function affDuplicate()
 		</div>
 	</div>
     `
-    document.getElementsByClassName("replayBlock")[0].style.display = "block"
-    document.getElementById('logout').addEventListener("click", () => logoutUser())
-    addScript("/js/duplicatePong.js", callbackDuplicate)
-    tradNewPage()
-    getLinks()
+	document.getElementsByClassName("replayBlock")[0].style.display = "block"
+	document.getElementById('logout').addEventListener("click", () => logoutUser())
+	addScript("/js/duplicatePong.js", callbackDuplicate)
+	tradNewPage()
+	getLinks()
+	console.log("prout")
 }

@@ -254,7 +254,8 @@ async function changeHeader()
 				await updateLanguage(flag)
 			}
 		}
-		else {
+		else if (response.status >= 500 && response.status < 600)
+		{
 			updatePage("50X")
 		}
 	} catch (error) {
@@ -277,8 +278,10 @@ async function logoutUser()
 		})
 		if (response.ok)
 			updatePage("")
-		else
+		else if (response.status >= 500 && response.status < 600)
 			updatePage("50X")
+		else
+			updatePage("")
 	} catch (error) {
 		updatePage("50X")
 	}
