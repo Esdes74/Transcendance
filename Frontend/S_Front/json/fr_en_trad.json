@@ -54,7 +54,7 @@
 	"Mode Solo": "Solo Mode",
 	"Résultats": "Leaderboard",
 	"Fin du tournoi": "End of the tournament",
-	"Code envoyé sur votre boite mail": "Code sent to your mailbox",
+	"Code envoyé sur votre boîte mail": "Code sent to your mailbox",
 	"Le code expirera dans 3 minutes.": "The code will expire in 3 minutes",
 	"Entrez le code secret": "Enter the secret code",
 	"Valider": "Validate",
@@ -76,5 +76,8 @@
 	"Tour 3": "Round 3",
 	"Erreur lors de la redirection": "Error while redirecting",
 	"Joueur 1": "Player 1",
-	"Joueur 2": "Player 2"
+	"Joueur 2": "Player 2",
+	"Toi": "You",
+	"Touches": "Keys",
+	"Lancer la partie": "Start game"
 }

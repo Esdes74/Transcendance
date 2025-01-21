@@ -4,10 +4,9 @@ function callbackAI()
     initAnimation(menuCanvas)
 }
 
-function other()
+function initAIPong()
 {
 	AICanvas = document.getElementById("AICanvas")
-
 	initPong(false, AICanvas, null)
 }
 
@@ -20,10 +19,10 @@ function affReplayBlock()
 {
 	menu = document.querySelector(".replayBlock")
 	menu.innerHTML = `<div class="button-group">
-                                                <h2 id="winMessage"></h2>
+                                                <h2 id="winMessage" data-translate="true"></h2>
 						<h2 id="WinMsg" data-translate="true">a gagné</h2>
                                                 <div class="button-group">
-                                                <button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Replay</Button>
+                                                <button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Rejouer</Button>
                                                 <!--button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Change Difficulty</button-->
    			</div>`
 	tradDiv(menu)
@@ -87,7 +86,7 @@ function manageButtons()
 		parents.append(aiCanvas)
 		affReplayBlock()
 		document.querySelector(".replayBlock").style.display = "none"
-		addScript("/js/pong.js", other)
+		addScript("/js/pong.js", initAIPong)
 		})
 	})
 }
@@ -105,7 +104,7 @@ function affAI()
 					<div id="scorePlayer2" class="fs-2">0</div>
 				</div>
 				<div class="score-names d-flex justify-content-between align-items-end">
-					<div id="Player1" class="d-flex pb-0 mb-0 align-items-end">You</div>
+					<div id="Player1" class="d-flex pb-0 mb-0 align-items-end" data-translate="true">Toi</div>
 					<div id="Player2" class="d-flex pb-0 mb-0 align-items-end">Bot</div>
 				</div>	
 				<div class="canvas-container p-0">
