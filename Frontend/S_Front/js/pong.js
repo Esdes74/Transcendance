@@ -140,6 +140,7 @@ function pong_keyPressed(e, socket, message, canvasID) {
 		|| (canvasID === "AICanvas" && (e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S'))))
 	{
 		e.preventDefault()
+		console.log("message :" + message)
 		pong_sendMessage({'type': message, 'key': e.key}, socket);
 	}
 }
@@ -323,60 +324,93 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 	if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
 		const canvas = pong_gameSettings.canvas;
 
-		let lastDirection = null; // Pour suivre la direction précédente ("up" ou "down")
+		// Variables pour suivre les touches actives
+		let activeKeyPlayer1 = null; // Clé actuellement simulée pour le joueur 1
+		let activeKeyPlayer2 = null; // Clé actuellement simulée pour le joueur 2
 
 		// Ajout des événements tactiles
 		canvas.addEventListener('touchstart', handleTouch);
 		canvas.addEventListener('touchmove', handleTouch);
-		canvas.addEventListener('touchend', handleTouchEnd);
 
 		function handleTouch(event) {
 			event.preventDefault(); // Empêcher les actions par défaut comme le défilement
 			const touch = event.touches[0]; // On ne gère qu'un doigt pour simplifier
 			const canvasRect = canvas.getBoundingClientRect();
 
-			// Calcul de la position verticale du doigt sur le canvas
+			// Coordonnées du toucher
+			const touchX = touch.clientX - canvasRect.left;
 			const touchY = touch.clientY - canvasRect.top;
 
-			// Vérifier si le doigt est en haut ou en bas du canvas
-			const paddleCenterY = pong_gameSettings.paddle1Y + pong_gameSettings.paddleHeight / 2;
+			// Divisez le canvas en deux zones
+			const isLeftSide = touchX < canvasRect.width / 2;
 
-			let newDirection = null;
-
-			if (touchY < paddleCenterY - 10) {
-				newDirection = 'up'; // Haut
-			} else if (touchY > paddleCenterY + 10) {
-				newDirection = 'down'; // Bas
-			}
-
-			// Envoyer des messages seulement si la direction change
-			if (newDirection !== lastDirection) {
-				if (newDirection === 'up') {
-					pong_sendMessage({ type: 'key.pressed', key: 'w' }, socket);
-				} else if (newDirection === 'down') {
-					pong_sendMessage({ type: 'key.pressed', key: 's' }, socket);
+			if (isLeftSide) {
+				// Contrôle de la palette du joueur 1 (à gauche)
+				if (touchY < pong_gameSettings.paddle1Y) {
+					if (activeKeyPlayer1 !== 'w') {
+						releaseKey(activeKeyPlayer1, socket); // Relâcher l'ancienne touche
+						activeKeyPlayer1 = 'w';
+						pressKey(activeKeyPlayer1, socket);
+					}
+				} else if (touchY > pong_gameSettings.paddle1Y + pong_gameSettings.paddleHeight) {
+					if (activeKeyPlayer1 !== 's') {
+						releaseKey(activeKeyPlayer1, socket); // Relâcher l'ancienne touche
+						activeKeyPlayer1 = 's';
+						pressKey(activeKeyPlayer1, socket);
+					}
+				} else {
+					releaseKey(activeKeyPlayer1, socket); // Zone neutre
+					activeKeyPlayer1 = null;
 				}
-
-				// Si on change de direction, relâcher l'ancienne touche
-				if (lastDirection === 'up' || lastDirection === 'down') {
-					pong_sendMessage({ type: 'key.released', key: lastDirection === 'up' ? 'w' : 's' }, socket);
+			} else {
+				// Contrôle de la palette du joueur 2 (à droite)
+				if (touchY < pong_gameSettings.paddle2Y) {
+					if (activeKeyPlayer2 !== 'ArrowUp') {
+						releaseKey(activeKeyPlayer2, socket); // Relâcher l'ancienne touche
+						activeKeyPlayer2 = 'ArrowUp';
+						pressKey(activeKeyPlayer2, socket);
+					}
+				} else if (touchY > pong_gameSettings.paddle2Y + pong_gameSettings.paddleHeight) {
+					if (activeKeyPlayer2 !== 'ArrowDown') {
+						releaseKey(activeKeyPlayer2, socket); // Relâcher l'ancienne touche
+						activeKeyPlayer2 = 'ArrowDown';
+						pressKey(activeKeyPlayer2, socket);
+					}
+				} else {
+					releaseKey(activeKeyPlayer2, socket); // Zone neutre
+					activeKeyPlayer2 = null;
 				}
-
-				lastDirection = newDirection; // Mettre à jour la direction
 			}
 		}
 
-		function handleTouchEnd() {
-			// Relâcher les touches lorsque le doigt quitte l'écran
-			if (lastDirection === 'up') {
-				pong_sendMessage({ type: 'key.released', key: 'w' }, socket);
-			} else if (lastDirection === 'down') {
-				pong_sendMessage({ type: 'key.released', key: 's' }, socket);
+		canvas.addEventListener('touchend', () => {
+			// Relâcher toutes les touches lorsque le toucher est terminé
+			releaseKey(activeKeyPlayer1, socket);
+			releaseKey(activeKeyPlayer2, socket);
+			activeKeyPlayer1 = null;
+			activeKeyPlayer2 = null;
+		});
+
+		console.log('Split touch controls with keyboard simulation enabled for canvas:', canvasID);
+
+		// Fonction pour simuler une pression de touche
+		function pressKey(key, socket) {
+			if (key) {
+				pong_sendMessage({
+					type: 'key.pressed',
+					key: key
+				}, socket);
 			}
-			lastDirection = null; // Réinitialiser la direction
 		}
 
-		console.log('Touch controls enabled for canvas:', canvasID);
+		// Fonction pour simuler une relâche de touche
+		function releaseKey(key, socket) {
+			if (key) {
+				pong_sendMessage({
+					type: 'key.released',
+					key: key
+				}, socket);
+			}
+		}
 	}
 }
-
