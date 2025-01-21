@@ -54,7 +54,7 @@
 	"Mode Solo": "Modo Solo",
 	"Résultats": "Resultados",
 	"Fin du tournoi": "Fin del torneo",
-	"Code envoyé sur votre boite mail": "Código enviado a tu buzón",
+	"Code envoyé sur votre boîte mail": "Código enviado a tu buzón",
 	"Le code expirera dans 3 minutes.": "El código caducará en 3 minutos.",
 	"Entrez le code secret": "Escribe el código secreto",
 	"Envoyer un nouveau code": "Enviar un nuevo código",
@@ -75,5 +75,8 @@
 	"Tour 3": "Ronda 3",
 	"Erreur lors de la redirection": "Error al redirigir",
 	"Joueur 1": "Jugador 1",
-	"Joueur 2": "Jugador 2"
+	"Joueur 2": "Jugador 2",
+	"Toi": "Tú",
+	"Touches": "Teclas",
+	"Lancer la partie": "Empezar el juego"
 }
