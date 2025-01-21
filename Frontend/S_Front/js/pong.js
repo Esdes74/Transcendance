@@ -319,6 +319,26 @@ function pong_gameLoop(pong_gameSettings, socket) {
 		requestAnimationFrame(() => pong_gameLoop(pong_gameSettings, socket));
 }
 
+function throttle(func, limit) {
+	let lastFunc;
+	let lastRan;
+	return function(...args) {
+		const context = this;
+		if (!lastRan) {
+			func.apply(context, args);
+			lastRan = Date.now();
+		} else {
+			clearTimeout(lastFunc);
+			lastFunc = setTimeout(function() {
+				if ((Date.now() - lastRan) >= limit) {
+					func.apply(context, args);
+					lastRan = Date.now();
+				}
+			}, limit - (Date.now() - lastRan));
+		}
+	};
+}
+
 function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 	if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
 		const canvas = pong_gameSettings.canvas;
@@ -328,7 +348,7 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 		const deadZoneMargin = 5; // Réduction de la zone morte (en pixels)
 
 		canvas.addEventListener('touchstart', handleTouchStart);
-		canvas.addEventListener('touchmove', handleTouchMove);
+		canvas.addEventListener('touchmove', throttle(handleTouchMove, 16));
 		canvas.addEventListener('touchend', handleTouchEnd);
 		canvas.addEventListener('touchcancel', handleTouchEnd);
 
@@ -377,7 +397,6 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 				}
 			}
 		}
-
 		function handleTouchEnd(event) {
 			event.preventDefault();
 
@@ -400,7 +419,6 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 						key: currentKey
 					}, socket);
 				}
-
 				if (newKey) {
 					pong_sendMessage({
 						type: 'key.pressed',
