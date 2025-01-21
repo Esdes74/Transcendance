@@ -74,7 +74,7 @@ def login_view(request):
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
-		return Response({"error": str(e)}, status=500)
+		return Response({"error": str(e)}, status=500)		#todo changer en 503 pour service unavailable ?
 
 @no_token_requiered
 @api_view(['POST'])

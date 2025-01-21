@@ -86,7 +86,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 		# except asyncio.CancelledError:
 			# print("update_ball_position task was cancelled")
 		except Exception as e:
-			print(f"Exception in update_ball_position: {e}")
+			await self.send(json.dumps({'type': 'error'}))
 
 	async def ask_ia_movement(self):
 		try:
@@ -105,29 +105,36 @@ class PongConsumer(AsyncWebsocketConsumer):
 	async def send_to_pong_service(self, data):
 
 		# Check if the WebSocket connection already exists
-		if not hasattr(self, 'websocket'):
-			uri = "ws://django-Pong:8000/ws/pong/calcul"
-			self.websocket = await websockets.connect(uri)
+		try :
+			if not hasattr(self, 'websocket'):
+				uri = "ws://django-Pong:8000/ws/pong/calcul"
+				self.websocket = await websockets.connect(uri)
 
-		# Send data using the existing or new WebSocket connection
-		async with self.websocket_lock:
-			await self.websocket.send(data)
-			response = await self.websocket.recv()
+			# Send data using the existing or new WebSocket connection
+			async with self.websocket_lock:
+				await self.websocket.send(data)
+				response = await self.websocket.recv()
 
-		return response
+			return response
+		except Exception as e:
+			await self.send(json.dumps({'type': 'error'}))
 
 	async def send_to_ai_service(self, data):
 
-		# Check if the WebSocket connection already exists
-		if not hasattr(self, 'websocketAI'):
-			uri = "ws://django-AI:8000/ws/AI/multiply"
-			self.websocketAI = await websockets.connect(uri)
+		try:
+			# Check if the WebSocket connection already exists
+			if not hasattr(self, 'websocketAI'):
+				uri = "ws://django-AI:8000/ws/AI/multiply"
+				self.websocketAI = await websockets.connect(uri)
 
-		# Send data using the existing or new WebSocket connection
-		async with self.websocket_lock_AI:
-			await self.websocketAI.send(data)
-			response = await self.websocketAI.recv()
-		return response
+			# Send data using the existing or new WebSocket connection
+			async with self.websocket_lock_AI:
+				await self.websocketAI.send(data)
+				response = await self.websocketAI.recv()
+			return response
+		
+		except Exception as e:
+			await self.send(json.dumps({'type': 'error'}))
 
 	async def ia_ask_position(self, text):
 		self.ia_timing -= 0.01
@@ -151,4 +158,4 @@ class PongConsumer(AsyncWebsocketConsumer):
 				self.ia_timing = data.get('Timing')
 				self.ia_sleeptime = data.get('SleepTime')
 			except Exception as e:
-				print(f"Exception in update_ball_position: {e}")
+				await self.send(json.dumps({'type': 'error'}))

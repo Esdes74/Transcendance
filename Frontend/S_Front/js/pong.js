@@ -1,7 +1,7 @@
 function initPong(boolean, myCanvas, uuid) {
 
 	const pong_gameSettings = {
-		canvas: myCanvas,//document.getElementById('pongCanvas'),
+		canvas: myCanvas,
 		// paddle properties
 		paddleWidth: 0,							// Epaisseur players
 		paddleHeight: 0,		// Hauteur players
@@ -30,28 +30,22 @@ function initPong(boolean, myCanvas, uuid) {
 
 		uuid : uuid
 	};
-	console.log('player1Name =', pong_gameSettings.player1Name);
-	console.log('player2Name =', pong_gameSettings.player2Name);
-	console.log('istournament =', pong_gameSettings.istournament);
 
 	pong_initCanvas(pong_gameSettings)
-	// pong_draw(pong_gameSettings);
-	console.log('Settings initialized');
 
-	// window.addEventListener('resize', pong_resizeCanvas(pong_gameSettings));
 	window.addEventListener('resize', function() {
 		pong_resizeCanvas(pong_gameSettings);
 	});
 	let socket;
 	if (myCanvas.id === "AICanvas")
-		socket = new WebSocket("/ws/pong/ai/");	// new WebSocket('wss://localhost:000/ws/pong/')
+		socket = new WebSocket("/ws/pong/ai/");		//		wss://localhost:000/ws/pong/ai/
 	else
-		socket = new WebSocket("/ws/pong/");
+		socket = new WebSocket("/ws/pong/");		//		wss://localhost:3000/ws/pong/
 	pong_initSocket(socket, pong_gameSettings);
 	pong_EventManager(socket, myCanvas.id);
 }
 
-function pong_initCanvas(pong_gameSettings)								// Rendre responsive
+function pong_initCanvas(pong_gameSettings)
 {
 	pong_gameSettings.canvas.width = pong_gameSettings.canvas.clientWidth;
 	pong_gameSettings.canvas.height = pong_gameSettings.canvas.clientHeight;
@@ -72,12 +66,8 @@ function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
 	pong_gameSettings.canvas.height = pong_gameSettings.canvas.clientHeight;
 	pong_gameSettings.paddleWidth = 0.015 * pong_gameSettings.canvas.width;							// Epaisseur players
 	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;				// Taille de la ball
-	//pong_gameSettings.ballX = pong_gameSettings.ballX * pong_gameSettings.canvas.width;					// Placer la ball au milieu horizontal du pong_gameSettings.canvas	en pourcentage
-	//pong_gameSettings.ballY = pong_gameSettings.ballY * pong_gameSettings.canvas.height;
 	pong_gameSettings.paddleHeight = 0.25 * pong_gameSettings.canvas.height;		// Hauteur players
 	pong_gameSettings.paddleBuffer = 0.02 * pong_gameSettings.canvas.width;			// Ecart des players au bord;
-	// pong_gameSettings.paddle1Y = (pong_gameSettings.canvas.height - pong_gameSettings.paddleHeight) / 2;	//player 1
-	//pong_gameSettings.paddle2Y = pong_gameSettings.paddle1Y;
 	pong_draw(pong_gameSettings);
 }
 
@@ -87,6 +77,11 @@ async function pong_sendMessage(data, socket) {
 	if (socket.readyState === WebSocket.OPEN)
 	{
 		socket.send(JSON.stringify(data));
+	}
+	else
+	{
+		updatePage("50X");
+	//	console.error('WebSocket is not open:', socket.readyState);
 	}
 }
 
@@ -136,11 +131,17 @@ function pong_initSocket(socket, pong_gameSettings) {
 			if (pong_gameSettings.countdownValue <= 0)
 				pong_gameSettings.countdownActive = false;
 		}
+		else if (data.type==='error')
+		{
+			socket.close();
+			updatePage("50X");
+		}
 	};
 
 	// Gestion des erreurs WebSocket
 	socket.onerror = function (error) {
-		console.error('WebSocket error la big erreur la:', error);
+		updatePage("50X");
+		//console.error('WebSocket error la big erreur la:', error);
 	};
 
 	// Gestion de la fermeture de la connexion WebSocket
