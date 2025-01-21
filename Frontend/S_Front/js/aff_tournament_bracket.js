@@ -98,6 +98,10 @@ async function affTournamentBracket_sendRequest(data, function_name)
 		{
 			updatePage("denied");
 		}
+		else if (result.status >= 500 && result.status < 600)
+		{
+			alert(`Erreur : ${result.error} `);
+		}
 		return (result);
 	}
 	catch (error) {

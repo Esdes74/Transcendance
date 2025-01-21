@@ -4,9 +4,8 @@ function affPong(Player1, Player2, uuid)
 
 	if (Player1 === undefined && Player2 === undefined)
 	{
-		console.log("Player1 et Player2 undefined")
-		Player1 = "Player1";
-		Player2 = "Player2";
+		Player1 = "Joueur 1";
+		Player2 = "Joueur 2";
 		tournoi = false;
 		uuid = null;
 	}
@@ -24,8 +23,8 @@ function affPong(Player1, Player2, uuid)
 				</div>
 
 				<h1 class="score-names d-flex justify-content-between align-items-end">
-					<div id="Player1" class="fs-2" data-translate="true">${Player1}</div>
-					<div id="Player2" class="fs-2" data-translate="true">${Player2}</div>
+					<div id="Player1" class="fs-2" data-translate="true"></div>
+					<div id="Player2" class="fs-2" data-translate="true"></div>
 				</h1>
 
 				<div class="canvas-container p-0">
@@ -44,8 +43,9 @@ function affPong(Player1, Player2, uuid)
 		</div>
 	</div>
 `	
+	document.getElementById("Player1").innerText = Player1
+	document.getElementById("Player2").innerText = Player2
 	pongCanvas = document.getElementById("pongCanvas")
 	addScript("/js/pong.js", () => initPong(tournoi, pongCanvas, uuid))
-	// addScript("/js/pong.js", () => pongCallback(Player1, Player2))
 	tradNewPage()
 }
