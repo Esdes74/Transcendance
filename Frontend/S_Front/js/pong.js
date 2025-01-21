@@ -42,7 +42,7 @@ function initPong(boolean, myCanvas) {
 	else
 		socket = new WebSocket("/ws/pong/");
 	pong_initSocket(socket, pong_gameSettings);
-	pong_EventManager(socket, myCanvas.id);
+	pong_EventManager(socket, pong_gameSettings, myCanvas.id);
 }
 
 
@@ -144,11 +144,13 @@ function pong_keyPressed(e, socket, message, canvasID) {
 	}
 }
 
-function pong_EventManager(socket, canvasID) {
+function pong_EventManager(socket, pong_gameSettings,canvasID) {
 	console.log('pong_EventManager initialized');
-
+	//clavier
 	document.addEventListener('keydown', e => pong_keyPressed(e, socket, 'key.pressed', canvasID));
 	document.addEventListener('keyup', e => pong_keyPressed(e, socket, 'key.released', canvasID));
+	//tactile
+	pong_addTouchControls(pong_gameSettings, socket, canvasID);
 
 	function pong_handleViewChangeWrapper(event) {
 		pong_handleViewChange(socket);
@@ -315,3 +317,66 @@ function pong_gameLoop(pong_gameSettings, socket) {
 	if (socket.readyState === WebSocket.OPEN)
 		requestAnimationFrame(() => pong_gameLoop(pong_gameSettings, socket));
 }
+
+function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
+	// Vérifiez si l'appareil supporte le tactile
+	if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+		const canvas = pong_gameSettings.canvas;
+
+		let lastDirection = null; // Pour suivre la direction précédente ("up" ou "down")
+
+		// Ajout des événements tactiles
+		canvas.addEventListener('touchstart', handleTouch);
+		canvas.addEventListener('touchmove', handleTouch);
+		canvas.addEventListener('touchend', handleTouchEnd);
+
+		function handleTouch(event) {
+			event.preventDefault(); // Empêcher les actions par défaut comme le défilement
+			const touch = event.touches[0]; // On ne gère qu'un doigt pour simplifier
+			const canvasRect = canvas.getBoundingClientRect();
+
+			// Calcul de la position verticale du doigt sur le canvas
+			const touchY = touch.clientY - canvasRect.top;
+
+			// Vérifier si le doigt est en haut ou en bas du canvas
+			const paddleCenterY = pong_gameSettings.paddle1Y + pong_gameSettings.paddleHeight / 2;
+
+			let newDirection = null;
+
+			if (touchY < paddleCenterY - 10) {
+				newDirection = 'up'; // Haut
+			} else if (touchY > paddleCenterY + 10) {
+				newDirection = 'down'; // Bas
+			}
+
+			// Envoyer des messages seulement si la direction change
+			if (newDirection !== lastDirection) {
+				if (newDirection === 'up') {
+					pong_sendMessage({ type: 'key.pressed', key: 'w' }, socket);
+				} else if (newDirection === 'down') {
+					pong_sendMessage({ type: 'key.pressed', key: 's' }, socket);
+				}
+
+				// Si on change de direction, relâcher l'ancienne touche
+				if (lastDirection === 'up' || lastDirection === 'down') {
+					pong_sendMessage({ type: 'key.released', key: lastDirection === 'up' ? 'w' : 's' }, socket);
+				}
+
+				lastDirection = newDirection; // Mettre à jour la direction
+			}
+		}
+
+		function handleTouchEnd() {
+			// Relâcher les touches lorsque le doigt quitte l'écran
+			if (lastDirection === 'up') {
+				pong_sendMessage({ type: 'key.released', key: 'w' }, socket);
+			} else if (lastDirection === 'down') {
+				pong_sendMessage({ type: 'key.released', key: 's' }, socket);
+			}
+			lastDirection = null; // Réinitialiser la direction
+		}
+
+		console.log('Touch controls enabled for canvas:', canvasID);
+	}
+}
+
