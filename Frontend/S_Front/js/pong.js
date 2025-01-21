@@ -320,18 +320,17 @@ function pong_gameLoop(pong_gameSettings, socket) {
 }
 
 function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
-	// Vérifiez si l'appareil supporte le tactile
 	if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
 		const canvas = pong_gameSettings.canvas;
 
-		// Variables pour suivre les touches actives pour chaque zone
 		const activeKeys = { player1: null, player2: null };
-		const touchZones = {}; // Associe un identifiant de toucher (touch.identifier) à une zone (player1 ou player2)
+		const touchZones = {};
+		const deadZoneMargin = 5; // Réduction de la zone morte (en pixels)
 
 		canvas.addEventListener('touchstart', handleTouchStart);
 		canvas.addEventListener('touchmove', handleTouchMove);
 		canvas.addEventListener('touchend', handleTouchEnd);
-		canvas.addEventListener('touchcancel', handleTouchEnd); // Cas où un toucher est annulé
+		canvas.addEventListener('touchcancel', handleTouchEnd);
 
 		function handleTouchStart(event) {
 			event.preventDefault();
@@ -340,7 +339,6 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 			for (const touch of event.changedTouches) {
 				const touchX = touch.clientX - canvasRect.left;
 
-				// Associez le toucher à une zone (gauche pour joueur 1, droite pour joueur 2)
 				if (touchX < canvasRect.width / 2) {
 					touchZones[touch.identifier] = 'player1';
 				} else {
@@ -358,25 +356,23 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 				const touchY = touch.clientY - canvasRect.top;
 				const zone = touchZones[touch.identifier];
 
-				if (!zone) continue; // Ignorer les touches non attribuées
+				if (!zone) continue;
 
 				if (zone === 'player1') {
-					// Contrôle de la palette du joueur 1
-					if (touchY < pong_gameSettings.paddle1Y) {
-						updateKeyState('player1', 'w', socket); // Déplacement vers le haut
-					} else if (touchY > pong_gameSettings.paddle1Y + pong_gameSettings.paddleHeight) {
-						updateKeyState('player1', 's', socket); // Déplacement vers le bas
+					if (touchY < pong_gameSettings.paddle1Y - deadZoneMargin) {
+						updateKeyState('player1', 'w', socket);
+					} else if (touchY > pong_gameSettings.paddle1Y + pong_gameSettings.paddleHeight + deadZoneMargin) {
+						updateKeyState('player1', 's', socket);
 					} else {
-						updateKeyState('player1', null, socket); // Zone neutre
+						updateKeyState('player1', null, socket);
 					}
 				} else if (zone === 'player2') {
-					// Contrôle de la palette du joueur 2
-					if (touchY < pong_gameSettings.paddle2Y) {
-						updateKeyState('player2', 'ArrowUp', socket); // Déplacement vers le haut
-					} else if (touchY > pong_gameSettings.paddle2Y + pong_gameSettings.paddleHeight) {
-						updateKeyState('player2', 'ArrowDown', socket); // Déplacement vers le bas
+					if (touchY < pong_gameSettings.paddle2Y - deadZoneMargin) {
+						updateKeyState('player2', 'ArrowUp', socket);
+					} else if (touchY > pong_gameSettings.paddle2Y + pong_gameSettings.paddleHeight + deadZoneMargin) {
+						updateKeyState('player2', 'ArrowDown', socket);
 					} else {
-						updateKeyState('player2', null, socket); // Zone neutre
+						updateKeyState('player2', null, socket);
 					}
 				}
 			}
@@ -387,20 +383,17 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 
 			for (const touch of event.changedTouches) {
 				const zone = touchZones[touch.identifier];
-				if (!zone) continue; // Ignorer les touches non attribuées
+				if (!zone) continue;
 
-				// Relâchez la touche active pour cette zone
 				updateKeyState(zone, null, socket);
 				delete touchZones[touch.identifier];
 			}
 		}
 
-		// Met à jour l'état des touches simulées pour une zone donnée
 		function updateKeyState(player, newKey, socket) {
 			const currentKey = activeKeys[player];
 
 			if (currentKey !== newKey) {
-				// Relâcher l'ancienne touche si elle existe
 				if (currentKey) {
 					pong_sendMessage({
 						type: 'key.released',
@@ -408,7 +401,6 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 					}, socket);
 				}
 
-				// Activer la nouvelle touche si elle existe
 				if (newKey) {
 					pong_sendMessage({
 						type: 'key.pressed',
@@ -416,11 +408,9 @@ function pong_addTouchControls(pong_gameSettings, socket, canvasID) {
 					}, socket);
 				}
 
-				// Mettre à jour la touche active
 				activeKeys[player] = newKey;
 			}
 		}
-
-		console.log('Independent touch controls enabled for canvas:', canvasID);
+		console.log('Independent touch controls with reduced dead zone enabled for canvas:', canvasID);
 	}
 }
