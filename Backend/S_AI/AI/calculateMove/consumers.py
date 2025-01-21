@@ -41,15 +41,15 @@ class myConsumer(AsyncWebsocketConsumer):
 
 
 	def calculatePaddlePos(self, ballX, ballY, ballSpeedX, ballSpeedY):
-		value = self.interTop(ballX, ballY, ballSpeedX, ballSpeedY)
-		if (value != -1):
-			return (self.calculatePaddlePos(value, 0.05, ballSpeedX, -ballSpeedY))
-		value1 = self.interBot(ballX, ballY, ballSpeedX, ballSpeedY)
-		if (value1 != -1):
-			return (self.calculatePaddlePos(value1, 0.95, ballSpeedX, -ballSpeedY))
-		value3 = self.interPaddle(ballX, ballY, ballSpeedX, ballSpeedY)
-		if (value3 != -1):
-			return (value3)
+		inter = self.interTop(ballX, ballY, ballSpeedX, ballSpeedY)
+		if (inter != -1):
+			return (self.calculatePaddlePos(inter, 0.05, ballSpeedX, -ballSpeedY))
+		inter = self.interBot(ballX, ballY, ballSpeedX, ballSpeedY)
+		if (inter != -1):
+			return (self.calculatePaddlePos(inter, 0.95, ballSpeedX, -ballSpeedY))
+		inter = self.interPaddle(ballX, ballY, ballSpeedX, ballSpeedY)
+		if (inter != -1):
+			return (inter)
 		return (0.5)
 
 	def interTop(self, ballX, ballY, ballSpeedX, ballSpeedY):
@@ -81,7 +81,18 @@ class myConsumer(AsyncWebsocketConsumer):
 			return (-1)
 		interY = (ballSpeedY * (0.95 - ballX)) / ballSpeedX + ballY
 		if (interY >= 0.95):
-			return (0.95)
+			return (1)
 		if (interY <= 0.05):
-			return (0.05)
+			return (0)
 		return (interY)
+
+	def interPlayer(self, ballX, ballY, ballSpeedX, ballSpeedY):
+		if (ballSpeedX >= 0):
+			return (-1)
+		interY = (ballSpeedY * (0.05 - ballX)) / ballSpeedX + ballY
+		if (interY >= 0.95):
+			return (1)
+		if (interY <= 0.05):
+			return (0)
+	def calculateNextInter(self):
+		
