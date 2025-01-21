@@ -46,10 +46,14 @@ async function affTournamentBracket_start(player_list, uuid)
 	{
 		roundDiv.textContent = roundDiv.textContent + ` ${curr_round}`;
 		result = await affTournamentBracket_sendRequest({'player_list': player_list, 'uuid': uuid}, 'startTournament');
+		if (result === undefined)
+			return;
 	}
 	else
 	{
 		result = await affTournamentBracket_sendRequest({'uuid': uuid}, 'continueTournament');
+		if (result === undefined)
+			return;
 		curr_round = result.round;
 		roundDiv.textContent = roundDiv.textContent + ` ${curr_round}`;
 		if (result.return && result.return === "endTournament") {
@@ -72,6 +76,8 @@ function addEvent(player1, player2, startBtn, uuid)
 			'player2': player2,
 			 'uuid': uuid
 		}, 'startGame');
+		if (result === undefined)
+			return;
 		if (result.return && result.return === "startGame")
 		{
 			startBtn.removeEventListener('click', function(){});
@@ -92,20 +98,24 @@ async function affTournamentBracket_sendRequest(data, function_name)
 			body: JSON.stringify(data),
 			credentials: 'include'
 		});
+
+		if (response.status >= 500 && response.status < 600)
+		{
+			updatePage("50X");
+			return;
+		}
+
 		const result = await response.json();
 
 		if (result.detail === 'Unauthorized')
 		{
 			updatePage("denied");
-		}
-		else if (result.status >= 500 && result.status < 600)
-		{
-			alert(`Erreur : ${result.error} `);
+			return;
 		}
 		return (result);
 	}
 	catch (error) {
-		console.error('Erreur lors de la requête :', error);
+		updatePage("50X");
 	}
 }
 

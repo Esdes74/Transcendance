@@ -22,12 +22,14 @@ def selectTournament(request):
 
 	if request.method == 'POST':
 
-		response = requests.post('http://django-tournament:8000/tournament/selectTournament/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/selectTournament/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
-		return JsonResponse(response_data, status=response.status_code)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
+		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
@@ -46,12 +48,14 @@ def createPlayer(request):
 
 	if request.method == 'POST':
 
-		response = requests.post('http://django-tournament:8000/tournament/createPlayer/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/createPlayer/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
-		return JsonResponse(response_data, status=response.status_code)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
+		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 
@@ -68,11 +72,13 @@ def deletePlayer(request):
 
 	if request.method == 'POST':
 
-		response = requests.post('http://django-tournament:8000/tournament/deletePlayer/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/deletePlayer/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -88,11 +94,13 @@ def initDB(request):
 
 	if request.method == 'POST':
 
-		response = requests.post('http://django-tournament:8000/tournament/initDB/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/initDB/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -108,11 +116,13 @@ def validTournament(request):
 
 	if request.method == 'POST':
 
-		response = requests.post('http://django-tournament:8000/tournament/validTournament/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/validTournament/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -132,11 +142,13 @@ def startTournament(request):
 		username = getattr(request, 'username', None)
 		data['username'] = username
 
-		response = requests.post('http://django-tournament:8000/tournament/startTournament/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/startTournament/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)	# verif les error500
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -151,11 +163,13 @@ def startGame(request):
 		username = getattr(request, 'username', None)
 		data['username'] = username
 
-		response = requests.post('http://django-tournament:8000/tournament/startGame/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/startGame/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -170,11 +184,13 @@ def endGame(request):
 		username = getattr(request, 'username', None)
 		data['username'] = username
 
-		response = requests.post('http://django-tournament:8000/tournament/endGame/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/endGame/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
@@ -189,10 +205,12 @@ def continueTournament(request):
 		username = getattr(request, 'username', None)
 		data['username'] = username
 
-		response = requests.post('http://django-tournament:8000/tournament/continueTournament/', json=data)
 		try:
+			response = requests.post('http://django-tournament:8000/tournament/continueTournament/', json=data)
 			response_data = response.json()
 		except ValueError:
-			return JsonResponse({"error": "Invalid response from internal API"}, status=500)
+			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
+		except requests.exceptions.RequestException as req_err:
+			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)

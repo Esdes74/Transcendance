@@ -35,6 +35,7 @@ async function affTournament()
 	document.querySelector(".replayBlock").style.display = "block"
 	await affTournament_init();
 	affTournament_EventManager();
+	tradNewPage();
 }
 
 async function affTournament_init()
@@ -63,6 +64,11 @@ async function affTournament_sendRequest(data, function_name)
 			credentials: 'include'
 		});
 		
+		if (response.status >= 500 && response.status < 600)
+		{
+			updatePage("50X");
+			return;
+		}
 		const result = await response.json();
 		console.log('Réponse de l\'API :', result);
 		
@@ -111,7 +117,7 @@ async function affTournament_sendRequest(data, function_name)
 			});
 		}
 	} catch (error) {
-		alert("Une erreur est survenue lors de la requête :", error);
+		updatePage("50X");
 	}
 }
 
