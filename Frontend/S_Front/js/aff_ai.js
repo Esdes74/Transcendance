@@ -34,7 +34,7 @@ function affReplayBlock()
 			scorePlayer1.innerText = "0"
 			scorePlayer2.innerText = "0"
 			menu.style.display = "none"
-			addScript("/js/pong.js", other)
+			addScript("/js/pong.js", initAIPong)
 		})
 	})
 }
