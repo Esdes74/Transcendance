@@ -34,7 +34,7 @@ function initPong(boolean, myCanvas, uuid) {
 	console.log('player2Name =', pong_gameSettings.player2Name);
 	console.log('istournament =', pong_gameSettings.istournament);
 
-	pong_resizeCanvas(pong_gameSettings)
+	pong_initCanvas(pong_gameSettings)
 	// pong_draw(pong_gameSettings);
 	console.log('Settings initialized');
 
@@ -51,8 +51,7 @@ function initPong(boolean, myCanvas, uuid) {
 	pong_EventManager(socket, myCanvas.id);
 }
 
-
-function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
+function pong_initCanvas(pong_gameSettings)								// Rendre responsive
 {
 	pong_gameSettings.canvas.width = pong_gameSettings.canvas.clientWidth;
 	pong_gameSettings.canvas.height = pong_gameSettings.canvas.clientHeight;
@@ -66,6 +65,22 @@ function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
 	pong_gameSettings.paddle2Y = pong_gameSettings.paddle1Y;
 	pong_draw(pong_gameSettings);
 }
+
+function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
+{
+	pong_gameSettings.canvas.width = pong_gameSettings.canvas.clientWidth;
+	pong_gameSettings.canvas.height = pong_gameSettings.canvas.clientHeight;
+	pong_gameSettings.paddleWidth = 0.015 * pong_gameSettings.canvas.width;							// Epaisseur players
+	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;				// Taille de la ball
+	//pong_gameSettings.ballX = pong_gameSettings.ballX * pong_gameSettings.canvas.width;					// Placer la ball au milieu horizontal du pong_gameSettings.canvas	en pourcentage
+	//pong_gameSettings.ballY = pong_gameSettings.ballY * pong_gameSettings.canvas.height;
+	pong_gameSettings.paddleHeight = 0.25 * pong_gameSettings.canvas.height;		// Hauteur players
+	pong_gameSettings.paddleBuffer = 0.02 * pong_gameSettings.canvas.width;			// Ecart des players au bord;
+	// pong_gameSettings.paddle1Y = (pong_gameSettings.canvas.height - pong_gameSettings.paddleHeight) / 2;	//player 1
+	//pong_gameSettings.paddle2Y = pong_gameSettings.paddle1Y;
+	pong_draw(pong_gameSettings);
+}
+
 
 
 async function pong_sendMessage(data, socket) {
