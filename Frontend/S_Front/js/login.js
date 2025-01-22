@@ -53,10 +53,11 @@ function loadLogin()
 async function affLoginMessage(message)
 {
 	myMessage = document.getElementById('error-message')
+	myMessage.style.display="block"
 	myMessage.innerText = message
+	myMessage.className="rounded-pill p-2 mt-2 mb-0 fw-bold"
+	myMessage.style.backgroundColor = "lightcoral"
 	tradElements([myMessage])
-	myMessage.style.padding = '4px'
 	await new Promise(r => setTimeout(r, 3000))
-	myMessage.innerText = ""
-	myMessage.style.padding = '0px'
+	myMessage.style.display="none"
 }

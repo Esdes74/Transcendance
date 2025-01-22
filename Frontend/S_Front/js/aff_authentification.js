@@ -25,8 +25,8 @@ function affAuthentification()
 							<input type="text" class="form-control mb-2" id="username" data-translate="placeholder" placeholder="Entrez votre nom d'utilisateur" required> 
 							<label for="password" class="mb-2 fw-bold" data-translate="true">Mot de passe</label>
 							<input type="password" class="form-control mb-3" id="password" data-translate="placeholder" placeholder="Entrez votre mot de passe" required>
-							<button type="submit" class="btn btn-outline-light fw-bold mb-1" data-translate="true">Se connecter</button>
-							<p class="mt-2 mb-2"><span class="bg-danger text-white rounded fw-bold" id="error-message" data-translate="true"></span></p>
+							<button type="submit" class="btn btn-outline-light fw-bold mb-2" data-translate="true">Se connecter</button>
+							<p class="mt-2 mb-2" id="error-message" data-translate="true"></p>
 						</form>
 						<p class="link-p fs-6 fw-bold text-white mb-3" id="register" data-translate="true"> Pas de compte ? Inscrivez-vous</p>
 						<button id="registertoft" class="btn42 rounded d-flex align-items-center mx-auto text-white" style="background: rgb(41,45,57) !important">

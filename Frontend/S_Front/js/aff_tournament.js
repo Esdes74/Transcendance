@@ -110,7 +110,7 @@ async function affTournament_sendRequest(data, function_name)
 		{
 			errorDiv.style.display = "block";
 			errorDiv.style.backgroundColor = "lightcoral";
-			errorDiv.className = "rounded-pill p-2";
+			errorDiv.className = "rounded-pill p-2 fw-bold";
 			errorDiv.textContent = result.error;
 			errorDiv.setAttribute('data-translate', 'true');
 			tradDiv(errorDiv);
