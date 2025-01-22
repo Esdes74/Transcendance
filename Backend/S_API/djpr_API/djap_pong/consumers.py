@@ -11,10 +11,13 @@ class PongConsumer(AsyncWebsocketConsumer):
 			self.ai_enabled = False
 		else:
 			self.ai_enabled = True
+			self.ia_sleeptime = 0
+			self.botPos = 0
 		await self.accept()
 
 		self.printball = False
-		self.keys = {}
+		self.keys = {'ArrowUp': False,
+				'ArrowDown': False}
 		self.send_task = asyncio.create_task(self.send_keys_periodically())
 		# boucle for qui renvoie un send chaque seconde durant 3 secondes pour le coundown
 		for i in range(4):
@@ -24,8 +27,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 		self.update_ball_task = asyncio.create_task(self.update_ball_position())
 		self.websocket_lock = asyncio.Lock()
 		if (self.ai_enabled):
-			self.ia_sleeptime = 0
-			self.ia_timing = 0
 			self.ask_ia_task = asyncio.create_task(self.ask_ia_movement())
 			self.websocket_lock_AI = asyncio.Lock()
 
@@ -77,11 +78,14 @@ class PongConsumer(AsyncWebsocketConsumer):
 				data = json.loads(response)
 				if data.get('scorePlayer1') >= 5 or data.get('scorePlayer2') >= 5:
 					self.printball = True
-				#if (i >= self.ia_sleeptime):
-				#	await self.ia_ask_position("getDatas")
-				#	i = 0
-				#else:
-				#	await self.ia_ask_position("noDatas")
+				#print(data.get('player2Y'))
+				#print(self.ai_enabled)
+				#print(self.keys['ArrowUp'])
+				#print(self.botPos)
+				if (self.ai_enabled and self.keys['ArrowUp'] == True and data.get('player2Y') < self.botPos):
+					self.keys['ArrowUp'] = False
+				if (self.ai_enabled and self.keys['ArrowDown'] == True and data.get('player2Y') > self.botPos):
+					self.keys['ArrowDown'] = False
 				await self.send(response)
 				await asyncio.sleep(0.005)
 		# except asyncio.CancelledError:
@@ -92,11 +96,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 	async def ask_ia_movement(self):
 		try:
 			while self.printball == False:
-				await asyncio.sleep(self.ia_timing)
-				self.keys['ArrowDown'] = False
-				self.keys['ArrowUp'] = False
-				if (self.ia_sleeptime > self.ia_timing):
-					await asyncio.sleep(self.ia_sleeptime - self.ia_timing)
+				await asyncio.sleep(self.ia_sleeptime)
 				await self.ia_ask_position()
 		except Exception as e:
 			await self.send(json.dumps({'type': 'error'}))
@@ -146,10 +146,11 @@ class PongConsumer(AsyncWebsocketConsumer):
 			elif (data.get('Move') == "ArrowUp"):
 				self.keys['ArrowDown'] = False
 				self.keys['ArrowUp'] = True
+				self.botPos = data.get('destY')
 			else:
 				self.keys['ArrowUp'] = False
 				self.keys['ArrowDown'] = True
-			self.ia_timing = data.get('Timing')
+				self.botPos = data.get('destY')
 			self.ia_sleeptime = data.get('SleepTime')
-			except Exception as e:
-				await self.send(json.dumps({'type': 'error'}))
+		except Exception as e:
+			await self.send(json.dumps({'type': 'error'}))

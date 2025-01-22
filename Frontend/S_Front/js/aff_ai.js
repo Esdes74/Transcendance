@@ -104,7 +104,7 @@ function affAI()
 					<div id="scorePlayer2" class="fs-2">0</div>
 				</div>
 				<div class="score-names d-flex justify-content-between align-items-end">
-					<div id="Player1" class="d-flex pb-0 mb-0 align-items-end" data-translate="true">Toi</div>
+					<div id="Player1" class="d-flex pb-0 mb-0 align-items-end" data-translate="true">Joueur</div>
 					<div id="Player2" class="d-flex pb-0 mb-0 align-items-end">Bot</div>
 				</div>	
 				<div class="canvas-container p-0">
