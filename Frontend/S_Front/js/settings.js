@@ -88,27 +88,32 @@ async function sendDatas(settings)
 	if (settings["language"] !== newLang)
 	{
 		if (await (changeFavLanguage(newLang)))
-		{
-			if (newLang === "fr")
-			{
-				flag = document.querySelector('img[data-language="french"]')
-				await updateLanguage(flag)
-			}
-			if (newLang === "an")
-			{
-				flag = document.querySelector('img[data-language="english"]')
-				await updateLanguage(flag)
-			}
-			if (newLang === "es")
-			{
-				flag = document.querySelector('img[data-language="spanish"]')
-				await updateLanguage(flag)
-			}
-		}
+			await getFlagAndUpdate(newLang)
 		settings["language"] = newLang
 	}
+	else
+		await getFlagAndUpdate(newLang)
 	await affValidationMessage()
 	buttonDisabled.disabled = false
+}
+
+async function getFlagAndUpdate(newLang)
+{
+	if (newLang === "fr")
+	{
+		flag = document.querySelector('img[data-language="french"]')
+		await updateLanguage(flag)
+	}
+	if (newLang === "an")
+	{
+		flag = document.querySelector('img[data-language="english"]')
+		await updateLanguage(flag)
+	}
+	if (newLang === "es")
+	{
+		flag = document.querySelector('img[data-language="spanish"]')
+		await updateLanguage(flag)
+	}
 }
 
 async function initSettings()
