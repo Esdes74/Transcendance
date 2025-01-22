@@ -17,12 +17,13 @@ class myConsumer(AsyncWebsocketConsumer):
 			data = json.loads(text_data)
 		except Exception as e:
 			pass
+		playerPos = data.get('player1Y')
 		botPos = data.get('player2Y')
 		ballPosX = data.get('ballX')
-		ballPos = data.get('ballY')
 		ballPosY = data.get('ballY')
 		ballSpeedX = data.get('ballSpeedX')
 		ballSpeedY = data.get('ballSpeedY')
+		acceleration = data.get('acceleration')
 		if (ballSpeedX < 0):
 			sleepTime = ballPosX / (-200 * ballSpeedX) + 0.1
 			if (sleepTime < 1):
@@ -94,5 +95,6 @@ class myConsumer(AsyncWebsocketConsumer):
 			return (1)
 		if (interY <= 0.05):
 			return (0)
-	def calculateNextInter(self):
-		
+
+#	def calculateNextInter(self):
+

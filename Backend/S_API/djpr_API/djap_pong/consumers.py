@@ -2,6 +2,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 import asyncio
 import websockets
+import time
 
 class PongConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
@@ -24,7 +25,7 @@ class PongConsumer(AsyncWebsocketConsumer):
 		self.websocket_lock = asyncio.Lock()
 		if (self.ai_enabled):
 			self.ia_sleeptime = 0
-			self.ia_timing = 1
+			self.ia_timing = 0
 			self.ask_ia_task = asyncio.create_task(self.ask_ia_movement())
 			self.websocket_lock_AI = asyncio.Lock()
 
@@ -90,17 +91,15 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 	async def ask_ia_movement(self):
 		try:
-			i = 0
 			while self.printball == False:
-				if (i >= self.ia_sleeptime):
-					await self.ia_ask_position("getDatas")
-					i = 0
-				else:
-					await self.ia_ask_position("noDatas")
-				await asyncio.sleep(0.01)
-				i += 0.01
+				await asyncio.sleep(self.ia_timing)
+				self.keys['ArrowDown'] = False
+				self.keys['ArrowUp'] = False
+				if (self.ia_sleeptime > self.ia_timing):
+					await asyncio.sleep(self.ia_sleeptime - self.ia_timing)
+				await self.ia_ask_position()
 		except Exception as e:
-			print(f"Exception in ask_ia_movement: {e}")
+			await self.send(json.dumps({'type': 'error'}))
 
 	async def send_to_pong_service(self, data):
 
@@ -136,26 +135,21 @@ class PongConsumer(AsyncWebsocketConsumer):
 		except Exception as e:
 			await self.send(json.dumps({'type': 'error'}))
 
-	async def ia_ask_position(self, text):
-		self.ia_timing -= 0.01
-		if (self.ia_timing <= 0):
-			self.keys['ArrowUp'] = False
-			self.keys['ArrowDown'] = False
-		if (text == "getDatas"):
-			try:
-				response = await self.send_to_pong_service(json.dumps({'type': 'getDatas'}))
-				response_ai = await self.send_to_ai_service(response)
-				data = json.loads(response_ai)	
-				if (data.get('Move') == "NoMove"):
-					self.keys['ArrowDown'] = False
-					self.keys['ArrowUp'] = False
-				elif (data.get('Move') == "ArrowUp"):
-					self.keys['ArrowDown'] = False
-					self.keys['ArrowUp'] = True
-				else:
-					self.keys['ArrowUp'] = False
-					self.keys['ArrowDown'] = True
-				self.ia_timing = data.get('Timing')
-				self.ia_sleeptime = data.get('SleepTime')
+	async def ia_ask_position(self):
+		try:
+			response = await self.send_to_pong_service(json.dumps({'type': 'getDatas'}))
+			response_ai = await self.send_to_ai_service(response)
+			data = json.loads(response_ai)	
+			if (data.get('Move') == "NoMove"):
+				self.keys['ArrowDown'] = False
+				self.keys['ArrowUp'] = False
+			elif (data.get('Move') == "ArrowUp"):
+				self.keys['ArrowDown'] = False
+				self.keys['ArrowUp'] = True
+			else:
+				self.keys['ArrowUp'] = False
+				self.keys['ArrowDown'] = True
+			self.ia_timing = data.get('Timing')
+			self.ia_sleeptime = data.get('SleepTime')
 			except Exception as e:
 				await self.send(json.dumps({'type': 'error'}))
