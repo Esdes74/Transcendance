@@ -20,7 +20,7 @@ function affBravoCallBack()
 					<canvas id="callbackCanvas" class="w-100" height="400"></canvas>
 					<div class="replayBlock">
 					<h2 class="fw-bold" data-translate="true">Erreur lors de la redirection</h2>
-					<button class="btn btn-outline-light m-2 fw-bold" data-translate="true"> Revenir à l'accueil</button>
+					<button class="btn btn-outline-light m-2 fw-bold" id="index" data-translate="true"> Revenir à l'accueil</button>
 					</div>
 				</div>
 			</div>
@@ -31,4 +31,5 @@ function affBravoCallBack()
 	addScript("/js/waitingPong.js", callbackBravo)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	tradNewPage()
+	getLinks()
 }
