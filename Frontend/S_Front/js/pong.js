@@ -214,30 +214,30 @@ function pong_gameOver(pong_gameSettings, socket)
 		winMessageElem.style.display = 'block'
 		winMsg.style.display = 'block';
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
-                replayBlockElem.style.display = 'block';	
+		replayBlockElem.style.display = 'block';	
 	}	
 	else if (!pong_gameSettings.istournament)
 	{
 		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
 		winMsg.style.display = 'block';
-
+		
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
 		replayBlockElem.style.display = 'block';
-
+		
 		// Afficher les boutons "Rejouer", "Paramètres", "Retour à l'accueil"
 		const buttons = replayBlockElem.getElementsByClassName("btn");
 		for (let i = 0; i < buttons.length; i++)
 		{
-
+			
 			buttons[i].style.display = 'inline-block';
 			buttons[i].addEventListener('click', async () => {
 				redirectTo(buttons[i].value, socket, pong_gameSettings);
 			});
 		}
-
+		
 		// Masquer le bouton "Suivant"
 		if (document.getElementById("nextButton"))
-			document.getElementById("nextButton").style.display = 'none';
+		document.getElementById("nextButton").style.display = 'none';
 	}
 	else if (pong_gameSettings.istournament)
 	{
@@ -261,6 +261,7 @@ function pong_gameOver(pong_gameSettings, socket)
 			redirectTo(nextBtn.value, socket, pong_gameSettings);
 		});
 	}
+	tradNewPage();
 }
 
 

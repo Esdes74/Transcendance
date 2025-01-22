@@ -24,6 +24,7 @@ async function affTournament()
 						</div>
 						<div class="inputs" id="inputs">
 						</div>
+						<div id=error></div>
 						<button id="btnValid" class="tournament-btn rounded mt-3" data-translate="true" >Valider</button>
 					</div>
 				</div>
@@ -63,7 +64,8 @@ async function affTournament_sendRequest(data, function_name)
 			body: JSON.stringify(data),
 			credentials: 'include'
 		});
-		
+		errorDiv = document.getElementById('error');
+		errorDiv.style.display = "none";
 		if (response.status >= 500 && response.status < 600)
 		{
 			updatePage("50X");
@@ -106,7 +108,12 @@ async function affTournament_sendRequest(data, function_name)
 	
 		else if (result.return && result.return === "error" || result.error)
 		{
-			alert(`Erreur : ${result.error} `);
+			errorDiv.style.display = "block";
+			errorDiv.style.backgroundColor = "lightcoral";
+			errorDiv.className = "rounded-pill p-2 fw-bold";
+			errorDiv.textContent = result.error;
+			errorDiv.setAttribute('data-translate', 'true');
+			tradDiv(errorDiv);
 		}
 
 		else if (result.return && result.return === "validTournament")
@@ -119,6 +126,7 @@ async function affTournament_sendRequest(data, function_name)
 	} catch (error) {
 		updatePage("50X");
 	}
+	tradNewPage()
 }
 
 
@@ -179,7 +187,7 @@ function affTournament_createEmptyField(index)
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
 	input.className = 'input-field rounded mx-2 ';  // Appliquer la classe CSS 'input-field'
-
+	input.type="text";
 	input.addEventListener('keydown', async function (event) {
 		if (event.key === 'Enter')
 		{

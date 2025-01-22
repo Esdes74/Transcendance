@@ -29,9 +29,9 @@ function affRegister()
               				<input type="password" class="form-control mb-2" id="confirmed-password" data-translate="placeholder" placeholder="Confirmez votre mot de passe" autocomplete="defaultpswd" required>
             				<label for="mail" class="mb-1 fw-bold">E-Mail</label>
           				<input type="email" class="form-control mb-2" id="mail" data-translate="placeholder" placeholder="Entrez votre e-mail" required>
-            				<button type="submit" class="btn btn-outline-light fw-bold mt-2" data-translate="true">S'inscrire</button>
+            				<button type="submit" class="btn btn-outline-light fw-bold mt-2 mb-2" data-translate="true">S'inscrire</button>
 				</form>
-				<p class="mt-2 mb-0"><span class="bg-danger text-white rounded fw-bold" id="error-message" data-translate="true"></span></p>
+				<p class="mt-2 mb-0" id="error-message" data-translate="true"></p>
  			</div>
 			</div>
 		</div>

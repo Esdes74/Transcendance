@@ -64,15 +64,15 @@ def createPlayer(request):
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
 		if len(name) == 0:
-			return JsonResponse({"error": "Le champs est vide !", "return": "error"}, status=400)
+			return JsonResponse({"error": "Le champs est vide", "return": "error"}, status=400)
 		if name in tournament.player_list:
-			return JsonResponse({"error": "Le nom \"" + name + "\" est déjà utilisé !", "return": "error"}, status=400)
+			return JsonResponse({"error": "Ce nom est déjà utilisé", "return": "error"}, status=400)
 		if len(name) < 2:
-			return JsonResponse({"error": "Le nom \"" + name + "\" est trop court !", "return": "error"}, status=400)
+			return JsonResponse({"error": "Ce nom est trop court", "return": "error"}, status=400)
 		if len(name) > 8:
-			return JsonResponse({"error": "Le nom \"" + name + "\" est trop long !", "return": "error"}, status=400)
+			return JsonResponse({"error": "Ce nom est trop long", "return": "error"}, status=400)
 		if not name.isalnum():
-			return JsonResponse({"error": "Le nom \"" + name + "\" ne doit pas contenir de caractères spéciaux !", "return": "error"}, status=400)
+			return JsonResponse({"error": "Ce nom ne doit pas contenir de caractères spéciaux", "return": "error"}, status=400)
 
 
 		tournament.player_registered = tournament.player_registered + 1
@@ -158,9 +158,9 @@ def validTournament(request):
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
 		if tournament.size == 0 or tournament.size == None:
-			return JsonResponse({"error": "Vous n'avez pas encore choisi la taille du tournoi !", "return": "error"}, status=400)
+			return JsonResponse({"error": "Vous n'avez pas encore choisi la taille du tournoi", "return": "error"}, status=400)
 		if tournament.player_registered != tournament.size:
-			return JsonResponse({"error": "Le nombre de joueur inscrit n'est pas égal au nombre de joueur attendu", "return": "error"}, status=400)
+			return JsonResponse({"error": "Valider tous les joueurs", "return": "error"}, status=400)
 
 		return JsonResponse({"player_list": tournament.player_list, "return": "validTournament"}, status=200)
 
