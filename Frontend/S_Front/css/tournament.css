@@ -12,6 +12,10 @@
 	color: white;
 }
 
+.input-field[type="text"]{
+	color: white;
+}
+
 .tournament-btn {
 	background: linear-gradient(120deg, rgba(153, 208, 238, 0), rgb(153, 208, 238));
     color: white;

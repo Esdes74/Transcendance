@@ -179,7 +179,7 @@ function affTournament_createEmptyField(index)
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
 	input.className = 'input-field rounded mx-2 ';  // Appliquer la classe CSS 'input-field'
-
+	input.type="text";
 	input.addEventListener('keydown', async function (event) {
 		if (event.key === 'Enter')
 		{
