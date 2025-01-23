@@ -28,5 +28,4 @@ function affDuplicate()
 	addScript("/js/duplicatePong.js", callbackDuplicate)
 	tradNewPage()
 	getLinks()
-	console.log("prout")
 }

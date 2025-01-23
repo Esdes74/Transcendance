@@ -9,7 +9,6 @@ function callbackTournament()
 async function affTournament()
 {
 	let docMain = document.querySelector('main')
-	console.log(docMain);
 	docMain.innerHTML = `
 	<div class="container text-center my-5">
 		<div class="row justify-content-center">
@@ -72,7 +71,6 @@ async function affTournament_sendRequest(data, function_name)
 			return;
 		}
 		const result = await response.json();
-		console.log('Réponse de l\'API :', result);
 		
 		if (result.detail === 'Unauthorized')
 		{
@@ -82,26 +80,21 @@ async function affTournament_sendRequest(data, function_name)
 
 		if (result.return && result.return === "initDB")
 		{
-			console.log("initDB recu uuid")
 			uuid = result.uuid
 		}
 
 		else if (result.return && result.return === "selectTournament")
 		{
-			console.log("select recu")
 			affTournament_drawTournament(result.size, result.old_size);
 		}
 	
 		else if (result.return && result.return === "createPlayer")
 		{
-			console.log("enter recu")
-			console.log("result.index = ", result.index);
 			affTournament_createPlayerContainer(result.index);
 		}
 	
 		else if (result.return && result.return === "deletePlayer")
 		{
-			console.log("delete recu")
 			let playerContainer = document.getElementById(result.index);
 			affTournament_deletePlayerContainer(playerContainer);
 		}
@@ -132,9 +125,7 @@ async function affTournament_sendRequest(data, function_name)
 
 function affTournament_drawTournament(size, old_size)
 {
-	console.log("drawTournament");
 	let inputsContainer = document.getElementById('inputs');
-	console.log("inputsContainer = ", inputsContainer);
 	if (old_size < size)
 	{
 		let n = 0;
@@ -156,15 +147,11 @@ function affTournament_drawTournament(size, old_size)
 	else if (old_size > size)
 	{
 		const existingFields = Array.from(inputsContainer.children);
-		console.log("existingFields = ", existingFields);
 		let fieldsToRemove = old_size - size;
-		console.log("fieldsToRemove = ", fieldsToRemove);
 		for (let i = existingFields.length - 1; i >= 0 && fieldsToRemove > 0; i--) {
 			const field = existingFields[i];
 			const input = field.querySelector('input');
-			console.log("LE INPUTinput = ", input);
-			if (input) {		//&& !input.value.trim()
-				console.log("field = ", field);
+			if (input) {
 				field.remove();
 				fieldsToRemove--;
 			}
@@ -175,7 +162,6 @@ function affTournament_drawTournament(size, old_size)
 function affTournament_createEmptyField(index)
 {
 	const div = document.createElement('div');
-	console.log("index = ", index);
 	const input = document.createElement('input');
 	input.type = 'text';
 	input.minLength = 2;
@@ -209,7 +195,6 @@ function affTournament_createEmptyField(index)
 	div.appendChild(valid);
 	div.id = index;
 	tradDiv(div);
-	console.log("div = ", div);
 	return div;
 }
 
@@ -252,7 +237,6 @@ function affTournament_createPlayerContainer(index)
 function affTournament_deletePlayerContainer(playerContainer)
 {
 	const newInput = affTournament_createEmptyField(playerContainer.id);
-	console.log("Voici l'actuel playerContainer : ", playerContainer);
 
 	if (playerContainer.parentNode)
 	{

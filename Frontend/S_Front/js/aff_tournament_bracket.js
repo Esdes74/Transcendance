@@ -58,7 +58,6 @@ async function affTournamentBracket_start(player_list, uuid)
 		roundDiv.textContent = roundDiv.textContent + ` ${curr_round}`;
 		if (result.return && result.return === "endTournament") {
 			addScript('/js/aff_tournament_leaderboard.js', () => {callbackTournamentBraquet(result)});
-			console.log("endTournament");
 			return;
 		}
 	}
