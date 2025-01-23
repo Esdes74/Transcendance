@@ -121,8 +121,8 @@ async function affTournamentBracket_sendRequest(data, function_name)
 function getHTML()
 {
 	return (`
-	<h1 class="display-1 text-center" data-translate="true">Déroulement des matchs</h1>
-	<h1 class="display-1 text-center" data-translate="true" id="round">Tour</h1>
+	<h1 class="my-5 display-4 fw-bold text-center" data-translate="true">Déroulement des matchs</h1>
+	<h1 class="fw-bold text-center" data-translate="true" id="round">Tour</h1>
 
 	<div class="container text-center" id="algo" data-translate="true" >
 	</div>
