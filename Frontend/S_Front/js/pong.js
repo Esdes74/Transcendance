@@ -94,7 +94,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 	/// Gestion de l'ouverture de la connexion WebSocket \\\
 
 	socket.onopen = async function (e) {
-		console.log("WebSocket is connected ouais");
+		console.log("WebSocket is connected");
 		// startCountdown(3, pong_gameSettings);
 		pong_gameLoop(pong_gameSettings, socket);
 	};
@@ -117,8 +117,6 @@ function pong_initSocket(socket, pong_gameSettings) {
 			pong_gameSettings.scorePlayer2Elem.textContent = pong_gameSettings.scorePlayer2;
 			pong_gameSettings.printBall = data.action;
 			if (pong_gameSettings.printBall == false) {
-				console.log('scorePlayer1:', pong_gameSettings.scorePlayer1);
-				console.log('scorePlayer2:', pong_gameSettings.scorePlayer2);
 				if ((pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5))
 					pong_gameOver(pong_gameSettings, socket);
 			}
@@ -167,7 +165,6 @@ function pong_keyPressed(e, socket, message, canvasID) {
 }
 
 function pong_EventManager(socket, canvasID) {
-	console.log('pong_EventManager initialized');
 
 	document.addEventListener('keydown', e => pong_keyPressed(e, socket, 'key.pressed', canvasID));
 	document.addEventListener('keyup', e => pong_keyPressed(e, socket, 'key.released', canvasID));
@@ -187,12 +184,10 @@ function pong_EventManager(socket, canvasID) {
 function pong_handleViewChange(socket) {
 	currentPath = window.location.pathname;
 
-	//console.log(currentPath);
 	if (currentPath !== '/pong') {
 		window.removeEventListener('resize', pong_resizeCanvas);
 		window.removeEventListener('pageChanged', pong_handleViewChange);
 		window.removeEventListener('popstate', pong_handleViewChange);
-		console.log("socket closed")
 		socket.close();
 		socket = null;
 	}
@@ -242,21 +237,17 @@ function pong_gameOver(pong_gameSettings, socket)
 	}
 	else if (pong_gameSettings.istournament)
 	{
-		console.log('TOURNOI car ', pong_gameSettings.istournament);
-		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+		winMessageElem.style.display = 'block';
 
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
 		replayBlockElem.style.display = 'block';
 
-		// Masquer les boutons "Rejouer", "Paramètres", "Retour à l'accueil"
 		const buttons = replayBlockElem.getElementsByClassName("btn");
 		for (let i = 0; i < buttons.length; i++) {
 			if (buttons[i].id !== "nextButton") {
 				buttons[i].style.display = 'none';
 			}
 		}
-		console.log('bouton next. socket.readyState = ', socket.readyState);
-		console.log('bouton next. WebSocket.OPEN = ', WebSocket.OPEN);
 		nextBtn = document.getElementById('nextButton');
 		nextBtn.addEventListener('click', async () => {
 			redirectTo(nextBtn.value, socket, pong_gameSettings);
@@ -298,9 +289,6 @@ async function redirectTo(path, socket, pong_gameSettings)
 
 function pong_draw(pong_gameSettings) {
 	let ctx = pong_gameSettings.canvas.getContext('2d');
-	// console.log('gamesettings width =', pong_gameSettings.canvas.width);
-	// console.log('gamesettings CLIENT =', pong_gameSettings.canvas.clientWidth);
-	// let ctx = document.getElementById(pong_gameSettings.canvas.id).getContext('2d');
 	ctx.clearRect(0, 0, pong_gameSettings.canvas.width, pong_gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
 
