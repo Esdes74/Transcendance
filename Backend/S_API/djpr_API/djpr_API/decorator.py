@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 17:01:00 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/22 17:58:58 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/23 17:44:28 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -160,6 +160,7 @@ def auth_required(view_func):
 			user_id = int(user_id)
 
 			# Charger l'utilisateur associé au token
+			# TODO: changer la facon de faire pour avoir plus la main dessus
 			user = get_object_or_404(UserProfile, user_id=user_id)
 
 			request.username = username

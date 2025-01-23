@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/23 17:02:58 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/23 17:57:31 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -446,22 +446,25 @@ def get_me(request):
 
 @api_view(['GET'])
 def is_logged(request):
+	print("avant get_cookie")
 	token = request.COOKIES.get('jwt_token')
+	print("apres get_cookie")
 	# Forcage de la generation du token csrf
 	csrf_token = get_token(request)
-	# , 'csrfToken': csrf_token
 
 	if not token:
 		return JsonResponse({"detail": "Not connected"}, status=201)
 
 	try:
 		# Décodage du token
+		print("avant decoded")
 		decoded_token = jwt.decode(
 			token,
 			os.getenv('SECRET_KEY'),
 			algorithms=[os.getenv('ALGO')],
 			options={"verify_signature": True}
 		)
+		print("apres decoded")
 
 		# Récupération des éléments à vérifier pour la validité du token
 		grade = decoded_token.get('grade')
@@ -470,17 +473,22 @@ def is_logged(request):
 			return JsonResponse({"detail": "Unauthorized token"}, status=401)
 
 		# Récupération du user_id pour l'identification
+		print("avant get")
 		user_id = decoded_token.get('user_id')
+		print("apres get")
 		user_id = int(user_id)
 
 		# Charger l'utilisateur associé au token
+		print("avant get_or_404")
 		user = get_object_or_404(UserProfile, user_id=user_id)
-		# , 'csrfToken': csrf_token
+		print("apres get_or_404")
 
 		return JsonResponse({"detail": "Connected"}, status=201)
 
 	except InvalidTokenError:
-		return JsonResponse({"detail": "Invalid token"}, status=401)
+		json_response = JsonResponse({"detail": "Unauthorized token"}, status=401)
+		json_response = logout(request, json_response)
+		return json_response
 	except DecodeError:
 		return JsonResponse({"detail": "Token error"}, status=401)
 
