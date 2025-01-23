@@ -201,6 +201,7 @@ function pong_handleViewChange(socket) {
 
 function pong_gameOver(pong_gameSettings, socket)
 {
+	socket.close();
 	const winMessageElem = document.getElementById('winMessage');
 	const winMsg = document.getElementById('WinMsg');
 	if (pong_gameSettings.scorePlayer1 > pong_gameSettings.scorePlayer2) {

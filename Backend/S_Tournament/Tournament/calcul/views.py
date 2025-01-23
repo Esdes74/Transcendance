@@ -19,7 +19,7 @@ def selectTournament(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		if not btn or not username or not uuid:
+		if btn is None or username is None or uuid is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		# Get or create a tournament instance
@@ -64,8 +64,8 @@ def createPlayer(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		if not name or not index or not username or not uuid:
-			return JsonResponse({"error": "Missing or undefined values"}, status=400)
+		if name is None or index is None or username is None or uuid is None:
+			return JsonResponse({"error": "Missing or undefined valuessss"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
@@ -107,11 +107,10 @@ def deletePlayer(request):
 
 		name = data.get('name')
 		index = data.get('index')
-		nameContainer = data.get('nameContainer')
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		if not name or not index or not nameContainer or not username or not uuid:
+		if name is None or index is None or username is None or uuid is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
@@ -141,7 +140,7 @@ def initDB(request):
 		uuid = str(uuid4())
 		username = data.get('username')
 
-		if not username:
+		if username is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
@@ -167,7 +166,7 @@ def validTournament(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		if not username or not uuid:
+		if username is None or uuid is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
@@ -200,7 +199,7 @@ def startGame(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		if not player1 or not player2 or not username or not uuid:
+		if player1 is None or player2 is None or username is None or uuid is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		try:
@@ -232,7 +231,7 @@ def startTournament(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		if not player_list or not username or not uuid:
+		if player_list is None or username is None or uuid is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		shuffle_list(player_list)
@@ -275,7 +274,7 @@ def endGame(request):
 		uuid = data.get('uuid')
 		winner = data.get('winner')
 
-		if not username or not uuid or not winner:
+		if username is None or uuid is None or winner is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
@@ -310,7 +309,7 @@ def continueTournament(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		if not username or not uuid:
+		if username is None or uuid is None:
 			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
