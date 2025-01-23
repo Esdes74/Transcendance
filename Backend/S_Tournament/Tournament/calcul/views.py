@@ -79,7 +79,8 @@ def createPlayer(request):
 			return JsonResponse({"error": "Ce nom est trop long", "return": "error"}, status=400)
 		if not name.isalnum():
 			return JsonResponse({"error": "Ce nom ne doit pas contenir de caractères spéciaux", "return": "error"}, status=400)
-
+		if tournament.player_registered == tournament.size:
+			return JsonResponse({"error": "Vous avez déjà trop de joueurs inscrits", "return": "error"}, status=400)
 
 		tournament.player_registered = tournament.player_registered + 1
 		tournament.old_size = tournament.old_size - tournament.player_registered
@@ -118,6 +119,8 @@ def deletePlayer(request):
 		tournament.player_list.remove(name)
 
 		player, created = Player.objects.get_or_create(name=name, from_Tournament=username, from_uuid=uuid)		# player = Player.objects.get(name=name)
+		if player not in tournament.players.all():
+			return JsonResponse({"error": "Player is not in the tournament"}, status=400)
 		tournament.players.remove(player)
 
 		player.delete()
