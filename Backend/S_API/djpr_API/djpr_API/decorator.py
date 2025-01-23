@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    decorator.py                                       :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 17:01:00 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/13 11:24:12 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/22 17:58:58 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -180,6 +180,7 @@ def auth_required(view_func):
 def no_token_requiered(view_func):
 	@wraps(view_func)
 	def _wrapped_no_token(request, *args, **kwargs):
+		print("hello")
 		# Récupération du cookie contenant le token JWT
 		token_jwt = request.COOKIES.get('jwt_token')
 		token_ft = request.COOKIES.get('42_token')
@@ -188,6 +189,7 @@ def no_token_requiered(view_func):
 			# request.user = AnonymousUser()
 			return JsonResponse({"detail": "Unauthorized"}, status=401)
 
+		print("appeler la vue d'origine")
 		# Appeler la vue d'origine
 		return view_func(request, *args, **kwargs)
 

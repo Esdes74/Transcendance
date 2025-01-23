@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/19 22:33:06 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/23 16:51:59 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ def login(request):
 	if (request.method == 'POST') : # TODO: paser en GET
 		username = request.POST.get('username')
 		password = request.POST.get('password')
+		print("bonjour")
 
 		# Regarde si les identifiants sont donnés/recus
 		if not username or not password :

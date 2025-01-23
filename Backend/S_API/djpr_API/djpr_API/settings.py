@@ -61,13 +61,26 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-API', FRONT_IP, SERVER_IP, SE
 # # Autoriser l'envoi de cookies avec les requêtes CORS
 # CORS_ALLOW_CREDENTIALS = True
 
+# Configuration cors pour l'envoie correct du token csrf
+CORS_ALLOWED_ORIGINS = [
+    "https://localhost:3000",
+	"https://" + FRONT_IP + ":3000",
+	"https://" + SERVER_IP + ":3000",
+	"https://" + SERVER_IP_LYON + ":3000",
+]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = list(default_headers) + ['X-CSRFToken']
+
 # Autorisation CSRF
 CSRF_TRUSTED_ORIGINS = [
 	"https://localhost:3000",
+	"https://" + FRONT_IP + ":3000",
+	"https://" + SERVER_IP + ":3000",
+	"https://" + SERVER_IP_LYON + ":3000",
 ]
-	# NGINX_URL,
 
-CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False
 
 # Application definition
 
@@ -124,6 +137,12 @@ CHANNEL_LAYERS = {
 
 WSGI_APPLICATION = 'djpr_API.wsgi.application'
 ASGI_APPLICATION = 'djpr_API.asgi.application'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

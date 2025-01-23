@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    views.py                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/16 20:32:51 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/23 17:02:58 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,13 +27,34 @@ from django.shortcuts import get_object_or_404
 from djap_register.models import FtTokenModel
 from jwt.exceptions import InvalidTokenError, DecodeError
 from djap_register.models import UserProfile
+from base64 import b64decode
+from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
 
 # TODO: Passer en GET
 @no_token_requiered
-@api_view(['POST'])
+# @api_view(['POST'])
 def login_view(request):
-	username = request.data.get('username')
-	password = request.data.get('password')
+	# Récupérer l'en-tête Authorization
+	authorization_header = request.headers.get('Authorization')
+
+	if not authorization_header:
+		return Response({"error": "Missing Authorization header"}, status=401)
+
+	# Vérifier que l'en-tête commence par 'Basic'
+	if not authorization_header.startswith('Basic '):
+		return Response({"error": "Invalid Authorization scheme. Basic is required."}, status=401)
+
+	# Récupérer les credentials encodés en Base64
+	encoded_credentials = authorization_header.split(' ')[1]
+
+	try:
+		# Décoder les credentials
+		decoded_credentials = b64decode(encoded_credentials).decode('utf-8')
+		# Séparer username et password
+		username, password = decoded_credentials.split(':', 1)
+	except (ValueError, UnicodeDecodeError):
+		return Response({"error": "Invalid credentials format"}, status=400)
 
 	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
@@ -71,9 +92,10 @@ def login_view(request):
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
 			res = "Login failed\n" + response.text
-			return Response({"error": res}, status=response.status_code)
+			return JsonResponse({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
+		print("avant return error")
 		return Response({"error": str(e)}, status=500)		#todo changer en 503 pour service unavailable ?
 
 @no_token_requiered
@@ -425,6 +447,9 @@ def get_me(request):
 @api_view(['GET'])
 def is_logged(request):
 	token = request.COOKIES.get('jwt_token')
+	# Forcage de la generation du token csrf
+	csrf_token = get_token(request)
+	# , 'csrfToken': csrf_token
 
 	if not token:
 		return JsonResponse({"detail": "Not connected"}, status=201)
@@ -450,6 +475,7 @@ def is_logged(request):
 
 		# Charger l'utilisateur associé au token
 		user = get_object_or_404(UserProfile, user_id=user_id)
+		# , 'csrfToken': csrf_token
 
 		return JsonResponse({"detail": "Connected"}, status=201)
 

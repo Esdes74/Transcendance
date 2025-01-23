@@ -1,10 +1,16 @@
+function getCookie(name) {
+	const value = `; ${document.cookie}`;
+	const parts = value.split(`; ${name}=`);
+	if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 function loadLogin()
 {
 	const form = document.getElementById('loginForm');
 	form.addEventListener('submit', async (event) => {
 		Array.from(form.elements).forEach(element => {
 			element.disabled = true;
-                })
+		})
 		event.preventDefault();
 		const username = document.getElementById('username').value;
 		const password = document.getElementById('password').value;
@@ -12,14 +18,24 @@ function loadLogin()
 			username: username,
 			password: password
 		};
+		
+		// Crée le header Authorization avec Basic Auth
+		const credentials = btoa(`${username}:${password}`);
+		// const headers = {
+			// 	// 'Content-Type': 'application/json',
+			// };
+		const csrfToken = getCookie('csrftoken');
+			
 		try {
 			const response = await fetch('/api/auth/login/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Basic ${credentials}`,
+					'X-CSRFToken': csrfToken,
 				},
-				body: JSON.stringify(data),
-				credentials: 'include'
+				credentials: 'include',
+				body: JSON.stringify({rien:''}),
 			});
 			if (response.ok) {
 				const result = await response.json();
