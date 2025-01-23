@@ -19,6 +19,9 @@ def selectTournament(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
+		if not btn or not username or not uuid:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
+
 		# Get or create a tournament instance
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
@@ -60,6 +63,9 @@ def createPlayer(request):
 		index = data.get('index')
 		username = data.get('username')
 		uuid = data.get('uuid')
+
+		if not name or not index or not username or not uuid:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
@@ -105,6 +111,9 @@ def deletePlayer(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
+		if not name or not index or not nameContainer or not username or not uuid:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
+
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 		tournament.player_registered -= 1
 		tournament.player_list.remove(name)
@@ -132,6 +141,9 @@ def initDB(request):
 		uuid = str(uuid4())
 		username = data.get('username')
 
+		if not username:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
+
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
 		player = Player.objects.filter(from_Tournament=username, from_uuid=uuid)
@@ -154,6 +166,9 @@ def validTournament(request):
 		
 		username = data.get('username')
 		uuid = data.get('uuid')
+
+		if not username or not uuid:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 
@@ -185,6 +200,9 @@ def startGame(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
+		if not player1 or not player2 or not username or not uuid:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
+
 		try:
 			P1 = Player.objects.get(name=player1, from_Tournament=username, from_uuid=uuid)
 			P2 = Player.objects.get(name=player2, from_Tournament=username, from_uuid=uuid)
@@ -213,6 +231,9 @@ def startTournament(request):
 		player_list = data.get('player_list')
 		username = data.get('username')
 		uuid = data.get('uuid')
+
+		if not player_list or not username or not uuid:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		shuffle_list(player_list)
 		pairs = split_into_pairs(player_list, username, uuid)
@@ -252,6 +273,10 @@ def endGame(request):
 
 		username = data.get('username')
 		uuid = data.get('uuid')
+		winner = data.get('winner')
+
+		if not username or not uuid or not winner:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 		try:
@@ -259,9 +284,9 @@ def endGame(request):
 			player2 = Player.objects.get(name=data.get('player2'), from_Tournament=username, from_uuid=uuid)
 		except Player.DoesNotExist:
 			return JsonResponse({"error": "Player does not exist"}, status=400)		# a voir si bonne facon d'empecher le front fournir des noms de joueurs qui n'existent pas
-		if data.get('winner') == player1.name:
+		if winner == player1.name:
 			player1.score = player1.score + 2 ** tournament.rounds_left
-		elif data.get('winner') == player2.name:
+		elif winner == player2.name:
 			player2.score = player2.score + 2 ** tournament.rounds_left
 		
 		player1.match_played += 1
@@ -284,6 +309,9 @@ def continueTournament(request):
 
 		username = data.get('username')
 		uuid = data.get('uuid')
+
+		if not username or not uuid:
+			return JsonResponse({"error": "Missing or undefined values"}, status=400)
 
 		tournament, created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 		if tournament.pairs.count() == 0:

@@ -15,10 +15,19 @@ import json
 def selectTournament(request):
 	print("Here we are in selectTournament")
 
-	data = json.loads(request.body)
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
+	except TypeError:
+		return JsonResponse({"error": "Invalid request body type"}, status=400)
+	except Exception as e:
+		return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 	username = getattr(request, 'username', None)
+	if username is None:
+		return JsonResponse({"error": "Invalid username"}, status=400)
 	data['username'] = username
-	print("SELECT TOURNAMENT USERNAME : ", username)
 
 	if request.method == 'POST':
 
@@ -41,10 +50,19 @@ def selectTournament(request):
 def createPlayer(request):
 	print("Here we are in createPlayer")
 
-	data = json.loads(request.body)
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
+	except TypeError:
+		return JsonResponse({"error": "Invalid request body type"}, status=400)
+	except Exception as e:
+		return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 	username = getattr(request, 'username', None)
+	if username is None:
+		return JsonResponse({"error": "Invalid username"}, status=400)
 	data['username'] = username
-	print("SELECT TOURNAMENT USERNAME : ", data['username'])
 
 	if request.method == 'POST':
 
@@ -65,10 +83,19 @@ def createPlayer(request):
 def deletePlayer(request):
 	print("Here we are in deletePlayer")
 
-	data = json.loads(request.body)
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
+	except TypeError:
+		return JsonResponse({"error": "Invalid request body type"}, status=400)
+	except Exception as e:
+		return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 	username = getattr(request, 'username', None)
+	if username is None:
+		return JsonResponse({"error": "Invalid username"}, status=400)
 	data['username'] = username
-	print("DELETE PLAYER data : ", data)
 
 	if request.method == 'POST':
 
@@ -87,10 +114,19 @@ def deletePlayer(request):
 def initDB(request):
 	print("Here we are in initDB")
 
-	data = json.loads(request.body)
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
+	except TypeError:
+		return JsonResponse({"error": "Invalid request body type"}, status=400)
+	except Exception as e:
+		return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 	username = getattr(request, 'username', None)
+	if username is None:
+		return JsonResponse({"error": "Invalid username"}, status=400)
 	data['username'] = username
-	print("SELECT TOURNAMENT USERNAME : ", username)
 
 	if request.method == 'POST':
 
@@ -109,10 +145,19 @@ def initDB(request):
 def validTournament(request):
 	print("Here we are in initDB")
 
-	data = json.loads(request.body)
+	try:
+		data = json.loads(request.body)
+	except json.JSONDecodeError:
+		return JsonResponse({"error": "Invalid JSON"}, status=400)
+	except TypeError:
+		return JsonResponse({"error": "Invalid request body type"}, status=400)
+	except Exception as e:
+		return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 	username = getattr(request, 'username', None)
+	if username is None:
+		return JsonResponse({"error": "Invalid username"}, status=400)
 	data['username'] = username
-	print("VALID TOURNAMENT data : ", data)
 
 	if request.method == 'POST':
 
@@ -138,8 +183,18 @@ def startTournament(request):
 
 	if request.method == 'POST':
 
-		data = json.loads(request.body)
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+		except TypeError:
+			return JsonResponse({"error": "Invalid request body type"}, status=400)
+		except Exception as e:
+			return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 		username = getattr(request, 'username', None)
+		if username is None:
+			return JsonResponse({"error": "Invalid username"}, status=400)
 		data['username'] = username
 
 		try:
@@ -159,8 +214,18 @@ def startGame(request):
 
 	if request.method == 'POST':
 
-		data = json.loads(request.body)
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+		except TypeError:
+			return JsonResponse({"error": "Invalid request body type"}, status=400)
+		except Exception as e:
+			return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 		username = getattr(request, 'username', None)
+		if username is None:
+			return JsonResponse({"error": "Invalid username"}, status=400)
 		data['username'] = username
 
 		try:
@@ -180,8 +245,18 @@ def endGame(request):
 
 	if request.method == 'POST':
 
-		data = json.loads(request.body)
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+		except TypeError:
+			return JsonResponse({"error": "Invalid request body type"}, status=400)
+		except Exception as e:
+			return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+		
 		username = getattr(request, 'username', None)
+		if username is None:
+			return JsonResponse({"error": "Invalid username"}, status=400)
 		data['username'] = username
 
 		try:
@@ -201,8 +276,18 @@ def continueTournament(request):
 
 	if request.method == 'POST':
 
-		data = json.loads(request.body)
+		try:
+			data = json.loads(request.body)
+		except json.JSONDecodeError:
+			return JsonResponse({"error": "Invalid JSON"}, status=400)
+		except TypeError:
+			return JsonResponse({"error": "Invalid request body type"}, status=400)
+		except Exception as e:
+			return JsonResponse({"error": f"An unexpected error occurred: {str(e)}"}, status=500)
+
 		username = getattr(request, 'username', None)
+		if username is None:
+			return JsonResponse({"error": "Invalid username"}, status=400)
 		data['username'] = username
 
 		try:
