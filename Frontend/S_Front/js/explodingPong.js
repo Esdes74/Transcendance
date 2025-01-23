@@ -80,14 +80,14 @@ function explodingLoop(gameSettings) {
 		{
 			startPosX = ball.PosX > 1 ? 0.99 : 0.01
 			ball.SpeedX *= -1
-			if (gameSettings.balls.length < 10042)
+			if (gameSettings.balls.length < 5042)
 				gameSettings.balls.push(new Ball(startPosX, ball.PosY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
 		}
 		if (ball.PosY > 1 || ball.PosY < 0)
 		{
 			startPosY = ball.PosY > 1 ? 0.99 : 0.01
 			ball.SpeedY *= -1
-			if (gameSettings.balls.length < 10042)
+			if (gameSettings.balls.length < 5042)
 				gameSettings.balls.push(new Ball(ball.PosX, startPosY, ball.SpeedX * (0.5 + randomX), ball.SpeedY * (0.5 + randomY)))
 		}
 	})
