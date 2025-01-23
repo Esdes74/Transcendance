@@ -1,7 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 import random
-import logging
 
 class myConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
@@ -20,17 +19,14 @@ class myConsumer(AsyncWebsocketConsumer):
 		ArrowDown = False
 		ArrowUp = False
 		data = {}
-		try:
-			data = json.loads(text_data)
-		except Exception as e:
-			pass
-		self.playerPos = data.get('player1Y')
-		self.botPos = data.get('player2Y')
-		self.ballPosX = data.get('ballX')
-		self.ballPosY = data.get('ballY')
-		self.ballSpeedX = data.get('ballSpeedX')
-		self.ballSpeedY = data.get('ballSpeedY')
-		self.acceleration = data.get('acceleration')
+		data = json.loads(text_data)
+		self.playerPos = data.get('player1Y', 0.5)
+		self.botPos = data.get('player2Y', 0.5)
+		self.ballPosX = data.get('ballX', 0.5)
+		self.ballPosY = data.get('ballY', 0.5)
+		self.ballSpeedX = data.get('ballSpeedX', 0.5)
+		self.ballSpeedY = data.get('ballSpeedY', 0.5)
+		self.acceleration = data.get('acceleration', 1.1)
 		ballPos = self.calculatePaddlePos(self.ballPosX, self.ballPosY, self.ballSpeedX, self.ballSpeedY)
 		ballPos = self.getBestMove(ballPos)
 		if (self.ballSpeedX < 0):
@@ -48,7 +44,6 @@ class myConsumer(AsyncWebsocketConsumer):
 			await self.send(text_data=json.dumps({'Move': 'ArrowUp', 'destY': ballPos, 'SleepTime': sleepTime}))
 		else:
 			await self.send(text_data=json.dumps({'Move': 'ArrowDown', 'destY': ballPos, 'SleepTime': sleepTime}))
-
 
 	def calculatePaddlePos(self, ballX, ballY, ballSpeedX, ballSpeedY):
 		inter = self.interTop(ballX, ballY, ballSpeedX, ballSpeedY)

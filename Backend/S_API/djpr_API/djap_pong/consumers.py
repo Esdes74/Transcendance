@@ -2,7 +2,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 import asyncio
 import websockets
-import time
 
 class PongConsumer(AsyncWebsocketConsumer):
 	async def connect(self):

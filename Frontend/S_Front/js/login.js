@@ -29,6 +29,8 @@ function loadLogin()
 					updatePage("");
 			} else if (response.status >= 500 && response.status < 600)
 				updatePage("50X")
+			else if (response.status == 403)
+				await affLoginMessage("Connection Refusée")
 			else
 			{
 				const error = await response.json();

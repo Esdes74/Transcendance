@@ -131,7 +131,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 			if (pong_gameSettings.countdownValue <= 0)
 				pong_gameSettings.countdownActive = false;
 		}
-		else if (data.type==='error')
+		else if (data.type === 'error')
 		{
 			socket.close();
 			updatePage("50X");

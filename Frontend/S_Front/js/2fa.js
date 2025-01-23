@@ -23,6 +23,8 @@ function load2faLogin()
 				updatePage("")
 			else if (response.status >= 500 && response.status < 600)
 				updatePage("50X")
+			else if (response.status == 403)
+				await affMessage("Connection Refusée", true)
 			else {
 				await affMessage("Code Invalide !", true)
 			}
@@ -44,6 +46,8 @@ function load2faLogin()
 		});
 		if (response.status >= 500 && response.status < 600)
 			updatePage("50X")
+		else if (response.status == 403)
+			await affMessage("Connection Refusée", true)
 		else if (!response.ok)
 		{
 			await affMessage("Erreur", true)
