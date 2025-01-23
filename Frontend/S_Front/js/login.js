@@ -49,8 +49,8 @@ function loadLogin()
 				await affLoginMessage("Connection Refusée")
 			else
 			{
-				const error = await response.json();
-				if (error["detail"] === "Unauthorized")
+				const result = await response.json();
+				if (result["error"] === "Unauthorized")
 				{
 					history.replaceState({pageID: 'duplicate'}, '', "/duplicate")
 					changeHeader()

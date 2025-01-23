@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/30 17:01:00 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/23 17:44:28 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/23 18:39:26 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,8 @@ from django.shortcuts import get_object_or_404
 from djap_register.models import UserProfile
 from jwt.exceptions import InvalidTokenError, DecodeError
 from djap_register.models import FtTokenModel
+from djap_register.logout import logout
+from django.http import Http404
 
 def jwt_required_2fa(view_func):
 	@wraps(view_func)
@@ -33,7 +35,7 @@ def jwt_required_2fa(view_func):
 		token = request.COOKIES.get('tfa_jwt_token')
 
 		if not token:
-			return JsonResponse({"detail": "Unauthorized"}, status=401)
+			return JsonResponse({"error": "Unauthorized"}, status=401)
 
 		try:
 			# Décodage du token
@@ -50,7 +52,7 @@ def jwt_required_2fa(view_func):
 			user_id = decoded_token.get('user_id')
 
 			if not grade or grade != '2fa' or not username or not user_id:
-				return JsonResponse({"detail": "Unauthorized token"}, status=401)
+				return JsonResponse({"error": "Unauthorized token"}, status=401)
 
 			# Charger l'utilisateur associé au token
 			user = get_object_or_404(UserProfile, user_id=int(user_id))
@@ -60,7 +62,7 @@ def jwt_required_2fa(view_func):
 			request.username = username
 
 		except (InvalidTokenError, DecodeError):
-			return JsonResponse({"detail": "Invalid or corrupted token"}, status=401)
+			return JsonResponse({"error": "Invalid or corrupted token"}, status=401)
 
 		# Appeler la vue d'origine
 		return view_func(request, *args, **kwargs)
@@ -75,7 +77,7 @@ def jwt_required_2fa(view_func):
 
 # 		if not token:
 # 			request.user = AnonymousUser()
-# 			return JsonResponse({"detail": "Unauthorized"}, status=401)
+# 			return JsonResponse({"error": "Unauthorized"}, status=401)
 
 # 		try:
 # 			# Décodage du token
@@ -90,7 +92,7 @@ def jwt_required_2fa(view_func):
 # 			grade = decoded_token.get('grade')
 # 			username = decoded_token.get('username')
 # 			if (grade != '2fa' or not grade or not username):
-# 				return JsonResponse({"detail": "Unauthorized token"}, status=401)
+# 				return JsonResponse({"error": "Unauthorized token"}, status=401)
 
 # 			request.username = username
 
@@ -105,9 +107,9 @@ def jwt_required_2fa(view_func):
 # 			request.user = user
 
 # 		except InvalidTokenError:
-# 			return JsonResponse({"detail": "Invalid token"}, status=401)
+# 			return JsonResponse({"error": "Invalid token"}, status=401)
 # 		except DecodeError:
-# 			return JsonResponse({"detail": "Token error"}, status=401)
+# 			return JsonResponse({"error": "Token error"}, status=401)
 
 # 		# Appeler la vue d'origine
 # 		return view_func(request, *args, **kwargs)
@@ -128,7 +130,7 @@ def auth_required(view_func):
 			token = request.COOKIES.get('42_token')
 			if not token:
 				# request.user = AnonymousUser()
-				return JsonResponse({"detail": "Unauthorized"}, status=401)
+				return JsonResponse({"error": "Unauthorized"}, status=401)
 
 			saved_token = FtTokenModel.objects.filter(token=token).first()
 			if (state == None):
@@ -153,7 +155,7 @@ def auth_required(view_func):
 			grade = decoded_token.get('grade')
 			username = decoded_token.get('username')
 			if (grade != 'auth' or not grade or not username):
-				return JsonResponse({"detail": "Unauthorized token"}, status=401)
+				return JsonResponse({"error": "Unauthorized token"}, status=401)
 
 			# Récupération du user_id pour l'identification
 			user_id = decoded_token.get('user_id')
@@ -169,9 +171,13 @@ def auth_required(view_func):
 			# request.user = user
 
 		except InvalidTokenError:
-			return JsonResponse({"detail": "Invalid token"}, status=401)
+			return JsonResponse({"error": "Invalid token"}, status=401)
+		except Http404:
+			json_response = JsonResponse({"error": "Not Found"}, status=404)
+			json_response = logout(request, json_response)
+			return json_response
 		except DecodeError:
-			return JsonResponse({"detail": "Token error"}, status=401)
+			return JsonResponse({"error": "Token error"}, status=401)
 
 		# Appeler la vue d'origine
 		return view_func(request, *args, **kwargs)
@@ -188,7 +194,7 @@ def no_token_requiered(view_func):
 
 		if token_jwt or token_ft:
 			# request.user = AnonymousUser()
-			return JsonResponse({"detail": "Unauthorized"}, status=401)
+			return JsonResponse({"error": "Unauthorized"}, status=401)
 
 		print("appeler la vue d'origine")
 		# Appeler la vue d'origine
@@ -204,7 +210,7 @@ def no_jwt_token_requiered(view_func):
 
 		if token_jwt:
 			# request.user = AnonymousUser()
-			return JsonResponse({"detail": "Unauthorized"}, status=401)
+			return JsonResponse({"error": "Unauthorized"}, status=401)
 
 		# Appeler la vue d'origine
 		return view_func(request, *args, **kwargs)
@@ -219,7 +225,7 @@ def no_ft_token_requiered(view_func):
 
 		if token_ft:
 			# request.user = AnonymousUser()
-			return JsonResponse({"detail": "Unauthorized"}, status=401)
+			return JsonResponse({"error": "Unauthorized"}, status=401)
 
 		# Appeler la vue d'origine
 		return view_func(request, *args, **kwargs)

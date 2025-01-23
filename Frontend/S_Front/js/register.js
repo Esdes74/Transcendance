@@ -38,14 +38,17 @@ function loadRegister()
 				await affLoginMessage("Inscription Refusée")
 			else {
 				const error = await response.json();
-				if (error["detail"] === "Unauthorized")
+				if (error["error"] === "Unauthorized")
 				{
 					history.replaceState({pageID: 'duplicate'}, '', "duplicate")
 					changeHeader()
 					rootMyUrl(true)
 				}
 				else
+				{
+					console.log(error["error"])
 					await affRegisterMessage("ISSUE HERE")
+				}
 			}
 		} catch (error) {
 			updatePage("50X")

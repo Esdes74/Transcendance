@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/23 17:57:31 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/23 18:39:16 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ from djap_register.models import UserProfile
 from base64 import b64decode
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
+from django.http import Http404
 
 # TODO: Passer en GET
 @no_token_requiered
@@ -108,9 +109,9 @@ def create_view(request):
 
 	# Si je n'ai pas les champs obligatoires
 	if not username or not password or not confirmed :
-		return Response({"error": "Missing credentials"}, status=400)
+		return JsonResponse({"error": "Missing credentials"}, status=400)
 	if password != confirmed:
-		return Response({"error": "Password not confirmed"}, status=400)
+		return JsonResponse({"error": "Password not confirmed"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/registery/create/"
@@ -446,51 +447,47 @@ def get_me(request):
 
 @api_view(['GET'])
 def is_logged(request):
-	print("avant get_cookie")
 	token = request.COOKIES.get('jwt_token')
-	print("apres get_cookie")
 	# Forcage de la generation du token csrf
 	csrf_token = get_token(request)
 
 	if not token:
-		return JsonResponse({"detail": "Not connected"}, status=201)
+		return JsonResponse({"error": "Not connected"}, status=201)
 
 	try:
 		# Décodage du token
-		print("avant decoded")
 		decoded_token = jwt.decode(
 			token,
 			os.getenv('SECRET_KEY'),
 			algorithms=[os.getenv('ALGO')],
 			options={"verify_signature": True}
 		)
-		print("apres decoded")
 
 		# Récupération des éléments à vérifier pour la validité du token
 		grade = decoded_token.get('grade')
 		username = decoded_token.get('username')
 		if (grade != 'auth' or not grade or not username):
-			return JsonResponse({"detail": "Unauthorized token"}, status=401)
+			return JsonResponse({"error": "Unauthorized token"}, status=401)
 
 		# Récupération du user_id pour l'identification
-		print("avant get")
 		user_id = decoded_token.get('user_id')
-		print("apres get")
 		user_id = int(user_id)
 
 		# Charger l'utilisateur associé au token
-		print("avant get_or_404")
 		user = get_object_or_404(UserProfile, user_id=user_id)
-		print("apres get_or_404")
 
-		return JsonResponse({"detail": "Connected"}, status=201)
+		return JsonResponse({"error": "Connected"}, status=201)
 
 	except InvalidTokenError:
-		json_response = JsonResponse({"detail": "Unauthorized token"}, status=401)
+		json_response = JsonResponse({"error": "Unauthorized token"}, status=401)
+		json_response = logout(request, json_response)
+		return json_response
+	except Http404:
+		json_response = JsonResponse({"error": "Not Found"}, status=404)
 		json_response = logout(request, json_response)
 		return json_response
 	except DecodeError:
-		return JsonResponse({"detail": "Token error"}, status=401)
+		return JsonResponse({"error": "Token error"}, status=401)
 
 @jwt_required_2fa
 @api_view(['POST'])

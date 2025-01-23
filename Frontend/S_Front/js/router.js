@@ -215,7 +215,7 @@ async function is_logged()
 			return false
 		}
 	} catch (error) {
-		changeHeader()
+		logoutHeader()
 		return false
 	}
 }
