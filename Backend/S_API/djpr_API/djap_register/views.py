@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/24 01:42:34 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/24 09:52:58 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,8 @@ def login_view(request):
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 200:
-			token = response.json().get('token')
+			response_data = response.json()
+			token = response_data.pop('token')
 			tfa = response.json().get('2fa')
 			if token:
 				# Créez la réponse JSON avec le token
@@ -124,7 +125,8 @@ def create_view(request):
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 201:
-			token = response.json().get('token')
+			response_data = response.json()
+			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=201)
@@ -167,7 +169,8 @@ def otp_verif(request):
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 200:
-			token = response.json().get('token')
+			response_data = response.json()
+			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
@@ -232,7 +235,8 @@ def make_token(request):
 		response = requests.post(external_service_url, data=payload)
 
 		if response.status_code == 200:
-			token = response.json().get('token')
+			response_data = response.json()
+			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
@@ -506,7 +510,8 @@ def refresh_2fa(request):
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 200:
-			token = response.json().get('token')
+			response_data = response.json()
+			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response.json(), status=200)
