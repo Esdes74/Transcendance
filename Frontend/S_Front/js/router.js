@@ -120,9 +120,9 @@ function rootMyUrl(isLogged)
 			callback: "affRegisterToFT",
 			logged: "must not",
 		},
-		"/bravocallback": {
-			script: "/js/aff_bravoCallBack.js",
-			callback: "affBravoCallBack",
+		"/auth42callback": {
+			script: "/js/aff_auth42callback.js",
+			callback: "affAuth42Callback",
 			logged: "must not",
 		},
 		"/settings": {

@@ -130,7 +130,7 @@ function affAI()
 								<div class="col-6 d-flex justify-content-end align-items-center fw-bold" data-translate="true">
 									Haut
 								</div>
-								<div id="keyup" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 60px;">
+								<div id="keyup" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 55px;">
 									W
 								</div>
 							</div>
@@ -138,7 +138,7 @@ function affAI()
 								<div class="col-6 d-flex justify-content-end align-items-center fw-bold" data-translate="true">
 									Bas 
 								</div>
-								<div id="keydown" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 60px;">
+								<div id="keydown" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 55px;">
 									S
 								</div>
 							</div>

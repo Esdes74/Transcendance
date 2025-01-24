@@ -23,7 +23,7 @@ def forty_two_auth(request):
 		server_ip = os.getenv("SERVER_IP")
 		external_service_url = "https://api.intra.42.fr/oauth/authorize"
 		client_id = os.getenv("UID")
-		redirect_uri = urllib.parse.quote("https://" + server_ip + ":3000/bravocallback")
+		redirect_uri = urllib.parse.quote("https://" + server_ip + ":3000/auth42callback")
 		response_type = "code"
 		scope = "public"
 
@@ -62,7 +62,7 @@ def make_token(request):
 			'client_id': uid,
 			'client_secret': secret,
 			'code': send_code,
-			'redirect_uri': "https://" + server_ip + ":3000/bravocallback",
+			'redirect_uri': "https://" + server_ip + ":3000/auth42callback",
 			'state': send_state
 		}
 

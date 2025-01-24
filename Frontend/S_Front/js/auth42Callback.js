@@ -1,4 +1,4 @@
-async function loadBravoCallBack()
+async function loadAuth42Callback()
 {
 	const params = new URLSearchParams(window.location.search);
 	const code = params.get('code');
@@ -23,8 +23,12 @@ async function loadBravoCallBack()
 			} else if (response.status >= 500 && response.status < 600){
 				updatePage("50X")
 			}
+			else
+				document.querySelectorAll('.replayBlock')[0].style.display = "block"
 		} catch (error) {
 			updatePage("50X")
 		}
 	}
+	else
+		document.querySelectorAll('.replayBlock')[0].style.display = "block"
 }
