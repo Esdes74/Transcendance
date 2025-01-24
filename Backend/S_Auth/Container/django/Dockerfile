@@ -18,7 +18,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Installe netcat pour la vérification de l'etat de la base de donnée avant connection
 RUN apt-get update && apt-get upgrade -y && \
-	apt-get install netcat-traditional postgresql-client -y && \
+	apt-get install netcat-traditional postgresql-client redis-server -y && \
 	rm -rf /var/lib/apt/lists/*
 
 # Mise a jour de pip pour s'assurer qu'il soit compatible avec les paquets a installer

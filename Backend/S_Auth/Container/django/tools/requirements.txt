@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    requirements.txt                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2024/10/28 16:52:53 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/24 14:03:19 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,9 +25,14 @@ requests>=2.25.1
 # Bibliothèque pour créer et manipuler les tokens JWT
 PyJWT>=2.6.0
 
-# Pour générer le mot de passe a usage uique utilisé pour la 2fa
+# Pour générer le mot de passe a usage unique utilisé pour la 2fa
 pyotp>=2.8.0,<3.0
 
-# Pour stocker correctement le numéro de téléphone
-django-phonenumber-field>=7.0.0,<8.0
-phonenumbers>=8.12.0,<9.0
+# Redis pour le broker de Celery
+redis>=4.0,<5.0
+
+# Pour gerer des taches en fond, ici pour supprimer les comptes temporaires
+celery[redis]>=5.2,<6.0
+
+# Pour stocker les resultats des taches
+django-celery-results>=2.4,<3.0

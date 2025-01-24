@@ -3,16 +3,15 @@
 #                                                         :::      ::::::::    #
 #    models.py                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:26:29 by eslamber          #+#    #+#              #
-#    Updated: 2024/12/26 16:10:40 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/24 12:47:48 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from phonenumber_field.modelfields import PhoneNumberField
 
 # Classe d'authentification custom
 class FullUser(AbstractUser):
@@ -21,3 +20,5 @@ class FullUser(AbstractUser):
 	secret = models.CharField(max_length=32, blank=True, null=True)
 	language = models.CharField(max_length=2, blank=False, null=False, default='fr')
 	secu = models.BooleanField(default=True)
+	verified = models.BooleanField(default=False)
+	creation = models.DateTimeField(auto_now_add=True)

@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/23 16:51:59 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/24 13:51:12 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
 from .models import FullUser
+from .task import del_temp_acount_task
 from .gen_token import generate_jwt_token_auth, generate_temporary_token
 import pyotp
 
@@ -22,7 +23,6 @@ def login(request):
 	if (request.method == 'POST') : # TODO: paser en GET
 		username = request.POST.get('username')
 		password = request.POST.get('password')
-		print("bonjour")
 
 		# Regarde si les identifiants sont donnés/recus
 		if not username or not password :
@@ -46,7 +46,6 @@ def login(request):
 			user.save()
 
 			# Génération du token temporaire et renvois
-			# TODO: Fonctionnalitee a tester
 			if (user.secu):
 				token = generate_temporary_token(user)
 			else:
@@ -72,20 +71,28 @@ def create(request):
 			otp_sec = pyotp.random_base32()
 
 			# Création du profil
-			# TODO: voir s'il faut créer un utilisateur temporaire le temps de la double authentification ou non
 			user = FullUser.objects.create_user(
 				username=username,
 				password=password,
 				email=mail,
 				secret=otp_sec
 			)
-			user.save()
 
 			if user:
 				# si le user est bien créé avec on créée le token et on renvois tous
 				# Génération du token temporaire et renvois
 				token = generate_temporary_token(user)
 				res = "Login Complete"
+
+				# Save du user creer ici, ainsi il n'est gardee que si tous c'est bien passee
+				user.save()
+
+				# Appel de la tache de fond de gestion du compte temporaire
+				print("avant tache")
+				del_temp_acount_task.delay(username)
+				# del_temp_acount_task(username)
+				print("apres tache")
+
 				return JsonResponse({"message": res, "token": token, "2fa": True, "language": "fr"}, status = 201)
 			else:
 				# si le user n'existe pas alors il y a une erreure et on renvois l'erreure
@@ -123,10 +130,15 @@ def otp(request):
 			totp = pyotp.TOTP(otp_secret)
 			if not totp.verify(password, valid_window=2):
 				return JsonResponse({"error": "Invalid Credentials"}, status=401)
+			
+			# Le compte devient permanent
+			user.verified = True
+			user.save()
 
 			# Génération du token temporaire et renvois
 			token = generate_jwt_token_auth(user)
 			res = "Login Complete"
+
 			return JsonResponse({"message": res, "token": token, "language": user.language}, status = 200)
 
 		except Exception as e:
