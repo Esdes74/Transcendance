@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/24 09:52:58 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/24 10:21:04 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,7 +76,7 @@ def login_view(request):
 			tfa = response.json().get('2fa')
 			if token:
 				# Créez la réponse JSON avec le token
-				json_response = JsonResponse(response.json(), status=200)
+				json_response = JsonResponse(response_data, status=200)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
 				# TODO: Je pense qu'il faudra le passer en https et en secure
 				if (tfa):
@@ -93,7 +93,7 @@ def login_view(request):
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
-			res = "Login failed\n" + response.json().get('error')
+			res = "Login failed: " + response.json().get('error')
 			return JsonResponse({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -129,7 +129,7 @@ def create_view(request):
 			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
-				json_response = JsonResponse(response.json(), status=201)
+				json_response = JsonResponse(response_data, status=201)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
 				# TODO: Je pens qu'il faudra le passer en https et en secure
 				json_response.set_cookie(key='tfa_jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
@@ -173,7 +173,7 @@ def otp_verif(request):
 			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
-				json_response = JsonResponse(response.json(), status=200)
+				json_response = JsonResponse(response_data, status=200)
 				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
 				json_response.set_cookie(key='tfa_jwt_token', value=token, httponly=True, samesite='Strict', max_age=0)
 				return json_response
@@ -208,7 +208,7 @@ def forty_two_auth(request):
 			uri = response.json().get('uri')
 			return Response({"message": "Data succesfully created", "uri": uri}, status=201)
 		else:
-			res = "Forty two authentification failed\n" + response.text
+			res = "Forty two authentification failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -239,7 +239,7 @@ def make_token(request):
 			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
-				json_response = JsonResponse(response.json(), status=200)
+				json_response = JsonResponse(response_data, status=200)
 				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
 				# new_token = FtTokenModel.objects.create(token=token)
 				# new_token.save()
@@ -248,7 +248,7 @@ def make_token(request):
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
-			res = "Making token failed\n" + response.text
+			res = "Making token failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -283,7 +283,7 @@ def delete(request):
 			json_response = logout(request, json_response)
 			return json_response
 		else:
-			res = "Delete failed\n" + response.text
+			res = "Delete failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -317,7 +317,7 @@ def choose_lang(request):
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Delete failed\n" + response.text
+			res = "Delete failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -356,7 +356,7 @@ def choose_verif(request):
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Delete failed\n" + response.text
+			res = "Delete failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -385,7 +385,7 @@ def get_lang(request):
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Request failed\n" + response.text
+			res = "Request failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -414,7 +414,7 @@ def get_verif(request):
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Request failed\n" + response.text
+			res = "Request failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -442,7 +442,7 @@ def get_me(request):
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Request failed\n" + response.text
+			res = "Request failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -514,7 +514,7 @@ def refresh_2fa(request):
 			token = response_data.pop('token')
 			if token:
 				# Créez la réponse JSON avec le token
-				json_response = JsonResponse(response.json(), status=200)
+				json_response = JsonResponse(response_data, status=200)
 				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
 				# TODO: Je pense qu'il faudra le passer en https et en secure
 				token_name = 'tfa_jwt_token'
@@ -527,7 +527,7 @@ def refresh_2fa(request):
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
-			res = "Login failed\n" + response.text
+			res = "Refresh failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
