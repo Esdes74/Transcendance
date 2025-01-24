@@ -4,9 +4,9 @@ function callbackAI()
     initAnimation(menuCanvas)
 }
 
-function initAIPong()
+function initAIPong(mode)
 {
-	AICanvas = document.getElementById("AICanvas")
+	AICanvas = document.querySelector('canvas')
 	initPong(false, AICanvas, null)
 }
 
@@ -18,13 +18,13 @@ function createReplayBlock()
 function affReplayBlock()
 {
 	menu = document.querySelector(".replayBlock")
-	menu.innerHTML = `<div class="button-group">
-                                                <h2 id="winMessage" data-translate="true"></h2>
-						<h2 id="WinMsg" data-translate="true">a gagné</h2>
-                                                <div class="button-group">
-                                                <button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Rejouer</Button>
-                                                <!--button class="btn btn-outline-light m-2 fw-bold" data-translate="true">Change Difficulty</button-->
-   			</div>`
+	menu.innerHTML = `
+				<h2><span class="d-inline" id="winMessage"></span><span class="d-inline ms-2" id="WinMsg" data-translate="true">a gagné</span></h2>
+				<h2 class="fw-bold mt-2 mb-3" data-translate="true">Rejouer</h2>
+				<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="easy">Facile</button>
+				<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="medium">Normale</button>
+				<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="hard">Difficile</button>
+   			`
 	tradDiv(menu)
 	replayButtons = document.querySelectorAll('main button')
 	replayButtons.forEach( replayButton => {
@@ -33,6 +33,13 @@ function affReplayBlock()
 			scorePlayer2 = document.getElementById("scorePlayer2")
 			scorePlayer1.innerText = "0"
 			scorePlayer2.innerText = "0"
+			AICanvas = document.querySelector('canvas')
+			if (replayButton.getAttribute('data-difficulty') == "easy")
+				AICanvas.id = "AICanvasEasy"
+			else if (replayButton.getAttribute('data-difficulty') == "medium")
+				AICanvas.id = "AICanvasMedium"
+			else
+				AICanvas.id = "AICanvasHard"
 			menu.style.display = "none"
 			addScript("/js/pong.js", initAIPong)
 		})
@@ -80,7 +87,12 @@ function manageButtons()
 		parents = canvas.parentElement
 		canvas.remove()
 		let aiCanvas = document.createElement("canvas")
-		aiCanvas.id = "AICanvas"
+		if (button.getAttribute('data-difficulty') == "easy")
+			aiCanvas.id = "AICanvasEasy"
+		else if (button.getAttribute('data-difficulty') == "medium")
+			aiCanvas.id = "AICanvasMedium"
+		else
+			aiCanvas.id = "AICanvasHard"
 		aiCanvas.class = "w-100"
 		aiCanvas.height = 400
 		parents.append(aiCanvas)
@@ -110,17 +122,15 @@ function affAI()
 				<div class="canvas-container p-0">
 					<canvas id="menuCanvas" class="w-100" height="400"></canvas>
 					<div class="replayBlock">
-						<h2 class="fw-bold" data-translate="true">Touches</h2>
+						<h2 class="fw-bold" data-translate="true">Touches :</h2>
 						<div class="button-group">
-						<!--button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="normalMode">Intermediaire</button>
-						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="hardMode">Pongiste Professionnel</button-->
 						</div>
 						<div class="container">
 							<div class="row mt-2 mb-2">
 								<div class="col-6 d-flex justify-content-end align-items-center fw-bold" data-translate="true">
 									Haut
 								</div>
-								<div id="keyup" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 42px;">
+								<div id="keyup" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 60px;">
 									W
 								</div>
 							</div>
@@ -128,12 +138,15 @@ function affAI()
 								<div class="col-6 d-flex justify-content-end align-items-center fw-bold" data-translate="true">
 									Bas 
 								</div>
-								<div id="keydown" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 42px;">
+								<div id="keydown" class="col-2 border bg-dark d-flex justify-content-center align-items-center fs-6" style="height: 60px;">
 									S
 								</div>
 							</div>
 						</div>
-						<button class="btn btn-outline-light m-2 fw-bold" data-translate="true" value="easyMode">Lancer la partie</button>
+						<h2 class="fw-bold mt-3" data-translate="true">Difficulté :</h2>
+						<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="easy">Facile</button>
+						<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="medium">Normal</button>
+						<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="hard">Difficile</button>
 					</div>
 				</div>
 			</div>

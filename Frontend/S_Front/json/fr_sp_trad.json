@@ -76,7 +76,7 @@
 	"Erreur lors de la redirection": "Error al redirigir",
 	"Joueur 1": "Jugador 1",
 	"Joueur 2": "Jugador 2",
-	"Touches": "Teclas",
+	"Touches :": "Teclas :",
 	"Lancer la partie": "Empezar el juego",
 	"Joueur": "Jugador",
 	"Vous avez déjà trop de joueurs inscrits": "Ya tienes demasiados jugadores registrados",
@@ -91,5 +91,10 @@
 	"Inscription Refusée": "Registro Rechazado",
 	"Suivant": "Siguiente",
 	"Utilisateur déjà existant": "El usuario ya existe",
-	"Différence de mots de passe": "Diferencia en contraseñas"
+	"Différence de mots de passe": "Diferencia en contraseñas",
+	"Changer la difficulté": "Cambiar dificultad",
+	"Difficulté :": "Dificultad :",
+	"Facile": "Fácil",
+	"Normale": "Normal",
+	"Difficile": "Difícil"
 }

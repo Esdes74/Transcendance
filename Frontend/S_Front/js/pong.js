@@ -37,8 +37,12 @@ function initPong(boolean, myCanvas, uuid) {
 		pong_resizeCanvas(pong_gameSettings);
 	});
 	let socket;
-	if (myCanvas.id === "AICanvas")
-		socket = new WebSocket("/ws/pong/ai/");		//		wss://localhost:000/ws/pong/ai/
+	if (myCanvas.id === "AICanvasHard")
+		socket = new WebSocket("/ws/pong/ai/hard");		//		wss://localhost:000/ws/pong/ai/
+	else if (myCanvas.id === "AICanvasMedium")
+		socket = new WebSocket("/ws/pong/ai/medium");
+	else if (myCanvas.id === "AICanvasEasy")
+		socket = new WebSocket("/ws/pong/ai/easy");
 	else
 		socket = new WebSocket("/ws/pong/");		//		wss://localhost:3000/ws/pong/
 	pong_initSocket(socket, pong_gameSettings);
@@ -157,7 +161,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 // ################################################################################################################ //
 function pong_keyPressed(e, socket, message, canvasID) {
 	if (socket.readyState === WebSocket.OPEN && ((canvasID === "pongCanvas" && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S'))
-		|| (canvasID === "AICanvas" && (e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S'))))
+		|| (canvasID !== "pongCanvas" && (e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S'))))
 	{
 		e.preventDefault()
 		pong_sendMessage({'type': message, 'key': e.key}, socket);
@@ -205,7 +209,7 @@ function pong_gameOver(pong_gameSettings, socket)
 	else {
 		winMessageElem.textContent = pong_gameSettings.player2Name;
 	}
-	if (pong_gameSettings.canvas.id === "AICanvas")
+	if (pong_gameSettings.canvas.id !== "pongCanvas")
 	{
 		winMessageElem.style.display = 'block'
 		winMsg.style.display = 'block';

@@ -12,6 +12,12 @@ class PongConsumer(AsyncWebsocketConsumer):
 			self.ai_enabled = True
 			self.ia_sleeptime = 0
 			self.botPos = 0
+			if (path == "/ws/pong/ai/easy"):
+				self.latency = 0.4
+			elif (path == "/ws/pong/ai/medium"):
+				self.latency = 0.3
+			else:
+				self.latency = 0.2
 		await self.accept()
 
 		self.printball = False
@@ -137,7 +143,9 @@ class PongConsumer(AsyncWebsocketConsumer):
 	async def ia_ask_position(self):
 		try:
 			response = await self.send_to_pong_service(json.dumps({'type': 'getDatas'}))
-			response_ai = await self.send_to_ai_service(response)
+			responseData = json.loads(response)
+			responseData['latency'] = self.latency
+			response_ai = await self.send_to_ai_service(json.dumps(responseData))
 			data = json.loads(response_ai)	
 			if (data.get('Move') == "NoMove"):
 				self.keys['ArrowDown'] = False

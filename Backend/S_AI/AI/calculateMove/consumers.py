@@ -20,6 +20,7 @@ class myConsumer(AsyncWebsocketConsumer):
 		ArrowUp = False
 		data = {}
 		data = json.loads(text_data)
+		self.latency = data.get('latency', 0.2)
 		self.playerPos = data.get('player1Y', 0.5)
 		self.botPos = data.get('player2Y', 0.5)
 		self.ballPosX = data.get('ballX', 0.5)
@@ -30,11 +31,11 @@ class myConsumer(AsyncWebsocketConsumer):
 		ballPos = self.calculatePaddlePos(self.ballPosX, self.ballPosY, self.ballSpeedX, self.ballSpeedY)
 		ballPos = self.getBestMove(ballPos)
 		if (self.ballSpeedX < 0):
-			sleepTime = self.ballPosX / (-200 * self.ballSpeedX) + 0.2
+			sleepTime = self.ballPosX / (-200 * self.ballSpeedX) + self.latency
 			if (sleepTime < 1):
 				sleepTime = 1
 		else:
-			sleepTime = (2 - self.ballPosX) / (200 * self.ballSpeedX) + 0.2
+			sleepTime = (2 - self.ballPosX) / (200 * self.ballSpeedX) + self.latency
 			if (sleepTime < 1):
 				sleepTime = 1
 		ballPos = ballPos + (2 * random.random() - 1) / 20

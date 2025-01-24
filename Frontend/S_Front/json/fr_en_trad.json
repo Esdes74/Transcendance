@@ -76,7 +76,7 @@
 	"Erreur lors de la redirection": "Error while redirecting",
 	"Joueur 1": "Player 1",
 	"Joueur 2": "Player 2",
-	"Touches": "Keys",
+	"Touches :": "Keys :",
 	"Lancer la partie": "Start game",
 	"Joueur": "Player",
 	"Vous avez déjà trop de joueurs inscrits": "You already have too many players registered",
@@ -91,5 +91,10 @@
 	"Inscription Refusée": "Registration Refused",
 	"Suivant": "Next",
 	"Utilisateur déjà existant": "User already exists",
-	"Différence de mots de passe": "Difference in passwords"
+	"Différence de mots de passe": "Difference in passwords",
+	"Changer la difficulté": "Change difficulty",
+	"Facile": "Easy",
+	"Normale": "Medium",
+	"Difficulté :": "Difficulty :",
+	"Difficile": "hard"
 }
