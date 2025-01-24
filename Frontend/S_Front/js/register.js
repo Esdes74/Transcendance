@@ -44,11 +44,10 @@ function loadRegister()
 					changeHeader()
 					rootMyUrl(true)
 				}
-				else
-				{
-					console.log(error["error"])
-					await affRegisterMessage("ISSUE HERE")
-				}
+				else if (error["error"] === "Password not confirmed")
+					await affRegisterMessage("Différence de mots de passe")
+				else if (error["error"] === "Integrity error")
+					await affRegisterMessage("Utilisateur déjà existant")
 			}
 		} catch (error) {
 			updatePage("50X")

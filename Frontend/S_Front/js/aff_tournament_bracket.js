@@ -106,7 +106,7 @@ async function affTournamentBracket_sendRequest(data, function_name)
 
 		const result = await response.json();
 
-		if (result.detail === 'Unauthorized')
+		if (result.error === 'Unauthorized')
 		{
 			updatePage("denied");
 			return;

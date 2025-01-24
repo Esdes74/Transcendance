@@ -202,7 +202,7 @@ async function is_logged()
 		});
 		if (response.ok) {
 			let jsonResponse = await response.json()
-			if (jsonResponse['detail'] === "Not connected" || jsonResponse['detail'] === "Unauthorized token")
+			if (jsonResponse['error'] === "Not connected" || jsonResponse['error'] === "Unauthorized token")
 			{
 				logoutHeader()
 				return false

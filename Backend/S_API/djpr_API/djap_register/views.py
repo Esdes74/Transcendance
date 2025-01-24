@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/23 18:39:16 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/24 01:42:34 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,11 +92,10 @@ def login_view(request):
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
-			res = "Login failed\n" + response.text
+			res = "Login failed\n" + response.json().get('error')
 			return JsonResponse({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
-		print("avant return error")
 		return Response({"error": str(e)}, status=500)		#todo changer en 503 pour service unavailable ?
 
 @no_token_requiered
@@ -141,8 +140,8 @@ def create_view(request):
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 
 		else:
-			res = "Login failed\n" + response.text
-			return Response({"error": res}, status=response.status_code)
+			res = response.json().get('error')
+			return JsonResponse({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
@@ -178,7 +177,7 @@ def otp_verif(request):
 			else:
 				return JsonResponse({"error": "Token not found in response"}, status=500)
 		else:
-			res = "Login failed\n" + response.text
+			res = response.json().get('error')
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:

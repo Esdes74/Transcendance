@@ -72,7 +72,7 @@ async function affTournament_sendRequest(data, function_name)
 		}
 		const result = await response.json();
 		
-		if (result.detail === 'Unauthorized')
+		if (result.error === 'Unauthorized')
 		{
 			updatePage("denied");
 			return;
@@ -166,7 +166,7 @@ function affTournament_createEmptyField(index)
 	input.type = 'text';
 	input.minLength = 2;
 	input.maxLength = 8;
-	input.size = 15;
+	input.size = 16;
 	input.style.borderColor = 'white';
 	input.style.backgroundColor = 'transparent';
 	input.setAttribute('data-translate', 'placeholder');

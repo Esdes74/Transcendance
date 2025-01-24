@@ -89,5 +89,7 @@
 	"Valider tous les joueurs": "Validar a todos los jugadores",
 	"Connection Refusée": "Conexión Rechazada",
 	"Inscription Refusée": "Registro Rechazado",
-	"Suivant": "Siguiente"
+	"Suivant": "Siguiente",
+	"Utilisateur déjà existant": "El usuario ya existe",
+	"Différence de mots de passe": "Diferencia en contraseñas"
 }

@@ -89,5 +89,7 @@
 	"Valider tous les joueurs": "Validate all players",
 	"Connection Refusée": "Connection Refused",
 	"Inscription Refusée": "Registration Refused",
-	"Suivant": "Next"
+	"Suivant": "Next",
+	"Utilisateur déjà existant": "User already exists",
+	"Différence de mots de passe": "Difference in passwords"
 }
