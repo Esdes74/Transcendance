@@ -46,7 +46,7 @@ function initPong(boolean, myCanvas, uuid) {
 	else
 		socket = new WebSocket("/ws/pong/");		//		wss://localhost:3000/ws/pong/
 	pong_initSocket(socket, pong_gameSettings);
-	pong_EventManager(socket, myCanvas.id);
+	pong_EventManager(socket, myCanvas.id,  pong_gameSettings);
 }
 
 function pong_initCanvas(pong_gameSettings)
@@ -120,7 +120,7 @@ function pong_initSocket(socket, pong_gameSettings) {
 			pong_gameSettings.scorePlayer1Elem.textContent = pong_gameSettings.scorePlayer1;
 			pong_gameSettings.scorePlayer2Elem.textContent = pong_gameSettings.scorePlayer2;
 			pong_gameSettings.printBall = data.action;
-			if (pong_gameSettings.printBall == false) {
+			if (pong_gameSettings.printBall === false) {
 				if ((pong_gameSettings.scorePlayer1 >= 5 || pong_gameSettings.scorePlayer2 >= 5))
 					pong_gameOver(pong_gameSettings, socket);
 			}
@@ -168,10 +168,11 @@ function pong_keyPressed(e, socket, message, canvasID) {
 	}
 }
 
-function pong_EventManager(socket, canvasID) {
+function pong_EventManager(socket, canvasID, pong_gameSettings) {
 
 	document.addEventListener('keydown', e => pong_keyPressed(e, socket, 'key.pressed', canvasID));
 	document.addEventListener('keyup', e => pong_keyPressed(e, socket, 'key.released', canvasID));
+	pong_addTouchControls(pong_gameSettings, socket, canvasID);
 
 	function pong_handleViewChangeWrapper(event) {
 		pong_handleViewChange(socket);
@@ -228,7 +229,7 @@ function pong_gameOver(pong_gameSettings, socket)
 		const buttons = replayBlockElem.getElementsByClassName("btn");
 		for (let i = 0; i < buttons.length; i++)
 		{
-			
+
 			buttons[i].style.display = 'inline-block';
 			buttons[i].addEventListener('click', async () => {
 				redirectTo(buttons[i].value, socket, pong_gameSettings);
@@ -319,7 +320,7 @@ function pong_draw(pong_gameSettings) {
 	ctx.fillRect(pong_gameSettings.canvas.width - pong_gameSettings.paddleWidth - pong_gameSettings.paddleBuffer, pong_gameSettings.paddle2Y, pong_gameSettings.paddleWidth, pong_gameSettings.paddleHeight);
 
 	// Ball
-	if (pong_gameSettings.printBall == true) {
+	if (pong_gameSettings.printBall === true) {
 		ctx.beginPath();
 		ctx.arc(pong_gameSettings.ballX, pong_gameSettings.ballY, pong_gameSettings.ballRadius, 0, Math.PI * 2);
 		ctx.fill();
@@ -340,8 +341,144 @@ function pong_draw(pong_gameSettings) {
 }
 
 // Boucle du jeu
-function pong_gameLoop(pong_gameSettings, socket) {
+function pong_gameLoop(pong_gameSettings, socket)
+{
 	pong_draw(pong_gameSettings);
 	if (socket.readyState === WebSocket.OPEN)
 		requestAnimationFrame(() => pong_gameLoop(pong_gameSettings, socket));
+}
+
+function throttle(func, limit)
+{
+	let lastFunc;
+	let lastRan;
+	return function(...args) {
+		const context = this;
+		if (!lastRan) {
+			func.apply(context, args);
+			lastRan = Date.now();
+		} else {
+			clearTimeout(lastFunc);
+			lastFunc = setTimeout(function() {
+				if ((Date.now() - lastRan) >= limit) {
+					func.apply(context, args);
+					lastRan = Date.now();
+				}
+			}, limit - (Date.now() - lastRan));
+		}
+	};
+}
+
+function pong_addTouchControls(pong_gameSettings, socket)
+{
+	if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+		const canvas = pong_gameSettings.canvas;
+
+		const activeKeys = { player1: null, player2: null };
+		const touchZones = {};
+		const deadZoneMargin = 3;
+
+		pong_gameSettings.touchHandlers = {
+			onTouchStart: function (event) {
+				handleTouchStart(event, canvas, touchZones);
+			},
+			onTouchMove: function (event) {
+				handleTouchMove(event, pong_gameSettings, socket, canvas, touchZones, deadZoneMargin, activeKeys);
+			},
+			onTouchEnd: function (event) {
+				handleTouchEnd(event, socket, touchZones, activeKeys);
+			}
+		};
+
+
+		canvas.addEventListener('touchstart', pong_gameSettings.touchHandlers.onTouchStart);
+		canvas.addEventListener('touchmove', throttle(pong_gameSettings.touchHandlers.onTouchMove, 4));
+		canvas.addEventListener('touchend', pong_gameSettings.touchHandlers.onTouchEnd);
+		canvas.addEventListener('touchcancel', pong_gameSettings.touchHandlers.onTouchEnd);
+		console.log('Independent touch controls with reduced dead zone enabled for canvas:', canvas);
+	}
+}
+
+function handleTouchStart(event, canvas, touchZones)
+{
+		event.preventDefault();
+		const canvasRect = canvas.getBoundingClientRect();
+
+		for (const touch of event.changedTouches) {
+			const touchX = touch.clientX - canvasRect.left;
+
+			if (touchX < canvasRect.width / 2) {
+				touchZones[touch.identifier] = 'player1';
+			} else {
+				touchZones[touch.identifier] = 'player2';
+			}
+		}
+}
+
+function handleTouchMove(event, pong_gameSettings, socket, canvas, touchZones, deadZoneMargin, activeKeys)
+{
+	event.preventDefault();
+	const canvasRect = canvas.getBoundingClientRect();
+
+	for (const touch of event.touches) {
+		//const touchX = touch.clientX - canvasRect.left;
+		const touchY = touch.clientY - canvasRect.top;
+		const zone = touchZones[touch.identifier];
+
+		if (!zone) continue;
+
+		if (zone === 'player1') {
+			if (touchY < pong_gameSettings.paddle1Y - deadZoneMargin) {
+				updateKeyState('player1', 'w', socket, activeKeys);
+			} else if (touchY > pong_gameSettings.paddle1Y + pong_gameSettings.paddleHeight + deadZoneMargin) {
+				updateKeyState('player1', 's', socket, activeKeys);
+			} else {
+				updateKeyState('player1', null, socket, activeKeys);
+			}
+		} else if (zone === 'player2') {
+			if (touchY < pong_gameSettings.paddle2Y - deadZoneMargin) {
+				updateKeyState('player2', 'ArrowUp', socket, activeKeys);
+			} else if (touchY > pong_gameSettings.paddle2Y + pong_gameSettings.paddleHeight + deadZoneMargin) {
+				updateKeyState('player2', 'ArrowDown', socket, activeKeys);
+			} else {
+				updateKeyState('player2', null, socket, activeKeys);
+			}
+		}
+	}
+}
+
+function handleTouchEnd(event, socket, touchZones, activeKeys)
+{
+	event.preventDefault();
+
+	for (const touch of event.changedTouches) {
+		const zone = touchZones[touch.identifier];
+		if (!zone) continue;
+
+		updateKeyState(zone, null, socket, activeKeys);
+		delete touchZones[touch.identifier];
+	}
+}
+
+function updateKeyState(player, newKey, socket, activeKeys)
+{
+	const currentKey = activeKeys[player];
+
+	if (currentKey !== newKey) {
+		if (currentKey && socket.readyState === WebSocket.OPEN)
+		{
+			pong_sendMessage({
+				type: 'key.released',
+				key: currentKey
+			}, socket);
+		}
+		if (newKey && socket.readyState === WebSocket.OPEN) {
+			pong_sendMessage({
+				type: 'key.pressed',
+				key: newKey
+			}, socket);
+		}
+
+		activeKeys[player] = newKey;
+	}
 }

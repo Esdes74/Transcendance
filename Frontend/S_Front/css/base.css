@@ -52,3 +52,13 @@ hr {
 	height: 3px;
 	background-color: rgb(59, 130, 151);
 }
+
+footer {
+	opacity: 0; /* Initially hidden */
+	transition: opacity 0.5s ease-in-out; /* Smooth transition */
+}
+
+footer.visible {
+	opacity: 1; /* Makes it visible when the class is added */
+}
+
