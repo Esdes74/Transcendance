@@ -12,7 +12,7 @@ function initAnimationSettings(myCanvas)
 		stopAnim: false,
 	};
 
-	resizeLoginCanvas(gameSettings);
+	resizeSettingsCanvas(gameSettings);
 
 	window.addEventListener('popstate', (event) =>
 	{
@@ -24,7 +24,7 @@ function initAnimationSettings(myCanvas)
 	})
 }
 
-function resizeLoginCanvas(gameSettings)
+function resizeSettingsCanvas(gameSettings)
 {
 	gameSettings.canvas.width = gameSettings.canvas.clientWidth;
 	gameSettings.canvas.height = gameSettings.canvas.clientHeight;
@@ -33,10 +33,10 @@ function resizeLoginCanvas(gameSettings)
 	gameSettings.paddleBuffer = 0.02 * gameSettings.canvas.width;
 	gameSettings.paddle1Y = (gameSettings.canvas.height - gameSettings.paddleHeight) / 2;
 	gameSettings.paddle2Y = gameSettings.paddle1Y;
-	loginDraw(gameSettings);
+	settingsDraw(gameSettings);
 }
 
-function loginDraw(gameSettings)
+function settingsDraw(gameSettings)
 {
 	player1red = Math.random() * 255
 	player1green = Math.random() * 255
@@ -66,10 +66,10 @@ function loginDraw(gameSettings)
 	ctx.fillStyle = `rgb(${player2red}, ${player2green}, ${player2blue})`
 	ctx.fillRect(gameSettings.canvas.width - gameSettings.paddleWidth - gameSettings.paddleBuffer, gameSettings.paddle2Y, gameSettings.paddleWidth, gameSettings.paddleHeight);
 	if (gameSettings.stopAnim === false)
-		requestAnimationFrame(() => loginLoop(gameSettings))
+		requestAnimationFrame(() => settingsLoop(gameSettings))
 }
 
-async function loginLoop(gameSettings) {
+async function settingsLoop(gameSettings) {
 	await new Promise(r => setTimeout(r, 1000));
-	loginDraw(gameSettings);
+	settingsDraw(gameSettings);
 }

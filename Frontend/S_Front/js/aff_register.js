@@ -5,7 +5,7 @@ function registerCallback()
 
 function registerAnimationCallback()
 {
-	canvas = document.getElementById("loginCanvas")
+	canvas = document.getElementById("registerCanvas")
 	loadAnimationLogin(canvas)
 }
 
@@ -18,7 +18,7 @@ function affRegister()
 		<div class="col-md-8">
 			<h1 class="mb-5 fw-bold" data-translate="true">Création de compte</h1>
 			<div class="canvas-container">
-			<canvas id="loginCanvas" class="w-100" height="400"></canvas>
+			<canvas id="registerCanvas" class="w-100" height="400"></canvas>
 			<div class="replayBlock">
         			<form id="loginForm">
                 			<label for="username" class="mb-1 fw-bold" data-translate="true">Nom d'utilisateur</label>

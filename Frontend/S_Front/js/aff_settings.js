@@ -1,7 +1,7 @@
 function callbackSettingsPong()
 {
-	indexCanvas = document.getElementById("indexCanvas")	
-	initAnimationSettings(indexCanvas)
+	settingsCanvas = document.getElementById("settingsCanvas")	
+	initAnimationSettings(settingsCanvas)
 }
 
 function callbackSettings()
@@ -18,7 +18,7 @@ async function affSettings()
 			<div class="col-md-8">
 				<h1 class="mb-5 fw-bold"><span data-translate="true">Paramètres Utilisateur</span></h1>
 				<div class="canvas-container">
-					<canvas id="indexCanvas" class="w-100" height="400"></canvas>
+					<canvas id="settingsCanvas" class="w-100" height="400"></canvas>
 					<div class="replayBlock">
 						<div class="form-check form-switch px-0 mb-3">
 							<label class="form-check-label fw-bold fs-5" data-translate="true" for="flexSwitchCheckDefault">Double Authentification</label>
