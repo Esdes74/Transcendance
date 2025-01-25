@@ -20,7 +20,7 @@ function affReplayBlock()
 	menu = document.querySelector(".replayBlock")
 	menu.innerHTML = `
 				<h2><span class="d-inline" id="winMessage"></span><span class="d-inline ms-2" id="WinMsg" data-translate="true">a gagné</span></h2>
-				<h2 class="fw-bold mt-2 mb-3" data-translate="true">Rejouer</h2>
+				<h2 class="fw-bold mt-3 mb-3" data-translate="true">Rejouer</h2>
 				<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="easy">Facile</button>
 				<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="medium">Normale</button>
 				<button class="btn btn-outline-light m-2 fw-bold" style="width: 100px;" data-translate="true" data-difficulty="hard">Difficile</button>
