@@ -123,7 +123,7 @@ def deletePlayer(request):
 			player = Player.objects.get(name=name, from_Tournament=username, from_uuid=uuid)
 		except (Tournament.DoesNotExist, Player.DoesNotExist):
 			return JsonResponse({"error": "Tournament or Player does not exist"}, status=400)
-		if player not in tournament.players.all() or name not in tournament.player_list():
+		if player not in tournament.players.all() or name not in tournament.player_list:
 			return JsonResponse({"error": "Player is not in the tournament"}, status=400)
 		tournament.player_registered -= 1
 		tournament.player_list.remove(name)
