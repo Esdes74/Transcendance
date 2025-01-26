@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/26 01:50:45 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/26 04:16:47 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -165,8 +165,9 @@ def create_view(request):
 @api_view(['POST'])
 def otp_verif(request):
 	password = request.data.get('password')
+	if not isinstance(password, str):
+		return Response({"error": "Invalid password"}, status=400)
 	username = getattr(request, 'username', None)
-
 	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
 
@@ -202,11 +203,12 @@ def otp_verif(request):
 @api_view(['POST'])
 def forty_two_auth(request):
 	send_state = request.data.get('sendState')
-
+	if not isinstance(send_state, str):
+		return Response({"error": "Invalid data"}, status=400)
 	if not send_state:
-		return Response({"error": "Missing Credentials"}, status=400)
+		return Response({"error": "Invalid state"}, status=400)
 	if (len(send_state) != 50):
-		return Response({"error": "Invald data format"}, status=400)
+		return Response({"error": "Invalid data format"}, status=400)
 
 	external_service_url = "http://django-Auth:8000/remoteft/forty_two_auth/"
 	payload = {
@@ -231,11 +233,12 @@ def forty_two_auth(request):
 def make_token(request):
 	send_state = request.data.get('sendState')
 	send_code = request.data.get('sendCode')
-
+	if not isinstance(send_state, str) or not isinstance(send_state, str):
+		return Response({"error": "Invalid datas"}, status = 400)
 	if not send_state or not send_code:
-		return Response({"error": "Missing Credentials"}, status=400)
+		return Response({"error": "Missing datas"}, status=400)
 	if (len(send_state) != 50 or len(send_code) != 64):
-		return Response({"error": "Invald data format"}, status=400)
+		return Response({"error": "Invalid data format"}, status=400)
 
 	external_service_url = "http://django-Auth:8000/remoteft/make_token/"
 	payload = {
@@ -258,7 +261,7 @@ def make_token(request):
 				save_new_user(token)
 				return json_response
 			else:
-				return JsonResponse({"error": "Token not found in response"}, status=500)
+				return JsonResponse({"error": "Token not found in response"}, status=502)
 		else:
 			res = "Making token failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
@@ -306,13 +309,14 @@ def delete(request):
 def choose_lang(request):
 	username = getattr(request, 'username', None)
 	new_lang = request.data.get('newLang')
-
+	if not isinstance(new_lang, str):
+		return Response({"error": "Invalid datas"}, status=400)
 	if not username or not new_lang:
-		return Response({"error": "Missing credentials"}, status=400)
+		return Response({"error": "Missing datas"}, status=400)
 
 	print(new_lang)
 	if (new_lang != 'fr' and new_lang != 'an' and new_lang != 'es'):
-		return Response({"error": "Wrong credentials"}, status=400)
+		return Response({"error": "Wrong datas"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/settings/choose_lang/"
@@ -340,9 +344,6 @@ def choose_lang(request):
 def choose_verif(request):
 	username = getattr(request, 'username', None)
 	new_2fa = request.data.get('new2fa')
-	print(username)
-	print(new_2fa)
-
 	if not username or new_2fa == None:
 		return Response({"error": "Missing credentials"}, status=400)
 
