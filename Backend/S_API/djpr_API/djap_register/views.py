@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/24 10:21:04 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/26 01:50:45 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ from base64 import b64decode
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from django.http import Http404
+from pydantic import BaseModel, ValidationError, EmailStr
 
 # TODO: Passer en GET
 @no_token_requiered
@@ -91,7 +92,7 @@ def login_view(request):
 
 				return json_response
 			else:
-				return JsonResponse({"error": "Token not found in response"}, status=500)
+				return JsonResponse({"error": "Token not found in response"}, status=502)
 		else:
 			res = "Login failed: " + response.json().get('error')
 			return JsonResponse({"error": res}, status=response.status_code)
@@ -99,28 +100,39 @@ def login_view(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)		#todo changer en 503 pour service unavailable ?
 
+
+class UserCreate(BaseModel):
+	username: str
+	password: str
+	confirmed: str
+	mail: str
+
 @no_token_requiered
 @api_view(['POST'])
 def create_view(request):
-	username = request.data.get('username')
-	password = request.data.get('password')
-	confirmed = request.data.get('confirmed')
-	mail = request.data.get('mail')
+	payload = {}
+	try:
+		user_datas = UserCreate(username = request.data.get('username'),
+		password = request.data.get('password'),
+		confirmed = request.data.get('confirmed'),
+		mail = request.data.get('mail'))
+		# Si je n'ai pas les champs obligatoires
+		if not user_datas.username or not user_datas.password or not user_datas.confirmed or not user_datas.mail:
+			return JsonResponse({"error": "Missing credentials"}, status=400)
+		if user_datas.password != user_datas.confirmed:
+			return JsonResponse({"error": "Password not confirmed"}, status=400)
+		if '@' not in user_datas.mail:
+			return JsonResponse({"error": "Invalid email"}, status=400)
 
-	# Si je n'ai pas les champs obligatoires
-	if not username or not password or not confirmed :
-		return JsonResponse({"error": "Missing credentials"}, status=400)
-	if password != confirmed:
-		return JsonResponse({"error": "Password not confirmed"}, status=400)
-
-	# Appeler un autre service pour gérer l'authentification
-	external_service_url = "http://django-Auth:8000/registery/create/"
-	payload = {
-		'username': username,
-		'password': password,
-		'mail': mail,
-	}
-
+		# Appeler un autre service pour gérer l'authentification
+		external_service_url = "http://django-Auth:8000/registery/create/"
+		payload = {
+			'username': user_datas.username,
+			'password': user_datas.password,
+			'mail': user_datas.mail,
+		}
+	except ValidationError as e:
+		return JsonResponse({"error": str(e)}, status=400)
 	try:
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
@@ -139,7 +151,7 @@ def create_view(request):
 
 				return json_response
 			else:
-				return JsonResponse({"error": "Token not found in response"}, status=500)
+				return JsonResponse({"error": "Token not found in response"}, status=502)
 
 		else:
 			res = response.json().get('error')
