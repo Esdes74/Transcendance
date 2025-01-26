@@ -6,7 +6,6 @@ import random
 
 class CalculConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
-		print('Connecté')
 		await self.accept()
 
 		self.action = True
@@ -25,15 +24,12 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.max_speed = 0.01
 		self.acceleration = 1.1
 
-		print(f">>>>>>> PHASE D'INITIALISATION : {self.player1Y}")
-
 	async def disconnect(self, close_code):
 		pass
 	async def receive(self, text_data):
 		data = json.loads(text_data)
 
 		if data.get('type') == 'pong.move':
-			print('DATA : ', data)
 			key = data['key']
 			if key == 'w' or key == 'W':
 				if self.player1Y - (self.playerHeight / 2) > 0:
@@ -47,8 +43,6 @@ class CalculConsumer(AsyncWebsocketConsumer):
 			elif key == 'ArrowDown':
 				if self.player2Y + (self.playerHeight / 2) < 1:
 					self.player2Y = self.player2Y + 0.01
-			else:
-				print('key non reconnue')
 
 		elif data.get('type') == 'pong.ball':
 			if self.action == False:				# Ici si l'action est en pause soit si goal
