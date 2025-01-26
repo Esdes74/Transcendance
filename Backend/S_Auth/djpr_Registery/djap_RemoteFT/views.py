@@ -6,12 +6,13 @@ from djap_RemoteFT.models import StateModel
 from django.http import JsonResponse
 from .log_ft import log_ft
 from djap_login.models import FullUser
+from requests.exceptions import ConnectionError
 
 def forty_two_auth(request):
 	if (request.method == 'POST'):
 		send_state = request.POST.get('sendState')
 
-		if not send_state:
+		if not send_state or not isinstance(send_state, str):
 			return JsonResponse({"error": "Missing Credentials"}, status=400)
 		if (len(send_state) != 50):
 			return JsonResponse({"error": "Invald data format"}, status=400)
@@ -38,16 +39,16 @@ def make_token(request):
 		server_ip = os.getenv("SERVER_IP")
 
 		# TODO: Voir si il faut garder ces vérifs ci alors qu'on vérifie déjà la meme chose dans l'api
-		if not send_state or not send_code:
-			return JsonResponse({"error": "Missing Credentials"}, status=400)
+		if not send_state or not send_code or not isinstance(send_state, str) or not isinstance(send_code, str):
+			return JsonResponse({"error": "Invalid datas"}, status=400)
 		if (len(send_state) != 50 or len(send_code) != 64):
-			return JsonResponse({"error": "Invald data format"}, status=400)
+			return JsonResponse({"error": "Invalid data format"}, status=400)
 
 		# Take aved state from database
 		# If found so it's the same, don't need to check if same
 		state = StateModel.objects.filter(state=send_state).first()
 		if (state == None):
-			return JsonResponse({"error": "Invalid Credentials"}, status=401)
+			return JsonResponse({"error": "Invalid Datas"}, status=401)
 
 		uid = os.getenv('UID')
 		secret = os.getenv('SECRET')
@@ -79,10 +80,12 @@ def make_token(request):
 				if token_jwt and user:
 					return JsonResponse({"message": "Token succesfully created", "token": token_jwt, "language": user.language}, status=200)
 				else:
-					return JsonResponse({"error": "Token not found in response"}, status=500)
+					return JsonResponse({"error": "Token not found in response"}, status=502)
 			else:
 				res = "Token failed\n" + response.text
-				return JsonResponse({"error": res}, status=response.status_code)
+				return JsonResponse({"error": res}, status=502)
 
+		except ConnectionError as e:
+			return JsonResponse({"error": "Failed to connect to external api"}, 502)
 		except requests.exceptions.RequestException as e:
 			return JsonResponse({"error": str(e)}, status=500)
