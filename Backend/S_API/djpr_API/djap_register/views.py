@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/26 04:16:47 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/26 20:21:23 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,8 @@ from django.middleware.csrf import get_token
 from django.http import Http404
 from pydantic import BaseModel, ValidationError, EmailStr
 
-# TODO: Passer en GET
 @no_token_requiered
-# @api_view(['POST'])
+@api_view(['POST'])
 def login_view(request):
 	# Récupérer l'en-tête Authorization
 	authorization_header = request.headers.get('Authorization')
@@ -98,7 +97,7 @@ def login_view(request):
 			return JsonResponse({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
-		return Response({"error": str(e)}, status=500)		#todo changer en 503 pour service unavailable ?
+		return Response({"error": str(e)}, status=500)
 
 
 class UserCreate(BaseModel):
@@ -277,7 +276,7 @@ def logout_view(request):
 	return json_response
 
 @auth_required
-@api_view(['POST'])
+@api_view(['DELETE'])
 def delete(request):
 	username = getattr(request, 'username', None)
 
@@ -305,7 +304,7 @@ def delete(request):
 		return Response({"error": str(e)}, status=500)
 
 @auth_required
-@api_view(['POST'])
+@api_view(['PUT'])
 def choose_lang(request):
 	username = getattr(request, 'username', None)
 	new_lang = request.data.get('newLang')
@@ -340,7 +339,7 @@ def choose_lang(request):
 		return Response({"error": str(e)}, status=500)
 
 @auth_required
-@api_view(['POST'])
+@api_view(['PUT'])
 def choose_verif(request):
 	username = getattr(request, 'username', None)
 	new_2fa = request.data.get('new2fa')

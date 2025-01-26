@@ -5,7 +5,7 @@ async function changeSecu(value)
 			new2fa: value,
 		}
 		const response = await fetch('/api/auth/choose_verif/', {
-			method: 'POST',
+			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -40,7 +40,7 @@ async function changeFavLanguage(value)
 			newLang: value,
 		}
 		const response = await fetch('/api/auth/choose_lang/', {
-			method: 'POST',
+			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
 			},
