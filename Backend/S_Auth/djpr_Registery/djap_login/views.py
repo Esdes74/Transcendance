@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/26 17:54:10 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/26 20:06:26 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ from smtplib import SMTPException
 import pyotp
 
 def login(request):
-	if (request.method == 'POST') : # TODO: paser en GET
+	if (request.method == 'POST') :
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 
