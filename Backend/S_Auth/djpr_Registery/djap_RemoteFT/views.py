@@ -57,7 +57,7 @@ def make_token(request):
 			return JsonResponse({"error": "Server configuration error"}, status=500)
 
 		# Make request to 42's api
-		external_service_url = "https://ap.intra.42.fr/oauth/token"
+		external_service_url = "https://api.intra.42.fr/oauth/token"
 		payload = {
 			'grant_type': 'authorization_code',
 			'client_id': uid,
