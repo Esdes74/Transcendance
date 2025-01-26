@@ -50,7 +50,7 @@ function load2faLogin()
 			await affMessage("Connection Refusée", true)
 		else if (!response.ok)
 		{
-			await affMessage("Erreur", true)
+			await affMessage("Erreur, essayez de vous reconnecter", true)
 		}
 		else
 			await affMessage("Mail Réenvoyé !", false)
