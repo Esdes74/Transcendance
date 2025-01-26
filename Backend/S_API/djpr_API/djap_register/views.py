@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/26 20:21:23 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/26 23:39:49 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -290,7 +290,7 @@ def delete(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.delete(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 204:
 			json_response = JsonResponse({}, status=204)
@@ -325,7 +325,7 @@ def choose_lang(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.put(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
@@ -361,7 +361,7 @@ def choose_verif(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.put(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
