@@ -40,8 +40,6 @@ function initPong(boolean, myCanvas, uuid) {
 	myPath = "wss://" + location.host
 	if (myCanvas.id === "AICanvasHard")
 		socket = new WebSocket(myPath + "/ws/pong/ai/hard");
-	else if (myCanvas.id === "AICanvasMedium")
-		socket = new WebSocket(myPath + "/ws/pong/ai/medium");
 	else if (myCanvas.id === "AICanvasEasy")
 		socket = new WebSocket(myPath + "/ws/pong/ai/easy");
 	else
