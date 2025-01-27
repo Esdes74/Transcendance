@@ -43,17 +43,20 @@ class PongConsumer(AsyncWebsocketConsumer):
 		pass
 
 	async def receive(self, text_data):
-		data = json.loads(text_data)
-		actionType = data.get('type', 'malformed request')
-		key = data.get('key', 'malformed request')
-		if (self.ai_enabled and key in ['ArrowUp', 'ArrowDown']):
-			return
-		if key in ['W', 'S']:
-			key = key.lower()
-		if actionType == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
-			self.keys[key] = True
-		if actionType == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
-			self.keys[key] = False
+		try:
+			data = json.loads(text_data)
+			actionType = data.get('type', 'malformed request')
+			key = data.get('key', 'malformed request')
+			if (self.ai_enabled and key in ['ArrowUp', 'ArrowDown']):
+				return
+			if key in ['W', 'S']:
+				key = key.lower()
+			if actionType == 'key.pressed' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
+				self.keys[key] = True
+			if actionType == 'key.released' and key in ['w', 's', 'ArrowUp', 'ArrowDown']:
+				self.keys[key] = False
+		except Exception as e:
+			await self.send(json.dumps({'type': 'error'}))
 
 	async def send_keys_periodically(self):
 		try:
