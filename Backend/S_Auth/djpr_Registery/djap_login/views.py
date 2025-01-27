@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/26 20:06:26 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 02:01:53 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -138,12 +138,11 @@ def otp(request):
 			
 			# Le compte devient permanent
 			user.verified = True
-			user.save()
 
 			# Génération du token temporaire et renvois
 			token = generate_jwt_token_auth(user)
 			res = "Login Complete"
-
+			user.save()
 			return JsonResponse({"message": res, "token": token, "language": user.language}, status = 200)
 
 		except Exception as e:
