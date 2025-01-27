@@ -29,8 +29,7 @@ def choose_lang(request):
 		data = json.loads(request.body)
 		username = data.get('username')
 		new_lang = data.get('newLang')
-		print(username)
-		print(new_lang)
+
 		if not username or not new_lang:
 			return JsonResponse({"error": "Missing datas"}, status=400)
 
@@ -54,6 +53,7 @@ def choose_verif(request):
 		data = json.loads(request.body)
 		username = data.get('username')
 		new_2fa = data.get('new2fa')
+
 		if not username or not isinstance(username, str):
 			return JsonResponse({"error": "Missing datas"}, status=400)
 		
@@ -63,6 +63,7 @@ def choose_verif(request):
 			pass
 		else:
 			return JsonResponse({"error": "Wrong datas"}, status=400)
+
 		user = FullUser.objects.filter(username=username).first()
 		if (user == None):
 			return JsonResponse({"error": "Invalid Credentials"}, status=401)
@@ -71,6 +72,7 @@ def choose_verif(request):
 			user.secu = new_2fa
 			user.save()
 			return JsonResponse({"message": "Verification updated successfully"}, status=200)
+
 		except IntegrityError as e:
 			return JsonResponse({"error": f"Changement failed: {str(e)}"}, status=400)
 		except Exception as e:
