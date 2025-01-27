@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/27 16:03:05 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 16:03:51 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,6 @@ from django.conf import settings
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import JsonResponse
-# from djap_register.models import UserProfile
 from .save_new_user import save_new_user
 from .logout import logout
 from .reset_cookie import reset_cookie
@@ -54,6 +53,8 @@ def login_view(request):
 			decoded_credentials = b64decode(encoded_credentials).decode('utf-8')
 			# Séparer username et password
 			username, password = decoded_credentials.split(':', 1)
+			if password == ' ':
+				return Response({"error": "Invalid credentials"}, status=400)
 		except (ValueError, UnicodeDecodeError):
 			return Response({"error": "Invalid credentials format"}, status=400)
 
@@ -116,6 +117,8 @@ def create_view(request):
 		return JsonResponse({"error": "Password not confirmed"}, status=400)
 	if '@' not in mail:
 		return JsonResponse({"error": "Invalid email"}, status=400)
+	if (password == ' ')
+		return JsonResponse({"error": "Invalid credentials"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/registery/create/"
