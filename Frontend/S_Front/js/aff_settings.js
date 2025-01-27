@@ -20,7 +20,7 @@ async function affSettings()
 				<div class="canvas-container">
 					<canvas id="settingsCanvas" class="w-100" height="400"></canvas>
 					<div class="replayBlock">
-						<div class="form-check form-switch px-0 mb-3">
+						<div class="form-check form-switch px-0 mb-3" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="right" data-translate="tooltips" data-bs-original-title="Aucun effet sur l'authentification 42">
 							<label class="form-check-label fw-bold fs-5" data-translate="true" for="flexSwitchCheckDefault">Double Authentification</label>
 							<input class="form-check-input mx-1" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked></input>
 						</div>
@@ -57,6 +57,8 @@ async function affSettings()
 		</div>
 	</div>
     `
+	tooltip = document.querySelector('[data-bs-toggle="tooltip"]')
+	new bootstrap.Tooltip(tooltip)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
 	addScript("/js/settings.js", callbackSettings)
