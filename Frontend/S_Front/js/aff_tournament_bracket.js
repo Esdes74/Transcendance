@@ -3,6 +3,12 @@ function callbackTournamentBraquet(result)
 	aff_leaderboard(result)
 }
 
+function callbackBracket()
+{
+	bracketCanvas = document.getElementById("bracketCanvas")
+	initAnimation(bracketCanvas)
+}
+
 function paringPrintLoop(pair, uuid)
 {
 	const algoDiv = document.getElementById('algo');
@@ -10,20 +16,20 @@ function paringPrintLoop(pair, uuid)
 
 	// creation du texte VS
 	const current_game = document.createElement('div');
-	current_game.className = 'col-12 fs-3';
+	current_game.className = 'mb-2 fs-5 fw-bold';
 	current_game.textContent = pair[0] + " vs " + pair[1];
 	current_game.style.color = 'white';
 	current_game.setAttribute('data-translate', 'true');
 
 	// creation du btn VS
 	const startBtn = document.createElement('button');
-	startBtn.className = 'btn btn-outline-light m-2 text-center rounded-pill';
+	startBtn.className = 'btn btn-outline-light text-center rounded-pill';
 	startBtn.textContent = 'Commencer !';
 	startBtn.setAttribute('data-translate', 'true');
 	tradDiv(startBtn);
 
 	const newDiv = document.createElement('div');
-	newDiv.className = 'p-2 rounded-pill m-5 d-inline-block bubble';
+	newDiv.className = 'py-2 rounded-pill my-2 d-inline-block bubble';
 	newDiv.appendChild(current_game);
 	newDiv.appendChild(startBtn);
 
@@ -38,6 +44,8 @@ async function affTournamentBracket_start(player_list, uuid)
 {
 	let docMain = document.querySelector('main')
 	docMain.innerHTML = getHTML();
+	addScript('/js/indexPong.js', callbackBracket);
+	document.querySelector(".replayBlock").style.display = "block"
 	curr_round = 1;
 	roundDiv = document.getElementById('round')
 	let result;
@@ -121,10 +129,18 @@ async function affTournamentBracket_sendRequest(data, function_name)
 function getHTML()
 {
 	return (`
-	<h1 class="my-5 display-4 fw-bold text-center" data-translate="true">Déroulement des matchs</h1>
-	<h1 class="fw-bold text-center" data-translate="true" id="round">Tour</h1>
-
-	<div class="container text-center" id="algo" data-translate="true" >
+	<div class="container text-center my-5">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<div class="canvas-container mt-5">
+					<canvas id="bracketCanvas" class="w-100" height="400"></canvas>
+					<div class="replayBlock">
+						<h2 class="fw-bold text-center mb-3" data-translate="true" id="round">Tour</h1>
+						<div class="container text-center" id="algo" data-translate="true" > </div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	`)
 }
