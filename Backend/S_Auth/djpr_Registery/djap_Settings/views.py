@@ -29,7 +29,8 @@ def choose_lang(request):
 		data = json.loads(request.body)
 		username = data.get('username')
 		new_lang = data.get('newLang')
-
+		print(username)
+		print(new_lang)
 		if not username or not new_lang:
 			return JsonResponse({"error": "Missing datas"}, status=400)
 
@@ -53,8 +54,7 @@ def choose_verif(request):
 		data = json.loads(request.body)
 		username = data.get('username')
 		new_2fa = data.get('new2fa')
-
-		if not username or not new_2fa:
+		if not username or not isinstance(username, str):
 			return JsonResponse({"error": "Missing datas"}, status=400)
 		
 		if isinstance(new_2fa, str) and (new_2fa.lower() == 'true' or new_2fa.lower() == 'false'):

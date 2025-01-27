@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/26 23:39:49 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 01:28:39 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -332,7 +332,7 @@ def choose_lang(request):
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Delete failed: " + response.text
+			res = "Language change failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
@@ -344,14 +344,14 @@ def choose_verif(request):
 	username = getattr(request, 'username', None)
 	new_2fa = request.data.get('new2fa')
 	if not username or new_2fa == None:
-		return Response({"error": "Missing credentials"}, status=400)
+		return Response({"error": "Missing datas"}, status=400)
 
 	if isinstance(new_2fa, str) and (new_2fa.lower() == 'true' or new_2fa.lower() == 'false'):
 		new_2fa = new_2fa.lower() == 'true'
 	elif isinstance(new_2fa, bool):
 		pass
 	else:
-		return Response({"error": "Wrong credentials"}, status=400)
+		return Response({"error": "Wrong datas"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/settings/choose_verif/"
@@ -368,7 +368,7 @@ def choose_verif(request):
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Delete failed: " + response.text
+			res = "Verif change failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:

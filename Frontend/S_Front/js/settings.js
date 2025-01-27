@@ -74,6 +74,7 @@ async function sendDatas(settings)
 	buttonDisabled = document.getElementById("save-change")
 	buttonDisabled.disabled = true
 	newSecu = document.getElementById("flexSwitchCheckDefault").checked
+	const myMessage = document.getElementById('validation-message')
 	if (settings["twofa"] !== newSecu)
 	{
 		await (changeSecu(newSecu))
@@ -93,7 +94,7 @@ async function sendDatas(settings)
 	}
 	else
 		await getFlagAndUpdate(newLang)
-	await affValidationMessage()
+	await affValidationMessage(myMessage)
 	buttonDisabled.disabled = false
 }
 
@@ -159,9 +160,8 @@ async function initSettings()
 	document.getElementById("save-change").addEventListener("click", () => sendDatas(settings))
 }
 
-async function affValidationMessage()
+async function affValidationMessage(myMessage)
 {
-	myMessage = document.getElementById('validation-message')
 	myMessage.innerText = "Sauvegarde Effectuée !"
 	tradElements([myMessage])
 	myMessage.style.padding = '4px'
