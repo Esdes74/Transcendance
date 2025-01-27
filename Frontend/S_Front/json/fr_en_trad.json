@@ -98,5 +98,7 @@
 	"Normale": "Medium",
 	"Difficulté :": "Difficulty :",
 	"Difficile": "hard",
-	"Aucun effet sur l'authentification 42": "No effect on 42 authentication"
+	"Aucun effet sur l'authentification 42": "No effect on 42 authentication",
+	"Supprimer son compte": "Delete your account",
+	"Confirmer": "Confirm"
 }
