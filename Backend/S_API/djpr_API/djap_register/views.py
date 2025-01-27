@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/24 10:21:04 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/27 01:28:39 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,10 +31,10 @@ from base64 import b64decode
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from django.http import Http404
+from pydantic import BaseModel, ValidationError, EmailStr
 
-# TODO: Passer en GET
 @no_token_requiered
-# @api_view(['POST'])
+@api_view(['POST'])
 def login_view(request):
 	# Récupérer l'en-tête Authorization
 	authorization_header = request.headers.get('Authorization')
@@ -91,37 +91,48 @@ def login_view(request):
 
 				return json_response
 			else:
-				return JsonResponse({"error": "Token not found in response"}, status=500)
+				return JsonResponse({"error": "Token not found in response"}, status=502)
 		else:
 			res = "Login failed: " + response.json().get('error')
 			return JsonResponse({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
-		return Response({"error": str(e)}, status=500)		#todo changer en 503 pour service unavailable ?
+		return Response({"error": str(e)}, status=500)
+
+
+class UserCreate(BaseModel):
+	username: str
+	password: str
+	confirmed: str
+	mail: str
 
 @no_token_requiered
 @api_view(['POST'])
 def create_view(request):
-	username = request.data.get('username')
-	password = request.data.get('password')
-	confirmed = request.data.get('confirmed')
-	mail = request.data.get('mail')
+	payload = {}
+	try:
+		user_datas = UserCreate(username = request.data.get('username'),
+		password = request.data.get('password'),
+		confirmed = request.data.get('confirmed'),
+		mail = request.data.get('mail'))
+		# Si je n'ai pas les champs obligatoires
+		# TODO: Mettre is None instead of not
+		if not user_datas.username or not user_datas.password or not user_datas.confirmed or not user_datas.mail:
+			return JsonResponse({"error": "Missing credentials"}, status=400)
+		if user_datas.password != user_datas.confirmed:
+			return JsonResponse({"error": "Password not confirmed"}, status=400)
+		if '@' not in user_datas.mail:
+			return JsonResponse({"error": "Invalid email"}, status=400)
 
-	# Si je n'ai pas les champs obligatoires
-	# TODO: Mettre is None instead of not
-	if not username or not password or not confirmed :
-		return JsonResponse({"error": "Missing credentials"}, status=400)
-	if password != confirmed:
-		return JsonResponse({"error": "Password not confirmed"}, status=400)
-
-	# Appeler un autre service pour gérer l'authentification
-	external_service_url = "http://django-Auth:8000/registery/create/"
-	payload = {
-		'username': username,
-		'password': password,
-		'mail': mail,
-	}
-
+		# Appeler un autre service pour gérer l'authentification
+		external_service_url = "http://django-Auth:8000/registery/create/"
+		payload = {
+			'username': user_datas.username,
+			'password': user_datas.password,
+			'mail': user_datas.mail,
+		}
+	except ValidationError as e:
+		return JsonResponse({"error": str(e)}, status=400)
 	try:
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
@@ -140,7 +151,7 @@ def create_view(request):
 
 				return json_response
 			else:
-				return JsonResponse({"error": "Token not found in response"}, status=500)
+				return JsonResponse({"error": "Token not found in response"}, status=502)
 
 		else:
 			res = response.json().get('error')
@@ -154,8 +165,9 @@ def create_view(request):
 @api_view(['POST'])
 def otp_verif(request):
 	password = request.data.get('password')
+	if not isinstance(password, str):
+		return Response({"error": "Invalid password"}, status=400)
 	username = getattr(request, 'username', None)
-
 	if not username or not password:
 		return Response({"error": "Missing credentials"}, status=400)
 
@@ -191,11 +203,12 @@ def otp_verif(request):
 @api_view(['POST'])
 def forty_two_auth(request):
 	send_state = request.data.get('sendState')
-
+	if not isinstance(send_state, str):
+		return Response({"error": "Invalid data"}, status=400)
 	if not send_state:
-		return Response({"error": "Missing Credentials"}, status=400)
+		return Response({"error": "Invalid state"}, status=400)
 	if (len(send_state) != 50):
-		return Response({"error": "Invald data format"}, status=400)
+		return Response({"error": "Invalid data format"}, status=400)
 
 	external_service_url = "http://django-Auth:8000/remoteft/forty_two_auth/"
 	payload = {
@@ -220,11 +233,12 @@ def forty_two_auth(request):
 def make_token(request):
 	send_state = request.data.get('sendState')
 	send_code = request.data.get('sendCode')
-
+	if not isinstance(send_state, str) or not isinstance(send_state, str):
+		return Response({"error": "Invalid datas"}, status = 400)
 	if not send_state or not send_code:
-		return Response({"error": "Missing Credentials"}, status=400)
+		return Response({"error": "Missing datas"}, status=400)
 	if (len(send_state) != 50 or len(send_code) != 64):
-		return Response({"error": "Invald data format"}, status=400)
+		return Response({"error": "Invalid data format"}, status=400)
 
 	external_service_url = "http://django-Auth:8000/remoteft/make_token/"
 	payload = {
@@ -247,7 +261,7 @@ def make_token(request):
 				save_new_user(token)
 				return json_response
 			else:
-				return JsonResponse({"error": "Token not found in response"}, status=500)
+				return JsonResponse({"error": "Token not found in response"}, status=502)
 		else:
 			res = "Making token failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
@@ -263,7 +277,7 @@ def logout_view(request):
 	return json_response
 
 @auth_required
-@api_view(['POST'])
+@api_view(['DELETE'])
 def delete(request):
 	username = getattr(request, 'username', None)
 
@@ -277,7 +291,7 @@ def delete(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.delete(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 204:
 			json_response = JsonResponse({}, status=204)
@@ -291,17 +305,18 @@ def delete(request):
 		return Response({"error": str(e)}, status=500)
 
 @auth_required
-@api_view(['POST'])
+@api_view(['PUT'])
 def choose_lang(request):
 	username = getattr(request, 'username', None)
 	new_lang = request.data.get('newLang')
-
+	if not isinstance(new_lang, str):
+		return Response({"error": "Invalid datas"}, status=400)
 	if not username or not new_lang:
-		return Response({"error": "Missing credentials"}, status=400)
+		return Response({"error": "Missing datas"}, status=400)
 
 	print(new_lang)
 	if (new_lang != 'fr' and new_lang != 'an' and new_lang != 'es'):
-		return Response({"error": "Wrong credentials"}, status=400)
+		return Response({"error": "Wrong datas"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/settings/choose_lang/"
@@ -311,36 +326,33 @@ def choose_lang(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.put(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Delete failed: " + response.text
+			res = "Language change failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
 @auth_required
-@api_view(['POST'])
+@api_view(['PUT'])
 def choose_verif(request):
 	username = getattr(request, 'username', None)
 	new_2fa = request.data.get('new2fa')
-	print(username)
-	print(new_2fa)
-
 	if not username or new_2fa == None:
-		return Response({"error": "Missing credentials"}, status=400)
+		return Response({"error": "Missing datas"}, status=400)
 
 	if isinstance(new_2fa, str) and (new_2fa.lower() == 'true' or new_2fa.lower() == 'false'):
 		new_2fa = new_2fa.lower() == 'true'
 	elif isinstance(new_2fa, bool):
 		pass
 	else:
-		return Response({"error": "Wrong credentials"}, status=400)
+		return Response({"error": "Wrong datas"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
 	external_service_url = "http://django-Auth:8000/settings/choose_verif/"
@@ -350,14 +362,14 @@ def choose_verif(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.put(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
 			json_response = reset_cookie(request, json_response)
 			return json_response
 		else:
-			res = "Delete failed: " + response.text
+			res = "Verif change failed: " + response.text
 			return Response({"error": res}, status=response.status_code)
 
 	except requests.exceptions.RequestException as e:

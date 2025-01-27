@@ -12,6 +12,7 @@ class myConsumer(AsyncWebsocketConsumer):
 		self.ballSpeedX = 0
 		self.ballSpeedY = 0
 		self.acceleration = 0
+
 	async def disconnect(self, close_code):
 		pass
 	

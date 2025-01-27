@@ -11,6 +11,7 @@ function load2faLogin()
 			password: password
 		};
 		try {
+			const myMessage = document.getElementById('error-message')
 			const response = await fetch('/api/auth/2fa/', {
 				method: 'POST',
 				headers: {
@@ -24,9 +25,9 @@ function load2faLogin()
 			else if (response.status >= 500 && response.status < 600)
 				updatePage("50X")
 			else if (response.status == 403)
-				await affMessage("Connection Refusée", true)
+				await affMessage(myMessage, "Connection Refusée", true)
 			else {
-				await affMessage("Code Invalide !", true)
+				await affMessage(myMessage, "Code Invalide !", true)
 			}
 		} catch (error) {
 		}
@@ -34,9 +35,11 @@ function load2faLogin()
 			element.disabled = false;
                 })
 	});
-	document.getElementById('send-again').addEventListener('click', async function () {
-	document.getElementById('send-again').style.pointerEvents = 'none'
+	const sendAgainButton = document.getElementById('send-again')
+	sendAgainButton.addEventListener('click', async function () {
+	sendAgainButton.style.pointerEvents = 'none'
 	try {
+		const myMessage = document.getElementById('error-message')
 		const response = await fetch('/api/auth/refresh_2fa/', {
 			method: 'POST',
 			headers: {
@@ -47,14 +50,14 @@ function load2faLogin()
 		if (response.status >= 500 && response.status < 600)
 			updatePage("50X")
 		else if (response.status == 403)
-			await affMessage("Connection Refusée", true)
+			await affMessage(myMessage, "Connection Refusée", true)
 		else if (!response.ok)
 		{
-			await affMessage("Erreur", true)
+			await affMessage(myMessage, "Erreur, essayez de vous reconnecter", true)
 		}
 		else
-			await affMessage("Mail Réenvoyé !", false)
-		document.getElementById('send-again').style.pointerEvents = 'auto'
+			await affMessage(myMessage, "Mail Réenvoyé !", false)
+		sendAgainButton.style.pointerEvents = 'auto'
 	}
 	catch (error) {
 		updatePage("50X")
@@ -62,9 +65,8 @@ function load2faLogin()
 	})
 }
 
-async function affMessage(message, isError)
+async function affMessage(myMessage, message, isError)
 {
-	myMessage = document.getElementById('error-message')
 	myMessage.innerText = message
 	tradElements([myMessage]) 
 	myMessage.style.padding = '4px'
