@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/24 14:03:19 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/27 12:10:46 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ pyotp>=2.8.0,<3.0
 redis>=4.0,<5.0
 
 # Pour gerer des taches en fond, ici pour supprimer les comptes temporaires
-celery[redis]>=5.2,<6.0
+# celery[redis]>=5.2,<6.0
 
 # Pour stocker les resultats des taches
-django-celery-results>=2.4,<3.0
+# django-celery-results>=2.4,<3.0

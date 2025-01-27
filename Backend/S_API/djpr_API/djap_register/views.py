@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/27 13:27:06 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 14:13:23 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,81 +33,82 @@ from django.middleware.csrf import get_token
 from django.http import Http404
 
 @no_token_requiered
-#@api_view(['POST'])
+# @api_view(['POST'])
 def login_view(request):
-	# Récupérer l'en-tête Authorization
-	authorization_header = request.headers.get('Authorization')
+	print("bonjour")
+	if (request.method == 'POST') :
+		# Récupérer l'en-tête Authorization
+		authorization_header = request.headers.get('Authorization')
 
-	if not authorization_header:
-		return Response({"error": "Missing Authorization header"}, status=401)
+		if not authorization_header:
+			return Response({"error": "Missing Authorization header"}, status=401)
 
-	# Vérifier que l'en-tête commence par 'Basic'
-	if not authorization_header.startswith('Basic '):
-		return Response({"error": "Invalid Authorization scheme. Basic is required."}, status=401)
+		# Vérifier que l'en-tête commence par 'Basic'
+		if not authorization_header.startswith('Basic '):
+			return Response({"error": "Invalid Authorization scheme. Basic is required."}, status=401)
 
-	# Récupérer les credentials encodés en Base64
-	encoded_credentials = authorization_header.split(' ')[1]
+		# Récupérer les credentials encodés en Base64
+		encoded_credentials = authorization_header.split(' ')[1]
 
-	try:
-		# Décoder les credentials
-		decoded_credentials = b64decode(encoded_credentials).decode('utf-8')
-		# Séparer username et password
-		username, password = decoded_credentials.split(':', 1)
-	except (ValueError, UnicodeDecodeError):
-		return Response({"error": "Invalid credentials format"}, status=400)
+		try:
+			# Décoder les credentials
+			decoded_credentials = b64decode(encoded_credentials).decode('utf-8')
+			# Séparer username et password
+			username, password = decoded_credentials.split(':', 1)
+		except (ValueError, UnicodeDecodeError):
+			return Response({"error": "Invalid credentials format"}, status=400)
 
-	if not username or not password:
-		return Response({"error": "Missing credentials"}, status=400)
+		if not username or not password:
+			return Response({"error": "Missing credentials"}, status=400)
 
-	# Appeler un autre service pour gérer l'authentification
-	external_service_url = "http://django-Auth:8000/registery/register/"
-	payload = {
-		'username': username,
-		'password': password
-	}
+		# Appeler un autre service pour gérer l'authentification
+		external_service_url = "http://django-Auth:8000/registery/register/"
+		payload = {
+			'username': username,
+			'password': password
+		}
 
-	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		try:
+			response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
-		if response.status_code == 200:
-			response_data = response.json()
-			token = response_data.pop('token')
-			tfa = response.json().get('2fa')
-			if token:
-				# Créez la réponse JSON avec le token
-				json_response = JsonResponse(response_data, status=200)
-				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
-				# TODO: Je pense qu'il faudra le passer en https et en secure
-				if (tfa):
-					token_name = 'tfa_jwt_token'
-					json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
+			if response.status_code == 200:
+				response_data = response.json()
+				token = response_data.pop('token')
+				tfa = response.json().get('2fa')
+				if token:
+					# Créez la réponse JSON avec le token
+					json_response = JsonResponse(response_data, status=200)
+					# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
+					# TODO: Je pense qu'il faudra le passer en https et en secure
+					if (tfa):
+						token_name = 'tfa_jwt_token'
+						json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
+					else:
+						token_name = 'jwt_token'
+						json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=3600)
+
+					# Archivage du user_id pour l'identifier comme authentifié plus tard
+					save_new_user(token)
+
+					return json_response
 				else:
-					token_name = 'jwt_token'
-					json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=3600)
-
-				# Archivage du user_id pour l'identifier comme authentifié plus tard
-				save_new_user(token)
-
-				return json_response
+					return JsonResponse({"error": "Token not found in response"}, status=502)
 			else:
-				return JsonResponse({"error": "Token not found in response"}, status=502)
-		else:
-			res = "Login failed: " + response.json().get('error')
-			return JsonResponse({"error": res}, status=response.status_code)
+				res = "Login failed: " + response.json().get('error')
+				return JsonResponse({"error": res}, status=response.status_code)
 
-	except requests.exceptions.RequestException as e:
-		return Response({"error": str(e)}, status=500)
+		except requests.exceptions.RequestException as e:
+			return Response({"error": str(e)}, status=500)
 
 @no_token_requiered
 @api_view(['POST'])
 def create_view(request):
-	payload = {}
 	username = request.data.get('username')
 	password = request.data.get('password')
 	confirmed = request.data.get('confirmed')
 	mail = request.data.get('mail')
+
 	# Si je n'ai pas les champs obligatoires
-	
 	if not username or not password or not confirmed or not mail:
 		return JsonResponse({"error": "Missing credentials"}, status=400)
 	if not isinstance(username, str) or not isinstance(password, str) or not isinstance(confirmed, str) or not isinstance(mail, str):
@@ -124,6 +125,7 @@ def create_view(request):
 		'password': password,
 		'mail': mail,
 	}
+
 	try:
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 

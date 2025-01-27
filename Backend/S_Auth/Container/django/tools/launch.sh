@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:02 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/24 15:14:38 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/27 12:16:14 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,13 +31,13 @@ if [ "$DJANGO_SUPERUSER_USERNAME" ] && [ "$DJANGO_SUPERUSER_PASSWORD" ] && [ "$D
 fi
 
 # Lancer le serveur Django
-python3 manage.py runserver 0.0.0.0:8000 &
+python3 manage.py runserver 0.0.0.0:8000
 
-# Définir DJANGO_SETTINGS_MODULE
-export DJANGO_SETTINGS_MODULE="djpr_Registery.settings"
+# # Définir DJANGO_SETTINGS_MODULE
+# export DJANGO_SETTINGS_MODULE="djpr_Registery.settings"
 
-# Démarrer Redis
-redis-server --daemonize yes
+# # Démarrer Redis
+# redis-server --daemonize yes
 
-# Démarrer Celery
-celery -A djpr_Registery worker --loglevel=info
+# # Démarrer Celery
+# celery -A djpr_Registery worker --loglevel=info

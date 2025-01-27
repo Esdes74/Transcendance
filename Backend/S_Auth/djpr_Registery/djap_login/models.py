@@ -17,10 +17,10 @@ from django.contrib.auth.models import AbstractUser
 # Classe d'authentification custom
 class FullUser(AbstractUser):
 	realname = models.CharField(max_length=25, default=None, null=True)
-	email = models.EmailField(blank=True, null=True)
-	#email = models.EmailField(validators=[EmailValidator()])
+	# email = models.EmailField(blank=True, null=True)
+	email = models.EmailField(validators=[EmailValidator()], blank=False, null=False)
 	secret = models.CharField(max_length=32, blank=True, null=True)
 	language = models.CharField(max_length=2, blank=False, null=False, default='fr')
-	secu = models.BooleanField(default=True)
+	secu = models.BooleanField(default=True, blank=False, null=False)
 	verified = models.BooleanField(default=False)
-	creation = models.DateTimeField(auto_now_add=True)
+	# creation = models.DateTimeField(auto_now_add=True)

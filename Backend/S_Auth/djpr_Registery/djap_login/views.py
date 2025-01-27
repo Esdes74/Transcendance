@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:27:22 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/27 02:01:53 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 12:14:37 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import check_password
 from django.db import IntegrityError
 from .models import FullUser
-from .task import del_temp_acount_task
+# from .task import del_temp_acount_task
 from .gen_token import generate_jwt_token_auth, generate_temporary_token
 from smtplib import SMTPException
 import pyotp
@@ -90,10 +90,10 @@ def create(request):
 				user.save()
 
 				# Appel de la tache de fond de gestion du compte temporaire
-				print("avant tache")
-				del_temp_acount_task.delay(username)
-				# del_temp_acount_task(username)
-				print("apres tache")
+				# print("avant tache")
+				# del_temp_acount_task.delay(username)
+				# # del_temp_acount_task(username)
+				# print("apres tache")
 
 				return JsonResponse({"message": res, "token": token, "2fa": True, "language": "fr"}, status = 201)
 			else:
