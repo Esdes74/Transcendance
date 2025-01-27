@@ -35,10 +35,12 @@ class myConsumer(AsyncWebsocketConsumer):
 			sleepTime = self.ballPosX / (-200 * self.ballSpeedX) + self.latency
 			if (sleepTime < 1):
 				sleepTime = 1
-		else:
+		elif (self.ballSpeedX > 0):
 			sleepTime = (2 - self.ballPosX) / (200 * self.ballSpeedX) + self.latency
 			if (sleepTime < 1):
 				sleepTime = 1
+		else:
+			sleepTime = 1
 		ballPos = ballPos + (2 * random.random() - 1) / 20
 		if (self.ballSpeedX < 0):
 			await self.send(text_data=json.dumps({'Move': 'NoMove', 'destY': 0, 'SleepTime': 1}))
