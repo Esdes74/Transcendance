@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/27 14:13:23 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/27 15:58:15 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ from .save_new_user import save_new_user
 from .logout import logout
 from .reset_cookie import reset_cookie
 from rest_framework.permissions import AllowAny
-from djpr_API.decorator import jwt_required_2fa, auth_required, no_token_requiered, no_jwt_token_requiered, no_ft_token_requiered
+from djpr_API.decorator import jwt_required_2fa, auth_required, no_token_requiered, no_jwt_token_requiered
 from django.shortcuts import get_object_or_404
 from djap_register.models import FtTokenModel
 from jwt.exceptions import InvalidTokenError, DecodeError
@@ -153,8 +153,8 @@ def create_view(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
+# @no_ft_token_requiered
 @jwt_required_2fa
-@no_ft_token_requiered
 @api_view(['POST'])
 def otp_verif(request):
 	password = request.data.get('password')
