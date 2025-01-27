@@ -6,13 +6,13 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 17:26:29 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/24 12:47:48 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/27 15:12:59 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-#from django.core.validators import EmailValidator, URLValidator
+from django.core.validators import EmailValidator # , URLValidator
 
 # Classe d'authentification custom
 class FullUser(AbstractUser):
