@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/27 14:13:23 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/27 16:01:08 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,6 @@ from django.http import Http404
 @no_token_requiered
 # @api_view(['POST'])
 def login_view(request):
-	print("bonjour")
 	if (request.method == 'POST') :
 		# Récupérer l'en-tête Authorization
 		authorization_header = request.headers.get('Authorization')
@@ -284,7 +283,7 @@ def delete(request):
 	}
 
 	try:
-		response = requests.delete(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.delete(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
 
 		if response.status_code == 204:
 			json_response = JsonResponse({}, status=204)

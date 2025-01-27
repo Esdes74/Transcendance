@@ -49,7 +49,8 @@ async function affSettings()
 						<hr/>
 						<button class="btn btn-outline-light fw-bold fs-6 mt-2 mb-2" id="save-change" data-translate="true">Sauvegarder les Changements</button>	
 						<p class="my-0 py-1"><span class="bg-success text-white rounded fw-bold fs-6" id="validation-message" data-translate="true"></span></p>
-						<p class="mt-1 mb-0" id="logout"><span class="logout-btn fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-danger" data-translate="true"> Se Déconnecter </span></p>
+						<p class="mt-1 mb-2" id="logout"><span class="logout-btn fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-danger" data-translate="true"> Se Déconnecter </span></p>
+						<p class="del-btn mb-0" id="deleteAccount"><span class="del-btn fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-dark" data-translate="true">Supprimer son compte</span></p>
 						</div>
 					</div>
 				</div>
@@ -61,6 +62,7 @@ async function affSettings()
 	new bootstrap.Tooltip(tooltip)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
+	document.getElementById('deleteAccount').addEventListener("click", () => deleteUser())
 	addScript("/js/settings.js", callbackSettings)
 	addScript("/js/settingsPong.js", callbackSettingsPong)
 	tradNewPage()

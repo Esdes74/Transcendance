@@ -287,4 +287,21 @@ async function logoutUser()
 	}
 }
 
+async function deleteUser()
+{
+	try {
+		const response = await fetch('/api/auth/delete/', {
+			method: 'DELETE'
+		})
+		if (response.ok)
+			updatePage("")
+		else if (response.status >= 500 && response.status < 600)
+			updatePage("50X")
+		else
+			updatePage("")
+	} catch (error) {
+		updatePage("50X")
+	}
+}
+
 initiatePage()

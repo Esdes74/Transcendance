@@ -7,7 +7,8 @@ from django.http import HttpResponse, JsonResponse
 
 def delete(request):
 	if (request.method == 'DELETE'):
-		username = request.DELETE.get('username')
+		data = json.loads(request.body)
+		username = data.get('username')
 
 		if not username or not isinstance(username, str):
 			return JsonResponse({"error": "Missing datas"}, status=400)

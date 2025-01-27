@@ -44,6 +44,11 @@ body {
 	user-select: none;
 }
 
+.del-btn:hover {
+	transform: scale(1.02);
+	user-select: none;
+}
+
 .dropdown-menu {
 	--bs-dropdown-min-width: 72px;
 }
