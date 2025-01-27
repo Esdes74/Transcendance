@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 19:50:54 by lmohin            #+#    #+#              #
-#    Updated: 2025/01/26 21:48:38 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 15:37:54 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,9 +28,9 @@ all:
 $(NETWK):
 	docker network create $@
 
-re: stop all
+re: fclean all
 
-restart: stop all
+restart: down all
 
 # Regle pour activer docker
 start:
@@ -41,7 +41,7 @@ sys: start all
 sysall: start all
 
 # Commandes de clean du docker
-fclean: rmi builder_rm system_rm volume_rm
+fclean: stop rmi builder_rm system_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
@@ -65,7 +65,5 @@ system_rm:
 
 network_rm:
 	docker network rm $$(docker network ls | grep -vE 'NETWORK|DRIVER|ID|SERVER|SCOPE|bridge|host|none')	# Supprimer tous les réseaux
-
-re: stop fclean all
 
 .PHONY: all stop rm rmi volume_rm builder_rm system_rm network_rm fclean down re build restart start sys sysall
