@@ -108,6 +108,7 @@ def create_view(request):
 	mail = request.data.get('mail')
 
 	# Si je n'ai pas les champs obligatoires
+	# TODO: Mettre is None instead of not
 	if not username or not password or not confirmed :
 		return JsonResponse({"error": "Missing credentials"}, status=400)
 	if password != confirmed:
