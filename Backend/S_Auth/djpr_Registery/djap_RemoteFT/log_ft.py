@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    log_ft.py                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/26 16:50:18 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/13 11:13:10 by eslamber         ###   ########.fr        #
+#    Updated: 2025/01/27 15:45:52 by eslamber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,6 @@ def create_ft_user(data):
 		generated_username = username
 
 	# Création du profil
-	# TODO: voir s'il faut créer un utilisateur temporaire le temps de la double authentification ou non
 	user = FullUser.objects.create_user(
 		realname=username,
 		username=generated_username,

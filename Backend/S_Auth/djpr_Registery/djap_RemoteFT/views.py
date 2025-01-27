@@ -38,13 +38,12 @@ def make_token(request):
 		send_code = request.POST.get('sendCode')
 		server_ip = os.getenv("SERVER_IP")
 
-		# TODO: Voir si il faut garder ces vérifs ci alors qu'on vérifie déjà la meme chose dans l'api
 		if not send_state or not send_code or not isinstance(send_state, str) or not isinstance(send_code, str):
 			return JsonResponse({"error": "Invalid datas"}, status=400)
 		if (len(send_state) != 50 or len(send_code) != 64):
 			return JsonResponse({"error": "Invalid data format"}, status=400)
 
-		# Take aved state from database
+		# Take saved state from database
 		# If found so it's the same, don't need to check if same
 		state = StateModel.objects.filter(state=send_state).first()
 		if (state == None):
@@ -70,7 +69,6 @@ def make_token(request):
 		try:
 			response = requests.post(external_service_url, data=payload)
 			# Delete saved state from database
-			# TODO: Voir si la state doit etre supprimé systématiquement ou si elle doit etre gardée en cas d'échec
 			state.delete()
 
 			if response.status_code == 200:

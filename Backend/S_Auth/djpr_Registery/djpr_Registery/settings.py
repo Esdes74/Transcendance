@@ -84,16 +84,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djpr_Registery.wsgi.application'
 
-# # Configuration de celery pour les taches en arriere plans
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # stock des resultats
-# CELERY_TIMEZONE = 'Europe/Paris'  # Fuseau horaire
-
-# CELERY_TASK_ALWAYS_EAGER = False
-# CELERY_WORKER_HIJACK_ROOT_LOGGER = False
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -150,22 +140,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# # Ajout de configuration de logs
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'level': 'INFO',
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'celery': {
-#             'handlers': ['console'],
-#             'level': 'INFO',
-#             'propagate': True,
-#         },
-#     },
-# }
