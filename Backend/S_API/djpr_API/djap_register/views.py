@@ -117,7 +117,7 @@ def create_view(request):
 		return JsonResponse({"error": "Password not confirmed"}, status=400)
 	if '@' not in mail:
 		return JsonResponse({"error": "Invalid email"}, status=400)
-	if (password == ' ')
+	if (password == ' '):
 		return JsonResponse({"error": "Invalid credentials"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
