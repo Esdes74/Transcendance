@@ -6,7 +6,7 @@
 #    By: eslamber <eslambert@student.42lyon.fr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/26 00:28:20 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 13:22:18 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,5 +36,3 @@ django-cors-headers>=3.13,<4.0
 
 # Support pour les WebSockets
 channels>=4.0,<5.0
-
-pydantic>=1.9,<2

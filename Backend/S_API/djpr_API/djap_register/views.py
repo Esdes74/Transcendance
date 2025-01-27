@@ -6,7 +6,7 @@
 #    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:31:57 by eslamber          #+#    #+#              #
-#    Updated: 2025/01/27 01:28:39 by lmohin           ###   ########.fr        #
+#    Updated: 2025/01/27 13:27:06 by lmohin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,10 +31,9 @@ from base64 import b64decode
 from django.views.decorators.csrf import csrf_exempt
 from django.middleware.csrf import get_token
 from django.http import Http404
-from pydantic import BaseModel, ValidationError, EmailStr
 
 @no_token_requiered
-@api_view(['POST'])
+#@api_view(['POST'])
 def login_view(request):
 	# Récupérer l'en-tête Authorization
 	authorization_header = request.headers.get('Authorization')
@@ -99,40 +98,32 @@ def login_view(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-
-class UserCreate(BaseModel):
-	username: str
-	password: str
-	confirmed: str
-	mail: str
-
 @no_token_requiered
 @api_view(['POST'])
 def create_view(request):
 	payload = {}
-	try:
-		user_datas = UserCreate(username = request.data.get('username'),
-		password = request.data.get('password'),
-		confirmed = request.data.get('confirmed'),
-		mail = request.data.get('mail'))
-		# Si je n'ai pas les champs obligatoires
-		# TODO: Mettre is None instead of not
-		if not user_datas.username or not user_datas.password or not user_datas.confirmed or not user_datas.mail:
-			return JsonResponse({"error": "Missing credentials"}, status=400)
-		if user_datas.password != user_datas.confirmed:
-			return JsonResponse({"error": "Password not confirmed"}, status=400)
-		if '@' not in user_datas.mail:
-			return JsonResponse({"error": "Invalid email"}, status=400)
+	username = request.data.get('username')
+	password = request.data.get('password')
+	confirmed = request.data.get('confirmed')
+	mail = request.data.get('mail')
+	# Si je n'ai pas les champs obligatoires
+	
+	if not username or not password or not confirmed or not mail:
+		return JsonResponse({"error": "Missing credentials"}, status=400)
+	if not isinstance(username, str) or not isinstance(password, str) or not isinstance(confirmed, str) or not isinstance(mail, str):
+		return JsonResponse({"error": "Invalid credentials"}, status=400)
+	if password != confirmed:
+		return JsonResponse({"error": "Password not confirmed"}, status=400)
+	if '@' not in mail:
+		return JsonResponse({"error": "Invalid email"}, status=400)
 
-		# Appeler un autre service pour gérer l'authentification
-		external_service_url = "http://django-Auth:8000/registery/create/"
-		payload = {
-			'username': user_datas.username,
-			'password': user_datas.password,
-			'mail': user_datas.mail,
-		}
-	except ValidationError as e:
-		return JsonResponse({"error": str(e)}, status=400)
+	# Appeler un autre service pour gérer l'authentification
+	external_service_url = "http://django-Auth:8000/registery/create/"
+	payload = {
+		'username': username,
+		'password': password,
+		'mail': mail,
+	}
 	try:
 		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
 
