@@ -228,7 +228,6 @@ def startTournament(request):
 		shuffle_list(player_list)
 		try:
 			pairs = split_into_pairs(player_list, username, uuid)
-			print(pairs)
 		except Exception:
 			return JsonResponse({"error": "Tournament does not exist"}, status=400)
 		return JsonResponse({"pairs": pairs}, status=200)

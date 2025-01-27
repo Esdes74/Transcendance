@@ -19,15 +19,3 @@ def	reset_cookie(request, json_response):
 
 	json_response.set_cookie(key=key, value=token, httponly=True, samesite='Strict', max_age=3600)
 	return json_response
-
-
-
-
-
-
-	# if (hasattr(request, 'ft') and request.ft):
-	# 	key = '42_token'
-	# 	token = request.COOKIES.get('42_token')
-	# else:
-	# 	token = request.COOKIES.get('jwt_token')
-	# 	key = 'jwt_token'

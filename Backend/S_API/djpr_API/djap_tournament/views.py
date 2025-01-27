@@ -13,7 +13,6 @@ import json
 @auth_required
 @api_view(['POST'])
 def selectTournament(request):
-	print("Here we are in selectTournament")
 
 	try:
 		data = json.loads(request.body)
@@ -48,7 +47,6 @@ def selectTournament(request):
 @auth_required
 @api_view(['POST'])
 def createPlayer(request):
-	print("Here we are in createPlayer")
 
 	try:
 		data = json.loads(request.body)
@@ -81,7 +79,6 @@ def createPlayer(request):
 @auth_required
 @api_view(['POST'])
 def deletePlayer(request):
-	print("Here we are in deletePlayer")
 
 	try:
 		data = json.loads(request.body)
@@ -112,7 +109,6 @@ def deletePlayer(request):
 @auth_required
 @api_view(['POST'])
 def initDB(request):
-	print("Here we are in initDB")
 
 	try:
 		data = json.loads(request.body)
@@ -143,7 +139,6 @@ def initDB(request):
 @auth_required
 @api_view(['POST'])
 def validTournament(request):
-	print("Here we are in initDB")
 
 	try:
 		data = json.loads(request.body)
@@ -179,7 +174,6 @@ def validTournament(request):
 @auth_required
 @api_view(['POST'])
 def startTournament(request):
-	print("Here we are in startTournament")
 
 	if request.method == 'POST':
 
@@ -210,7 +204,6 @@ def startTournament(request):
 @auth_required
 @api_view(['POST'])
 def startGame(request):
-	print("Here we are in startGame")
 
 	if request.method == 'POST':
 
@@ -241,7 +234,6 @@ def startGame(request):
 @auth_required
 @api_view(['POST'])
 def endGame(request):
-	print("Here we are in endGame")
 
 	if request.method == 'POST':
 
@@ -272,7 +264,6 @@ def endGame(request):
 @auth_required
 @api_view(['POST'])
 def continueTournament(request):
-	print("Here we are in continueTournament")
 
 	if request.method == 'POST':
 

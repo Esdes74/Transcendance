@@ -29,7 +29,7 @@ if not SECRET_KEY:
     raise ValueError("La clé secrète n'est pas définie dans l'environnement !")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['django-Auth', '127.0.0.1', 'localhost']
 

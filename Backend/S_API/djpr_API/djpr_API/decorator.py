@@ -129,7 +129,6 @@ def auth_required(view_func):
 def no_token_requiered(view_func):
 	@wraps(view_func)
 	def _wrapped_no_token(request, *args, **kwargs):
-		print("hello")
 		# Récupération du cookie contenant le token JWT
 		token_jwt = request.COOKIES.get('jwt_token')
 		# token_ft = request.COOKIES.get('42_token')
@@ -138,7 +137,6 @@ def no_token_requiered(view_func):
 			# request.user = AnonymousUser()
 			return JsonResponse({"error": "Unauthorized"}, status=401)
 
-		print("appeler la vue d'origine")
 		# Appeler la vue d'origine
 		return view_func(request, *args, **kwargs)
 

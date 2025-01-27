@@ -117,7 +117,7 @@ def create_view(request):
 		return JsonResponse({"error": "Password not confirmed"}, status=400)
 	if '@' not in mail:
 		return JsonResponse({"error": "Invalid email"}, status=400)
-	if (password == ' ')
+	if (password == ' '):
 		return JsonResponse({"error": "Invalid credentials"}, status=400)
 
 	# Appeler un autre service pour gérer l'authentification
@@ -155,7 +155,6 @@ def create_view(request):
 	except requests.exceptions.RequestException as e:
 		return Response({"error": str(e)}, status=500)
 
-# @no_ft_token_requiered
 @jwt_required_2fa
 @api_view(['POST'])
 def otp_verif(request):
@@ -309,7 +308,6 @@ def choose_lang(request):
 	if not username or not new_lang:
 		return Response({"error": "Missing datas"}, status=400)
 
-	print(new_lang)
 	if (new_lang != 'fr' and new_lang != 'an' and new_lang != 'es'):
 		return Response({"error": "Wrong datas"}, status=400)
 

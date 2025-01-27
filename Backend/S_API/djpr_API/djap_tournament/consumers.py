@@ -6,7 +6,6 @@ import websockets
 class TournamentConsumer(AsyncWebsocketConsumer):
 	async def connect(self):
 		self.websocket_lock = asyncio.Lock()
-		print("Coucou")
 		await self.accept()
 
 
@@ -15,9 +14,7 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 	async def receive(self, text_data):
-		print("bliat", text_data)
 		data = json.loads(text_data)
-		# print("HEOO HEEOO C'EST MOI")
 		file = data.get('file', 'malformed request')
 		type = data.get('type', 'malformed request')
 
@@ -49,7 +46,6 @@ class TournamentConsumer(AsyncWebsocketConsumer):
 
 
 		elif file == 'tournament':
-			print(file)
 			msg = data.get('msg', 'malformed request')
 			response = await self.send_to_tournament_service(json.dumps({'file': 'tournament', 'msg': msg}))
 			await self.send(response)

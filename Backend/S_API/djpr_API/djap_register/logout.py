@@ -16,13 +16,3 @@ from django.http import JsonResponse
 def logout(request, json_response):
 	json_response.delete_cookie('jwt_token')
 	return json_response
-
-
-
-
-
-	# if (hasattr(request, 'ft') and request.ft):
-	# 	json_response.delete_cookie('42_token')
-	# 	return json_response
-	# json_response.delete_cookie('jwt_token')
-	# return json_response

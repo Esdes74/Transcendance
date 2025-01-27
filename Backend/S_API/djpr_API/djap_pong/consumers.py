@@ -24,7 +24,6 @@ class PongConsumer(AsyncWebsocketConsumer):
 		self.keys = {'ArrowUp': False,
 				'ArrowDown': False}
 		self.send_task = asyncio.create_task(self.send_keys_periodically())
-		# boucle for qui renvoie un send chaque seconde durant 3 secondes pour le coundown
 		for i in range(4):
 			if i != 0:
 				await asyncio.sleep(1)
@@ -63,41 +62,27 @@ class PongConsumer(AsyncWebsocketConsumer):
 			while self.printball == False:
 				keys_copy = list(self.keys.items())
 				for k, value in keys_copy:
-					# print(f"keys : {self.keys}")
 					if value == True and k in ['w', 's', 'ArrowUp', 'ArrowDown']:
 						response = await self.send_to_pong_service(json.dumps({'type': 'pong.move', 'key': k}))
 						await self.send(response)
 				await asyncio.sleep(0.005)
-		# except asyncio.CancelledError:
-		# 	print("send_keys_periodically task was cancelled")
 		except Exception as e:
-			print(f"Exception in send_keys_periodically: {e}")
-
-# Le bug des players qui ne repondaient plus d'un coup, venait en fait d'une erreur qui n'était pas catch 
-# dans le send_keys_periodically. L'exception disait "dictionary changed size during iteration"
-# Il fallait donc faire une copie de la liste des keys pour pouvoir itérer dessus sans problème.
-
+			await self.send(json.dumps({'type': 'error'}))
 
 	async def update_ball_position(self):
-		try:
-			#i = 0
+		try:	
 			while self.printball == False:
 				response = await self.send_to_pong_service(json.dumps({'type': 'pong.ball'}))
 				data = json.loads(response)
 				if data.get('scorePlayer1') >= 5 or data.get('scorePlayer2') >= 5:
 					self.printball = True
-				#print(data.get('player2Y'))
-				#print(self.ai_enabled)
-				#print(self.keys['ArrowUp'])
-				#print(self.botPos)
+
 				if (self.ai_enabled and self.keys['ArrowUp'] == True and data.get('player2Y') < self.botPos):
 					self.keys['ArrowUp'] = False
 				if (self.ai_enabled and self.keys['ArrowDown'] == True and data.get('player2Y') > self.botPos):
 					self.keys['ArrowDown'] = False
 				await self.send(response)
 				await asyncio.sleep(0.005)
-		# except asyncio.CancelledError:
-			# print("update_ball_position task was cancelled")
 		except Exception as e:
 			await self.send(json.dumps({'type': 'error'}))
 
@@ -111,13 +96,11 @@ class PongConsumer(AsyncWebsocketConsumer):
 
 	async def send_to_pong_service(self, data):
 
-		# Check if the WebSocket connection already exists
 		try :
 			if not hasattr(self, 'websocket'):
 				uri = "ws://django-Pong:8000/ws/pong/calcul"
 				self.websocket = await websockets.connect(uri)
 
-			# Send data using the existing or new WebSocket connection
 			async with self.websocket_lock:
 				await self.websocket.send(data)
 				response = await self.websocket.recv()
@@ -129,12 +112,10 @@ class PongConsumer(AsyncWebsocketConsumer):
 	async def send_to_ai_service(self, data):
 
 		try:
-			# Check if the WebSocket connection already exists
 			if not hasattr(self, 'websocketAI'):
 				uri = "ws://django-AI:8000/ws/AI/multiply"
 				self.websocketAI = await websockets.connect(uri)
 
-			# Send data using the existing or new WebSocket connection
 			async with self.websocket_lock_AI:
 				await self.websocketAI.send(data)
 				response = await self.websocketAI.recv()

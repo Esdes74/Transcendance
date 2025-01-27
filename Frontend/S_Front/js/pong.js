@@ -97,8 +97,6 @@ function pong_initSocket(socket, pong_gameSettings) {
 	/// Gestion de l'ouverture de la connexion WebSocket \\\
 
 	socket.onopen = async function (e) {
-		console.log("WebSocket is connected");
-		// startCountdown(3, pong_gameSettings);
 		pong_gameLoop(pong_gameSettings, socket);
 	};
 
@@ -150,7 +148,6 @@ function pong_initSocket(socket, pong_gameSettings) {
 		document.removeEventListener('keydown', e);
 		document.removeEventListener('keyup', e);
 		socket.close();
-		console.log('WebSocket is closed bah il sest ferme:', e);
 	};
 
 }
@@ -394,7 +391,6 @@ function pong_addTouchControls(pong_gameSettings, socket)
 		canvas.addEventListener('touchmove', throttle(pong_gameSettings.touchHandlers.onTouchMove, 4));
 		canvas.addEventListener('touchend', pong_gameSettings.touchHandlers.onTouchEnd);
 		canvas.addEventListener('touchcancel', pong_gameSettings.touchHandlers.onTouchEnd);
-		console.log('Independent touch controls with reduced dead zone enabled for canvas:', canvas);
 	}
 }
 

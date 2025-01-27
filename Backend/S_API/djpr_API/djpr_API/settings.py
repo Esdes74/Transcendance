@@ -28,38 +28,15 @@ ALGO = os.getenv('ALGO')
 FRONT_IP = os.getenv('FRONT_IP')
 SERVER_IP = os.getenv('SERVER_IP')
 SERVER_IP_LYON = SERVER_IP + ".42lyon.fr"
-# print(FRONT_IP)
 
 # Pour vérifier que la clée secrete soit bien définis
 if not SECRET_KEY or not ALGO:
 	raise ValueError("La clé secrète n'est pas définie dans l'environnement !")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'django-API', FRONT_IP, SERVER_IP, SERVER_IP_LYON]
-
-# # Paramétrage des CORS policies
-# CORS_ALLOWED_ORIGINS = [
-# 	"https://localhost:3000",
-# 	NGINX_URL,
-# ]
-# # CORS_ALLOW_ALL_ORIGINS = True
-
-# CORS_ALLOW_HEADERS = list(default_headers) + [
-# 	'X-token',
-# ]
-
-# CORS_ALLOW_METHODS = [
-# 	'GET',
-# 	'POST',
-# 	'PUT',
-# 	'DELETE',
-# 	'OPTIONS',
-# ]
-
-# # Autoriser l'envoi de cookies avec les requêtes CORS
-# CORS_ALLOW_CREDENTIALS = True
 
 # Configuration cors pour l'envoie correct du token csrf
 CORS_ALLOWED_ORIGINS = [

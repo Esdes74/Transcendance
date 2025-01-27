@@ -57,10 +57,10 @@ async function affIndex()
 				name = jsonResponse["username"]	
 			}
 			else
-				console.log("error1")
+				;
 		}
 		catch (error) {
-			console.log("error2")
+			;
 		}
 		usernameSpan = document.getElementById("username")
 		usernameSpan.innerText = `, ${name}`;
