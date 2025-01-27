@@ -37,14 +37,15 @@ function initPong(boolean, myCanvas, uuid) {
 		pong_resizeCanvas(pong_gameSettings);
 	});
 	let socket;
+	myPath = "wss://" + location.host
 	if (myCanvas.id === "AICanvasHard")
-		socket = new WebSocket("/ws/pong/ai/hard");		//		wss://localhost:000/ws/pong/ai/
+		socket = new WebSocket(myPath + "/ws/pong/ai/hard");
 	else if (myCanvas.id === "AICanvasMedium")
-		socket = new WebSocket("/ws/pong/ai/medium");
+		socket = new WebSocket(myPath + "/ws/pong/ai/medium");
 	else if (myCanvas.id === "AICanvasEasy")
-		socket = new WebSocket("/ws/pong/ai/easy");
+		socket = new WebSocket(myPath + "/ws/pong/ai/easy");
 	else
-		socket = new WebSocket("/ws/pong/");		//		wss://localhost:3000/ws/pong/
+		socket = new WebSocket(myPath +"/ws/pong/");
 	pong_initSocket(socket, pong_gameSettings);
 	pong_EventManager(socket, myCanvas.id,  pong_gameSettings);
 }
