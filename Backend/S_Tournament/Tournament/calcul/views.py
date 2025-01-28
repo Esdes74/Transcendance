@@ -56,10 +56,6 @@ def createPlayer(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-		print(type(name))
-		print(type(username))
-		print(type(index))
-		print(type(uuid))
 		if name is None or index is None or username is None or uuid is None:
 			return JsonResponse({"error": "Missing, undefined or bad values"}, status=400)
 		if not isinstance(name, str) or not isinstance(index, int) or not isinstance(username, str) or not isinstance(uuid, str):
