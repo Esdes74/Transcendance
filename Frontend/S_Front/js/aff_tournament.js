@@ -199,7 +199,6 @@ function affTournament_createEmptyField(index)
 function affTournament_createPlayerContainer(index)
 {
 	const inputBtn = document.getElementById(index);
-	console.log(inputBtn.index)
 	const input = inputBtn.querySelector('input');
 	const name = input.value;
 
