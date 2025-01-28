@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pong Majestueux</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="/css/base.css">
+	<link rel="stylesheet" href="/css/pong.css">
+	<link rel="stylesheet" href="/css/tournament.css">
+	<link rel="icon" type="image/gif" href="/png/pong.png">
+</head>
+<body>
+	<header style="max-height: 25% fixed-top">
+			<nav class="navbar navbar-dark navbar-expand-md border-bottom border-light border-2 text-light shadow">
+				<div class="container">
+					<button type="button" class="btn text-uppercase fw-bold border border-2 shadow rounded py-2 px-3" data-translate="true" value="index">Pong Majestueux</button> 
+		<button type="button" value="expand" class="navbar-toggler btn border border-2 shadow" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+					<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+					<ul class="navbar-nav">
+			<li class="nav-item mx-2 my-1 d-flex justify-content-center">
+						<button type="button" id="login-settings" class="btn text-uppercase border border-2 fw-bold shadow rounded px-3" data-translate="true" value="authentification"> Se connecter</button>
+					</li>
+			<li class="nav-item mx-2 my-1 d-flex justify-content-center">
+			<div class="dropdown flag-selector" style="width: 93px; height:49px; user-select: none">
+			<div id="dropdownMenu" value="french" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<img id="currentFlag" draggable="false" class="border border-2 shadow rounded" style="width: 72px; height: 49px;" data-language="french" src="/png/french_flag.png" alt="french flag">  </img>
+			<i class="bi bi-caret-down-fill"></i>
+			</div>
+			<div class="border-0 bg-transparent dropdown-menu" style="width: 72px; user-select: none; -webkit-user-drag: none; height: auto; padding: 0;" aria-labelledby="dropdownMenu">
+			<img type="flag" draggable="false" class="flag-selector border border-2 shadow rounded" data-language="english" style="width: 72px; height: 49px;" src="/png/english_flag.png" alt="united kingdom flag"> </img>
+			<img type="flag" draggable="false" class="flag-selector border border-2 shadow rounded" data-language="spanish" style="width: 72px; height: 49px;" src="/png/spanish_flag.png" alt="spanish flag"> </img>
+			</div>
+			</div>
+		</li>
+			</ul>
+					</div>
+		</div>
+			</nav>
+	</header>
+	<main class="mb-5 pb-5">
+	</main>
+	<footer class="fixed-bottom border-top border-light border-2 text-white" style="background-color: rgb(0,0,0); max-height: 25%">
+		<div class="container text-center">
+			<div class="pt-1">
+				<p class="mb-0" data-translate="true">Projet ft_transcendance</p>
+				<p class="mb-0" data-translate="true">Réalisé par eslamber, tdutel, mwubneh, lmohin</p>
+			</div>
+		</div>
+		<script src="/js/footer.js"></script>
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+	<script src="/js/router.js">  </script>
+	<script src="/js/languageManagement.js"> </script>
+</body>
+</html>

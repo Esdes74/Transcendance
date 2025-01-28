@@ -1,0 +1,47 @@
+.player-container {
+	border: 2px solid white;
+	background: linear-gradient(45deg, rgba(16, 55, 68, 0.679), rgb(153, 208, 238));
+}
+
+.input-field {
+	border: 3px solid white;
+}
+
+.input-field::placeholder {
+	color: white;
+}
+
+.input-field[type="text"]{
+	color: white;
+}
+
+.tournament-btn {
+	background: linear-gradient(120deg, rgba(153, 208, 238, 0), rgb(153, 208, 238));
+    color: white;
+    font-size: 1.1rem;
+	border: 2px solid #fff;
+}
+
+.tournament-btn:hover {
+    background-color: #0056b3;
+	transform: scale(1.01)
+
+}
+
+.delete-btn {
+	color: white;
+	border : 0px solid !important;
+	background: transparent !important;
+  }
+
+#btnValid {
+	width : 80%;
+}
+
+.bubble {
+	width: 300px;
+	max-width: 100%;
+	text-align: center;
+	border: 2px solid white;
+	background: linear-gradient(45deg, rgba(16, 55, 68, 0.679), rgb(153, 208, 238));
+}

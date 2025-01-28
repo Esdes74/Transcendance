@@ -1,0 +1,29 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    requirements.txt                                   :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: eslamber <eslamber@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/08/26 16:19:12 by eslamber          #+#    #+#              #
+#    Updated: 2025/01/27 12:10:46 by eslamber         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Version de django
+Django>=4.2,<5.0
+
+# Ce qui sert a django pour travailler avec postgresql
+psycopg2-binary>=2.9,<3.0
+
+# Améliore les capacitées et la réactivitée du site
+gunicorn>=20.0,<21.0
+
+# Modules pour gérer les requetes
+requests>=2.25.1
+
+# Bibliothèque pour créer et manipuler les tokens JWT
+PyJWT>=2.6.0
+
+# Pour générer le mot de passe a usage unique utilisé pour la 2fa
+pyotp>=2.8.0,<3.0

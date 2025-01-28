@@ -1,0 +1,62 @@
+@import url('pong.css');
+@import url('tournament.css');
+
+body {
+	font-family: Arial, sans-serif;
+  	font-size: 16px;
+    	background: linear-gradient(to right, #579CC2 0%, #B7E0F8 50%, #579CC2 100%) !important;
+}
+
+.navbar {
+	background: linear-gradient(to right, rgb(48, 99, 118) 0%, rgb(82, 147, 171) 50%, rgb(48,99,118) 100%) ! important;
+}
+
+/* Buttons */
+.btn {
+    background: linear-gradient(120deg, rgba(153, 208, 238, 0), rgb(153, 208, 238));
+    color: white;
+    font-size: 1.1rem;
+	border: 2px solid #fff;
+}
+
+.btn42:hover {
+	transform: scale(1.01);
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.flag-selector:hover {
+	transform: scale(1.02);
+}
+
+.link-p:hover {
+	transform: scale(1.01);
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.logout-btn:hover {
+	color: black !important;
+	user-select: none;
+}
+
+.dropdown-menu {
+	--bs-dropdown-min-width: 72px;
+}
+
+hr {
+	height: 3px;
+	background-color: rgb(59, 130, 151);
+}
+
+footer {
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+}
+
+footer.visible {
+	opacity: 1;
+}
+
