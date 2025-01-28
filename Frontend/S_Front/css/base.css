@@ -27,11 +27,6 @@ body {
     background-color: #0056b3;
 }
 
-.del-btn:hover {
-	transform: scale(1.01);
-	user-select: none;
-}
-
 .flag-selector:hover {
 	transform: scale(1.02);
 }

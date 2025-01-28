@@ -51,8 +51,6 @@ async function affSettings()
 						<p class="my-0 py-1"><span class="bg-success text-white rounded fw-bold fs-6" id="validation-message" data-translate="true"></span></p>
 						<p class="mt-1 mb-3" id="logout"><span class="logout-btn fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-danger" data-translate="true"> Se Déconnecter </span></p>
 						<div class="mb-0">
-						<p class="del-btn mb-2" id="deleteAccount"><span class="fs-6 fw-bold text-white px-2 py-1 border border-2 rounded bg-dark" data-translate="true">Supprimer son compte</span></p>
-						<p style="display: none; width: 160px; margin: 0 auto;" class="del-btn mb-0 fs-6 fw-bold text-white py-1 border border-2 rounded bg-dark" id="confirmDelete"><span data-translate="true">Confirmer</span><i class="ms-2 bi bi-exclamation-triangle fw-bold"></i></p>
 						</div>
 						</div>
 					</div>
@@ -65,14 +63,6 @@ async function affSettings()
 	new bootstrap.Tooltip(tooltip)
 	document.querySelectorAll('.replayBlock')[0].style.display = "block"
 	document.getElementById('logout').addEventListener("click", () => logoutUser())
-	document.getElementById('deleteAccount').addEventListener("click", () => {
-		myConfirmButton = document.getElementById('confirmDelete')
-		if (myConfirmButton.style.display != "block")
-			myConfirmButton.style.display = "block"
-		else
-			myConfirmButton.style.display = "none"
-	})
-	document.getElementById('confirmDelete').addEventListener("click", () => deleteUser())
 	addScript("/js/settings.js", callbackSettings)
 	addScript("/js/settingsPong.js", callbackSettingsPong)
 	tradNewPage()
