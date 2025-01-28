@@ -38,11 +38,11 @@ def login_view(request):
 		authorization_header = request.headers.get('Authorization')
 
 		if not authorization_header:
-			return Response({"error": "Missing Authorization header"}, status=401)
+			return JsonResponse({"error": "Missing Authorization header"}, status=401)
 
 		# Vérifier que l'en-tête commence par 'Basic'
 		if not authorization_header.startswith('Basic '):
-			return Response({"error": "Invalid Authorization scheme. Basic is required."}, status=401)
+			return JsonResponse({"error": "Invalid Authorization scheme. Basic is required."}, status=401)
 
 		# Récupérer les credentials encodés en Base64
 		encoded_credentials = authorization_header.split(' ')[1]
@@ -52,12 +52,12 @@ def login_view(request):
 			decoded_credentials = b64decode(encoded_credentials).decode('utf-8')
 			username, password = decoded_credentials.split(':', 1)
 			if password == ' ':
-				return Response({"error": "Invalid credentials"}, status=400)
+				return JsonResponse({"error": "Invalid credentials"}, status=400)
 		except (ValueError, UnicodeDecodeError):
-			return Response({"error": "Invalid credentials format"}, status=400)
+			return JsonResponse({"error": "Invalid credentials format"}, status=400)
 
 		if not username or not password:
-			return Response({"error": "Missing credentials"}, status=400)
+			return JsonResponse({"error": "Missing credentials"}, status=400)
 
 		# Appeler un autre service pour gérer l'authentification
 		external_service_url = "http://django-Auth:8000/registery/register/"
@@ -94,7 +94,7 @@ def login_view(request):
 				return JsonResponse({"error": res}, status=response.status_code)
 
 		except requests.exceptions.RequestException as e:
-			return Response({"error": str(e)}, status=500)
+			return JsonResponse({"error": str(e)}, status=500)
 
 @no_token_requiered
 @api_view(['POST'])
