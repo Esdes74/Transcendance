@@ -8,8 +8,6 @@ services:
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-API
     command: ["uvicorn", "djpr_API.asgi:application", "--host", "0.0.0.0", "--port", "8000"] 
-#    ports:
- #     - "127.0.0.1:8000:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_API/djpr_API:${DJANGO_WORKDIR_API:-/home/API}
     environment:
@@ -35,8 +33,6 @@ services:
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-Auth
     command: python manage.py runserver 0.0.0.0:8000 
-#    ports:
- #     - "127.0.0.1:7999:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_Auth/djpr_Registery:${DJANGO_WORKDIR_AUTH:-/home/Auth}
     environment:
@@ -63,8 +59,6 @@ services:
     command: >
       sh -c "python manage.py migrate &&
              uvicorn Pong.asgi:application --host 0.0.0.0 --port 8000"
-  #  ports:
-  #    - "127.0.0.1:8002:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_Pong/Pong:${DJANGO_WORKDIR_PONG:-/home/Pong_back}
     environment:
@@ -89,8 +83,6 @@ services:
         - LAUNCH=${DJANGO_LAUNCH_REPO:-/run/launch}
     container_name: django-Tournament
     command: ["uvicorn", "Tournament.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
-  #  ports:
-  #    - "127.0.0.1:8003:8000" #todo: restreindre l acces seulement au container
     volumes:
       - ./Backend/S_Tournament/Tournament:${DJANGO_WORKDIR_TOURNAMENT:-/home/Tournament}
     environment:
@@ -100,12 +92,8 @@ services:
     env_file:
       - .env
     depends_on:
-#      pong_web:
-#        condition: "service_healthy"
       tournament_psql:
         condition: "service_healthy"
-#      api_psql:
-#        condition: "service_healthy" chaque service a sa db, aucun service n'a acces aux db des autres.
     networks:
       - backend
       - tournament_db
@@ -138,12 +126,10 @@ services:
       - API_v:${PSQL_DATA_REPO}
     env_file:
       - .env
-  #  ports:
-  #    - "127.0.0.1:5432:5432" #todo: restreindre l acces seulement au container
     networks:
       - api_db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_API"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_API"]
       start_period: 15s
       retries: 10
       interval: 15s
@@ -162,12 +148,10 @@ services:
       - Auth_v:${PSQL_DATA_REPO}
     env_file:
       - .env
-  #  ports:
-  #    - "127.0.0.1:5431:5432" #todo: restreindre l acces seulement au container
     networks:
       - auth_db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_AUTH"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_AUTH"]
       start_period: 15s
       retries: 10
       interval: 15s
@@ -186,12 +170,10 @@ services:
       - Pong_v:${PSQL_DATA_REPO}
     env_file:
       - .env
-    ports:
-      - "127.0.0.1:5430:5432" #todo: restreindre l acces seulement au container
     networks:
       - pong_db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_PONG"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_PONG"]
       start_period: 15s
       retries: 10
       interval: 15s
@@ -210,12 +192,10 @@ services:
       - Tournament_v:${PSQL_DATA_REPO}
     env_file:
       - .env
-  #  ports:
-  #    - "127.0.0.1:5433:5432" #todo: restreindre l acces seulement au container
     networks:
       - tournament_db
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_TOURNAMENT"] # Celle la est la bonne mais elle fait waiting a l'infinie
+      test: ["CMD-SHELL", "pg_isready -U $PSQL_USER -d $SQL_DATABASE_TOURNAMENT"]
       start_period: 15s
       retries: 10
       interval: 15s
