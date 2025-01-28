@@ -13,7 +13,7 @@ async function aff_leaderboard(result)
 	<div class="container text-center my-5">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
-			<h1 class="mb-5 fw-bold" data-translate="true">Fin du tournoi</h1>
+			<h1 class="mb-5 fw-bold" data-translate="true"> </h1>
 			<div class="canvas-container">
 			<canvas id="LeaderboardCanvas" class="w-100" height="400"></canvas>
 			<div class="replayBlock">

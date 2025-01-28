@@ -41,7 +41,7 @@ sys: start all
 sysall: start all
 
 # Commandes de clean du docker
-fclean: stop rmi builder_rm system_rm volume_rm
+fclean: rmi builder_rm system_rm volume_rm
 
 stop:
 	docker stop $$(docker ps -aq)										# Arrêter tous les conteneurs en cours d'exécution
