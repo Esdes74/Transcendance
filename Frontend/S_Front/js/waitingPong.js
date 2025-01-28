@@ -9,7 +9,7 @@ function loadAnimationLogin(myCanvas)
 		ballPosX: 0.0512,
 		paddle1Y: 0,
 		paddle2Y: 0,
-		
+
 		goRight: true,	
 
 		stopAnim: false,
@@ -47,7 +47,7 @@ async function loginDraw(gameSettings)
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
-	
+
 	ctx.setLineDash([15, 10]);
 	ctx.beginPath();
 	ctx.moveTo(gameSettings.canvas.width / 2, 0);

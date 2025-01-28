@@ -56,11 +56,9 @@ async function affIndex()
 				let jsonResponse = await response.json()
 				name = jsonResponse["username"]	
 			}
-			else
-				;
 		}
 		catch (error) {
-			;
+			console.log("error: ", error);
 		}
 		usernameSpan = document.getElementById("username")
 		usernameSpan.innerText = `, ${name}`;

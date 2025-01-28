@@ -3,30 +3,31 @@ function initPong(boolean, myCanvas, uuid) {
 	const pong_gameSettings = {
 		canvas: myCanvas,
 		// paddle properties
-		paddleWidth: 0,							// Epaisseur players
-		paddleHeight: 0,		// Hauteur players
-		paddleBuffer: 0,			// Ecart des players au bord
+		paddleWidth: 0,					// Epaisseur players
+		paddleHeight: 0,				// Hauteur players
+		paddleBuffer: 0,				// Ecart des players au bord
 
-		paddle1Y: 0,	//player 1
-		paddle2Y: 0,							//player 2
+		paddle1Y: 0,					//player 1
+		paddle2Y: 0,					//player 2
 
 		//  ball properties
-		ballRadius: 0,								// Taille de la ball
-		printBall: false,							// Afficher la ball ou non
-		ballX: 0,					// Placer la ball au milieu horizontal du canvas	en pourcentage
-		ballY: 0,					// Placer la ball au milieu verticalement du canvas	en pourcentage
+		ballRadius: 0,					// Taille de la ball
+		printBall: false,				// Afficher la ball ou non
+		ballX: 0,						// Placer la ball au milieu horizontal du canvas	en pourcentage
+		ballY: 0,						// Placer la ball au milieu verticalement du canvas	en pourcentage
 
 		// game properties
-		scorePlayer1: 0,							// score player 1
-		scorePlayer2: 0,							// score player 2
+		scorePlayer1: 0,				// score player 1
+		scorePlayer2: 0,				// score player 2
 
 		// recup names
 		player1Name: document.getElementById('Player1').textContent,
 		player2Name: document.getElementById('Player2').textContent,
+
 		istournament: boolean,
 
 		scorePlayer1Elem: document.getElementById('scorePlayer1'),
-		scorePlayer2Elem: document.getElementById('scorePlayer2'),// Valeur actuelle du compte à rebours
+		scorePlayer2Elem: document.getElementById('scorePlayer2'),	// Valeur actuelle du compte à rebours
 
 		uuid : uuid
 	};
@@ -52,29 +53,27 @@ function pong_initCanvas(pong_gameSettings)
 {
 	pong_gameSettings.canvas.width = pong_gameSettings.canvas.clientWidth;
 	pong_gameSettings.canvas.height = pong_gameSettings.canvas.clientHeight;
-	pong_gameSettings.paddleWidth = 0.015 * pong_gameSettings.canvas.width;							// Epaisseur players
-	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;				// Taille de la ball
-	pong_gameSettings.ballX = 0.5 * pong_gameSettings.canvas.width;					// Placer la ball au milieu horizontal du pong_gameSettings.canvas	en pourcentage
+	pong_gameSettings.paddleWidth = 0.015 * pong_gameSettings.canvas.width;									// Epaisseur players
+	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;									// Taille de la ball
+	pong_gameSettings.ballX = 0.5 * pong_gameSettings.canvas.width;											// Placer la ball au milieu horizontal du pong_gameSettings.canvas	en pourcentage
 	pong_gameSettings.ballY = 0.5 * pong_gameSettings.canvas.height;
-	pong_gameSettings.paddleHeight = 0.25 * pong_gameSettings.canvas.height;		// Hauteur players
-	pong_gameSettings.paddleBuffer = 0.02 * pong_gameSettings.canvas.width;			// Ecart des players au bord;
+	pong_gameSettings.paddleHeight = 0.25 * pong_gameSettings.canvas.height;								// Hauteur players
+	pong_gameSettings.paddleBuffer = 0.02 * pong_gameSettings.canvas.width;									// Ecart des players au bord;
 	pong_gameSettings.paddle1Y = (pong_gameSettings.canvas.height - pong_gameSettings.paddleHeight) / 2;	//player 1
 	pong_gameSettings.paddle2Y = pong_gameSettings.paddle1Y;
 	pong_draw(pong_gameSettings);
 }
 
-function pong_resizeCanvas(pong_gameSettings)								// Rendre responsive
+function pong_resizeCanvas(pong_gameSettings)
 {
 	pong_gameSettings.canvas.width = pong_gameSettings.canvas.clientWidth;
 	pong_gameSettings.canvas.height = pong_gameSettings.canvas.clientHeight;
-	pong_gameSettings.paddleWidth = 0.015 * pong_gameSettings.canvas.width;							// Epaisseur players
-	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;				// Taille de la ball
+	pong_gameSettings.paddleWidth = 0.015 * pong_gameSettings.canvas.width;			// Epaisseur players
+	pong_gameSettings.ballRadius = 0.012 * pong_gameSettings.canvas.width;			// Taille de la ball
 	pong_gameSettings.paddleHeight = 0.25 * pong_gameSettings.canvas.height;		// Hauteur players
 	pong_gameSettings.paddleBuffer = 0.02 * pong_gameSettings.canvas.width;			// Ecart des players au bord;
 	pong_draw(pong_gameSettings);
 }
-
-
 
 async function pong_sendMessage(data, socket) {
 	if (socket.readyState === WebSocket.OPEN)
@@ -84,7 +83,6 @@ async function pong_sendMessage(data, socket) {
 	else
 	{
 		updatePage("50X");
-	//	console.error('WebSocket is not open:', socket.readyState);
 	}
 }
 
@@ -94,16 +92,9 @@ async function pong_sendMessage(data, socket) {
 
 
 function pong_initSocket(socket, pong_gameSettings) {
-	/// Gestion de l'ouverture de la connexion WebSocket \\\
-
 	socket.onopen = async function (e) {
 		pong_gameLoop(pong_gameSettings, socket);
 	};
-
-
-
-
-	/// Gestion de la réception de messages WebSocket \\\
 
 	socket.onmessage = function (e) {
 		const data = JSON.parse(e.data);
@@ -137,13 +128,10 @@ function pong_initSocket(socket, pong_gameSettings) {
 		}
 	};
 
-	// Gestion des erreurs WebSocket
 	socket.onerror = function (error) {
 		updatePage("50X");
-		//console.error('WebSocket error la big erreur la:', error);
 	};
 
-	// Gestion de la fermeture de la connexion WebSocket
 	socket.onclose = function (e) {
 		document.removeEventListener('keydown', e);
 		document.removeEventListener('keyup', e);
@@ -152,9 +140,8 @@ function pong_initSocket(socket, pong_gameSettings) {
 
 }
 
-// ################################################################################################################ //
-// 												Connexion WebSocket													//
-// ################################################################################################################ //
+/*##########################################################################################*/
+
 function pong_keyPressed(e, socket, message, canvasID) {
 	if (socket.readyState === WebSocket.OPEN && ((canvasID === "pongCanvas" && (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S'))
 		|| (canvasID !== "pongCanvas" && (e.key === 'w' || e.key === 's' || e.key === 'W' || e.key === 'S'))))
@@ -194,7 +181,6 @@ function pong_handleViewChange(socket) {
 	}
 }
 
-
 function pong_gameOver(pong_gameSettings, socket)
 {
 	socket.close();
@@ -215,13 +201,12 @@ function pong_gameOver(pong_gameSettings, socket)
 	}	
 	else if (!pong_gameSettings.istournament)
 	{
-		winMessageElem.style.display = 'block';  // Rendre visible l'encadré
+		winMessageElem.style.display = 'block';
 		winMsg.style.display = 'block';
 		
 		const replayBlockElem = document.getElementsByClassName("replayBlock")[0];
 		replayBlockElem.style.display = 'block';
 		
-		// Afficher les boutons "Rejouer", "Paramètres", "Retour à l'accueil"
 		const buttons = replayBlockElem.getElementsByClassName("btn");
 		for (let i = 0; i < buttons.length; i++)
 		{
@@ -232,7 +217,6 @@ function pong_gameOver(pong_gameSettings, socket)
 			});
 		}
 		
-		// Masquer le bouton "Suivant"
 		if (document.getElementById("nextButton"))
 		document.getElementById("nextButton").style.display = 'none';
 	}
@@ -281,12 +265,9 @@ async function redirectTo(path, socket, pong_gameSettings)
 		}, 'endGame');
 		fct = () => affTournamentBracket_start(null, pong_gameSettings.uuid);
 	}
-	// if (path === 'ai')
-	// 	fct = () => affAI();
 	addScript("/js/aff_" + path + ".js", fct);
 	socket.close();
 }
-
 
 function pong_draw(pong_gameSettings) {
 	let ctx = pong_gameSettings.canvas.getContext('2d');
@@ -294,7 +275,7 @@ function pong_draw(pong_gameSettings) {
 	ctx.fillStyle = 'white';
 
 	// Ligne filet
-	ctx.setLineDash([1.5 * pong_gameSettings.paddleWidth, pong_gameSettings.paddleWidth]);														// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
+	ctx.setLineDash([1.5 * pong_gameSettings.paddleWidth, pong_gameSettings.paddleWidth]);													// Définir le motif de pointillé (10 pixels de trait, 10 pixels d'espace)
 	ctx.beginPath();
 	ctx.moveTo(pong_gameSettings.canvas.width / 2, 0);
 	ctx.lineTo(pong_gameSettings.canvas.width / 2, pong_gameSettings.canvas.height);
@@ -307,9 +288,8 @@ function pong_draw(pong_gameSettings) {
 
 	ctx.fillRect(pong_gameSettings.canvas.width / 6, pong_gameSettings.canvas.height / 6, 2, pong_gameSettings.canvas.height * 2 / 3);		// ligne perpendiculaire a la lgine médiane du service sur l'extremité de gauche et qui monte jusquau terrain
 	ctx.fillRect(5 * pong_gameSettings.canvas.width / 6, pong_gameSettings.canvas.height / 6, 2, pong_gameSettings.canvas.height * 2 / 3);	// ligne perpendiculaire a la lgine médiane du service sur l'extremité de droite et qui monte jusquau terrain
-	ctx.fillRect(0, pong_gameSettings.canvas.height / 6, pong_gameSettings.canvas.width, 2);							// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
-	ctx.fillRect(0, 5 * pong_gameSettings.canvas.height / 6, pong_gameSettings.canvas.width, 2);						// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
-
+	ctx.fillRect(0, pong_gameSettings.canvas.height / 6, pong_gameSettings.canvas.width, 2);												// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
+	ctx.fillRect(0, 5 * pong_gameSettings.canvas.height / 6, pong_gameSettings.canvas.width, 2);											// ligne de coté reliant les deux bouts du terrain et passant par les lignes perpendiculaires en leur extremité hautes
 
 	// Players
 	ctx.fillRect(pong_gameSettings.paddleBuffer, pong_gameSettings.paddle1Y, pong_gameSettings.paddleWidth, pong_gameSettings.paddleHeight);
@@ -321,15 +301,13 @@ function pong_draw(pong_gameSettings) {
 		ctx.arc(pong_gameSettings.ballX, pong_gameSettings.ballY, pong_gameSettings.ballRadius, 0, Math.PI * 2);
 		ctx.fill();
 	}
-	// Dessiner le compte à rebours si actif
 	if (pong_gameSettings.countdownActive) {
-		ctx.strokeStyle = 'rgb(115, 171, 201)';										// Couleur du contour
-		ctx.lineWidth = 0.03 * pong_gameSettings.canvas.width;															// Largeur du contour
+		ctx.strokeStyle = 'rgb(115, 171, 201)';
+		ctx.lineWidth = 0.03 * pong_gameSettings.canvas.width;
 		ctx.strokeText(pong_gameSettings.countdownValue, pong_gameSettings.canvas.width / 2, pong_gameSettings.canvas.height / 2);
 		ctx.font = `${0.1 * pong_gameSettings.canvas.width}px Sans-serif`;
 		ctx.fillStyle = 'white';
 
-		// center  x and y
 		ctx.textAlign = 'center';
 		ctx.textBaseline = 'middle';
 		ctx.fillText(pong_gameSettings.countdownValue, pong_gameSettings.canvas.width / 2, pong_gameSettings.canvas.height / 2);
@@ -348,6 +326,7 @@ function throttle(func, limit)
 {
 	let lastFunc;
 	let lastRan;
+
 	return function(...args) {
 		const context = this;
 		if (!lastRan) {
@@ -386,7 +365,6 @@ function pong_addTouchControls(pong_gameSettings, socket)
 			}
 		};
 
-
 		canvas.addEventListener('touchstart', pong_gameSettings.touchHandlers.onTouchStart);
 		canvas.addEventListener('touchmove', throttle(pong_gameSettings.touchHandlers.onTouchMove, 4));
 		canvas.addEventListener('touchend', pong_gameSettings.touchHandlers.onTouchEnd);
@@ -416,7 +394,6 @@ function handleTouchMove(event, pong_gameSettings, socket, canvas, touchZones, d
 	const canvasRect = canvas.getBoundingClientRect();
 
 	for (const touch of event.touches) {
-		//const touchX = touch.clientX - canvasRect.left;
 		const touchY = touch.clientY - canvasRect.top;
 		const zone = touchZones[touch.identifier];
 

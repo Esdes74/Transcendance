@@ -39,14 +39,14 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
 	objects = UserProfileManager()
 
-	USERNAME_FIELD = 'user_id'  # Utilisez user_id comme identifiant unique
-	REQUIRED_FIELDS = []  # Ajoutez ici les champs obligatoires, s'il y en a
+	USERNAME_FIELD = 'user_id'
+	REQUIRED_FIELDS = []
 
 	def __str__(self):
 		return f"UserProfile(user_id={self.user_id})"
 
 class FtTokenModel(models.Model):
-	token = models.CharField(max_length=250) # TODO: Voir si la taille est bonne (ou trop grosse etc...)
+	token = models.CharField(max_length=250)
 
 	def __str__(self):
 		return self.value

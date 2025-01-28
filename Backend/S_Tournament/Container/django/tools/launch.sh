@@ -11,13 +11,13 @@
 # **************************************************************************** #
 
 #!/bin/bash
-# Attente que le conteneur front soit en ligne (ping)
+# Attente que le conteneur pong_web soit en ligne (ping)
 while ! nc -z pong_web 8000; do
-  echo "Attente que le conteneur front soit en ligne..."
+  echo "Attente que le conteneur pong_web soit en ligne..."
   sleep 1
 done
 
-# Tu peux maintenant utiliser l'IP comme une variable d'environnement ou la sauvegarder
+# Attente de tournament_psql
 while ! pg_isready -h tournament_psql -U $POSTGRES_USER -d $POSTGRES_DB; do
     echo "attente du service postgresql"
     sleep 1

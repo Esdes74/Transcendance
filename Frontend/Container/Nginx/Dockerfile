@@ -7,11 +7,10 @@ ARG VOLUME PORT
 ENV VOLUME=$VOLUME PORT=$PORT
 RUN mkdir -p $VOLUME
 
-#NGINX
-
-RUN	apt-get -y update && apt-get -y upgrade
-RUN	apt-get -y install nginx && apt-get -y install openssl
-RUN	apt-get -y install netcat-openbsd
+# Installation et upgrades
+RUN	apt-get -y update && apt-get -y upgrade && \
+    apt-get -y install nginx && apt-get -y install openssl && \
+    apt-get -y install netcat-openbsd
 
 # Générer un certificat SSL auto-signé pour localhost et *.local
 RUN openssl req -x509 -nodes -out /etc/nginx/crt.pem -keyout /etc/nginx/privkey.pem \
@@ -27,4 +26,3 @@ EXPOSE 443
 
 # démarre l'application
 CMD ["bash", "run.sh"]
-#CMD ["nginx", "-g", "daemon off;"]

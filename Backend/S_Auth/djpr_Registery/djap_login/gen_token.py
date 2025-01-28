@@ -29,7 +29,7 @@ def generate_jwt_token_auth(user):
 	payload = {
 		'user_id': user.id,
 		'username': user.username,
-		'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),  # Expiration dans une heure
+		'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1),
 		'iat': datetime.datetime.utcnow(),
 		'grade': 'auth',
 	}
@@ -46,7 +46,7 @@ def generate_temporary_token(user):
 	payload = {
 		'user_id': user.id,
 		'username': user.username,
-		'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3),  # Expiration dans 3 minutes
+		'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=3),
 		'iat': datetime.datetime.utcnow(),
 		'grade': '2fa',
 	}
@@ -65,7 +65,7 @@ def generate_temporary_token(user):
 		message=f'Here is your 2fa password\nYou have less than 3 minutes to use this password\n{otp_code}',
 		from_email=os.getenv('EMAIL_HOST_USER'),
 		recipient_list=[user.email],
-		fail_silently=False,  # Si True, les erreurs d'envoi d'e-mail ne lèveront pas d'exceptions
+		fail_silently=False,
 	)
 
 	return token

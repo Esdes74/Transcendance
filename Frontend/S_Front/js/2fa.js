@@ -57,6 +57,7 @@ function load2faLogin()
 		}
 		else
 			await affMessage(myMessage, "Mail Réenvoyé !", false)
+
 		sendAgainButton.style.pointerEvents = 'auto'
 	}
 	catch (error) {
@@ -72,10 +73,12 @@ async function affMessage(myMessage, message, isError)
 	myMessage.style.padding = '4px'
 	myMessage.classList.remove('bg-danger')
 	myMessage.classList.remove('bg-success')
+
 	if (isError)
 		myMessage.classList.add('bg-danger');
 	else
 		myMessage.classList.add('bg-success');
+
 	await new Promise(r => setTimeout(r, 3000))
 	myMessage.innerText = ""
 	myMessage.style.padding = '0px'

@@ -27,12 +27,3 @@ PyJWT>=2.6.0
 
 # Pour générer le mot de passe a usage unique utilisé pour la 2fa
 pyotp>=2.8.0,<3.0
-
-# Redis pour le broker de Celery
-redis>=4.0,<5.0
-
-# Pour gerer des taches en fond, ici pour supprimer les comptes temporaires
-# celery[redis]>=5.2,<6.0
-
-# Pour stocker les resultats des taches
-# django-celery-results>=2.4,<3.0

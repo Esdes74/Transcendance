@@ -13,7 +13,6 @@ import json
 @auth_required
 @api_view(['POST'])
 def selectTournament(request):
-
 	try:
 		data = json.loads(request.body)
 	except json.JSONDecodeError:
@@ -40,14 +39,10 @@ def selectTournament(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
-
-
 # Create Player is here to create a player in the tournament
 @auth_required
 @api_view(['POST'])
 def createPlayer(request):
-
 	try:
 		data = json.loads(request.body)
 	except json.JSONDecodeError:
@@ -74,12 +69,10 @@ def createPlayer(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
 # deletePlayer is here to delete a player in the tournament
 @auth_required
 @api_view(['POST'])
 def deletePlayer(request):
-
 	try:
 		data = json.loads(request.body)
 	except json.JSONDecodeError:
@@ -109,7 +102,6 @@ def deletePlayer(request):
 @auth_required
 @api_view(['POST'])
 def initDB(request):
-
 	try:
 		data = json.loads(request.body)
 	except json.JSONDecodeError:
@@ -139,7 +131,6 @@ def initDB(request):
 @auth_required
 @api_view(['POST'])
 def validTournament(request):
-
 	try:
 		data = json.loads(request.body)
 	except json.JSONDecodeError:
@@ -166,15 +157,9 @@ def validTournament(request):
 		return JsonResponse(response_data, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
-# ############################################################################################################
-# aff_tournament_bracket.js
-# ############################################################################################################
-
 @auth_required
 @api_view(['POST'])
 def startTournament(request):
-
 	if request.method == 'POST':
 
 		try:
@@ -204,7 +189,6 @@ def startTournament(request):
 @auth_required
 @api_view(['POST'])
 def startGame(request):
-
 	if request.method == 'POST':
 
 		try:
@@ -234,7 +218,6 @@ def startGame(request):
 @auth_required
 @api_view(['POST'])
 def endGame(request):
-
 	if request.method == 'POST':
 
 		try:
@@ -264,7 +247,6 @@ def endGame(request):
 @auth_required
 @api_view(['POST'])
 def continueTournament(request):
-
 	if request.method == 'POST':
 
 		try:

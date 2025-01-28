@@ -7,7 +7,6 @@ function callbackLeaderboard()
 async function aff_leaderboard(result)
 {
 	let docMain = document.querySelector('main')
-	// <button class="btn btn-outline-light m-2" id="start" data-translate="true">Start the Game (lance pong.js)</button>
 	docMain.innerHTML = `
 
 	<div class="container text-center my-5">

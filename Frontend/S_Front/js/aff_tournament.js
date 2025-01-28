@@ -122,7 +122,6 @@ async function affTournament_sendRequest(data, function_name)
 	tradNewPage()
 }
 
-
 function affTournament_drawTournament(size, old_size)
 {
 	let inputsContainer = document.getElementById('inputs');
@@ -172,7 +171,7 @@ function affTournament_createEmptyField(index)
 	input.setAttribute('data-translate', 'placeholder');
 	input.placeholder = `Pseudo du participant`;
 	input.name = `participant_`;
-	input.className = 'input-field rounded mx-2 ';  // Appliquer la classe CSS 'input-field'
+	input.className = 'input-field rounded mx-2 ';
 	input.type="text";
 	input.addEventListener('keydown', async function (event) {
 		if (event.key === 'Enter')
@@ -181,7 +180,6 @@ function affTournament_createEmptyField(index)
 		}
 	});
 
-	// Valid button
 	const valid = document.createElement('button');
 	valid.className = 'tournament-btn rounded';
 	valid.textContent = 'Valider';
@@ -198,12 +196,10 @@ function affTournament_createEmptyField(index)
 	return div;
 }
 
-
-
-// CREATE PLAYER CONTAINER
 function affTournament_createPlayerContainer(index)
 {
 	const inputBtn = document.getElementById(index);
+	console.log(inputBtn.index)
 	const input = inputBtn.querySelector('input');
 	const name = input.value;
 
@@ -216,7 +212,7 @@ function affTournament_createPlayerContainer(index)
 	
 	const deleteBtn = document.createElement('button');
 	deleteBtn.className = 'delete-btn rounded-pill px-4';
-	deleteBtn.textContent = '×'; // Symbole de croix
+	deleteBtn.textContent = '×';
 
 	playerContainer.className = 'd-flex align-items-center my-3 player-container rounded-pill';
 	playerContainer.appendChild(nameDiv);
@@ -232,11 +228,9 @@ function affTournament_createPlayerContainer(index)
 	});
 }
 
-
-// DELETE PLAYER CONTAINER
 function affTournament_deletePlayerContainer(playerContainer)
 {
-	const newInput = affTournament_createEmptyField(playerContainer.id);
+	const newInput = affTournament_createEmptyField(parseInt(playerContainer.id));
 
 	if (playerContainer.parentNode)
 	{

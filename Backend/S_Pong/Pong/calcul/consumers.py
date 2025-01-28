@@ -45,7 +45,7 @@ class CalculConsumer(AsyncWebsocketConsumer):
 					self.player2Y = self.player2Y + 0.01
 
 		elif data.get('type') == 'pong.ball':
-			if self.action == False:				# Ici si l'action est en pause soit si goal
+			if self.action == False:
 				await asyncio.sleep(0.5)
 				self.action = True
 				self.ballSpeedX = 0.003 * self.nextService
@@ -63,11 +63,11 @@ class CalculConsumer(AsyncWebsocketConsumer):
 
 			# Détection de collision avec les raquettes
 			if self.ballX <= self.player1X - 0.005 and self.ballY > self.player1Y - (self.playerHeight / 2) and self.ballY < self.player1Y + (self.playerHeight / 2):
-				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
+				self.ballSpeedX = abs(self.ballSpeedX) * self.acceleration
 				self.ballSpeedY = (self.ballY - self.player1Y) * 8 * abs(self.ballSpeedX)		# Rebond en fonction de la position de la raquette
 			if self.ballX >= self.player2X + 0.005 and self.ballY > self.player2Y - (self.playerHeight / 2) and self.ballY < self.player2Y + (self.playerHeight / 2):
-				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration # Rebond immédiat
-				self.ballSpeedY = (self.ballY - self.player2Y) * 8 * abs(self.ballSpeedX)	# Rebond en fonction de la position de la raquette
+				self.ballSpeedX = -abs(self.ballSpeedX) * self.acceleration
+				self.ballSpeedY = (self.ballY - self.player2Y) * 8 * abs(self.ballSpeedX)		# Rebond en fonction de la position de la raquette
 
 			# Réinitialiser la balle si elle sort du terrain
 			if self.ballX >= 1:				# Joueur 1 marque
@@ -98,5 +98,3 @@ class CalculConsumer(AsyncWebsocketConsumer):
 		self.nextService = direction
 		self.ballX = 0.5
 		self.ballY = 0.5
-
-	# await self.send(text_data=f"The one piece is real : {text_data}")

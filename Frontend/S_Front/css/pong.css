@@ -1,9 +1,6 @@
-/* Styles globaux */
-
 h1 {
 	color: white;
 }
-
 
 .tooltip-inner {
 	font-weight: bold;
@@ -70,12 +67,12 @@ canvas {
 .button-group {
 	display: flex;
 	align-items: center;
-	flex-direction: column; /* Alignement vertical */
+	flex-direction: column;
 }
 
 .button-group button {
-	width: 90%; /* Largeur égale pour les boutons */
-	margin: 10px 0; /* Espacement vertical entre les boutons */
+	width: 90%;
+	margin: 10px 0;
 }
 
 .button-group span {

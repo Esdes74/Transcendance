@@ -19,7 +19,7 @@ done
 
 cd $VOLUME
 
-# Créer des migrations
+# Créer les migrations
 python3 manage.py makemigrations
 
 # Appliquer les migrations
@@ -32,12 +32,3 @@ fi
 
 # Lancer le serveur Django
 python3 manage.py runserver 0.0.0.0:8000
-
-# # Définir DJANGO_SETTINGS_MODULE
-# export DJANGO_SETTINGS_MODULE="djpr_Registery.settings"
-
-# # Démarrer Redis
-# redis-server --daemonize yes
-
-# # Démarrer Celery
-# celery -A djpr_Registery worker --loglevel=info

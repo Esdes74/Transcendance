@@ -10,8 +10,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-
-
 #!/bin/bash
 
 while ! pg_isready -h pong_psql -U $POSTGRES_USER -d $POSTGRES_DB; do

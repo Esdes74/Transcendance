@@ -18,14 +18,11 @@ function loadLogin()
 			username: username,
 			password: password
 		};
-		
-		// Crée le header Authorization avec Basic Auth
+
+		// Création du header Authorization avec Basic Auth
 		const credentials = btoa(`${username}:${password}`);
-		// const headers = {
-			// 	// 'Content-Type': 'application/json',
-			// };
 		const csrfToken = getCookie('csrftoken');
-			
+
 		try {
 			const response = await fetch('/api/auth/login/', {
 				method: 'POST',

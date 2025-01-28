@@ -73,20 +73,6 @@ def auth_required(view_func):
 
 		if not token:
 			return JsonResponse({"error": "Unauthorized"}, status=401)
-			# token = request.COOKIES.get('42_token')
-			# if not token:
-			# 	return JsonResponse({"error": "Unauthorized"}, status=401)
-			# 	# request.user = AnonymousUser()
-
-			# saved_token = FtTokenModel.objects.filter(token=token).first()
-			# if (state == None):
-			# 	return JsonResponse({"error": "Invalid Credentials"}, status=401)
-
-			# request.ft = True
-			# request.token = saved_token
-
-			# # Appeler la vue d'origine
-			# return view_func(request, *args, **kwargs)
 
 		try:
 			# Décodage du token
@@ -131,10 +117,8 @@ def no_token_requiered(view_func):
 	def _wrapped_no_token(request, *args, **kwargs):
 		# Récupération du cookie contenant le token JWT
 		token_jwt = request.COOKIES.get('jwt_token')
-		# token_ft = request.COOKIES.get('42_token')
 
 		if token_jwt:
-			# request.user = AnonymousUser()
 			return JsonResponse({"error": "Unauthorized"}, status=401)
 
 		# Appeler la vue d'origine
@@ -149,25 +133,9 @@ def no_jwt_token_requiered(view_func):
 		token_jwt = request.COOKIES.get('jwt_token')
 
 		if token_jwt:
-			# request.user = AnonymousUser()
 			return JsonResponse({"error": "Unauthorized"}, status=401)
 
 		# Appeler la vue d'origine
 		return view_func(request, *args, **kwargs)
 
 	return _wrapped_no_jwt_token
-
-# def no_ft_token_requiered(view_func):
-# 	@wraps(view_func)
-# 	def _wrapped_no_ft_token(request, *args, **kwargs):
-# 		# Récupération du cookie contenant le token JWT
-# 		token_ft = request.COOKIES.get('42_token')
-
-# 		if token_ft:
-# 			# request.user = AnonymousUser()
-# 			return JsonResponse({"error": "Unauthorized"}, status=401)
-
-# 		# Appeler la vue d'origine
-# 		return view_func(request, *args, **kwargs)
-
-# 	return _wrapped_no_ft_token

@@ -16,13 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# from rest_framework_simplejwt.views import (
-#     TokenObtainPairView,
-#     TokenRefreshView,
-# )
 
 urlpatterns = [
-	path('api/auth/', include('djap_register.urls')), # rediriges vers l'app djap_register
-	path('api/tournament/', include('djap_tournament.urls')), # rediriges vers l'app djap_tournament
-	path('api/remote_oauth/', include('djap_register.urls')), # rediriges vers l'app djap_Remote_OAUTH
+	path('api/auth/', include('djap_register.urls')),
+	path('api/tournament/', include('djap_tournament.urls')),
+	path('api/remote_oauth/', include('djap_register.urls')),
 ]

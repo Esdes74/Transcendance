@@ -27,7 +27,6 @@ def log_ft(token):
 	try:
 		response = requests.get(external_service_url, headers=headers)
 		# Delete saved state from database
-		# TODO: Voir si la state doit etre supprimé systématiquement ou si elle doit etre gardée en cas d'échec
 
 		if response.status_code == 200:
 			data = response.json()
@@ -69,6 +68,7 @@ def create_ft_user(data):
 
 	# Recherche pour savoir si le username est déjà pris
 	user = FullUser.objects.filter(username=username).first()
+
 	# Si existe alors on doit en créer un nouveau
 	if user:
 		generated_username = generate_new_username(username)
@@ -91,5 +91,5 @@ def create_ft_user(data):
 
 def generate_new_username(username):
 	length = 10
-	characters = string.ascii_letters + string.digits  # Lettres majuscules, minuscules et chiffres
+	characters = string.ascii_letters + string.digits
 	return username + ''.join(random.choices(characters, k=length))

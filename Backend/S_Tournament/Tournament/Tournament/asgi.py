@@ -20,6 +20,6 @@ from channels.auth import AuthMiddlewareStack
 
 application = ProtocolTypeRouter(
     {
-        "http": get_asgi_application(),  # Les requêtes HTTP passent par urls.py
+        "http": get_asgi_application(),
     }
 )

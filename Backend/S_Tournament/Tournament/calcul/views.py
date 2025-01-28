@@ -6,7 +6,6 @@ from .models import Tournament, Player, Pair
 import json
 from uuid import uuid4
 
-# SELECT TOURNAMENT
 def selectTournament(request):
 	if request.method == 'POST':
 		try:
@@ -22,7 +21,6 @@ def selectTournament(request):
 			return JsonResponse({"error": "invalid values"}, status=400)
 		if not isinstance(btn, str) or not isinstance(username, str) or not isinstance(uuid, str):
 			return JsonResponse({"error": "invalid values"}, status=400)
-		# Get a tournament instance
 		tournament , created = Tournament.objects.get_or_create(username=username, uuid=uuid)
 		if btn == 'btn1':
 			if tournament.player_registered > 4:
@@ -44,10 +42,6 @@ def selectTournament(request):
 
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
-
-
-# CREATE PLAYER
 def createPlayer(request):
 
 	if request.method == 'POST':
@@ -62,8 +56,10 @@ def createPlayer(request):
 		username = data.get('username')
 		uuid = data.get('uuid')
 
-
-
+		print(type(name))
+		print(type(username))
+		print(type(index))
+		print(type(uuid))
 		if name is None or index is None or username is None or uuid is None:
 			return JsonResponse({"error": "Missing, undefined or bad values"}, status=400)
 		if not isinstance(name, str) or not isinstance(index, int) or not isinstance(username, str) or not isinstance(uuid, str):
@@ -98,8 +94,6 @@ def createPlayer(request):
 		return JsonResponse({"name": name, "index": index, "player_list": tournament.player_list, "fields": tournament.old_size, "return": "createPlayer"}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
-# DELETE PLAYER
 def deletePlayer(request):
 
 	if request.method == 'POST':
@@ -133,7 +127,6 @@ def deletePlayer(request):
 		return JsonResponse({"name": name, "index": index, "player_list": tournament.player_list, "fields": tournament.old_size, "return": "deletePlayer"}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
-
 def initDB(request):
 
 	if request.method == 'POST':
@@ -153,7 +146,6 @@ def initDB(request):
 		tournament.delete()
 		return JsonResponse({"return": "initDB", "uuid": uuid}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
-
 
 def validTournament(request):
 
@@ -178,11 +170,6 @@ def validTournament(request):
 			return JsonResponse({"error": "Valider tous les joueurs", "return": "error"}, status=400)
 		return JsonResponse({"player_list": tournament.player_list, "return": "validTournament"}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
-
-
-# ############################################################################################################
-# aff_tournament_bracket.js
-# ############################################################################################################
 
 def startGame(request):
 	if request.method == 'POST':
@@ -258,7 +245,6 @@ def split_into_pairs(joueurs, username, uuid):
 	tournament.save()
 	return pairs
 
-
 def endGame(request):
 	if request.method == 'POST':
 		try:
@@ -290,7 +276,6 @@ def endGame(request):
 		player2.save()
 		return JsonResponse({"player_list": tournament.player_list, "return": "endGame"}, status=200)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
-
 
 def continueTournament(request):
 	if request.method == 'POST':

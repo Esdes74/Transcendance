@@ -47,7 +47,7 @@ function settingsDraw(gameSettings)
 	ctx = gameSettings.canvas.getContext('2d');
 	ctx.clearRect(0, 0, gameSettings.canvas.width, gameSettings.canvas.height);
 	ctx.fillStyle = 'white';
-	
+
 	ctx.setLineDash([15, 10]);
 	ctx.beginPath();
 	ctx.moveTo(gameSettings.canvas.width / 2, 0);

@@ -131,7 +131,9 @@ function rootMyUrl(isLogged)
 			logged: "must",
 		},
 	}
+
 	let loc = window.location.pathname;
+
 	if (pages[loc])
 	{
 		let page = pages[loc];
@@ -152,7 +154,7 @@ function rootMyUrl(isLogged)
 					window[page.callback]()
 					return (false)
 			}
-			let scriptElement = document.createElement('script')
+		let scriptElement = document.createElement('script')
 		scriptElement.setAttribute("src", page.script)
 		scriptElement.onload = function() {
 			window[page.callback]()

@@ -68,7 +68,6 @@ def make_token(request):
 
 		try:
 			response = requests.post(external_service_url, data=payload)
-			# Delete saved state from database
 			state.delete()
 
 			if response.status_code == 200:

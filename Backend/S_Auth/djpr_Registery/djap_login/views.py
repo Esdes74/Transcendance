@@ -29,7 +29,7 @@ def login(request):
 			return JsonResponse({"error": "Missings Credentials"}, status = 400)
 
 		try:
-			# Authentification de l'utilisateurs avec les comptes prééxistans
+			# Authentification de l'utilisateurs avec les comptes prééxistant
 			user = FullUser.objects.filter(username=username).first()
 
 			# Si n'existe pas
@@ -117,7 +117,7 @@ def otp(request):
 			return JsonResponse({"error": "Missings credentials"}, status = 400)
 
 		try:
-			# Authentification de l'utilisateurs avec les comptes prééxistans
+			# Authentification de l'utilisateurs avec les comptes prééxistant
 			user = FullUser.objects.filter(username=username).first()
 
 			# Si n'existe pas
@@ -142,7 +142,8 @@ def otp(request):
 		except Exception as e:
 			return JsonResponse({"error": "Authentification failed"}, status=500)
 
-def get_me(request): # TODO: paser en GET
+def get_me(request):
+	if (request.method == 'GET'):
 		username = request.GET.get('username')
 
 		# Regarde si les identifiants sont donnés/recus
@@ -165,7 +166,7 @@ def get_me(request): # TODO: paser en GET
 			return JsonResponse({"error": "Request get_me failed"}, status=500)
 
 def refresh_2fa(request):
-	if (request.method == 'POST') : # TODO: paser en GET
+	if (request.method == 'POST') :
 		username = request.POST.get('username')
 
 		# Regarde si les identifiants sont donnés/recus

@@ -5,7 +5,6 @@
 
 .input-field {
 	border: 3px solid white;
-	/* background-color: rgb(153, 208, 238) */
 }
 
 .input-field::placeholder {
@@ -21,7 +20,7 @@
     color: white;
     font-size: 1.1rem;
 	border: 2px solid #fff;
-  }
+}
 
 .tournament-btn:hover {
     background-color: #0056b3;
@@ -39,11 +38,10 @@
 	width : 80%;
 }
 
-
 .bubble {
-	width: 300px; /* Fixe une largeur uniforme pour toutes les bulles */
-	max-width: 100%; /* Empêche de dépasser le conteneur parent */
-	text-align: center; /* Centre le texte à l'intérieur */
+	width: 300px;
+	max-width: 100%;
+	text-align: center;
 	border: 2px solid white;
 	background: linear-gradient(45deg, rgba(16, 55, 68, 0.679), rgb(153, 208, 238));
 }

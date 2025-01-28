@@ -32,7 +32,6 @@ from django.middleware.csrf import get_token
 from django.http import Http404
 
 @no_token_requiered
-# @api_view(['POST'])
 def login_view(request):
 	if (request.method == 'POST') :
 		# Récupérer l'en-tête Authorization
@@ -51,7 +50,6 @@ def login_view(request):
 		try:
 			# Décoder les credentials
 			decoded_credentials = b64decode(encoded_credentials).decode('utf-8')
-			# Séparer username et password
 			username, password = decoded_credentials.split(':', 1)
 			if password == ' ':
 				return Response({"error": "Invalid credentials"}, status=400)
@@ -69,7 +67,7 @@ def login_view(request):
 		}
 
 		try:
-			response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+			response = requests.post(external_service_url, data=payload)
 
 			if response.status_code == 200:
 				response_data = response.json()
@@ -78,8 +76,6 @@ def login_view(request):
 				if token:
 					# Créez la réponse JSON avec le token
 					json_response = JsonResponse(response_data, status=200)
-					# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
-					# TODO: Je pense qu'il faudra le passer en https et en secure
 					if (tfa):
 						token_name = 'tfa_jwt_token'
 						json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
@@ -129,7 +125,7 @@ def create_view(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.post(external_service_url, data=payload)
 
 		if response.status_code == 201:
 			response_data = response.json()
@@ -137,8 +133,6 @@ def create_view(request):
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response_data, status=201)
-				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
-				# TODO: Je pens qu'il faudra le passer en https et en secure
 				json_response.set_cookie(key='tfa_jwt_token', value=token, httponly=True, samesite='Strict', max_age=180)
 
 				# Archivage du user_id pour l'identifier comme authentifié plus tard
@@ -173,7 +167,7 @@ def otp_verif(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.post(external_service_url, data=payload)
 
 		if response.status_code == 200:
 			response_data = response.json()
@@ -250,8 +244,6 @@ def make_token(request):
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response_data, status=200)
 				json_response.set_cookie(key='jwt_token', value=token, httponly=True, samesite='Strict', max_age=3600)
-				# new_token = FtTokenModel.objects.create(token=token)
-				# new_token.save()
 				save_new_user(token)
 				return json_response
 			else:
@@ -285,7 +277,7 @@ def delete(request):
 	}
 
 	try:
-		response = requests.delete(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.delete(external_service_url, json=payload)
 
 		if response.status_code == 204:
 			json_response = JsonResponse({}, status=204)
@@ -319,7 +311,7 @@ def choose_lang(request):
 	}
 
 	try:
-		response = requests.put(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.put(external_service_url, json=payload)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
@@ -355,7 +347,7 @@ def choose_verif(request):
 	}
 
 	try:
-		response = requests.put(external_service_url, json=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.put(external_service_url, json=payload)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
@@ -371,7 +363,6 @@ def choose_verif(request):
 @auth_required
 @api_view(['GET'])
 def get_lang(request):
-	# username = request.query_params.get('username')
 	username = getattr(request, 'username', None)
 
 	if not username:
@@ -384,7 +375,7 @@ def get_lang(request):
 	}
 
 	try:
-		response = requests.get(external_service_url, params=params)#, headers=headers, cookies=request.COOKIES)
+		response = requests.get(external_service_url, params=params)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
@@ -400,7 +391,6 @@ def get_lang(request):
 @auth_required
 @api_view(['GET'])
 def get_verif(request):
-	# username = request.query_params.get('username')
 	username = getattr(request, 'username', None)
 
 	if not username:
@@ -413,7 +403,7 @@ def get_verif(request):
 	}
 
 	try:
-		response = requests.get(external_service_url, params=params)#, headers=headers, cookies=request.COOKIES)
+		response = requests.get(external_service_url, params=params)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
@@ -441,7 +431,7 @@ def get_me(request):
 	}
 
 	try:
-		response = requests.get(external_service_url, params=params)#, headers=headers, cookies=request.COOKIES)
+		response = requests.get(external_service_url, params=params)
 
 		if response.status_code == 200:
 			json_response = JsonResponse(response.json(), status=200)
@@ -513,7 +503,7 @@ def refresh_2fa(request):
 	}
 
 	try:
-		response = requests.post(external_service_url, data=payload)#, headers=headers, cookies=request.COOKIES)
+		response = requests.post(external_service_url, data=payload)
 
 		if response.status_code == 200:
 			response_data = response.json()
@@ -521,8 +511,6 @@ def refresh_2fa(request):
 			if token:
 				# Créez la réponse JSON avec le token
 				json_response = JsonResponse(response_data, status=200)
-				# TODO: Vérifier que le cookie respecte bien les règles de sécuritées
-				# TODO: Je pense qu'il faudra le passer en https et en secure
 				token_name = 'tfa_jwt_token'
 				json_response.set_cookie(key=token_name, value=token, httponly=True, samesite='Strict', max_age=180)
 

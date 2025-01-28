@@ -12,12 +12,9 @@
 
 #!/bin/bash
 
-# Maintenant, récupère l'adresse IP
+# Récuperation de l'adresse IP
 FRONT_IP=$(getent hosts front | awk '{ print $1 }')
 export FRONT_IP
-
-# Tu peux maintenant utiliser l'IP comme une variable d'environnement ou la sauvegarder
-# export NGINX_URL="https://$FRONT_IP"
 
 cd $VOLUME
 
@@ -34,4 +31,3 @@ fi
 
 # Lancer le serveur Django
 uvicorn djpr_API.asgi:application --host 0.0.0.0 --port 8000
-# python3 manage.py runserver 0.0.0.0:8000

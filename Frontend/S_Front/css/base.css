@@ -2,11 +2,9 @@
 @import url('tournament.css');
 
 body {
-/*	padding: 20px;*/
 	font-family: Arial, sans-serif;
   	font-size: 16px;
     	background: linear-gradient(to right, #579CC2 0%, #B7E0F8 50%, #579CC2 100%) !important;
-	/* centrer */
 }
 
 .navbar {
@@ -29,6 +27,11 @@ body {
     background-color: #0056b3;
 }
 
+.del-btn:hover {
+	transform: scale(1.01);
+	user-select: none;
+}
+
 .flag-selector:hover {
 	transform: scale(1.02);
 }
@@ -44,11 +47,6 @@ body {
 	user-select: none;
 }
 
-.del-btn:hover {
-	transform: scale(1.01);
-	user-select: none;
-}
-
 .dropdown-menu {
 	--bs-dropdown-min-width: 72px;
 }
@@ -59,11 +57,11 @@ hr {
 }
 
 footer {
-	opacity: 0; /* Initially hidden */
-	transition: opacity 0.5s ease-in-out; /* Smooth transition */
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
 }
 
 footer.visible {
-	opacity: 1; /* Makes it visible when the class is added */
+	opacity: 1;
 }
 
