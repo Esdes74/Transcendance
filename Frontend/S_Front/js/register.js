@@ -48,6 +48,8 @@ function loadRegister()
 					await affRegisterMessage("Différence de mots de passe")
 				else if (error["error"] === "Integrity error")
 					await affRegisterMessage("Utilisateur déjà existant")
+				else if (error["error"] === "Invalid credentials")
+					await affRegisterMessage("Utilisateur ou mot de passe invalide")
 			}
 		} catch (error) {
 			updatePage("50X")
