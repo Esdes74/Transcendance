@@ -36,7 +36,7 @@ def selectTournament(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 # Create Player is here to create a player in the tournament
@@ -66,7 +66,7 @@ def createPlayer(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 # deletePlayer is here to delete a player in the tournament
@@ -96,7 +96,7 @@ def deletePlayer(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @auth_required
@@ -125,7 +125,7 @@ def initDB(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @auth_required
@@ -154,7 +154,7 @@ def validTournament(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @auth_required
@@ -183,7 +183,7 @@ def startTournament(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @auth_required
@@ -212,7 +212,7 @@ def startGame(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @auth_required
@@ -241,7 +241,7 @@ def endGame(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @auth_required
@@ -270,5 +270,5 @@ def continueTournament(request):
 			return JsonResponse({"error": "Invalid response from internal API"}, status=502)
 		except requests.exceptions.RequestException as req_err:
 			return JsonResponse({"error": f"Request error occurred: {req_err}"}, status=503)
-		return JsonResponse(response_data, status=200)
+		return JsonResponse(response_data, status=response.status_code)
 	return JsonResponse({"error": "Invalid request method"}, status=405)
